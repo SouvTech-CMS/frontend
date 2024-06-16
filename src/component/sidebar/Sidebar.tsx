@@ -17,7 +17,7 @@ export const Sidebar: FC = () => {
       borderColor="gray.300"
       gap={10}
     >
-      {/* TODO: add logo image here */}
+      {/* TODO: replace this with logo image */}
       <Heading w="full" textAlign="center">
         Logo
       </Heading>

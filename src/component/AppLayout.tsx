@@ -1,14 +1,22 @@
 import { Flex } from "@chakra-ui/react"
 import { Sidebar } from "component/sidebar/Sidebar"
+import { useAuthContext } from "context/auth"
 import { FC } from "react"
-import { Outlet } from "react-router-dom"
+import { Navigate, Outlet, useLocation } from "react-router-dom"
 
 export const AppLayout: FC = () => {
-  return (
-    <Flex h="full" w="full">
-      <Sidebar />
+  const { isAuthenticated } = useAuthContext()
+  const location = useLocation()
 
-      <Outlet />
-    </Flex>
-  )
+  if (isAuthenticated) {
+    return (
+      <Flex h="full" w="full">
+        <Sidebar />
+
+        <Outlet />
+      </Flex>
+    )
+  }
+
+  return <Navigate to="/auth" state={{ from: location }} replace />
 }
