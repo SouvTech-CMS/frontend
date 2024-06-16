@@ -23,6 +23,7 @@ axiosClient.interceptors.response.use(
       clearUserToken()
       return
     }
+    console.log(error.response?.data)
 
     throw error
   }

@@ -41,7 +41,7 @@ export const Auth = () => {
   }
 
   const validatePassword = (password: string) => {
-    if (password.length < 5) {
+    if (password.length < 8) {
       setPasswordError("Пароль должен содержать минимум 8 символов")
       setIsError(true)
       return
