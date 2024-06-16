@@ -3,14 +3,15 @@ import { AppLayout } from "component/AppLayout"
 import { configuration } from "configuration"
 import { AuthContextProvider } from "context/auth"
 import { UserContextProvider } from "context/user"
-import { Auth } from "page/Auth"
-import { NotFound } from "page/NotFound"
 import { QueryClientProvider } from "react-query"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 export const AppRouter = () => {
   const mainPages = configuration.sidebarItems.filter(
-    ({ component }) => component
+    ({ type, component }) => type === "main" && component
+  )
+  const sidePages = configuration.sidebarItems.filter(
+    ({ type, component }) => type === "side" && component
   )
 
   return (
@@ -19,10 +20,13 @@ export const AppRouter = () => {
         <UserContextProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/auth" element={<Auth />} />
+              {sidePages.map(({ name, path, component }) => (
+                <Route key={name} path={path} element={component} />
+              ))}
+              {/* <Route path="/auth" element={<Auth />} /> */}
 
               <Route path="/" element={<AppLayout />}>
-                {mainPages.map(({ index = false, name, path, component }) => (
+                {mainPages.map(({ name, index = false, path, component }) => (
                   <Route
                     key={name}
                     index={index}
@@ -32,7 +36,7 @@ export const AppRouter = () => {
                 ))}
               </Route>
 
-              <Route path="/*" element={<NotFound />} />
+              {/* <Route path="/*" element={<NotFound />} /> */}
             </Routes>
           </BrowserRouter>
         </UserContextProvider>

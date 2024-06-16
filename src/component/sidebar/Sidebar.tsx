@@ -4,6 +4,10 @@ import { configuration } from "configuration"
 import { FC } from "react"
 
 export const Sidebar: FC = () => {
+  const sideBarRoutes = configuration.sidebarItems.filter(
+    ({ type, component }) => type === "main" && component
+  )
+
   return (
     <Flex
       bg="gray.200"
@@ -23,7 +27,7 @@ export const Sidebar: FC = () => {
       </Heading>
 
       <Flex direction="column" w="full" gap={2}>
-        {configuration.sidebarItems.map(({ icon, name, path }) => (
+        {sideBarRoutes.map(({ icon, name, path }) => (
           <SidebarListItem key={name} icon={icon!} text={name!} to={path} />
         ))}
       </Flex>
