@@ -5,7 +5,7 @@ import { FCC } from "type/FCC"
 import { User } from "type/user"
 
 interface AuthContextType {
-  user?: User
+  currentUser?: User
   roles?: string[]
   permissions?: string[]
 }
@@ -17,28 +17,28 @@ export const UserContextProvider: FCC = (props) => {
   const [roles, setRoles] = useState<string[]>([])
   const [permissions, setPermissions] = useState<string[]>([])
 
-  const { data: user } = useQuery<User>("user", getCurrentUser)
+  const { data: currentUser } = useQuery<User>("currentUser", getCurrentUser)
 
   useEffect(() => {
-    if (user) {
-      const roles = user.roles_with_permissions.map(
+    if (currentUser) {
+      const roles = currentUser.roles_with_permissions.map(
         (roleWithPermissions) => roleWithPermissions.role.name
       )
       setRoles(roles)
 
-      const permissionsList = user.roles_with_permissions.flatMap(
+      const permissionsList = currentUser.roles_with_permissions.flatMap(
         (roleWithPermissions) => roleWithPermissions.permissions
       )
 
       const permissions = permissionsList.map((permission) => permission.name)
       setPermissions(permissions)
     }
-  }, [user])
+  }, [currentUser])
 
   return (
     <UserContext.Provider
       value={{
-        user,
+        currentUser,
         roles,
         permissions,
       }}
