@@ -5,6 +5,9 @@ import { AuthContextProvider } from "context/auth"
 import { UserContextProvider } from "context/user"
 import { QueryClientProvider } from "react-query"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { ToastContainer } from "react-toastify"
+
+import "react-toastify/dist/ReactToastify.css"
 
 export const AppRouter = () => {
   const mainPages = configuration.sidebarItems.filter(
@@ -15,15 +18,14 @@ export const AppRouter = () => {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
-        <UserContextProvider>
-          <BrowserRouter>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>
+          <UserContextProvider>
             <Routes>
               {sidePages.map(({ name, path, component }) => (
                 <Route key={name} path={path} element={component} />
               ))}
-              {/* <Route path="/auth" element={<Auth />} /> */}
 
               <Route path="/" element={<AppLayout />}>
                 {mainPages.map(({ name, index = false, path, component }) => (
@@ -35,12 +37,12 @@ export const AppRouter = () => {
                   />
                 ))}
               </Route>
-
-              {/* <Route path="/*" element={<NotFound />} /> */}
             </Routes>
-          </BrowserRouter>
-        </UserContextProvider>
-      </AuthContextProvider>
-    </QueryClientProvider>
+          </UserContextProvider>
+        </AuthContextProvider>
+      </QueryClientProvider>
+
+      <ToastContainer />
+    </BrowserRouter>
   )
 }
