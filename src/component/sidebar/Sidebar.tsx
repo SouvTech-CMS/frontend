@@ -1,9 +1,12 @@
-import { Flex, Heading } from "@chakra-ui/react"
+import { Button, Flex, Heading } from "@chakra-ui/react"
 import { SidebarListItem } from "component/sidebar/SidebarListItem"
 import { configuration } from "configuration"
+import { useAuthContext } from "context/auth"
 import { FC } from "react"
 
 export const Sidebar: FC = () => {
+  const { signOut } = useAuthContext()
+
   const sideBarRoutes = configuration.sidebarItems.filter(
     ({ type, component }) => type === "main" && component
   )
@@ -11,14 +14,12 @@ export const Sidebar: FC = () => {
   return (
     <Flex
       bg="gray.200"
-      w="250px"
+      w="16%"
       direction="column"
       justifyContent="flex-start"
       alignItems="flex-start"
       py={5}
       px={2}
-      borderRight="1px"
-      borderColor="gray.300"
       gap={10}
     >
       {/* TODO: replace this with logo image */}
@@ -31,6 +32,16 @@ export const Sidebar: FC = () => {
           <SidebarListItem key={name} icon={icon!} text={name!} to={path} />
         ))}
       </Flex>
+
+      <Button
+        w="full"
+        variant="solid"
+        colorScheme="blue"
+        mt="auto"
+        onClick={signOut}
+      >
+        Выход
+      </Button>
     </Flex>
   )
 }
