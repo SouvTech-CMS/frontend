@@ -2,6 +2,7 @@ import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
 import { NotFound } from "page/NotFound"
 import { Reports } from "page/Reports"
+import { Users } from "page/Users"
 import { IconType } from "react-icons"
 import { FiBox, FiFileText, FiHome, FiMap, FiUsers } from "react-icons/fi"
 import { getApiBaseUrl } from "util/apiBaseUrl"
@@ -33,8 +34,8 @@ export const configuration = {
       icon: FiFileText,
       name: "Отчёты",
       path: "/reports",
-      component: <Reports />,
       role: Role.MANAGER,
+      component: <Reports />,
     },
     {
       type: "main",
@@ -46,9 +47,10 @@ export const configuration = {
     {
       type: "main",
       icon: FiUsers,
-      name: "Пользователи",
+      name: "Сотрудники",
       path: "/users",
       role: Role.ADMIN,
+      component: <Users />,
     },
     {
       type: "main",
