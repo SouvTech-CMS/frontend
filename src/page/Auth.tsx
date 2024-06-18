@@ -113,7 +113,7 @@ export const Auth = () => {
             <Flex direction="column" gap={5}>
               {/* Username input */}
               <FormControl id="username">
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Логин</FormLabel>
                 <Input
                   type="text"
                   placeholder="Введите Ваш логин"
