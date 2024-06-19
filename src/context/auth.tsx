@@ -1,0 +1,51 @@
+import { signIn as signInReq } from "api/auth"
+import { createContext, useContext, useState } from "react"
+import { FCC } from "type/FCC"
+import { clearUserToken, getUserToken, setUserToken } from "util/userToken"
+
+interface AuthContextType {
+  isAuthenticated: boolean
+  signIn: (username: string, password: string) => Promise<void>
+  signOut: () => void
+}
+
+export const AuthContext = createContext<AuthContextType>({
+  isAuthenticated: false,
+  signIn: async (username: string, password: string) => {},
+  signOut: () => {},
+})
+
+export const AuthContextProvider: FCC = (props) => {
+  const { children } = props
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return !!getUserToken()
+  })
+
+  const signIn = async (username: string, password: string) => {
+    const token = await signInReq(username, password)
+    setUserToken(token.access_token)
+    setIsAuthenticated(true)
+  }
+
+  const signOut = () => {
+    clearUserToken()
+    setIsAuthenticated(false)
+  }
+
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, signIn, signOut }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+export const useAuthContext = () => {
+  const context = useContext(AuthContext)
+
+  if (!context) {
+    throw new Error("useAuthContext must be used in AuthContextProvider")
+  }
+
+  return context
+}

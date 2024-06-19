@@ -1,0 +1,15 @@
+.DS_Store
+
+# Dependencies
+node_modules/
+
+# Build & Prod
+build/
+
+# Environment
+*.env*
+!.env.template
+
+# IDEA
+.idea/
+.vscode/
