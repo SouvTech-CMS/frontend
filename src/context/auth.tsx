@@ -15,7 +15,7 @@ export const AuthContext = createContext<AuthContextType>({
   signOut: () => {},
 })
 
-export const AuthProvider: FCC = (props) => {
+export const AuthContextProvider: FCC = (props) => {
   const { children } = props
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
@@ -44,7 +44,7 @@ export const useAuthContext = () => {
   const context = useContext(AuthContext)
 
   if (!context) {
-    throw new Error("useAuthContext must be used within an AuthProvider")
+    throw new Error("useAuthContext must be used in AuthContextProvider")
   }
 
   return context

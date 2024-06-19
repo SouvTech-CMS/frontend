@@ -7,10 +7,11 @@ import {
   Input,
   Text,
 } from "@chakra-ui/react"
-import { PASSWORD_REGEX } from "constant/validations"
+import { AxiosError } from "axios"
 import { AuthContext } from "context/auth"
 import { ChangeEvent, FormEvent, useContext, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { notify } from "util/toasts"
 
 export const Auth = () => {
   const { signIn } = useContext(AuthContext)
@@ -19,8 +20,6 @@ export const Auth = () => {
 
   const [username, setUsername] = useState<string>()
   const [password, setPassword] = useState<string>()
-  const [usernameError, setUsernameError] = useState<string>()
-  const [passwordError, setPasswordError] = useState<string>()
   const [isError, setIsError] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -29,46 +28,16 @@ export const Auth = () => {
   const fromPage =
     (location.state as { from: { pathname: string } })?.from?.pathname || "/"
 
-  const validateUsername = (username: string) => {
-    if (username.length < 5) {
-      setUsernameError("Логин должен содержать минимум 5 символов")
-      setIsError(true)
-      return
-    }
-
-    setUsernameError("")
-    setIsError(false)
-  }
-
-  const validatePassword = (password: string) => {
-    if (password.length < 5) {
-      setPasswordError("Пароль должен содержать минимум 8 символов")
-      setIsError(true)
-      return
-    }
-
-    if (!PASSWORD_REGEX.test(password)) {
-      setPasswordError("Пароль должен содержать буквы разных регистров и цифры")
-      setIsError(true)
-      return
-    }
-
-    setPasswordError("")
-    setIsError(false)
-  }
-
   const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const username = e.target.value.trim()
-
-    validateUsername(username)
     setUsername(username)
+    setIsError(false)
   }
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value.trim()
-
-    validatePassword(password)
     setPassword(password)
+    setIsError(false)
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -81,6 +50,12 @@ export const Auth = () => {
 
         navigate(fromPage, { replace: true })
       } catch (e) {
+        if (e instanceof AxiosError) {
+          if (e.response?.status === 401) {
+            notify("Неправильный логин или пароль", "error")
+          }
+        }
+
         setIsError(true)
       } finally {
         setIsLoading(false)
@@ -112,8 +87,8 @@ export const Auth = () => {
           >
             <Flex direction="column" gap={5}>
               {/* Username input */}
-              <FormControl id="username">
-                <FormLabel>Username</FormLabel>
+              <FormControl>
+                <FormLabel>Логин</FormLabel>
                 <Input
                   type="text"
                   placeholder="Введите Ваш логин"
@@ -121,11 +96,10 @@ export const Auth = () => {
                   onChange={handleUsernameChange}
                   isDisabled={isLoading}
                 />
-                {usernameError && <Text color="red">{usernameError}</Text>}
               </FormControl>
 
               {/* Password input */}
-              <FormControl id="password">
+              <FormControl>
                 <FormLabel>Пароль</FormLabel>
                 <Input
                   type="password"
@@ -134,7 +108,6 @@ export const Auth = () => {
                   onChange={handlePasswordChange}
                   isDisabled={isLoading}
                 />
-                {passwordError && <Text color="red">{passwordError}</Text>}
               </FormControl>
 
               <Button
