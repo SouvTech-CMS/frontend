@@ -13,14 +13,25 @@ import { UserCard } from "component/users/UserCard"
 import { ChangeEvent, useState } from "react"
 import { FiSearch } from "react-icons/fi"
 import { useQuery } from "react-query"
-import { User } from "type/user"
+import { UserWithRolesAndShops } from "type/user"
 
 export const Users = () => {
   const [query, setQuery] = useState<string>("")
 
-  const { data: usersList, isLoading } = useQuery<User[]>(
+  const { data: usersList, isLoading } = useQuery<UserWithRolesAndShops[]>(
     "usersList",
     getAllUsers
+  )
+
+  const isQueryExists = !!query.trim()
+
+  const filteredUsersList = usersList?.filter(({ user }) =>
+    isQueryExists
+      ? user.username.toLowerCase().includes(query.toLowerCase()) ||
+        user.fio?.toLowerCase().includes(query.toLowerCase()) ||
+        user.phone?.toLowerCase().includes(query.toLowerCase()) ||
+        user.email?.toLowerCase().includes(query.toLowerCase())
+      : usersList
   )
 
   const handleChangeSearchQuery = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,11 +66,17 @@ export const Users = () => {
 
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
               <NewUserCard />
-              {usersList?.map((user, index) => (
-                // <WrapItem key={index}>
-                <UserCard key={index} user={user} />
-                // </WrapItem>
-              ))}
+
+              {filteredUsersList?.map(
+                ({ user, roles_with_permissions, shops }, index) => (
+                  <UserCard
+                    key={index}
+                    user={user}
+                    roles={roles_with_permissions}
+                    shops={shops}
+                  />
+                )
+              )}
             </SimpleGrid>
           </>
         ) : (

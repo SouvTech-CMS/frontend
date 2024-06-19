@@ -12,9 +12,9 @@ import {
 } from "@chakra-ui/react"
 import { useUserContext } from "context/user"
 import { FC } from "react"
-import { Bounce, ToastOptions, toast } from "react-toastify"
 import { useUserDeleteMutation } from "service/user"
 import { User } from "type/user"
+import { notify } from "util/toasts"
 
 interface UserDeleteModalProps {
   user: User
@@ -29,31 +29,17 @@ export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
 
   const userDeleteMutation = useUserDeleteMutation()
 
-  const toastOptions: ToastOptions = {
-    position: "bottom-right",
-    autoClose: 2000,
-    hideProgressBar: true,
-    closeOnClick: true,
-    pauseOnHover: false,
-    draggable: true,
-    transition: Bounce,
-    closeButton: true,
-  }
-
   const onUserDeleteConfirm = async () => {
     if (user.username === currentUser?.username) {
-      toast.error(
-        <Text fontWeight="bold">Упс, Вы не можете удалить себя :)</Text>,
-        toastOptions
-      )
+      notify("Упс, Вы не можете удалить себя :)", "error")
     }
     onClose()
 
     await userDeleteMutation.mutateAsync(user.id!)
 
-    toast.success(
-      <Text fontWeight="bold">Сотрудник {user.fio} был успешно удалён</Text>,
-      toastOptions
+    notify(
+      `Сотрудник ${user.fio || user.username} был успешно удалён`,
+      "success"
     )
   }
 
@@ -66,8 +52,10 @@ export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
         <ModalCloseButton />
 
         <ModalBody>
-          <Text>Вы точно хотите удалить сотрудника</Text>
-          <Text fontWeight="bold">{user.fio}</Text>
+          <Text>
+            Вы точно хотите удалить сотрудника
+            <Text fontWeight="bold">{user.fio}</Text>
+          </Text>
         </ModalBody>
 
         <ModalFooter>

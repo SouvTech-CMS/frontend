@@ -11,17 +11,24 @@ export type User = {
   bot_user_id?: number
   email?: string
   phone?: string
+}
+
+export type UserWithRolesAndShops = {
+  user: User
   roles_with_permissions: RoleWithPermissions[]
   shops: Shop[]
 }
 
-export type UserCreate = {
-  username: string
-  password?: string
-  fio: string
-  salary: number
-  email: string
-  phone: string
+export type UserWithRolesIdsAndShopsIds = {
+  user: User
+  roles_with_permissions: number[]
+  shops: number[]
+}
+
+export type UserCreateOrUpdate = {
+  user: User
+  roles_list: number[]
+  shops_list: number[]
 }
 
 export type RoleWithPermissions = {

@@ -2,7 +2,7 @@ import { getCurrentUser } from "api/user"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { FCC } from "type/FCC"
-import { User } from "type/user"
+import { User, UserWithRolesAndShops } from "type/user"
 
 interface AuthContextType {
   currentUser?: User
@@ -17,23 +17,29 @@ export const UserContextProvider: FCC = (props) => {
   const [roles, setRoles] = useState<string[]>([])
   const [permissions, setPermissions] = useState<string[]>([])
 
-  const { data: currentUser } = useQuery<User>("currentUser", getCurrentUser)
+  const { data: userWithRolesAndShops } = useQuery<UserWithRolesAndShops>(
+    "currentUser",
+    getCurrentUser
+  )
+
+  const currentUser = userWithRolesAndShops?.user
 
   useEffect(() => {
-    if (currentUser) {
-      const roles = currentUser.roles_with_permissions.map(
+    if (userWithRolesAndShops) {
+      const roles = userWithRolesAndShops.roles_with_permissions.map(
         (roleWithPermissions) => roleWithPermissions.role.name
       )
       setRoles(roles)
 
-      const permissionsList = currentUser.roles_with_permissions.flatMap(
-        (roleWithPermissions) => roleWithPermissions.permissions
-      )
+      const permissionsList =
+        userWithRolesAndShops.roles_with_permissions.flatMap(
+          (roleWithPermissions) => roleWithPermissions.permissions
+        )
 
       const permissions = permissionsList.map((permission) => permission.name)
       setPermissions(permissions)
     }
-  }, [currentUser])
+  }, [userWithRolesAndShops])
 
   return (
     <UserContext.Provider

@@ -15,14 +15,17 @@ import { UserDeleteModal } from "component/users/UserDeleteModal"
 import { UserModal } from "component/users/UserModal"
 import { FC } from "react"
 import { FiAtSign, FiDollarSign, FiPhone } from "react-icons/fi"
-import { User } from "type/user"
+import { Shop } from "type/shop"
+import { RoleWithPermissions, User } from "type/user"
 
 interface UserCardProps {
   user: User
+  roles: RoleWithPermissions[]
+  shops: Shop[]
 }
 
 export const UserCard: FC<UserCardProps> = (props) => {
-  const { user } = props
+  const { user, roles, shops } = props
 
   const {
     isOpen: isUserDeleteOpenModal,
@@ -38,9 +41,9 @@ export const UserCard: FC<UserCardProps> = (props) => {
 
   const isSalaryExists = user.salary && user.salary > 0
 
-  const isShopsExists = user.shops.length > 0
+  const isShopsExists = shops.length > 0
 
-  const roles = user.roles_with_permissions.map(
+  const rolesList = roles.map(
     (roleWithPermissions) => roleWithPermissions.role.name
   )
   const isRolesExists = roles.length > 0
@@ -101,7 +104,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
               <Flex direction="column">
                 <Text fontWeight="bold">Магазины:</Text>
                 <Wrap spacing={2}>
-                  {user.shops.map((shop, index) => (
+                  {shops.map((shop, index) => (
                     <WrapItem key={index}>
                       <Badge fontWeight="normal">{shop.name}</Badge>
                     </WrapItem>
@@ -115,7 +118,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
               <Flex direction="column">
                 <Text fontWeight="bold">Роли:</Text>
                 <Wrap spacing={2}>
-                  {roles?.map((role, index) => (
+                  {rolesList.map((role, index) => (
                     <WrapItem key={index}>
                       <Badge fontWeight="normal">{role}</Badge>
                     </WrapItem>
@@ -136,7 +139,9 @@ export const UserCard: FC<UserCardProps> = (props) => {
 
       {/* Edit user modal */}
       <UserModal
-        user={user}
+        prevUser={user}
+        roles={roles}
+        shops={shops}
         isOpen={isUserEditOpenModal}
         onClose={onUserEditCloseModal}
       />
