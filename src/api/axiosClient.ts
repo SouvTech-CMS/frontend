@@ -21,9 +21,7 @@ axiosClient.interceptors.response.use(
   async (error: AxiosError) => {
     if (error.response?.status === 401) {
       clearUserToken()
-      return
     }
-    console.log(error.response?.data)
 
     throw error
   }
