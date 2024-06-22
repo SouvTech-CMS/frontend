@@ -16,6 +16,8 @@ import {
 import { getAllRoles } from "api/role"
 import { getAllShops } from "api/shop"
 import { AxiosError } from "axios"
+import { ADMIN_ROLE } from "constant/roles"
+import { useUserContext } from "context/user"
 import { ChangeEvent, FC, useEffect, useState } from "react"
 import {
   FiAtSign,
@@ -51,6 +53,8 @@ const newUser: User = {
 export const UserModal: FC<UserModalProps> = (props) => {
   const { prevUser, shops, roles, isOpen, onClose } = props
 
+  const { currentUser } = useUserContext()
+
   const isNewUser = !prevUser
 
   const [user, setUser] = useState<User>(prevUser || newUser)
@@ -76,6 +80,8 @@ export const UserModal: FC<UserModalProps> = (props) => {
     isFioInvalid ||
     isSelectedShopsInvalid ||
     isSelectedRolesInvalid
+
+  const isUserIsCurrent = user.username === currentUser?.username
 
   const handleUserUpdate = (param: string, value: number | string) => {
     setUser((prevUser) => ({
@@ -314,16 +320,23 @@ export const UserModal: FC<UserModalProps> = (props) => {
 
                 <FormControl isInvalid={isSelectedRolesInvalid}>
                   <Flex direction={"column"}>
-                    {rolesList?.map((role) => (
-                      <Checkbox
-                        key={role.id}
-                        value={role.id}
-                        isChecked={selectedRoles.includes(role.id)}
-                        onChange={handleRolesUpdate}
-                      >
-                        {role.name}
-                      </Checkbox>
-                    ))}
+                    {rolesList?.map((role) => {
+                      const isAdminRoleCheckboxDisabled =
+                        isUserIsCurrent &&
+                        role.name.toLowerCase() === ADMIN_ROLE.toLowerCase()
+
+                      return (
+                        <Checkbox
+                          key={role.id}
+                          value={role.id}
+                          isChecked={selectedRoles.includes(role.id)}
+                          onChange={handleRolesUpdate}
+                          isDisabled={isAdminRoleCheckboxDisabled}
+                        >
+                          {role.name}
+                        </Checkbox>
+                      )
+                    })}
                   </Flex>
                 </FormControl>
               </Flex>
