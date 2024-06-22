@@ -2,9 +2,17 @@ import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
 import { NotFound } from "page/NotFound"
 import { Reports } from "page/Reports"
+import { Suppliers } from "page/Suppliers"
 import { Users } from "page/Users"
 import { IconType } from "react-icons"
-import { FiBox, FiFileText, FiHome, FiMap, FiUsers } from "react-icons/fi"
+import {
+  FiBox,
+  FiFileText,
+  FiGlobe,
+  FiHome,
+  FiMap,
+  FiUsers,
+} from "react-icons/fi"
 import { getApiBaseUrl } from "util/apiBaseUrl"
 
 type Route = {
@@ -58,6 +66,14 @@ export const configuration = {
       name: "Логи",
       path: "/logs",
       role: Role.ADMIN,
+    },
+    {
+      type: "main",
+      icon: FiGlobe,
+      name: "Поставщики",
+      path: "/suppliers",
+      role: Role.STORAGER,
+      component: <Suppliers />,
     },
     //* Side pages
     {

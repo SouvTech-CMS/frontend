@@ -2,13 +2,19 @@ import { Button, Flex, Heading } from "@chakra-ui/react"
 import { SidebarListItem } from "component/sidebar/SidebarListItem"
 import { configuration } from "configuration"
 import { useAuthContext } from "context/auth"
+import { useUserContext } from "context/user"
 import { FC } from "react"
 
 export const Sidebar: FC = () => {
   const { signOut } = useAuthContext()
 
+  const { roles, isUserAdmin } = useUserContext()
+
   const sideBarRoutes = configuration.sidebarItems.filter(
-    ({ type, component }) => type === "main" && component
+    ({ type, component, role }) =>
+      type === "main" &&
+      component &&
+      ((role && roles?.includes(role.toLowerCase())) || isUserAdmin)
   )
 
   return (
