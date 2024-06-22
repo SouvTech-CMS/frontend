@@ -1,16 +1,18 @@
 import { getCurrentUser } from "api/user"
+import { ADMIN_ROLE } from "constant/roles"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { FCC } from "type/FCC"
 import { User, UserWithRolesAndShops } from "type/user"
 
-interface AuthContextType {
+interface UserContextType {
   currentUser?: User
   roles?: string[]
   permissions?: string[]
+  isUserAdmin?: boolean
 }
 
-export const UserContext = createContext<AuthContextType>({})
+export const UserContext = createContext<UserContextType>({})
 
 export const UserContextProvider: FCC = (props) => {
   const { children } = props
@@ -24,10 +26,12 @@ export const UserContextProvider: FCC = (props) => {
 
   const currentUser = userWithRolesAndShops?.user
 
+  const isUserAdmin = roles.includes(ADMIN_ROLE)
+
   useEffect(() => {
     if (userWithRolesAndShops) {
       const roles = userWithRolesAndShops.roles_with_permissions.map(
-        (roleWithPermissions) => roleWithPermissions.role.name
+        (roleWithPermissions) => roleWithPermissions.role.name.toLowerCase()
       )
       setRoles(roles)
 
@@ -36,7 +40,9 @@ export const UserContextProvider: FCC = (props) => {
           (roleWithPermissions) => roleWithPermissions.permissions
         )
 
-      const permissions = permissionsList.map((permission) => permission.name)
+      const permissions = permissionsList.map((permission) =>
+        permission.name.toLowerCase()
+      )
       setPermissions(permissions)
     }
   }, [userWithRolesAndShops])
@@ -47,6 +53,7 @@ export const UserContextProvider: FCC = (props) => {
         currentUser,
         roles,
         permissions,
+        isUserAdmin,
       }}
     >
       {children}

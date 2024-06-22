@@ -1,4 +1,5 @@
 import { signIn as signInReq } from "api/auth"
+import { queryClient } from "api/queryClient"
 import { createContext, useContext, useState } from "react"
 import { FCC } from "type/FCC"
 import { clearUserToken, getUserToken, setUserToken } from "util/userToken"
@@ -31,6 +32,7 @@ export const AuthContextProvider: FCC = (props) => {
   const signOut = () => {
     clearUserToken()
     setIsAuthenticated(false)
+    queryClient.invalidateQueries("currentUser")
   }
 
   return (

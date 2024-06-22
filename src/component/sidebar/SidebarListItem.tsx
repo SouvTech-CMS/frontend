@@ -21,6 +21,7 @@ export const SidebarListItem: FC<SidebarListItemProps> = (props) => {
       alignItems="center"
       gap={3}
       to={to}
+      replace
     >
       <Icon as={icon} />
       <Text>{text}</Text>
