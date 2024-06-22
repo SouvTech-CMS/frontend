@@ -1,5 +1,6 @@
 import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
+import { Dashboard } from "page/Dashboard"
 import { NoAccess } from "page/NoAccess"
 import Purchases from "page/Purchases"
 import Reports from "page/Reports"
@@ -39,6 +40,7 @@ export const configuration = {
       name: "Dashboard",
       path: "/",
       roles: [Role.MANAGER],
+      component: <Dashboard />,
     },
     {
       type: "main",
