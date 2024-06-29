@@ -4,33 +4,29 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  SimpleGrid,
   Spinner,
 } from "@chakra-ui/react"
-import { getAllSuppliers } from "api/supplier"
-import { NewSupplierCard } from "component/suppliers/NewSupplierCard"
-import { SupplierCard } from "component/suppliers/SupplierCard"
+import { getAllPurchases } from "api/purchase"
+import { PurchasesTable } from "component/purchase/PurchasesTable"
 import { ChangeEvent, useState } from "react"
 import { FiSearch } from "react-icons/fi"
 import { useQuery } from "react-query"
-import { Supplier } from "type/supplier"
-import { WithId } from "type/withId"
+import { FullPurchase } from "type/purchase"
 
-export const Suppliers = () => {
+export const Purchases = () => {
   const [query, setQuery] = useState<string>("")
 
-  const { data: suppliersList, isLoading } = useQuery<WithId<Supplier>[]>(
-    "suppliersList",
-    getAllSuppliers
+  const { data: purchasesList, isLoading } = useQuery<FullPurchase[]>(
+    "purchasesList",
+    getAllPurchases
   )
 
   const isQueryExists = !!query.trim()
 
-  const filteredSuppliersList = suppliersList?.filter(({ name, address }) =>
+  const filteredPurchasesList = purchasesList?.filter(({ purchase }) =>
     isQueryExists
-      ? name.toLowerCase().includes(query.toLowerCase()) ||
-        address?.toLowerCase().includes(query.toLowerCase())
-      : suppliersList
+      ? String(purchase.id).toLowerCase().includes(query.toLowerCase())
+      : purchasesList
   )
 
   const handleChangeSearchQuery = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +36,7 @@ export const Suppliers = () => {
   return (
     <Flex w="full" direction="column" py={5} px={10}>
       <Flex pb={10}>
-        <Heading>Suppliers</Heading>
+        <Heading>Закупки</Heading>
       </Flex>
 
       <Flex direction="column" gap={10}>
@@ -50,7 +46,7 @@ export const Suppliers = () => {
               <InputGroup maxW={360}>
                 {/* Search Query */}
                 <Input
-                  placeholder="Search.."
+                  placeholder="Поиск.."
                   value={query}
                   onChange={handleChangeSearchQuery}
                 />
@@ -62,13 +58,7 @@ export const Suppliers = () => {
               </InputGroup>
             </Flex>
 
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
-              <NewSupplierCard />
-
-              {filteredSuppliersList?.map((supplier, index) => (
-                <SupplierCard key={index} supplier={supplier} />
-              ))}
-            </SimpleGrid>
+            <PurchasesTable purchases={filteredPurchasesList} />
           </>
         ) : (
           <Spinner />

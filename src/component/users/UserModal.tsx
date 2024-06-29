@@ -31,12 +31,13 @@ import { useUserCreateMutation, useUserUpdateMutation } from "service/user"
 import { Role } from "type/role"
 import { Shop } from "type/shop"
 import { RoleWithPermissions, User, UserCreateOrUpdate } from "type/user"
+import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 import { isPasswordValid, isUsernameValid } from "util/validation"
 
 interface UserModalProps {
-  prevUser?: User
-  shops?: Shop[]
+  prevUser?: WithId<User>
+  shops?: WithId<Shop>[]
   roles?: RoleWithPermissions[]
   isOpen: boolean
   onClose: () => void
@@ -62,8 +63,8 @@ export const UserModal: FC<UserModalProps> = (props) => {
   const [selectedShops, setSelectedShops] = useState<number[]>([])
   const [selectedRoles, setSelectedRoles] = useState<number[]>([])
 
-  const { data: shopsList } = useQuery<Shop[]>("shopsList", getAllShops)
-  const { data: rolesList } = useQuery<Role[]>("rolesList", getAllRoles)
+  const { data: shopsList } = useQuery<WithId<Shop>[]>("shopsList", getAllShops)
+  const { data: rolesList } = useQuery<WithId<Role>[]>("rolesList", getAllRoles)
 
   const userCreateMutation = useUserCreateMutation()
   const userUpdateMutation = useUserUpdateMutation()
@@ -118,7 +119,10 @@ export const UserModal: FC<UserModalProps> = (props) => {
 
   const onUserUpdate = async () => {
     const body: UserCreateOrUpdate = {
-      user,
+      user: {
+        ...user,
+        id: prevUser?.id,
+      },
       roles_list: selectedRoles,
       shops_list: selectedShops,
     }
@@ -347,15 +351,15 @@ export const UserModal: FC<UserModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="outline"
-              colorScheme="green"
+              variant="solid"
+              colorScheme="blue"
               onClick={onUserUpdate}
               isDisabled={isSaveBtnDisabled}
             >
               Сохранить
             </Button>
 
-            <Button variant="outline" colorScheme="blue" onClick={onClose}>
+            <Button variant="solid" colorScheme="gray" onClick={onClose}>
               Отмена
             </Button>
           </Flex>

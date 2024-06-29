@@ -1,7 +1,7 @@
 import { signIn as signInReq } from "api/auth"
 import { queryClient } from "api/queryClient"
 import { createContext, useContext, useState } from "react"
-import { FCC } from "type/FCC"
+import { FCC } from "type/fcc"
 import { clearUserToken, getUserToken, setUserToken } from "util/userToken"
 
 interface AuthContextType {

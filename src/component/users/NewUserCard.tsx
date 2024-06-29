@@ -14,6 +14,7 @@ export const NewUserCard: FC = () => {
     <>
       <Button
         h="full"
+        minH={350}
         maxW={400}
         bgColor="gray.200"
         onClick={onUserEditOpenModal}
@@ -26,9 +27,9 @@ export const NewUserCard: FC = () => {
           alignItems="center"
           gap={5}
         >
-          <FiPlusCircle color="gray" size={64} />
+          <FiPlusCircle color="gray" size={48} />
           <Text color="gray" fontSize={24} fontWeight="bold">
-            Добавить
+            New
           </Text>
         </Flex>
       </Button>

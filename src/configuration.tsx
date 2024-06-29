@@ -1,6 +1,7 @@
 import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
 import { NotFound } from "page/NotFound"
+import { Purchases } from "page/Purchases"
 import { Reports } from "page/Reports"
 import { Suppliers } from "page/Suppliers"
 import { Users } from "page/Users"
@@ -11,6 +12,7 @@ import {
   FiGlobe,
   FiHome,
   FiMap,
+  FiTruck,
   FiUsers,
 } from "react-icons/fi"
 import { getApiBaseUrl } from "util/apiBaseUrl"
@@ -33,29 +35,45 @@ export const configuration = {
       index: true,
       type: "main",
       icon: FiHome,
-      name: "Главная",
+      name: "Dashboard",
       path: "/",
       role: Role.MANAGER,
     },
     {
       type: "main",
       icon: FiFileText,
-      name: "Отчёты",
+      name: "Reports",
       path: "/reports",
       role: Role.MANAGER,
       component: <Reports />,
     },
     {
       type: "main",
+      icon: FiTruck,
+      name: "Purchases",
+      path: "/purchases",
+      role: Role.STORAGER,
+      component: <Purchases />,
+    },
+    {
+      type: "main",
+      icon: FiGlobe,
+      name: "Suppliers",
+      path: "/suppliers",
+      role: Role.STORAGER,
+      component: <Suppliers />,
+    },
+    {
+      type: "main",
       icon: FiBox,
-      name: "Склад",
+      name: "Storage",
       path: "/storage",
       role: Role.STORAGER,
     },
     {
       type: "main",
       icon: FiUsers,
-      name: "Сотрудники",
+      name: "Employees",
       path: "/users",
       role: Role.ADMIN,
       component: <Users />,
@@ -63,22 +81,14 @@ export const configuration = {
     {
       type: "main",
       icon: FiMap,
-      name: "Логи",
+      name: "Logs",
       path: "/logs",
       role: Role.ADMIN,
-    },
-    {
-      type: "main",
-      icon: FiGlobe,
-      name: "Поставщики",
-      path: "/suppliers",
-      role: Role.STORAGER,
-      component: <Suppliers />,
     },
     //* Side pages
     {
       type: "side",
-      name: "Авторизация",
+      name: "Auth",
       path: "/auth",
       component: <Auth />,
     },

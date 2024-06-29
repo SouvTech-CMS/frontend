@@ -17,11 +17,12 @@ import { FC } from "react"
 import { FiAtSign, FiDollarSign, FiPhone } from "react-icons/fi"
 import { Shop } from "type/shop"
 import { RoleWithPermissions, User } from "type/user"
+import { WithId } from "type/withId"
 
 interface UserCardProps {
-  user: User
+  user: WithId<User>
   roles: RoleWithPermissions[]
-  shops: Shop[]
+  shops: WithId<Shop>[]
 }
 
 export const UserCard: FC<UserCardProps> = (props) => {
@@ -102,7 +103,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
             {/* Shops badges */}
             {isShopsExists && (
               <Flex direction="column">
-                <Text fontWeight="bold">Магазины:</Text>
+                <Text fontWeight="bold">Shops:</Text>
                 <Wrap spacing={2}>
                   {shops.map((shop, index) => (
                     <WrapItem key={index}>
@@ -116,7 +117,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
             {/* Roles badges */}
             {isRolesExists && (
               <Flex direction="column">
-                <Text fontWeight="bold">Роли:</Text>
+                <Text fontWeight="bold">Roles:</Text>
                 <Wrap spacing={2}>
                   {rolesList.map((role, index) => (
                     <WrapItem key={index}>

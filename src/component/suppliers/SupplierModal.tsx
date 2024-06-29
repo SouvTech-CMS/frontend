@@ -10,18 +10,20 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Textarea,
 } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
-import { FiCornerDownRight } from "react-icons/fi"
+import { FiMapPin, FiUser } from "react-icons/fi"
 import {
   useSupplierCreateMutation,
   useSupplierUpdateMutation,
 } from "service/supplier"
 import { Supplier } from "type/supplier"
+import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
 interface SupplierModalProps {
-  prevSupplier?: Supplier
+  prevSupplier?: WithId<Supplier>
   isOpen: boolean
   onClose: () => void
 }
@@ -52,16 +54,17 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
   }
 
   const onSupplierUpdate = async () => {
-    const body: Supplier = supplier
-
     if (isNewSupplier) {
-      await supplierCreateMutation.mutateAsync(body)
+      await supplierCreateMutation.mutateAsync(supplier)
 
-      notify(`Поставщик ${supplier.name} успешно добавлен`, "success")
+      notify(`Supplier ${supplier.name} created successfully`, "success")
     } else {
-      await supplierUpdateMutation.mutateAsync(body)
+      await supplierUpdateMutation.mutateAsync({
+        ...supplier,
+        id: prevSupplier.id,
+      })
 
-      notify(`Поставщик ${supplier.name} успешно изменён`, "success")
+      notify(`Supplier ${supplier.name} updated successfully`, "success")
     }
     onClose()
   }
@@ -75,29 +78,43 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
   }, [prevSupplier, isOpen])
 
   return (
-    <Modal size="2xl" isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay backdropFilter="blur(10px)" />
 
       <ModalContent>
-        <ModalHeader>
-          {isNewSupplier ? "Новый поставщик" : "Поставщик"}{" "}
-        </ModalHeader>
+        <ModalHeader>{isNewSupplier ? "New supplier" : "Supplier"}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <Flex h="full" w="full" direction="column" gap={5}>
             {/* Name */}
             <Flex alignItems="center" gap={2}>
-              <FiCornerDownRight color="gray" />
+              <FiUser color="gray" />
 
               <FormControl isInvalid={isSupplierNameInvalid}>
                 <Input
-                  placeholder="Название"
+                  placeholder="Name"
                   value={supplier.name}
                   type="text"
                   onChange={(e) => {
-                    const value = e.target.value.trim()
+                    const value = e.target.value
                     handleSupplierUpdate("name", value)
+                  }}
+                />
+              </FormControl>
+            </Flex>
+
+            {/* Address */}
+            <Flex alignItems="center" gap={2}>
+              <FiMapPin color="gray" />
+
+              <FormControl>
+                <Textarea
+                  placeholder="Address"
+                  value={supplier.address}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleSupplierUpdate("address", value)
                   }}
                 />
               </FormControl>
@@ -108,16 +125,16 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="outline"
-              colorScheme="green"
+              variant="solid"
+              colorScheme="blue"
               onClick={onSupplierUpdate}
               isDisabled={isSupplierNameInvalid}
             >
-              Сохранить
+              Save
             </Button>
 
-            <Button variant="outline" colorScheme="blue" onClick={onClose}>
-              Отмена
+            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+              Cancel
             </Button>
           </Flex>
         </ModalFooter>

@@ -1,9 +1,9 @@
 import { Permission } from "type/permission"
 import { Role } from "type/role"
 import { Shop } from "type/shop"
+import { WithId } from "type/withId"
 
 export type User = {
-  id?: number
   username: string
   password?: string
   fio?: string
@@ -14,24 +14,24 @@ export type User = {
 }
 
 export type UserWithRolesAndShops = {
-  user: User
+  user: WithId<User>
   roles_with_permissions: RoleWithPermissions[]
-  shops: Shop[]
+  shops: WithId<Shop>[]
 }
 
 export type UserWithRolesIdsAndShopsIds = {
-  user: User
+  user: WithId<User>
   roles_with_permissions: number[]
   shops: number[]
 }
 
 export type UserCreateOrUpdate = {
-  user: User
+  user: User | WithId<User>
   roles_list: number[]
   shops_list: number[]
 }
 
 export type RoleWithPermissions = {
-  role: Role
-  permissions: Permission[]
+  role: WithId<Role>
+  permissions: WithId<Permission>[]
 }

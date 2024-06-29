@@ -2,7 +2,7 @@ import { getCurrentUser } from "api/user"
 import { ADMIN_ROLE } from "constant/roles"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { FCC } from "type/FCC"
+import { FCC } from "type/fcc"
 import { User, UserWithRolesAndShops } from "type/user"
 
 interface UserContextType {
