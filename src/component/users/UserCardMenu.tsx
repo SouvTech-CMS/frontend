@@ -29,11 +29,11 @@ export const CardMenu: FC<CardMenuProps> = (props) => {
 
         <MenuList>
           <MenuItem icon={<FiEdit />} onClick={onEdit}>
-            Изменить
+            Edit
           </MenuItem>
 
           <MenuItem icon={<FiTrash2 />} color="red" onClick={onDelete}>
-            Удалить
+            Delete
           </MenuItem>
         </MenuList>
       </Menu>

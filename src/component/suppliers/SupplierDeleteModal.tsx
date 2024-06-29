@@ -13,10 +13,11 @@ import {
 import { FC } from "react"
 import { useSupplierDeleteMutation } from "service/supplier"
 import { Supplier } from "type/supplier"
+import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
 interface SupplierDeleteModalProps {
-  supplier: Supplier
+  supplier: WithId<Supplier>
   isOpen: boolean
   onClose: () => void
 }
@@ -29,7 +30,7 @@ export const SupplierDeleteModal: FC<SupplierDeleteModalProps> = (props) => {
   const onSupplierDeleteConfirm = async () => {
     onClose()
 
-    await supplierDeleteMutation.mutateAsync(supplier.id!)
+    await supplierDeleteMutation.mutateAsync(supplier.id)
 
     notify(`Поставщик ${supplier.name} был успешно удалён`, "success")
   }

@@ -1,19 +1,23 @@
 import {
+  Button,
   Card,
-  CardBody,
+  CardFooter,
   CardHeader,
   Flex,
   Heading,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react"
-import { CardMenu } from "component/suppliers/SupplierCardMenu"
+import { SupplierManagersModal } from "component/manager/ManagersListModal"
+import { SupplierCardMenu } from "component/suppliers/SupplierCardMenu"
 import { SupplierDeleteModal } from "component/suppliers/SupplierDeleteModal"
 import { SupplierModal } from "component/suppliers/SupplierModal"
 import { FC } from "react"
 import { Supplier } from "type/supplier"
+import { WithId } from "type/withId"
 
 interface SupplierCardProps {
-  supplier: Supplier
+  supplier: WithId<Supplier>
 }
 
 export const SupplierCard: FC<SupplierCardProps> = (props) => {
@@ -31,6 +35,14 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
     onClose: onSupplierEditCloseModal,
   } = useDisclosure()
 
+  const {
+    isOpen: isManagersOpenModal,
+    onOpen: onManagersOpenModal,
+    onClose: onManagersCloseModal,
+  } = useDisclosure()
+
+  const isAddressExists = !!supplier.address
+
   return (
     <>
       <Card maxW={400} boxShadow="lg" borderRadius={20}>
@@ -38,27 +50,31 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
           <Flex direction="column" gap={2}>
             <Heading size="md">{supplier.name}</Heading>
 
-            {/* <Flex alignItems="center" gap={1}>
-              <FiAtSign color="gray" />
-
-              <Text color="gray" fontSize="xs">
-                {supplier.email}
+            {isAddressExists && (
+              <Text color="gray" fontSize="sm">
+                {supplier.address}
               </Text>
-            </Flex> */}
+            )}
           </Flex>
 
           {/* Actions Menu Button */}
-          <CardMenu
+          <SupplierCardMenu
+            onManagers={onManagersOpenModal}
             onEdit={onSupplierEditOpenModal}
             onDelete={onSupplierDeleteOpenModal}
           />
         </CardHeader>
 
-        <CardBody>
-          <Flex h="full" w="full" direction="column" gap={5}>
-            {/*  */}
-          </Flex>
-        </CardBody>
+        <CardFooter mt="auto">
+          <Button
+            w="full"
+            variant="ghost"
+            colorScheme="blue"
+            onClick={onManagersOpenModal}
+          >
+            Managers
+          </Button>
+        </CardFooter>
       </Card>
 
       {/* Delete supplier modal */}
@@ -73,6 +89,13 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
         prevSupplier={supplier}
         isOpen={isSupplierEditOpenModal}
         onClose={onSupplierEditCloseModal}
+      />
+
+      {/* Edit supplier modal */}
+      <SupplierManagersModal
+        supplierId={supplier.id}
+        isOpen={isManagersOpenModal}
+        onClose={onManagersCloseModal}
       />
     </>
   )

@@ -1,12 +1,13 @@
 import { axiosClient } from "api/axiosClient"
 import { Supplier } from "type/supplier"
+import { WithId } from "type/withId"
 
-export const getCurrentSupplier = async (): Promise<Supplier> => {
+export const getCurrentSupplier = async (): Promise<WithId<Supplier>> => {
   const { data: supplier } = await axiosClient.get("/supplier/current/")
   return supplier
 }
 
-export const getAllSuppliers = async (): Promise<Supplier[]> => {
+export const getAllSuppliers = async (): Promise<WithId<Supplier>[]> => {
   const { data: suppliersList } = await axiosClient.get("/supplier/")
   return suppliersList
 }
@@ -15,7 +16,7 @@ export const createSupplier = async (supplier: Supplier) => {
   await axiosClient.post("/supplier/", supplier)
 }
 
-export const updateSupplier = async (supplier: Supplier) => {
+export const updateSupplier = async (supplier: WithId<Supplier>) => {
   await axiosClient.put("/supplier/", supplier)
 }
 

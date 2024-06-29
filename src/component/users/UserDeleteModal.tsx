@@ -14,10 +14,11 @@ import { useUserContext } from "context/user"
 import { FC } from "react"
 import { useUserDeleteMutation } from "service/user"
 import { User } from "type/user"
+import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
 interface UserDeleteModalProps {
-  user: User
+  user: WithId<User>
   isOpen: boolean
   onClose: () => void
 }

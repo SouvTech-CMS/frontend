@@ -7,15 +7,16 @@ import {
   MenuList,
 } from "@chakra-ui/react"
 import { FC } from "react"
-import { FiEdit, FiMoreVertical, FiTrash2 } from "react-icons/fi"
+import { FiEdit, FiMoreVertical, FiTrash2, FiUsers } from "react-icons/fi"
 
-interface CardMenuProps {
+interface SupplierCardMenuProps {
+  onManagers: () => void
   onEdit: () => void
   onDelete: () => void
 }
 
-export const CardMenu: FC<CardMenuProps> = (props) => {
-  const { onEdit, onDelete } = props
+export const SupplierCardMenu: FC<SupplierCardMenuProps> = (props) => {
+  const { onManagers, onEdit, onDelete } = props
 
   return (
     <Flex position="absolute" top={0} right={0}>
@@ -28,12 +29,16 @@ export const CardMenu: FC<CardMenuProps> = (props) => {
         />
 
         <MenuList>
+          <MenuItem icon={<FiUsers />} onClick={onManagers}>
+            Managers
+          </MenuItem>
+
           <MenuItem icon={<FiEdit />} onClick={onEdit}>
-            Изменить
+            Edit
           </MenuItem>
 
           <MenuItem icon={<FiTrash2 />} color="red" onClick={onDelete}>
-            Удалить
+            Delete
           </MenuItem>
         </MenuList>
       </Menu>
