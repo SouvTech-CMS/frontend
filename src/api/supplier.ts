@@ -2,11 +2,6 @@ import { axiosClient } from "api/axiosClient"
 import { Supplier } from "type/supplier"
 import { WithId } from "type/withId"
 
-export const getCurrentSupplier = async (): Promise<WithId<Supplier>> => {
-  const { data: supplier } = await axiosClient.get("/supplier/current/")
-  return supplier
-}
-
 export const getAllSuppliers = async (): Promise<WithId<Supplier>[]> => {
   const { data: suppliersList } = await axiosClient.get("/supplier/")
   return suppliersList

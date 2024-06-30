@@ -50,9 +50,9 @@ export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
           <ModalCloseButton />
 
           <ModalBody>
-            <Flex h="full" w="full" direction="column" gap={5}>
-              {managersList?.map((manager) => (
-                <ManagerCard manager={manager} />
+            <Flex w="full" direction="column" gap={5}>
+              {managersList?.map((manager, index) => (
+                <ManagerCard key={index} manager={manager} />
               ))}
             </Flex>
           </ModalBody>

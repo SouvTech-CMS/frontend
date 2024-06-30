@@ -198,8 +198,8 @@ export const UserModal: FC<UserModalProps> = (props) => {
         <ModalCloseButton />
 
         <ModalBody>
-          <Flex h="full" w="full" direction="row" gap={10}>
-            <Flex h="full" w="full" direction="column" gap={5}>
+          <Flex w="full" direction="row" gap={10}>
+            <Flex w="full" direction="column" gap={5}>
               {/* Username */}
               <Flex alignItems="center" gap={2}>
                 <FiCornerDownRight color="gray" />
@@ -297,7 +297,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
               </Flex>
             </Flex>
 
-            <Flex h="full" w="full" direction="column" gap={5}>
+            <Flex w="full" direction="column" gap={5}>
               {/* Shops badges */}
               <Flex direction="column">
                 <Text fontWeight="bold">Магазины:</Text>

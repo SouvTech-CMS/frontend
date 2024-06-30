@@ -39,37 +39,37 @@ export const Suppliers = () => {
 
   return (
     <Flex w="full" direction="column" py={5} px={10}>
-      <Flex pb={10}>
+      <Flex justifyContent="space-between" pb={10}>
         <Heading>Suppliers</Heading>
+
+        {/* Search */}
+        <Flex justifyContent="flex-end" gap={2}>
+          <InputGroup maxW={360}>
+            {/* Search Query */}
+            <Input
+              placeholder="Search.."
+              value={query}
+              onChange={handleChangeSearchQuery}
+              isDisabled={isLoading}
+            />
+
+            {/* Search Icon */}
+            <InputRightElement>
+              <FiSearch color="gray" />
+            </InputRightElement>
+          </InputGroup>
+        </Flex>
       </Flex>
 
       <Flex direction="column" gap={10}>
         {!isLoading ? (
-          <>
-            <Flex justifyContent="flex-end" gap={2}>
-              <InputGroup maxW={360}>
-                {/* Search Query */}
-                <Input
-                  placeholder="Search.."
-                  value={query}
-                  onChange={handleChangeSearchQuery}
-                />
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
+            <NewSupplierCard />
 
-                {/* Search Icon */}
-                <InputRightElement>
-                  <FiSearch color="gray" />
-                </InputRightElement>
-              </InputGroup>
-            </Flex>
-
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
-              <NewSupplierCard />
-
-              {filteredSuppliersList?.map((supplier, index) => (
-                <SupplierCard key={index} supplier={supplier} />
-              ))}
-            </SimpleGrid>
-          </>
+            {filteredSuppliersList?.map((supplier, index) => (
+              <SupplierCard key={index} supplier={supplier} />
+            ))}
+          </SimpleGrid>
         ) : (
           <Spinner />
         )}

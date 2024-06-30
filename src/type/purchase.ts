@@ -7,8 +7,8 @@ import { WithId } from "type/withId"
 export type Purchase = {
   supplier_id: number
   supplier_manager_id: number
-  created_at: number
-  update: number
+  created_at?: number
+  update?: number
   deadline: number
   amount: number
   shipping: number
