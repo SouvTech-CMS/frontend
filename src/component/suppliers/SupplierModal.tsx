@@ -86,7 +86,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
         <ModalCloseButton />
 
         <ModalBody>
-          <Flex h="full" w="full" direction="column" gap={5}>
+          <Flex w="full" direction="column" gap={5}>
             {/* Name */}
             <Flex alignItems="center" gap={2}>
               <FiUser color="gray" />

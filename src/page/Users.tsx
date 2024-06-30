@@ -40,44 +40,44 @@ export const Users = () => {
 
   return (
     <Flex w="full" direction="column" py={5} px={10}>
-      <Flex pb={10}>
-        <Heading>Сотрудники</Heading>
+      <Flex justifyContent="space-between" pb={10}>
+        <Heading>Employees</Heading>
+
+        {/* Search */}
+        <Flex justifyContent="flex-end" gap={2}>
+          <InputGroup maxW={360}>
+            {/* Search Query */}
+            <Input
+              placeholder="Search.."
+              value={query}
+              onChange={handleChangeSearchQuery}
+              isDisabled={isLoading}
+            />
+
+            {/* Search Icon */}
+            <InputRightElement>
+              <FiSearch color="gray" />
+            </InputRightElement>
+          </InputGroup>
+        </Flex>
       </Flex>
 
       <Flex direction="column" gap={10}>
         {!isLoading ? (
-          <>
-            <Flex justifyContent="flex-end" gap={2}>
-              <InputGroup maxW={360}>
-                {/* Search Query */}
-                <Input
-                  placeholder="Search.."
-                  value={query}
-                  onChange={handleChangeSearchQuery}
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
+            <NewUserCard />
+
+            {filteredUsersList?.map(
+              ({ user, roles_with_permissions, shops }, index) => (
+                <UserCard
+                  key={index}
+                  user={user}
+                  roles={roles_with_permissions}
+                  shops={shops}
                 />
-
-                {/* Search Icon */}
-                <InputRightElement>
-                  <FiSearch color="gray" />
-                </InputRightElement>
-              </InputGroup>
-            </Flex>
-
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
-              <NewUserCard />
-
-              {filteredUsersList?.map(
-                ({ user, roles_with_permissions, shops }, index) => (
-                  <UserCard
-                    key={index}
-                    user={user}
-                    roles={roles_with_permissions}
-                    shops={shops}
-                  />
-                )
-              )}
-            </SimpleGrid>
-          </>
+              )
+            )}
+          </SimpleGrid>
         ) : (
           <Spinner />
         )}

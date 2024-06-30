@@ -1,4 +1,5 @@
-import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react"
+import { Table, Tbody, Text, Th, Thead, Tr } from "@chakra-ui/react"
+import { PurchaseRow } from "component/purchase/PurchaseRow"
 import { FC } from "react"
 import { FullPurchase } from "type/purchase"
 
@@ -9,16 +10,8 @@ interface PurchasesTableProps {
 export const PurchasesTable: FC<PurchasesTableProps> = (props) => {
   const { purchases } = props
 
-  if (!purchases) {
-    return (
-      <Flex>
-        <Text>Something wrong</Text>
-      </Flex>
-    )
-  }
-
   return (
-    <Table variant="striped">
+    <Table w="full" variant="striped">
       <Thead>
         <Tr>
           <Th>
@@ -27,12 +20,16 @@ export const PurchasesTable: FC<PurchasesTableProps> = (props) => {
         </Tr>
       </Thead>
       <Tbody>
-        {/* {purchases.map(({  }) => (
-          <Tr key={id}>
-            <Td>{id}</Td>
-            <Td>{amount}</Td>
-          </Tr>
-        ))} */}
+        {purchases?.map((purchaseData, index) => (
+          <PurchaseRow
+            key={index}
+            purchase={purchaseData.purchase}
+            goods={purchaseData.goods}
+            supplier={purchaseData.supplier}
+            supplier_manager={purchaseData.supplier_manager}
+            files={purchaseData.files}
+          />
+        ))}
       </Tbody>
     </Table>
   )
