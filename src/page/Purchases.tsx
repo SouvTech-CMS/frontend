@@ -44,7 +44,7 @@ export const Purchases = () => {
           <InputGroup maxW={360}>
             {/* Search Query */}
             <Input
-              placeholder="Поиск.."
+              placeholder="Search.."
               value={query}
               onChange={handleChangeSearchQuery}
               isDisabled={isLoading}
