@@ -11,25 +11,25 @@ import {
   Text,
 } from "@chakra-ui/react"
 import { FC } from "react"
-import { useSupplierDeleteMutation } from "service/supplier"
+import { usePurchaseDeleteMutation } from "service/purchase"
 import { ModalProps } from "type/modalProps"
-import { Supplier } from "type/supplier"
+import { Purchase } from "type/purchase"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
-interface SupplierDeleteModalProps extends ModalProps {
-  supplier: WithId<Supplier>
+interface PurchaseDeleteModalProps extends ModalProps {
+  purchase: WithId<Purchase>
 }
 
-export const SupplierDeleteModal: FC<SupplierDeleteModalProps> = (props) => {
-  const { supplier, isOpen, onClose } = props
+export const PurchaseDeleteModal: FC<PurchaseDeleteModalProps> = (props) => {
+  const { purchase, isOpen, onClose } = props
 
-  const supplierDeleteMutation = useSupplierDeleteMutation()
+  const purchaseDeleteMutation = usePurchaseDeleteMutation()
 
   const onSupplierDeleteConfirm = async () => {
-    await supplierDeleteMutation.mutateAsync(supplier.id)
+    await purchaseDeleteMutation.mutateAsync(purchase.id)
 
-    notify(`Supplier ${supplier.name} was successfully deleted`, "success")
+    notify(`Purchase ${purchase.id} was successfully deleted`, "success")
     onClose()
   }
 
@@ -38,12 +38,12 @@ export const SupplierDeleteModal: FC<SupplierDeleteModalProps> = (props) => {
       <ModalOverlay backdropFilter="blur(10px)" />
 
       <ModalContent>
-        <ModalHeader>Delete Supplier</ModalHeader>
+        <ModalHeader>Delete Purchase</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <Text>Are you sure you want to delete the supplier</Text>
-          <Text fontWeight="bold">{supplier.name}</Text>
+          <Text>Are you sure you want to delete the purchase</Text>
+          <Text fontWeight="bold">#{purchase.id}</Text>
         </ModalBody>
 
         <ModalFooter>

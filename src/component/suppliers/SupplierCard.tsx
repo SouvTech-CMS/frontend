@@ -24,28 +24,28 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
   const { supplier } = props
 
   const {
-    isOpen: isSupplierDeleteOpenModal,
-    onOpen: onSupplierDeleteOpenModal,
-    onClose: onSupplierDeleteCloseModal,
+    isOpen: isSupplierDeleteModalOpen,
+    onOpen: onSupplierDeleteModalOpen,
+    onClose: onSupplierDeleteModalClose,
   } = useDisclosure()
 
   const {
-    isOpen: isSupplierEditOpenModal,
-    onOpen: onSupplierEditOpenModal,
-    onClose: onSupplierEditCloseModal,
+    isOpen: isSupplierEditModalOpen,
+    onOpen: onSupplierEditModalOpen,
+    onClose: onSupplierEditModalClose,
   } = useDisclosure()
 
   const {
-    isOpen: isManagersOpenModal,
-    onOpen: onManagersOpenModal,
-    onClose: onManagersCloseModal,
+    isOpen: isManagersModalOpen,
+    onOpen: onManagersModalOpen,
+    onClose: onManagersModalClose,
   } = useDisclosure()
 
   const isAddressExists = !!supplier.address
 
   return (
     <>
-      <Card maxW={400} boxShadow="lg" borderRadius={20}>
+      <Card minH={250} maxW={250} boxShadow="lg" borderRadius={20}>
         <CardHeader>
           <Flex direction="column" gap={2}>
             <Heading size="md">{supplier.name}</Heading>
@@ -59,9 +59,9 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
 
           {/* Actions Menu Button */}
           <SupplierCardMenu
-            onManagers={onManagersOpenModal}
-            onEdit={onSupplierEditOpenModal}
-            onDelete={onSupplierDeleteOpenModal}
+            onManagers={onManagersModalOpen}
+            onEdit={onSupplierEditModalOpen}
+            onDelete={onSupplierDeleteModalOpen}
           />
         </CardHeader>
 
@@ -70,7 +70,7 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
             w="full"
             variant="ghost"
             colorScheme="blue"
-            onClick={onManagersOpenModal}
+            onClick={onManagersModalOpen}
           >
             Managers
           </Button>
@@ -80,22 +80,22 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
       {/* Delete supplier modal */}
       <SupplierDeleteModal
         supplier={supplier}
-        isOpen={isSupplierDeleteOpenModal}
-        onClose={onSupplierDeleteCloseModal}
+        isOpen={isSupplierDeleteModalOpen}
+        onClose={onSupplierDeleteModalClose}
       />
 
       {/* Edit supplier modal */}
       <SupplierModal
         prevSupplier={supplier}
-        isOpen={isSupplierEditOpenModal}
-        onClose={onSupplierEditCloseModal}
+        isOpen={isSupplierEditModalOpen}
+        onClose={onSupplierEditModalClose}
       />
 
       {/* Edit supplier modal */}
       <SupplierManagersModal
         supplierId={supplier.id}
-        isOpen={isManagersOpenModal}
-        onClose={onManagersCloseModal}
+        isOpen={isManagersModalOpen}
+        onClose={onManagersModalClose}
       />
     </>
   )

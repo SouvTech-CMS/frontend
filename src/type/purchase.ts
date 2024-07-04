@@ -8,11 +8,10 @@ export type Purchase = {
   supplier_id: number
   supplier_manager_id: number
   created_at?: number
-  update?: number
+  updated_at?: number
   deadline: number
   amount: number
   shipping: number
-  status: string
 }
 
 export type FullPurchase = {

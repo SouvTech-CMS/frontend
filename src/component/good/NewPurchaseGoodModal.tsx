@@ -11,23 +11,24 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react"
+import { PurchaseStatus } from "constant/purchaseStatus"
 import { FC, useEffect, useState } from "react"
 import { FiDollarSign, FiEdit, FiLayers } from "react-icons/fi"
+import { ModalProps } from "type/modalProps"
 import { PurchaseGood } from "type/purchaseGood"
 
-interface NewGoodModalProps {
+interface NewPurchaseGoodModalProps extends ModalProps {
   handleAddGood: (good: PurchaseGood) => void
-  isOpen: boolean
-  onClose: () => void
 }
 
 const newGood: PurchaseGood = {
   name: "",
   quantity: 0,
   price_per_item: 0,
+  status: PurchaseStatus.Order,
 }
 
-export const NewGoodModal: FC<NewGoodModalProps> = (props) => {
+export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
   const { handleAddGood, isOpen, onClose } = props
 
   const [good, setGood] = useState<PurchaseGood>(newGood)
@@ -38,7 +39,7 @@ export const NewGoodModal: FC<NewGoodModalProps> = (props) => {
   const isSaveBtnDisabled = isNameInvalid || isPriceInvalid || isQuantityInvalid
 
   const handleGoodUpdate = (param: string, value: number | string) => {
-    if (param !== "name") {
+    if (param !== "name" && param !== "description") {
       value = Number(value)
     }
 
@@ -74,6 +75,23 @@ export const NewGoodModal: FC<NewGoodModalProps> = (props) => {
                   onChange={(e) => {
                     const value = e.target.value
                     handleGoodUpdate("name", value)
+                  }}
+                />
+              </FormControl>
+            </Flex>
+
+            {/* Description */}
+            <Flex alignItems="center" gap={2}>
+              <FiEdit color="gray" />
+
+              <FormControl>
+                <Input
+                  placeholder="Description"
+                  value={good.description}
+                  type="text"
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleGoodUpdate("description", value)
                   }}
                 />
               </FormControl>

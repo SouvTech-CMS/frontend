@@ -1,4 +1,5 @@
 import { Button, Flex, Heading } from "@chakra-ui/react"
+import { LoadingPage } from "component/LoadingPage"
 import { SidebarListItem } from "component/sidebar/SidebarListItem"
 import { configuration } from "configuration"
 import { useAuthContext } from "context/auth"
@@ -8,7 +9,7 @@ import { FC } from "react"
 export const Sidebar: FC = () => {
   const { signOut } = useAuthContext()
 
-  const { roles, isUserAdmin } = useUserContext()
+  const { roles, isUserAdmin, isLoadingCurrentUser } = useUserContext()
 
   const sideBarRoutes = configuration.sidebarItems.filter(
     ({ type, component, role }) =>
@@ -33,11 +34,15 @@ export const Sidebar: FC = () => {
         Logo
       </Heading>
 
-      <Flex direction="column" w="full" gap={2}>
-        {sideBarRoutes.map(({ icon, name, path }) => (
-          <SidebarListItem key={name} icon={icon!} text={name!} to={path} />
-        ))}
-      </Flex>
+      {isLoadingCurrentUser ? (
+        <LoadingPage />
+      ) : (
+        <Flex direction="column" w="full" gap={2}>
+          {sideBarRoutes.map(({ icon, name, path }) => (
+            <SidebarListItem key={name} icon={icon!} text={name!} to={path} />
+          ))}
+        </Flex>
+      )}
 
       <Button
         w="full"
@@ -45,8 +50,9 @@ export const Sidebar: FC = () => {
         colorScheme="blue"
         mt="auto"
         onClick={signOut}
+        isDisabled={isLoadingCurrentUser}
       >
-        Выход
+        Sign out
       </Button>
     </Flex>
   )

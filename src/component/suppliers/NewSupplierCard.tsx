@@ -5,9 +5,9 @@ import { FiPlusCircle } from "react-icons/fi"
 
 export const NewSupplierCard: FC = () => {
   const {
-    isOpen: isSupplierEditOpenModal,
-    onOpen: onSupplierEditOpenModal,
-    onClose: onSupplierEditCloseModal,
+    isOpen: isSupplierEditModalOpen,
+    onOpen: onSupplierEditModalOpen,
+    onClose: onSupplierEditModalClose,
   } = useDisclosure()
 
   return (
@@ -15,9 +15,9 @@ export const NewSupplierCard: FC = () => {
       <Button
         h="full"
         minH={250}
-        maxW={400}
+        maxW={250}
         bgColor="gray.200"
-        onClick={onSupplierEditOpenModal}
+        onClick={onSupplierEditModalOpen}
         borderRadius={20}
         boxShadow="lg"
       >
@@ -36,8 +36,8 @@ export const NewSupplierCard: FC = () => {
 
       {/* Edit supplier modal */}
       <SupplierModal
-        isOpen={isSupplierEditOpenModal}
-        onClose={onSupplierEditCloseModal}
+        isOpen={isSupplierEditModalOpen}
+        onClose={onSupplierEditModalClose}
       />
     </>
   )

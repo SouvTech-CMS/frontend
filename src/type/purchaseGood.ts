@@ -5,4 +5,5 @@ export type PurchaseGood = {
   quantity: number
   amount?: number
   price_per_item: number
+  status: string
 }

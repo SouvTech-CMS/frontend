@@ -13,14 +13,13 @@ import {
 import { useUserContext } from "context/user"
 import { FC } from "react"
 import { useUserDeleteMutation } from "service/user"
+import { ModalProps } from "type/modalProps"
 import { User } from "type/user"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
-interface UserDeleteModalProps {
+interface UserDeleteModalProps extends ModalProps {
   user: WithId<User>
-  isOpen: boolean
-  onClose: () => void
 }
 
 export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
@@ -32,16 +31,17 @@ export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
 
   const onUserDeleteConfirm = async () => {
     if (user.username === currentUser?.username) {
-      notify("Упс, Вы не можете удалить себя :)", "error")
+      notify("Oops, You can't delete yourself :)", "error")
+      return
     }
-    onClose()
 
     await userDeleteMutation.mutateAsync(user.id!)
 
     notify(
-      `Сотрудник ${user.fio || user.username} был успешно удалён`,
+      `Employee ${user.fio || user.username} was successfully deleted`,
       "success"
     )
+    onClose()
   }
 
   return (
@@ -49,14 +49,12 @@ export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
       <ModalOverlay backdropFilter="blur(10px)" />
 
       <ModalContent>
-        <ModalHeader>Удаление сотрудника</ModalHeader>
+        <ModalHeader>Delete Employee</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <Text>
-            Вы точно хотите удалить сотрудника
-            <Text fontWeight="bold">{user.fio}</Text>
-          </Text>
+          <Text>Are you sure you want to delete the employee</Text>
+          <Text fontWeight="bold">{user.fio}</Text>
         </ModalBody>
 
         <ModalFooter>
@@ -66,11 +64,11 @@ export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
               colorScheme="red"
               onClick={onUserDeleteConfirm}
             >
-              Удалить
+              Delete
             </Button>
 
             <Button variant="outline" colorScheme="blue" onClick={onClose}>
-              Отмена
+              Cancel
             </Button>
           </Flex>
         </ModalFooter>

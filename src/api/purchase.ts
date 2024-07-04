@@ -13,3 +13,11 @@ export const createPurchase = async (
   const { data: newPurchase } = await axiosClient.post("/purchase/", purchase)
   return newPurchase
 }
+
+export const updatePurchase = async (purchase: WithId<Purchase>) => {
+  await axiosClient.put("/purchase/", purchase)
+}
+
+export const deletePurchase = async (purchaseId: number) => {
+  await axiosClient.delete(`/purchase/${purchaseId}`)
+}

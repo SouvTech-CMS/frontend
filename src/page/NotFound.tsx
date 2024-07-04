@@ -11,10 +11,10 @@ export const NotFound = () => {
         gap={5}
       >
         {/* TODO: add logo here */}
-        <Heading as="h5">Ooops, page not found (404)</Heading>
+        <Heading as="h5">Oops, page not found (404)</Heading>
         <Text w="md">
-          Кажется, страницы, которую Вы пытались найти, не существует..
-          Попробуйте найти другую страницу :)
+          It seems that the page you were trying to find does not exist.. Try
+          finding another page :)
         </Text>
       </Flex>
     </Flex>

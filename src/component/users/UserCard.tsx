@@ -29,19 +29,20 @@ export const UserCard: FC<UserCardProps> = (props) => {
   const { user, roles, shops } = props
 
   const {
-    isOpen: isUserDeleteOpenModal,
-    onOpen: onUserDeleteOpenModal,
-    onClose: onUserDeleteCloseModal,
+    isOpen: isUserDeleteModalOpen,
+    onOpen: onUserDeleteModalOpen,
+    onClose: onUserDeleteModalClose,
   } = useDisclosure()
 
   const {
-    isOpen: isUserEditOpenModal,
-    onOpen: onUserEditOpenModal,
-    onClose: onUserEditCloseModal,
+    isOpen: isUserEditModalOpen,
+    onOpen: onUserEditModalOpen,
+    onClose: onUserEditModalClose,
   } = useDisclosure()
 
-  const isSalaryExists = user.salary && user.salary > 0
-
+  const isEmailExists = !!user.email?.trim()
+  const isPhoneExists = !!user.phone?.trim()
+  const isSalaryExists = !!user.salary && user.salary > 0
   const isShopsExists = shops.length > 0
 
   const rolesList = roles.map(
@@ -58,34 +59,38 @@ export const UserCard: FC<UserCardProps> = (props) => {
 
   return (
     <>
-      <Card maxW={400} boxShadow="lg" borderRadius={20}>
+      <Card minH={360} maxW={400} boxShadow="lg" borderRadius={20}>
         <CardHeader>
           <Flex direction="column" gap={2}>
             <Heading size="md">{user.fio}</Heading>
 
             {/* Email */}
-            <Flex alignItems="center" gap={1}>
-              <FiAtSign color="gray" />
+            {isEmailExists && (
+              <Flex alignItems="center" gap={1}>
+                <FiAtSign color="gray" />
 
-              <Text color="gray" fontSize="xs">
-                {user.email}
-              </Text>
-            </Flex>
+                <Text color="gray" fontSize="xs">
+                  {user.email}
+                </Text>
+              </Flex>
+            )}
 
             {/* Phone */}
-            <Flex alignItems="center" gap={1}>
-              <FiPhone color="gray" />
+            {isPhoneExists && (
+              <Flex alignItems="center" gap={1}>
+                <FiPhone color="gray" />
 
-              <Text color="gray" fontSize="xs">
-                {user.phone}
-              </Text>
-            </Flex>
+                <Text color="gray" fontSize="xs">
+                  {user.phone}
+                </Text>
+              </Flex>
+            )}
           </Flex>
 
           {/* Actions Menu Button */}
           <CardMenu
-            onEdit={onUserEditOpenModal}
-            onDelete={onUserDeleteOpenModal}
+            onEdit={onUserEditModalOpen}
+            onDelete={onUserDeleteModalOpen}
           />
         </CardHeader>
 
@@ -134,8 +139,8 @@ export const UserCard: FC<UserCardProps> = (props) => {
       {/* Delete user modal */}
       <UserDeleteModal
         user={user}
-        isOpen={isUserDeleteOpenModal}
-        onClose={onUserDeleteCloseModal}
+        isOpen={isUserDeleteModalOpen}
+        onClose={onUserDeleteModalClose}
       />
 
       {/* Edit user modal */}
@@ -143,8 +148,8 @@ export const UserCard: FC<UserCardProps> = (props) => {
         prevUser={user}
         roles={roles}
         shops={shops}
-        isOpen={isUserEditOpenModal}
-        onClose={onUserEditCloseModal}
+        isOpen={isUserEditModalOpen}
+        onClose={onUserEditModalClose}
       />
     </>
   )

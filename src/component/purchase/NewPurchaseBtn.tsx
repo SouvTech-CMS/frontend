@@ -4,9 +4,9 @@ import { FC } from "react"
 
 export const NewPurchaseBtn: FC = () => {
   const {
-    isOpen: isNewPurchaseOpenModal,
-    onOpen: onNewPurchaseOpenModal,
-    onClose: onNewPurchaseCloseModal,
+    isOpen: isNewPurchaseModalOpen,
+    onOpen: onNewPurchaseModalOpen,
+    onClose: onNewPurchaseModalClose,
   } = useDisclosure()
 
   return (
@@ -15,14 +15,14 @@ export const NewPurchaseBtn: FC = () => {
         w="fit-content"
         variant="solid"
         colorScheme="blue"
-        onClick={onNewPurchaseOpenModal}
+        onClick={onNewPurchaseModalOpen}
       >
         Add purchase
       </Button>
 
       <NewPurchaseModal
-        isOpen={isNewPurchaseOpenModal}
-        onClose={onNewPurchaseCloseModal}
+        isOpen={isNewPurchaseModalOpen}
+        onClose={onNewPurchaseModalClose}
       />
     </>
   )

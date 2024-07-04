@@ -14,13 +14,12 @@ import {
 import { FC, useEffect, useState } from "react"
 import { FiAtSign, FiCornerDownRight, FiPhone } from "react-icons/fi"
 import { useSupplierManagerCreateMutation } from "service/supplierManager"
+import { ModalProps } from "type/modalProps"
 import { SupplierManager } from "type/supplierManager"
 import { notify } from "util/toasts"
 
-interface NewManagerModalProps {
+interface NewManagerModalProps extends ModalProps {
   supplierId: number
-  isOpen: boolean
-  onClose: () => void
 }
 
 const newManager: SupplierManager = {
@@ -52,7 +51,6 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
     await supplierManagerCreateMutation.mutateAsync(manager)
 
     notify(`Manager ${manager.name} created successfully`, "success")
-
     onClose()
   }
 

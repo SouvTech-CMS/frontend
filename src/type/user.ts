@@ -25,8 +25,14 @@ export type UserWithRolesIdsAndShopsIds = {
   shops: number[]
 }
 
-export type UserCreateOrUpdate = {
-  user: User | WithId<User>
+export type UserCreate = {
+  user: User & { password: string }
+  roles_list: number[]
+  shops_list: number[]
+}
+
+export type UserUpdate = {
+  user: WithId<User> & { password?: string }
   roles_list: number[]
   shops_list: number[]
 }
