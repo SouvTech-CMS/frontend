@@ -15,13 +15,12 @@ import { ManagerCard } from "component/manager/ManagerCard"
 import { NewManagerModal } from "component/manager/NewManagerModal"
 import { FC } from "react"
 import { useQuery } from "react-query"
+import { ModalProps } from "type/modalProps"
 import { SupplierManager } from "type/supplierManager"
 import { WithId } from "type/withId"
 
-interface SupplierManagersModalProps {
+interface SupplierManagersModalProps extends ModalProps {
   supplierId: number
-  isOpen: boolean
-  onClose: () => void
 }
 
 export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
@@ -35,9 +34,9 @@ export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
   )
 
   const {
-    isOpen: isNewManagerOpenModal,
-    onOpen: onNewManagerOpenModal,
-    onClose: onNewManagerCloseModal,
+    isOpen: isNewManagerModalOpen,
+    onOpen: onNewManagerModalOpen,
+    onClose: onNewManagerModalClose,
   } = useDisclosure()
 
   return (
@@ -58,7 +57,7 @@ export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
           </ModalBody>
 
           <ModalFooter>
-            <Button w="full" colorScheme="blue" onClick={onNewManagerOpenModal}>
+            <Button w="full" colorScheme="blue" onClick={onNewManagerModalOpen}>
               Add manager
             </Button>
           </ModalFooter>
@@ -67,8 +66,8 @@ export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
 
       <NewManagerModal
         supplierId={supplierId}
-        isOpen={isNewManagerOpenModal}
-        onClose={onNewManagerCloseModal}
+        isOpen={isNewManagerModalOpen}
+        onClose={onNewManagerModalClose}
       />
     </>
   )

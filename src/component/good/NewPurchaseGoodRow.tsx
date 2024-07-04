@@ -3,12 +3,12 @@ import { FC } from "react"
 import { FiTrash2 } from "react-icons/fi"
 import { PurchaseGood } from "type/purchaseGood"
 
-interface GoodRowProps {
+interface NewPurchaseGoodRowProps {
   good: PurchaseGood
   handleRemoveGood: (good: PurchaseGood) => void
 }
 
-export const GoodRow: FC<GoodRowProps> = (props) => {
+export const NewPurchaseGoodRow: FC<NewPurchaseGoodRowProps> = (props) => {
   const { good, handleRemoveGood } = props
 
   return (

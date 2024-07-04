@@ -1,29 +1,21 @@
-import {
-  Flex,
-  Heading,
-  Input,
-  InputGroup,
-  InputRightElement,
-  SimpleGrid,
-  Spinner,
-} from "@chakra-ui/react"
+import { SimpleGrid } from "@chakra-ui/react"
 import { getAllUsers } from "api/user"
+import { LoadingPage } from "component/LoadingPage"
+import { Page } from "component/Page"
+import { PageHeading } from "component/PageHeading"
 import { NewUserCard } from "component/users/NewUserCard"
 import { UserCard } from "component/users/UserCard"
-import { ChangeEvent, useState } from "react"
-import { FiSearch } from "react-icons/fi"
+import { useSearchContext } from "context/search"
 import { useQuery } from "react-query"
 import { UserWithRolesAndShops } from "type/user"
 
 export const Users = () => {
-  const [query, setQuery] = useState<string>("")
+  const { query, isQueryExists } = useSearchContext()
 
   const { data: usersList, isLoading } = useQuery<UserWithRolesAndShops[]>(
     "usersList",
     getAllUsers
   )
-
-  const isQueryExists = !!query.trim()
 
   const filteredUsersList = usersList?.filter(({ user }) =>
     isQueryExists
@@ -34,54 +26,28 @@ export const Users = () => {
       : usersList
   )
 
-  const handleChangeSearchQuery = (e: ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value)
-  }
-
   return (
-    <Flex w="full" direction="column" py={5} px={10}>
-      <Flex justifyContent="space-between" pb={10}>
-        <Heading>Employees</Heading>
+    <Page>
+      <PageHeading title="Employees" isLoading={isLoading} />
 
-        {/* Search */}
-        <Flex justifyContent="flex-end" gap={2}>
-          <InputGroup maxW={360}>
-            {/* Search Query */}
-            <Input
-              placeholder="Search.."
-              value={query}
-              onChange={handleChangeSearchQuery}
-              isDisabled={isLoading}
-            />
+      {!isLoading ? (
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
+          <NewUserCard />
 
-            {/* Search Icon */}
-            <InputRightElement>
-              <FiSearch color="gray" />
-            </InputRightElement>
-          </InputGroup>
-        </Flex>
-      </Flex>
-
-      <Flex direction="column" gap={10}>
-        {!isLoading ? (
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
-            <NewUserCard />
-
-            {filteredUsersList?.map(
-              ({ user, roles_with_permissions, shops }, index) => (
-                <UserCard
-                  key={index}
-                  user={user}
-                  roles={roles_with_permissions}
-                  shops={shops}
-                />
-              )
-            )}
-          </SimpleGrid>
-        ) : (
-          <Spinner />
-        )}
-      </Flex>
-    </Flex>
+          {filteredUsersList?.map(
+            ({ user, roles_with_permissions, shops }, index) => (
+              <UserCard
+                key={index}
+                user={user}
+                roles={roles_with_permissions}
+                shops={shops}
+              />
+            )
+          )}
+        </SimpleGrid>
+      ) : (
+        <LoadingPage />
+      )}
+    </Page>
   )
 }

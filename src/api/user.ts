@@ -1,5 +1,5 @@
 import { axiosClient } from "api/axiosClient"
-import { UserCreateOrUpdate, UserWithRolesAndShops } from "type/user"
+import { UserCreate, UserUpdate, UserWithRolesAndShops } from "type/user"
 
 export const getCurrentUser = async (): Promise<UserWithRolesAndShops> => {
   const { data: user } = await axiosClient.get("/user/current/")
@@ -11,11 +11,11 @@ export const getAllUsers = async (): Promise<UserWithRolesAndShops[]> => {
   return usersList
 }
 
-export const createUser = async (user: UserCreateOrUpdate) => {
+export const createUser = async (user: UserCreate) => {
   await axiosClient.post("/user/", user)
 }
 
-export const updateUser = async (user: UserCreateOrUpdate) => {
+export const updateUser = async (user: UserUpdate) => {
   await axiosClient.put("/user/", user)
 }
 

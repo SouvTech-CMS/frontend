@@ -5,19 +5,19 @@ import { FiPlusCircle } from "react-icons/fi"
 
 export const NewUserCard: FC = () => {
   const {
-    isOpen: isUserEditOpenModal,
-    onOpen: onUserEditOpenModal,
-    onClose: onUserEditCloseModal,
+    isOpen: isUserEditModalOpen,
+    onOpen: onUserEditModalOpen,
+    onClose: onUserEditModalClose,
   } = useDisclosure()
 
   return (
     <>
       <Button
         h="full"
-        minH={350}
+        minH={360}
         maxW={400}
         bgColor="gray.200"
-        onClick={onUserEditOpenModal}
+        onClick={onUserEditModalOpen}
         borderRadius={20}
         boxShadow="lg"
       >
@@ -35,7 +35,7 @@ export const NewUserCard: FC = () => {
       </Button>
 
       {/* Edit user modal */}
-      <UserModal isOpen={isUserEditOpenModal} onClose={onUserEditCloseModal} />
+      <UserModal isOpen={isUserEditModalOpen} onClose={onUserEditModalClose} />
     </>
   )
 }

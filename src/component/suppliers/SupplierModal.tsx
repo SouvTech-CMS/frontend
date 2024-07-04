@@ -18,14 +18,13 @@ import {
   useSupplierCreateMutation,
   useSupplierUpdateMutation,
 } from "service/supplier"
+import { ModalProps } from "type/modalProps"
 import { Supplier } from "type/supplier"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
-interface SupplierModalProps {
+interface SupplierModalProps extends ModalProps {
   prevSupplier?: WithId<Supplier>
-  isOpen: boolean
-  onClose: () => void
 }
 
 const newSupplier: Supplier = {

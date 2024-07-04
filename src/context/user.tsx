@@ -10,19 +10,20 @@ interface UserContextType {
   roles?: string[]
   permissions?: string[]
   isUserAdmin?: boolean
+  isLoadingCurrentUser: boolean
 }
 
-export const UserContext = createContext<UserContextType>({})
+export const UserContext = createContext<UserContextType>({
+  isLoadingCurrentUser: true,
+})
 
 export const UserContextProvider: FCC = (props) => {
   const { children } = props
   const [roles, setRoles] = useState<string[]>([])
   const [permissions, setPermissions] = useState<string[]>([])
 
-  const { data: userWithRolesAndShops } = useQuery<UserWithRolesAndShops>(
-    "currentUser",
-    getCurrentUser
-  )
+  const { data: userWithRolesAndShops, isLoading: isLoadingCurrentUser } =
+    useQuery<UserWithRolesAndShops>("currentUser", getCurrentUser)
 
   const currentUser = userWithRolesAndShops?.user
 
@@ -54,6 +55,7 @@ export const UserContextProvider: FCC = (props) => {
         roles,
         permissions,
         isUserAdmin,
+        isLoadingCurrentUser,
       }}
     >
       {children}

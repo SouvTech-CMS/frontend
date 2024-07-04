@@ -4,12 +4,22 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  IconButton,
   Input,
+  InputGroup,
+  InputRightElement,
   Text,
 } from "@chakra-ui/react"
 import { AxiosError } from "axios"
 import { AuthContext } from "context/auth"
-import { ChangeEvent, FormEvent, useContext, useState } from "react"
+import {
+  ChangeEvent,
+  FormEvent,
+  HTMLInputTypeAttribute,
+  useContext,
+  useState,
+} from "react"
+import { FiEye, FiEyeOff } from "react-icons/fi"
 import { useLocation, useNavigate } from "react-router-dom"
 import { notify } from "util/toasts"
 
@@ -20,9 +30,14 @@ export const Auth = () => {
 
   const [username, setUsername] = useState<string>()
   const [password, setPassword] = useState<string>()
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false)
   const [isError, setIsError] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  const passwordInputType: HTMLInputTypeAttribute = isPasswordVisible
+    ? "text"
+    : "password"
+  const passwordVisibilityIcon = isPasswordVisible ? <FiEyeOff /> : <FiEye />
   const isSubmitBtnDisabled = !username || !password || isError || isLoading
 
   const fromPage =
@@ -40,6 +55,10 @@ export const Auth = () => {
     setIsError(false)
   }
 
+  const handlePasswordVisibilityChange = () => {
+    setIsPasswordVisible((prevIsVisible) => !prevIsVisible)
+  }
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
@@ -52,7 +71,7 @@ export const Auth = () => {
       } catch (e) {
         if (e instanceof AxiosError) {
           if (e.response?.status === 401) {
-            notify("Неправильный логин или пароль", "error")
+            notify("Wrong login or password", "error")
           }
         }
 
@@ -77,7 +96,7 @@ export const Auth = () => {
             {/* TODO: add logo image here */}
 
             <Text textAlign="center" fontSize="2xl" fontWeight="bold">
-              Авторизация
+              Sign in
             </Text>
           </Flex>
 
@@ -86,30 +105,45 @@ export const Auth = () => {
             style={{ height: "100%", width: "100%" }}
           >
             <Flex direction="column" gap={5}>
-              {/* Username input */}
+              {/* Username Input */}
               <FormControl>
-                <FormLabel>Логин</FormLabel>
+                <FormLabel>Login</FormLabel>
                 <Input
                   type="text"
-                  placeholder="Введите Ваш логин"
+                  placeholder="Enter login"
                   value={username}
                   onChange={handleUsernameChange}
                   isDisabled={isLoading}
                 />
               </FormControl>
 
-              {/* Password input */}
+              {/* Password Input */}
               <FormControl>
-                <FormLabel>Пароль</FormLabel>
-                <Input
-                  type="password"
-                  placeholder="Введите Ваш пароль"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  isDisabled={isLoading}
-                />
+                <FormLabel>Password</FormLabel>
+
+                <InputGroup>
+                  <Input
+                    type={passwordInputType}
+                    placeholder="Enter password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    isDisabled={isLoading}
+                  />
+
+                  <InputRightElement>
+                    <IconButton
+                      aria-label="password-visibility"
+                      variant="ghost"
+                      colorScheme="gray"
+                      icon={passwordVisibilityIcon}
+                      onClick={handlePasswordVisibilityChange}
+                      isDisabled={isLoading}
+                    />
+                  </InputRightElement>
+                </InputGroup>
               </FormControl>
 
+              {/* Sign In Btn */}
               <Button
                 w="full"
                 size="md"
@@ -118,7 +152,7 @@ export const Auth = () => {
                 isDisabled={isSubmitBtnDisabled}
                 isLoading={isLoading}
               >
-                Войти
+                Sign in
               </Button>
             </Flex>
           </form>

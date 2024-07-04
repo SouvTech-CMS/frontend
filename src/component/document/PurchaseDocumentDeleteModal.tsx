@@ -11,25 +11,30 @@ import {
   Text,
 } from "@chakra-ui/react"
 import { FC } from "react"
-import { useSupplierDeleteMutation } from "service/supplier"
+import { usePurchaseFileDeleteMutation } from "service/purchaseFile"
 import { ModalProps } from "type/modalProps"
-import { Supplier } from "type/supplier"
+import { PurchaseFile } from "type/purchaseFile"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
-interface SupplierDeleteModalProps extends ModalProps {
-  supplier: WithId<Supplier>
+interface PurchaseDocumentDeleteModalProps extends ModalProps {
+  document: WithId<PurchaseFile>
 }
 
-export const SupplierDeleteModal: FC<SupplierDeleteModalProps> = (props) => {
-  const { supplier, isOpen, onClose } = props
+export const PurchaseDocumentDeleteModal: FC<
+  PurchaseDocumentDeleteModalProps
+> = (props) => {
+  const { document, isOpen, onClose } = props
 
-  const supplierDeleteMutation = useSupplierDeleteMutation()
+  const purchaseFileDeleteMutation = usePurchaseFileDeleteMutation()
 
-  const onSupplierDeleteConfirm = async () => {
-    await supplierDeleteMutation.mutateAsync(supplier.id)
+  const onDeleteConfirm = async () => {
+    await purchaseFileDeleteMutation.mutateAsync(document.id)
 
-    notify(`Supplier ${supplier.name} was successfully deleted`, "success")
+    notify(
+      `Document ${document.front_name} was successfully deleted`,
+      "success"
+    )
     onClose()
   }
 
@@ -38,12 +43,12 @@ export const SupplierDeleteModal: FC<SupplierDeleteModalProps> = (props) => {
       <ModalOverlay backdropFilter="blur(10px)" />
 
       <ModalContent>
-        <ModalHeader>Delete Supplier</ModalHeader>
+        <ModalHeader>Delete Document</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <Text>Are you sure you want to delete the supplier</Text>
-          <Text fontWeight="bold">{supplier.name}</Text>
+          <Text>Are you sure you want to delete the document</Text>
+          <Text fontWeight="bold">{document.front_name}</Text>
         </ModalBody>
 
         <ModalFooter>
@@ -51,7 +56,7 @@ export const SupplierDeleteModal: FC<SupplierDeleteModalProps> = (props) => {
             <Button
               variant="outline"
               colorScheme="red"
-              onClick={onSupplierDeleteConfirm}
+              onClick={onDeleteConfirm}
             >
               Delete
             </Button>
