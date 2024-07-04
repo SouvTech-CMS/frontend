@@ -7,8 +7,8 @@ import { User, UserWithRolesAndShops } from "type/user"
 
 interface UserContextType {
   currentUser?: User
-  roles?: string[]
-  permissions?: string[]
+  userRoles?: string[]
+  userPermissions?: string[]
   isUserAdmin?: boolean
   isLoadingCurrentUser: boolean
 }
@@ -19,22 +19,29 @@ export const UserContext = createContext<UserContextType>({
 
 export const UserContextProvider: FCC = (props) => {
   const { children } = props
-  const [roles, setRoles] = useState<string[]>([])
-  const [permissions, setPermissions] = useState<string[]>([])
+  const [userRoles, setUserRoles] = useState<string[]>([])
+  const [userPermissions, setUserPermissions] = useState<string[]>([])
+  const [isLoadingRoles, setIsLoadingRoles] = useState<boolean>(true)
+  const [isLoadingPermissions, setIsLoadingPermissions] =
+    useState<boolean>(true)
 
   const { data: userWithRolesAndShops, isLoading: isLoadingCurrentUser } =
     useQuery<UserWithRolesAndShops>("currentUser", getCurrentUser)
 
+  const isLoading =
+    isLoadingCurrentUser || isLoadingRoles || isLoadingPermissions
+
   const currentUser = userWithRolesAndShops?.user
 
-  const isUserAdmin = roles.includes(ADMIN_ROLE)
+  const isUserAdmin = userRoles.includes(ADMIN_ROLE)
 
   useEffect(() => {
     if (userWithRolesAndShops) {
       const roles = userWithRolesAndShops.roles_with_permissions.map(
         (roleWithPermissions) => roleWithPermissions.role.name.toLowerCase()
       )
-      setRoles(roles)
+      setUserRoles(roles)
+      setIsLoadingRoles(false)
 
       const permissionsList =
         userWithRolesAndShops.roles_with_permissions.flatMap(
@@ -44,7 +51,8 @@ export const UserContextProvider: FCC = (props) => {
       const permissions = permissionsList.map((permission) =>
         permission.name.toLowerCase()
       )
-      setPermissions(permissions)
+      setUserPermissions(permissions)
+      setIsLoadingPermissions(false)
     }
   }, [userWithRolesAndShops])
 
@@ -52,10 +60,10 @@ export const UserContextProvider: FCC = (props) => {
     <UserContext.Provider
       value={{
         currentUser,
-        roles,
-        permissions,
+        userRoles,
+        userPermissions,
         isUserAdmin,
-        isLoadingCurrentUser,
+        isLoadingCurrentUser: isLoading,
       }}
     >
       {children}

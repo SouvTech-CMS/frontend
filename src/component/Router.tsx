@@ -2,7 +2,6 @@ import { queryClient } from "api/queryClient"
 import { AppLayout } from "component/AppLayout"
 import { configuration } from "configuration"
 import { AuthContextProvider } from "context/auth"
-import { Firewall } from "context/firewall"
 import { SearchContextProvider } from "context/search"
 import { UserContextProvider } from "context/user"
 import { QueryClientProvider } from "react-query"
@@ -23,39 +22,38 @@ export const AppRouter = () => {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthContextProvider>
+          <Routes>
+            {sidePages.map(({ name, path, component }) => (
+              <Route key={name} path={path} element={component} />
+            ))}
+          </Routes>
+
           <UserContextProvider>
             <SearchContextProvider>
+              {/* <Firewall> */}
               <Routes>
-                {sidePages.map(({ name, path, component }) => (
-                  <Route key={name} path={path} element={component} />
-                ))}
+                {/* {sidePages.map(({ name, path, component }) => (
+                    <Route key={name} path={path} element={component} />
+                  ))} */}
+
+                <Route path="/" element={<AppLayout />}>
+                  {mainPages.map(
+                    ({ name, index = false, path, component, roles }) => (
+                      <Route
+                        key={name}
+                        index={index}
+                        path={path}
+                        element={component}
+                      />
+                    )
+                  )}
+                </Route>
               </Routes>
-
-              <Firewall>
-                <Routes>
-                  {/* {sidePages.map(({ name, path, component }) => (
-                  <Route key={name} path={path} element={component} />
-                ))} */}
-
-                  <Route path="/" element={<AppLayout />}>
-                    {mainPages.map(
-                      ({ name, index = false, path, component }) => (
-                        <Route
-                          key={name}
-                          index={index}
-                          path={path}
-                          element={component}
-                        />
-                      )
-                    )}
-                  </Route>
-                </Routes>
-              </Firewall>
+              {/* </Firewall> */}
             </SearchContextProvider>
           </UserContextProvider>
         </AuthContextProvider>
       </QueryClientProvider>
-
       <ToastContainer />
     </BrowserRouter>
   )

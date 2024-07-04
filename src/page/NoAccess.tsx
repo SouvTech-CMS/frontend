@@ -15,8 +15,8 @@ export const NoAccess = () => {
           Ooops, you do not have access to this page (403)
         </Heading>
         <Text w="md">
-          Кажется, Вам сюда нельзя.. Попробуйте зайти на другую страницу :3
-          {/* Ну ты если что заходи)) */}
+          It seems you can't access this page.. Try visiting another page :3
+          {/* Ну ты заходи если что)) */}
         </Text>
       </Flex>
     </Flex>
