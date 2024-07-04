@@ -1,4 +1,5 @@
-import { Flex, Heading, Text } from "@chakra-ui/react"
+import { Button, Flex, Heading, Text } from "@chakra-ui/react"
+import { Link } from "react-router-dom"
 
 export const NoAccess = () => {
   return (
@@ -12,12 +13,17 @@ export const NoAccess = () => {
       >
         {/* TODO: add logo here */}
         <Heading as="h5">
-          Ooops, you do not have access to this page (403)
+          Oops, you do not have access to this page (403)
         </Heading>
+
         <Text w="md">
           It seems you can't access this page.. Try visiting another page :3
           {/* Ну ты заходи если что)) */}
         </Text>
+
+        <Button as={Link} variant="outline" colorScheme="blue" to="/" replace>
+          <Text>Go back</Text>
+        </Button>
       </Flex>
     </Flex>
   )
