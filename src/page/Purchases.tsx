@@ -1,56 +1,44 @@
-import { Flex } from "@chakra-ui/react"
-import { getAllPurchases } from "api/purchase"
-import { LoadingPage } from "component/LoadingPage"
+import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import { Page } from "component/Page"
 import { PageHeading } from "component/PageHeading"
 import { NewPurchaseBtn } from "component/purchase/NewPurchaseBtn"
 import { PurchasesTable } from "component/purchase/PurchasesTable"
+import { NewPurchaseDeliveryBtn } from "component/purchaseDelivery/NewPurchaseDeliveryBtn"
+import { PurchaseDeliveriesTable } from "component/purchaseDelivery/PurchaseDeliveriesTable"
 import { Role } from "constant/roles"
-import { useSearchContext } from "context/search"
-import { useQuery } from "react-query"
-import { FullPurchase } from "type/purchase"
 import { withAuthAndRoles } from "util/withAuthAndRoles"
 
 const Purchases = () => {
-  const { query, isQueryExists } = useSearchContext()
-
-  const { data: purchasesList, isLoading } = useQuery<FullPurchase[]>(
-    "purchasesList",
-    getAllPurchases
-  )
-
-  const filteredGoodsPurchasesList = purchasesList?.map((purchase) => {
-    if (isQueryExists) {
-      const searchGoods = purchase.goods.filter(({ name }) =>
-        name.toLowerCase().includes(query.toLowerCase())
-      )
-
-      return {
-        ...purchase,
-        goods: searchGoods,
-      }
-    }
-
-    return purchase
-  })
-
-  const filteredPurchasesList = filteredGoodsPurchasesList?.filter(
-    ({ goods }) => goods.length > 0
-  )
-
   return (
     <Page>
-      <PageHeading title="Purchases" isLoading={isLoading} />
+      <PageHeading title="Purchases" isLoading={true} />
 
-      {!isLoading ? (
-        <Flex w="full" direction="column" gap={5}>
-          <NewPurchaseBtn />
+      <Tabs w="full" size="lg" variant="enclosed" isFitted>
+        <TabList>
+          <Tab fontWeight="bold">Purchases</Tab>
+          <Tab fontWeight="bold">Purchases in Delivery</Tab>
+        </TabList>
 
-          <PurchasesTable purchases={filteredPurchasesList} />
-        </Flex>
-      ) : (
-        <LoadingPage />
-      )}
+        <TabPanels>
+          {/* Purchases */}
+          <TabPanel>
+            <Flex w="full" direction="column" gap={5}>
+              <NewPurchaseBtn />
+
+              <PurchasesTable />
+            </Flex>
+          </TabPanel>
+
+          {/* Purchases in Delivery */}
+          <TabPanel>
+            <Flex w="full" direction="column" gap={5}>
+              <NewPurchaseDeliveryBtn />
+
+              <PurchaseDeliveriesTable />
+            </Flex>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Page>
   )
 }

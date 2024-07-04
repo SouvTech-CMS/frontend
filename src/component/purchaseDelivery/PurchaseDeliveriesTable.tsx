@@ -1,16 +1,16 @@
 import { Accordion, Flex, Grid, Text } from "@chakra-ui/react"
-import { getAllPurchases } from "api/purchase"
+import { getAllPurchaseDeliveries } from "api/purchaseDelivery"
 import { LoadingPage } from "component/LoadingPage"
 import { PurchaseRow } from "component/purchase/PurchaseRow"
-import { PURCHASES_TABLE_COLUMNS } from "constant/tableColumns"
+import { PURCHASES_TABLE_COLUMNS, PURCHASE_DELIVERIES_TABLE_COLUMNS } from "constant/tableColumns"
 import { FC } from "react"
 import { useQuery } from "react-query"
-import { FullPurchase } from "type/purchase"
+import { FullPurchaseDelivery } from "type/purchaseDelivery"
 
-export const PurchasesTable: FC = () => {
-  const { data: purchases, isLoading } = useQuery<FullPurchase[]>(
-    "purchasesList",
-    getAllPurchases
+export const PurchaseDeliveriesTable: FC = () => {
+  const { data: purchases, isLoading } = useQuery<FullPurchaseDelivery[]>(
+    "purchaseDeliveriesList",
+    getAllPurchaseDeliveries
   )
 
   if (isLoading) {
@@ -23,28 +23,28 @@ export const PurchasesTable: FC = () => {
         w="full"
         textAlign="left"
         alignItems="center"
-        templateColumns={`repeat(${PURCHASES_TABLE_COLUMNS.length}, 1fr)`}
+        templateColumns={`repeat(${PURCHASE_DELIVERIES_TABLE_COLUMNS.length}, 1fr)`}
         px={3}
       >
-        {PURCHASES_TABLE_COLUMNS.map((columnName, index) => (
+        {PURCHASE_DELIVERIES_TABLE_COLUMNS.map((columnName, index) => (
           <Text key={index} fontWeight="bold" py={2}>
             {columnName}
           </Text>
         ))}
       </Grid>
 
-      <Accordion allowMultiple>
+      {/* <Accordion allowMultiple>
         {purchases?.map((purchaseData, index) => (
           <PurchaseRow
             key={index}
-            purchase={purchaseData.purchase}
+            purchase={purchaseData.purchase_delivery}
             goods={purchaseData.goods}
             supplier={purchaseData.supplier}
             supplier_manager={purchaseData.supplier_manager}
             files={purchaseData.files}
           />
         ))}
-      </Accordion>
+      </Accordion> */}
     </Flex>
   )
 }
