@@ -27,6 +27,7 @@ export const AuthContextProvider: FCC = (props) => {
     const token = await signInReq(username, password)
     setUserToken(token.access_token)
     setIsAuthenticated(true)
+    queryClient.invalidateQueries("currentUser")
   }
 
   const signOut = () => {

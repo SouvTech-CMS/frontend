@@ -39,8 +39,8 @@ export const PurchaseDocumentsModal: FC<PurchaseDocumentsModalProps> = (
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={10}>
             <NewPurchaseDocumentCard purchaseId={purchaseId} />
 
-            {documents.map((document) => (
-              <PurchaseDocumentCard document={document} />
+            {documents.map((document, index) => (
+              <PurchaseDocumentCard key={index} document={document} />
             ))}
           </SimpleGrid>
         </ModalBody>

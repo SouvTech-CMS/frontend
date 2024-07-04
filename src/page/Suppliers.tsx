@@ -5,12 +5,14 @@ import { Page } from "component/Page"
 import { PageHeading } from "component/PageHeading"
 import { NewSupplierCard } from "component/suppliers/NewSupplierCard"
 import { SupplierCard } from "component/suppliers/SupplierCard"
+import { Role } from "constant/roles"
 import { useSearchContext } from "context/search"
 import { useQuery } from "react-query"
 import { Supplier } from "type/supplier"
 import { WithId } from "type/withId"
+import { withAuthAndRoles } from "util/withAuthAndRoles"
 
-export const Suppliers = () => {
+const Suppliers = () => {
   const { query, isQueryExists } = useSearchContext()
 
   const { data: suppliersList, isLoading } = useQuery<WithId<Supplier>[]>(
@@ -46,3 +48,5 @@ export const Suppliers = () => {
     </Page>
   )
 }
+
+export default withAuthAndRoles([Role.STORAGER])(Suppliers)

@@ -9,13 +9,13 @@ import { FC } from "react"
 export const Sidebar: FC = () => {
   const { signOut } = useAuthContext()
 
-  const { roles, isUserAdmin, isLoadingCurrentUser } = useUserContext()
+  const { userRoles, isUserAdmin, isLoadingCurrentUser } = useUserContext()
 
   const sideBarRoutes = configuration.sidebarItems.filter(
-    ({ type, component, role }) =>
+    ({ type, component, roles }) =>
       type === "main" &&
       component &&
-      ((role && roles?.includes(role.toLowerCase())) || isUserAdmin)
+      (isUserAdmin || roles?.some((role) => userRoles?.includes(role)))
   )
 
   return (
