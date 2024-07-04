@@ -1,9 +1,9 @@
 import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
 import { NoAccess } from "page/NoAccess"
-import { Purchases } from "page/Purchases"
-import { Reports } from "page/Reports"
-import { Suppliers } from "page/Suppliers"
+import Purchases from "page/Purchases"
+import Reports from "page/Reports"
+import Suppliers from "page/Suppliers"
 import Users from "page/Users"
 import { IconType } from "react-icons"
 import {

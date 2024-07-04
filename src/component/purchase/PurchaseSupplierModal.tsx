@@ -39,7 +39,7 @@ export const PurchaseSupplierModal: FC<PurchaseSupplierModalProps> = (
       <ModalOverlay backdropFilter="blur(10px)" />
 
       <ModalContent>
-        <ModalHeader>Purchase #{purchaseId} Managers</ModalHeader>
+        <ModalHeader>Purchase #{purchaseId} Manager</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>

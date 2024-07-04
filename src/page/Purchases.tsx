@@ -5,11 +5,13 @@ import { Page } from "component/Page"
 import { PageHeading } from "component/PageHeading"
 import { NewPurchaseBtn } from "component/purchase/NewPurchaseBtn"
 import { PurchasesTable } from "component/purchase/PurchasesTable"
+import { Role } from "constant/roles"
 import { useSearchContext } from "context/search"
 import { useQuery } from "react-query"
 import { FullPurchase } from "type/purchase"
+import { withAuthAndRoles } from "util/withAuthAndRoles"
 
-export const Purchases = () => {
+const Purchases = () => {
   const { query, isQueryExists } = useSearchContext()
 
   const { data: purchasesList, isLoading } = useQuery<FullPurchase[]>(
@@ -52,3 +54,5 @@ export const Purchases = () => {
     </Page>
   )
 }
+
+export default withAuthAndRoles([Role.STORAGER])(Purchases)
