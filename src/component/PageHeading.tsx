@@ -11,7 +11,7 @@ import { FiSearch } from "react-icons/fi"
 
 interface PageHeadingProps {
   title: string
-  isLoading: boolean
+  isLoading?: boolean
 }
 
 export const PageHeading: FC<PageHeadingProps> = (props) => {

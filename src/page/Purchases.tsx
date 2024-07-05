@@ -6,14 +6,32 @@ import { PurchasesTable } from "component/purchase/PurchasesTable"
 import { NewPurchaseDeliveryBtn } from "component/purchaseDelivery/NewPurchaseDeliveryBtn"
 import { PurchaseDeliveriesTable } from "component/purchaseDelivery/PurchaseDeliveriesTable"
 import { Role } from "constant/roles"
+import { usePurchaseTabsContext } from "context/purchaseTabs"
+import { useSearchContext } from "context/search"
 import { withAuthAndRoles } from "util/withAuthAndRoles"
 
 const Purchases = () => {
+  const { setQuery } = useSearchContext()
+  const { tabIndex, setTabIndex } = usePurchaseTabsContext()
+
+  const handleTabChange = (index: number) => {
+    setQuery("")
+    setTabIndex(index)
+  }
+
   return (
     <Page>
-      <PageHeading title="Purchases" isLoading={true} />
+      <PageHeading title="Purchases" />
 
-      <Tabs w="full" size="lg" variant="enclosed-colored" isFitted isLazy>
+      <Tabs
+        index={tabIndex}
+        onChange={handleTabChange}
+        w="full"
+        size="lg"
+        variant="enclosed-colored"
+        isFitted
+        isLazy
+      >
         <TabList>
           <Tab fontWeight="bold">Purchases</Tab>
           <Tab fontWeight="bold">Purchases in Delivery</Tab>

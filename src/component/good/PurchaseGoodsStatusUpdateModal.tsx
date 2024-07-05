@@ -34,7 +34,7 @@ export const PurchaseGoodsStatusUpdateModal: FC<
 > = (props) => {
   const { purchase, goods, isOpen, onClose } = props
 
-  const [newStatus, setNewStatus] = useState<string>()
+  const [newStatus, setNewStatus] = useState<string>("")
   const [newDeadline, setNewDeadline] = useState<string>(
     new Date(purchase.deadline * 1000).toISOString().split("T")[0]
   )
@@ -45,12 +45,12 @@ export const PurchaseGoodsStatusUpdateModal: FC<
   const isLoading =
     purchaseUpdateMutation.isLoading || purchaseGoodUpdateMutation.isLoading
 
-  const prevStatus = titleCase(goods[0].status)
+  const prevStatus = goods.length > 0 ? titleCase(goods[0].status) : ""
 
   const isStatusesEqual =
-    newStatus?.toLocaleLowerCase() === prevStatus.toLocaleLowerCase()
+    newStatus.toLocaleLowerCase() === prevStatus.toLocaleLowerCase()
 
-  const isStatusInvalid = !newStatus?.trim() || isStatusesEqual
+  const isStatusInvalid = !newStatus.trim() || isStatusesEqual
   const isDeadlineInvalid = !newDeadline?.trim()
 
   const isSaveBtnDisabled =
@@ -67,10 +67,14 @@ export const PurchaseGoodsStatusUpdateModal: FC<
   }
 
   const onGoodsStatusUpdate = async () => {
-    goods.forEach(async (good) => {
+    const filteredGoods = goods.filter((good) =>
+      Object.values(PurchaseStatus).includes(good.status as PurchaseStatus)
+    )
+
+    filteredGoods.forEach(async (good) => {
       const body: WithId<PurchaseGood> = {
         ...good,
-        status: newStatus!,
+        status: newStatus,
       }
 
       await purchaseGoodUpdateMutation.mutateAsync(body)

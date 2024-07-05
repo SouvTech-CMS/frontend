@@ -1,4 +1,4 @@
-import { Flex, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
+import { Badge, Flex, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/PurchaseDeliveryDeleteModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
@@ -10,6 +10,7 @@ import { PurchaseDelivery } from "type/purchaseDelivery"
 import { PurchaseFile } from "type/purchaseFile"
 import { PurchaseGood } from "type/purchaseGood"
 import { WithId } from "type/withId"
+import { getBadgeColor } from "util/goodBadgeColor"
 
 interface PurchaseDeliveryRowProps {
   purchaseDelivery: WithId<PurchaseDelivery>
@@ -54,6 +55,8 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
     return daysDiff
   }
 
+  const purchaseDeliveryStatus = goods[0].status
+
   const deadlineDaysDiff = getDeadlineDaysDiff()
   const isDeadlineGone = deadlineDaysDiff <= 0
   const isDeadlineComming = deadlineDaysDiff <= 3
@@ -86,6 +89,17 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
         {/* Track Number after Custom */}
         <Td>
           <Text>{purchaseDelivery.after_custom_track_number || "..."}</Text>
+        </Td>
+
+        {/* Status */}
+        <Td>
+          <Badge
+            w="fit-content"
+            variant="subtle"
+            colorScheme={getBadgeColor(purchaseDeliveryStatus)}
+          >
+            {purchaseDeliveryStatus}
+          </Badge>
         </Td>
 
         {/* Deadline */}

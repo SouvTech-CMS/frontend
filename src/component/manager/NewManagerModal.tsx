@@ -12,7 +12,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
-import { FiAtSign, FiCornerDownRight, FiPhone } from "react-icons/fi"
+import { FiAtSign, FiPhone, FiUser } from "react-icons/fi"
 import { useSupplierManagerCreateMutation } from "service/supplierManager"
 import { ModalProps } from "type/modalProps"
 import { SupplierManager } from "type/supplierManager"
@@ -74,7 +74,7 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
           <Flex direction="column" gap={3}>
             {/* Name */}
             <Flex alignItems="center" gap={2}>
-              <FiCornerDownRight color="gray" />
+              <FiUser color="gray" />
 
               <FormControl isInvalid={isManagerNameInvalid}>
                 <Input

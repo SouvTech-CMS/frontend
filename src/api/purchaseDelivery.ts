@@ -27,8 +27,12 @@ export const createPurchaseDelivery = async (
 
 export const updatePurchaseDelivery = async (
   purchase: WithId<PurchaseDelivery>
-) => {
-  await axiosClient.put("/purchase_delivery/", purchase)
+): Promise<WithId<PurchaseDelivery>> => {
+  const { data: newPurchase } = await axiosClient.put(
+    "/purchase_delivery/",
+    purchase
+  )
+  return newPurchase
 }
 
 export const deletePurchaseDelivery = async (purchaseId: number) => {

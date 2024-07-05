@@ -2,6 +2,7 @@ import { Badge, Td, Tr } from "@chakra-ui/react"
 import { FC } from "react"
 import { PurchaseGood } from "type/purchaseGood"
 import { WithId } from "type/withId"
+import { getBadgeColor } from "util/goodBadgeColor"
 
 interface PurchaseGoodRowProps {
   good: WithId<PurchaseGood>
@@ -9,25 +10,6 @@ interface PurchaseGoodRowProps {
 
 export const PurchaseGoodRow: FC<PurchaseGoodRowProps> = (props) => {
   const { good } = props
-
-  const getBadgeColor = (status: string): string => {
-    switch (status) {
-      case "order":
-        return "blue"
-      case "invoice":
-        return "cyan"
-      case "processing":
-        return "yellow"
-      case "packing":
-        return "purple"
-      case "custom":
-        return "teal"
-      case "storage":
-        return "green"
-      default:
-        return "gray"
-    }
-  }
 
   return (
     <Tr>

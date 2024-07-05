@@ -14,5 +14,6 @@ export const PURCHASE_DELIVERIES_TABLE_COLUMNS = [
   "Shipping after Custom",
   "Track Number",
   "Track Number after Custom",
+  "Status",
   "Deadline",
 ]

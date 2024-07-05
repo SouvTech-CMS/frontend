@@ -3,6 +3,7 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Badge,
   Flex,
   Grid,
   Table,
@@ -19,6 +20,10 @@ import { PurchaseGoodsStatusUpdateModal } from "component/good/PurchaseGoodsStat
 import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
+import {
+  PurchaseDeliveryStatus,
+  PurchaseInStorageStatus,
+} from "constant/purchaseStatus"
 import {
   GOODS_TABLE_COLUMNS,
   PURCHASES_TABLE_COLUMNS,
@@ -88,6 +93,18 @@ export const PurchaseRow: FC<PurchaseRowProps> = (props) => {
     deadlineBgColor = "orange.200"
   }
 
+  const allGoodsInDelivery = goods.every((good) =>
+    Object.values(PurchaseDeliveryStatus).includes(
+      good.status as PurchaseDeliveryStatus
+    )
+  )
+
+  const allGoodsInStorage = goods.every(
+    (good) => good.status === PurchaseInStorageStatus
+  )
+
+  const allGoodsInWaiting = !allGoodsInDelivery && !allGoodsInStorage
+
   return (
     <>
       <AccordionItem>
@@ -111,17 +128,33 @@ export const PurchaseRow: FC<PurchaseRowProps> = (props) => {
 
             {/* Deadline */}
             <Flex justifyContent="flex-start">
-              <Flex
-                w="fit-content"
-                bgColor={deadlineBgColor}
-                alignItems="center"
-                p={2}
-                borderRadius={10}
-                gap={2}
-              >
-                {isDeadlineComming && <FiAlertCircle color="red" />}
-                <Text>{purchaseDeadline.toDateString()}</Text>
-              </Flex>
+              {allGoodsInWaiting && (
+                <Flex
+                  w="fit-content"
+                  bgColor={deadlineBgColor}
+                  alignItems="center"
+                  p={2}
+                  borderRadius={10}
+                  gap={2}
+                >
+                  {isDeadlineComming && <FiAlertCircle color="red" />}
+                  <Text>{purchaseDeadline.toDateString()}</Text>
+                </Flex>
+              )}
+
+              {/* In Delivery Badge */}
+              {allGoodsInDelivery && (
+                <Badge fontSize="sm" colorScheme="purple">
+                  In delivery
+                </Badge>
+              )}
+
+              {/* In Storage Badge */}
+              {allGoodsInStorage && (
+                <Badge fontSize="sm" colorScheme="green">
+                  In storage
+                </Badge>
+              )}
             </Flex>
 
             <Flex position="absolute" right={0} alignItems="center" gap={2}>
