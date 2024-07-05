@@ -59,7 +59,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
 
   return (
     <>
-      <Card minH={360} maxW={400} boxShadow="lg" borderRadius={20}>
+      <Card h="full" w="full" minH={360} boxShadow="lg" borderRadius={20}>
         <CardHeader>
           <Flex direction="column" gap={2}>
             <Heading size="md">{user.fio}</Heading>

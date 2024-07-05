@@ -5,12 +5,13 @@ import { FiUpload } from "react-icons/fi"
 
 interface NewPurchaseDocumentCardProps {
   purchaseId: number
+  isDelivery?: boolean
 }
 
 export const NewPurchaseDocumentCard: FC<NewPurchaseDocumentCardProps> = (
   props
 ) => {
-  const { purchaseId } = props
+  const { purchaseId, isDelivery = false } = props
 
   const {
     isOpen: isPurchaseFileCreateModalOpen,
@@ -22,8 +23,8 @@ export const NewPurchaseDocumentCard: FC<NewPurchaseDocumentCardProps> = (
     <>
       <Button
         h="full"
+        w="full"
         minH={150}
-        maxW={250}
         bgColor="gray.200"
         onClick={onPurchaseFileCreateModalOpen}
         borderRadius={20}
@@ -45,6 +46,7 @@ export const NewPurchaseDocumentCard: FC<NewPurchaseDocumentCardProps> = (
 
       <NewPurchaseDocumentModal
         purchaseId={purchaseId}
+        isDelivery={isDelivery}
         isOpen={isPurchaseFileCreateModalOpen}
         onClose={onPurchaseFileCreateModalClose}
       />

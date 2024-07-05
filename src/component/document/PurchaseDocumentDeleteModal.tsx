@@ -28,6 +28,8 @@ export const PurchaseDocumentDeleteModal: FC<
 
   const purchaseFileDeleteMutation = usePurchaseFileDeleteMutation()
 
+  const isLoading = purchaseFileDeleteMutation.isLoading
+
   const onDeleteConfirm = async () => {
     await purchaseFileDeleteMutation.mutateAsync(document.id)
 
@@ -57,6 +59,8 @@ export const PurchaseDocumentDeleteModal: FC<
               variant="outline"
               colorScheme="red"
               onClick={onDeleteConfirm}
+              isLoading={isLoading}
+              isDisabled={isLoading}
             >
               Delete
             </Button>

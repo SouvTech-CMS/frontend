@@ -16,6 +16,7 @@ import { FiCalendar, FiTrash2 } from "react-icons/fi"
 import { Link } from "react-router-dom"
 import { PurchaseFile } from "type/purchaseFile"
 import { WithId } from "type/withId"
+import { getFileUrl } from "util/apiBaseUrl"
 
 interface PurchaseDocumentCardProps {
   document: WithId<PurchaseFile>
@@ -34,13 +35,15 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
     onClose: onPurchaseFileDeleteModalClose,
   } = useDisclosure()
 
+  const fileUrl = getFileUrl(document.name!)
+
   return (
     <>
       <Card boxShadow="lg" borderRadius={10}>
         <CardHeader>
           <Flex w="full" direction="column" gap={2}>
             {/* Name */}
-            <Heading size="md">{document.front_name}</Heading>
+            <Heading size="sm">{document.front_name}</Heading>
 
             {/* Uploading Date */}
             <Flex alignItems="center" gap={2}>
@@ -70,8 +73,14 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
 
         <CardFooter mt="auto">
           <Flex w="full" direction="column" gap={2}>
-            {/* TODO: change "to" param to link to file */}
-            <Button variant="ghost" colorScheme="blue" as={Link} to="/" replace>
+            <Button
+              variant="ghost"
+              colorScheme="blue"
+              as={Link}
+              to={fileUrl}
+              target="_blank"
+              replace
+            >
               Open
             </Button>
           </Flex>

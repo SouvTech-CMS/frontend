@@ -38,6 +38,7 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
 
   const supplierManagerCreateMutation = useSupplierManagerCreateMutation()
 
+  const isLoading = supplierManagerCreateMutation.isLoading
   const isManagerNameInvalid = !manager.name.trim()
 
   const handleManagerUpdate = (param: string, value: number | string) => {
@@ -130,6 +131,7 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
               variant="solid"
               colorScheme="blue"
               onClick={onManagerCreate}
+              isLoading={isLoading}
               isDisabled={isManagerNameInvalid}
             >
               Save

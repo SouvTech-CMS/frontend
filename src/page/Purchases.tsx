@@ -13,7 +13,7 @@ const Purchases = () => {
     <Page>
       <PageHeading title="Purchases" isLoading={true} />
 
-      <Tabs w="full" size="lg" variant="enclosed" isFitted>
+      <Tabs w="full" size="lg" variant="enclosed-colored" isFitted isLazy>
         <TabList>
           <Tab fontWeight="bold">Purchases</Tab>
           <Tab fontWeight="bold">Purchases in Delivery</Tab>

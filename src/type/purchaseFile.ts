@@ -6,7 +6,7 @@ export type PurchaseFile = {
 
 export type PurchaseFileCreate = {
   front_name: string
-  dependency_on: "purchase" | "purchase_delivery"
+  dependency_on: "purchase" | "delivery"
   dependency_id: number
   file: File
 }

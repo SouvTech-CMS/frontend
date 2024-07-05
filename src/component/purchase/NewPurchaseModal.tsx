@@ -49,6 +49,9 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
   const purchaseCreateMutation = usePurchaseCreateMutation()
   const purchaseGoodCreateMutation = usePurchaseGoodCreateMutation()
 
+  const isLoading =
+    purchaseCreateMutation.isLoading || purchaseGoodCreateMutation.isLoading
+
   const { data: suppliersList, isLoading: isSuppliersLoading } = useQuery<
     WithId<Supplier>[]
   >("suppliersList", getAllSuppliers)
@@ -63,6 +66,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
 
   const isManagerSelectDisabled = isManagersLoading || !purchase.supplier_id
   const isSaveBtnDisabled =
+    isLoading ||
     !purchase.supplier_id ||
     !purchase.supplier_manager_id ||
     goods.length === 0 ||
@@ -207,6 +211,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
               variant="solid"
               colorScheme="blue"
               onClick={onPurchaseCreate}
+              isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
             >
               Save

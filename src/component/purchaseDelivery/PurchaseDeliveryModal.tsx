@@ -85,7 +85,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
 
       await purchaseDeliveryCreateMutation.mutateAsync(body)
 
-      notify("Purchase in Delivery was created successfully", "success")
+      notify("Delivery was created successfully", "success")
     } else {
       const purchaseDeliveryId = prevPurchaseDelivery.id
       const body: WithId<PurchaseDelivery> = {
@@ -97,7 +97,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
       await purchaseDeliveryUpdateMutation.mutateAsync(body)
 
       notify(
-        `Purchase in Delivery #${purchaseDeliveryId} was updated successfully`,
+        `Delivery #${purchaseDeliveryId} was updated successfully`,
         "success"
       )
     }
@@ -115,11 +115,11 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
   }, [isOpen, isNewPurchaseDelivery, prevPurchaseDelivery, prevGoods])
 
   return (
-    <Modal size="4xl" isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal size="2xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay backdropFilter="blur(10px)" />
 
       <ModalContent>
-        <ModalHeader>New Purchase in Delivery</ModalHeader>
+        <ModalHeader>New Delivery</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
@@ -176,7 +176,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
                   value={purchaseDelivery.after_custom_shipping}
                   type="number"
                   onChange={(e) => {
-                    const value = e.target.value
+                    const value = Number(e.target.value)
                     handlePurchaseDeliveryUpdate("after_custom_shipping", value)
                   }}
                 />
