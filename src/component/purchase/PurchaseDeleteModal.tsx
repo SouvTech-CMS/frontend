@@ -26,7 +26,9 @@ export const PurchaseDeleteModal: FC<PurchaseDeleteModalProps> = (props) => {
 
   const purchaseDeleteMutation = usePurchaseDeleteMutation()
 
-  const onSupplierDeleteConfirm = async () => {
+  const isLoading = purchaseDeleteMutation.isLoading
+
+  const onDeleteConfirm = async () => {
     await purchaseDeleteMutation.mutateAsync(purchase.id)
 
     notify(`Purchase ${purchase.id} was successfully deleted`, "success")
@@ -51,7 +53,9 @@ export const PurchaseDeleteModal: FC<PurchaseDeleteModalProps> = (props) => {
             <Button
               variant="outline"
               colorScheme="red"
-              onClick={onSupplierDeleteConfirm}
+              onClick={onDeleteConfirm}
+              isLoading={isLoading}
+              isDisabled={isLoading}
             >
               Delete
             </Button>

@@ -14,8 +14,8 @@ export const NewUserCard: FC = () => {
     <>
       <Button
         h="full"
+        w="full"
         minH={360}
-        maxW={400}
         bgColor="gray.200"
         onClick={onUserEditModalOpen}
         borderRadius={20}

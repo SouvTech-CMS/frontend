@@ -26,6 +26,8 @@ export const SupplierDeleteModal: FC<SupplierDeleteModalProps> = (props) => {
 
   const supplierDeleteMutation = useSupplierDeleteMutation()
 
+  const isLoading = supplierDeleteMutation.isLoading
+
   const onSupplierDeleteConfirm = async () => {
     await supplierDeleteMutation.mutateAsync(supplier.id)
 
@@ -52,6 +54,8 @@ export const SupplierDeleteModal: FC<SupplierDeleteModalProps> = (props) => {
               variant="outline"
               colorScheme="red"
               onClick={onSupplierDeleteConfirm}
+              isLoading={isLoading}
+              isDisabled={isLoading}
             >
               Delete
             </Button>

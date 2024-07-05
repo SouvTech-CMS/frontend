@@ -7,3 +7,9 @@ export const getApiBaseUrl = () => {
 
   return apiBaseUrl
 }
+
+export const getFileUrl = (fileName: string) => {
+  const apiBaseUrl = getApiBaseUrl()
+
+  return `${apiBaseUrl}/static/${fileName}`
+}

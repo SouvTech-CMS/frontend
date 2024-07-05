@@ -20,24 +20,30 @@ import { WithId } from "type/withId"
 interface PurchaseDocumentsModalProps extends ModalProps {
   purchaseId: number
   documents: WithId<PurchaseFile>[]
+  isDelivery?: boolean
 }
 
 export const PurchaseDocumentsModal: FC<PurchaseDocumentsModalProps> = (
   props
 ) => {
-  const { purchaseId, documents, isOpen, onClose } = props
+  const { purchaseId, documents, isDelivery = false, isOpen, onClose } = props
 
   return (
-    <Modal size="5xl" isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal size="4xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay backdropFilter="blur(10px)" />
 
       <ModalContent>
-        <ModalHeader>Purchase #{purchaseId} Documents</ModalHeader>
+        <ModalHeader>
+          {isDelivery ? "Delivery" : "Purchase"} #{purchaseId} Documents
+        </ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={10}>
-            <NewPurchaseDocumentCard purchaseId={purchaseId} />
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 3 }} spacing={10}>
+            <NewPurchaseDocumentCard
+              purchaseId={purchaseId}
+              isDelivery={isDelivery}
+            />
 
             {documents.map((document, index) => (
               <PurchaseDocumentCard key={index} document={document} />

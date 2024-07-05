@@ -10,37 +10,31 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react"
-import { useUserContext } from "context/user"
 import { FC } from "react"
-import { useUserDeleteMutation } from "service/user"
+import { usePurchaseDeliveryDeleteMutation } from "service/purchaseDelivery"
 import { ModalProps } from "type/modalProps"
-import { User } from "type/user"
+import { PurchaseDelivery } from "type/purchaseDelivery"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
-interface UserDeleteModalProps extends ModalProps {
-  user: WithId<User>
+interface PurchaseDeliveryDeleteModalProps extends ModalProps {
+  purchaseDelivery: WithId<PurchaseDelivery>
 }
 
-export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
-  const { user, isOpen, onClose } = props
+export const PurchaseDeliveryDeleteModal: FC<
+  PurchaseDeliveryDeleteModalProps
+> = (props) => {
+  const { purchaseDelivery, isOpen, onClose } = props
 
-  const { currentUser } = useUserContext()
+  const purchaseDeliveryDeleteMutation = usePurchaseDeliveryDeleteMutation()
 
-  const userDeleteMutation = useUserDeleteMutation()
+  const isLoading = purchaseDeliveryDeleteMutation.isLoading
 
-  const isLoading = userDeleteMutation.isLoading
-
-  const onUserDeleteConfirm = async () => {
-    if (user.username === currentUser?.username) {
-      notify("Oops, You can't delete yourself :)", "error")
-      return
-    }
-
-    await userDeleteMutation.mutateAsync(user.id!)
+  const onDeleteConfirm = async () => {
+    await purchaseDeliveryDeleteMutation.mutateAsync(purchaseDelivery.id)
 
     notify(
-      `Employee ${user.fio || user.username} was successfully deleted`,
+      `Delivery ${purchaseDelivery.id} was successfully deleted`,
       "success"
     )
     onClose()
@@ -51,12 +45,12 @@ export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
       <ModalOverlay backdropFilter="blur(10px)" />
 
       <ModalContent>
-        <ModalHeader>Delete Employee</ModalHeader>
+        <ModalHeader>Delete Delivery</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <Text>Are you sure you want to delete the employee</Text>
-          <Text fontWeight="bold">{user.fio}</Text>
+          <Text>Are you sure you want to delete the delivery</Text>
+          <Text fontWeight="bold">#{purchaseDelivery.id}</Text>
         </ModalBody>
 
         <ModalFooter>
@@ -64,7 +58,7 @@ export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
             <Button
               variant="outline"
               colorScheme="red"
-              onClick={onUserDeleteConfirm}
+              onClick={onDeleteConfirm}
               isLoading={isLoading}
               isDisabled={isLoading}
             >

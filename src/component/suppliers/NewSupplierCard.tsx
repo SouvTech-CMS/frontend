@@ -14,8 +14,8 @@ export const NewSupplierCard: FC = () => {
     <>
       <Button
         h="full"
+        w="full"
         minH={250}
-        maxW={250}
         bgColor="gray.200"
         onClick={onSupplierEditModalOpen}
         borderRadius={20}

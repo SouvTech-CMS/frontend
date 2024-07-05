@@ -21,12 +21,13 @@ import { notify } from "util/toasts"
 
 interface NewPurchaseDocumentModalProps extends ModalProps {
   purchaseId: number
+  isDelivery?: boolean
 }
 
 export const NewPurchaseDocumentModal: FC<NewPurchaseDocumentModalProps> = (
   props
 ) => {
-  const { purchaseId, isOpen, onClose } = props
+  const { purchaseId, isDelivery = false, isOpen, onClose } = props
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [name, setName] = useState<string>("")
@@ -61,16 +62,13 @@ export const NewPurchaseDocumentModal: FC<NewPurchaseDocumentModalProps> = (
     const body: PurchaseFileCreate = {
       front_name: name,
       dependency_id: purchaseId,
-      dependency_on: "purchase",
+      dependency_on: isDelivery ? "delivery" : "purchase",
       file,
     }
 
     await purchaseFileCreateMutation.mutateAsync(body)
 
-    notify(
-      `Document ${name} for purchase #${purchaseId} was uploaded successfully`,
-      "success"
-    )
+    notify(`Document ${name} was uploaded successfully`, "success")
     onClose()
   }
 

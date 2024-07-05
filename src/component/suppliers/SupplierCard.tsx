@@ -45,7 +45,7 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
 
   return (
     <>
-      <Card minH={250} maxW={250} boxShadow="lg" borderRadius={20}>
+      <Card h="full" w="full" minH={250} boxShadow="lg" borderRadius={20}>
         <CardHeader>
           <Flex direction="column" gap={2}>
             <Heading size="md">{supplier.name}</Heading>

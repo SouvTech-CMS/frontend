@@ -17,7 +17,7 @@ export const NewPurchaseDeliveryBtn: FC = () => {
         colorScheme="blue"
         onClick={onNewPurchaseDeliveryModalOpen}
       >
-        Add purchase in delivery
+        Add delivery
       </Button>
 
       <PurchaseDeliveryModal

@@ -43,6 +43,9 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
   const supplierCreateMutation = useSupplierCreateMutation()
   const supplierUpdateMutation = useSupplierUpdateMutation()
 
+  const isLoading =
+    supplierCreateMutation.isLoading || supplierUpdateMutation.isLoading
+
   const isSupplierNameInvalid = !supplier.name.trim()
 
   const handleSupplierUpdate = (param: string, value: number | string) => {
@@ -127,6 +130,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
               variant="solid"
               colorScheme="blue"
               onClick={onSupplierUpdate}
+              isLoading={isLoading}
               isDisabled={isSupplierNameInvalid}
             >
               Save

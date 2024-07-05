@@ -9,8 +9,10 @@ import { WithId } from "type/withId"
 export const getAllPurchaseDeliveries = async (): Promise<
   FullPurchaseDelivery[]
 > => {
-  const { data: purchasesList } = await axiosClient.get("/purchase/")
-  return purchasesList
+  const { data: purchaseDeliveriesList } = await axiosClient.get(
+    "/purchase_delivery/"
+  )
+  return purchaseDeliveriesList
 }
 
 export const createPurchaseDelivery = async (
