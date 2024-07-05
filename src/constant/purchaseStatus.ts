@@ -7,5 +7,6 @@ export enum PurchaseStatus {
 export enum PurchaseDeliveryStatus {
   Packing = "packing",
   Custom = "custom",
-  Storage = "storage",
 }
+
+export const PurchaseInStorageStatus = "storage"

@@ -7,13 +7,13 @@ import {
 } from "react"
 import { FCC } from "type/fcc"
 
-interface SearchContextType {
+interface SearchContextProps {
   query: string
   setQuery: Dispatch<SetStateAction<string>>
   isQueryExists: boolean
 }
 
-export const SearchContext = createContext<SearchContextType>({
+export const SearchContext = createContext<SearchContextProps>({
   query: "",
   setQuery: () => {},
   isQueryExists: false,

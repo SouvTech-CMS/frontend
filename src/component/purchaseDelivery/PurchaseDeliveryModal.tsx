@@ -237,7 +237,9 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
 
             {/* New Status */}
             {!isNewPurchaseDelivery && (
-              <Flex w="full" direction="column" gap={5}>
+              <Flex w="full" direction="column" gap={1}>
+                <Text fontWeight="bold">Status:</Text>
+
                 <Flex alignItems="center" gap={5}>
                   {/* Prev Status */}
                   <Input

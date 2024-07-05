@@ -14,6 +14,8 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react"
+import { usePurchaseTabsContext } from "context/purchaseTabs"
+import { useSearchContext } from "context/search"
 import { FC } from "react"
 import { ModalProps } from "type/modalProps"
 import { PurchaseGood } from "type/purchaseGood"
@@ -29,6 +31,14 @@ export const PurchaseDeliveryGoodsModal: FC<PurchaseDeliveryGoodsModalProps> = (
 ) => {
   const { purchaseDeliveryId, goods, isOpen, onClose } = props
 
+  const { setQuery } = useSearchContext()
+  const { setTabIndex } = usePurchaseTabsContext()
+
+  const handlePurchaseOpen = (goodName: string) => {
+    setQuery(goodName)
+    setTabIndex(0)
+  }
+
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay backdropFilter="blur(10px)" />
@@ -42,22 +52,42 @@ export const PurchaseDeliveryGoodsModal: FC<PurchaseDeliveryGoodsModalProps> = (
             {goods.map((good, index) => (
               <Card key={index} borderRadius={20}>
                 <CardHeader>
-                  <Flex justifyContent="space-between">
-                    <Flex direction="column" gap={2}>
-                      <Heading size="md">{good.name}</Heading>
+                  <Flex direction="column" gap={2}>
+                    {/* Purchase Id Badge */}
+                    <Badge w="fit-content" colorScheme="blue">
+                      Purchase #{good.purchase_id}
+                    </Badge>
 
-                      <Text fontSize="sm" fontStyle="italic" color="gray">
-                        {good.description}
-                      </Text>
+                    {/* Good Info */}
+                    <Flex justifyContent="space-between">
+                      <Flex direction="column" gap={2}>
+                        <Flex alignItems="center" gap={5}>
+                          <Heading size="md">{good.name}</Heading>
+                        </Flex>
+
+                        <Text fontSize="sm" fontStyle="italic" color="gray">
+                          {good.description}
+                        </Text>
+                      </Flex>
+
+                      {/* Side Badges */}
+                      <Flex direction="column" gap={3}>
+                        <Badge fontSize="sm">Quantity: {good.quantity}</Badge>
+                        <Badge fontSize="sm">
+                          Unit Price: ${good.price_per_item}
+                        </Badge>
+                        <Badge fontSize="sm">Amount: ${good.amount}</Badge>
+                      </Flex>
                     </Flex>
 
-                    <Flex direction="column" gap={3}>
-                      <Badge fontSize="sm">Quantity: {good.quantity}</Badge>
-                      <Badge fontSize="sm">
-                        Unit Price: ${good.price_per_item}
-                      </Badge>
-                      <Badge fontSize="sm">Amount: ${good.amount}</Badge>
-                    </Flex>
+                    {/* Find in purchases Btn */}
+                    <Button
+                      variant="ghost"
+                      colorScheme="blue"
+                      onClick={() => handlePurchaseOpen(good.name)}
+                    >
+                      Find this good in purchases
+                    </Button>
                   </Flex>
                 </CardHeader>
               </Card>

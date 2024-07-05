@@ -3,14 +3,36 @@ import { getAllPurchases } from "api/purchase"
 import { LoadingPage } from "component/LoadingPage"
 import { PurchaseRow } from "component/purchase/PurchaseRow"
 import { PURCHASES_TABLE_COLUMNS } from "constant/tableColumns"
+import { useSearchContext } from "context/search"
 import { FC } from "react"
 import { useQuery } from "react-query"
 import { FullPurchase } from "type/purchase"
 
 export const PurchasesTable: FC = () => {
-  const { data: purchases, isLoading } = useQuery<FullPurchase[]>(
+  const { query, isQueryExists } = useSearchContext()
+
+  const { data: purchasesList, isLoading } = useQuery<FullPurchase[]>(
     "purchasesList",
     getAllPurchases
+  )
+
+  const filteredGoodsPurchasesList = purchasesList?.map((purchase) => {
+    if (isQueryExists) {
+      const searchGoods = purchase.goods.filter(({ name }) =>
+        name.toLowerCase().includes(query.toLowerCase())
+      )
+
+      return {
+        ...purchase,
+        goods: searchGoods,
+      }
+    }
+
+    return purchase
+  })
+
+  const filteredPurchasesList = filteredGoodsPurchasesList?.filter(
+    ({ goods }) => goods.length > 0
   )
 
   if (isLoading) {
@@ -34,7 +56,7 @@ export const PurchasesTable: FC = () => {
       </Grid>
 
       <Accordion allowMultiple>
-        {purchases?.map((purchaseData, index) => (
+        {filteredPurchasesList?.map((purchaseData, index) => (
           <PurchaseRow
             key={index}
             purchase={purchaseData.purchase}

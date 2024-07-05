@@ -5,7 +5,7 @@ import { useQuery } from "react-query"
 import { FCC } from "type/fcc"
 import { User, UserWithRolesAndShops } from "type/user"
 
-interface UserContextType {
+interface UserContextProps {
   currentUser?: User
   userRoles?: string[]
   userPermissions?: string[]
@@ -13,7 +13,7 @@ interface UserContextType {
   isLoadingCurrentUser: boolean
 }
 
-export const UserContext = createContext<UserContextType>({
+export const UserContext = createContext<UserContextProps>({
   isLoadingCurrentUser: true,
 })
 
