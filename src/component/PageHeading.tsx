@@ -11,11 +11,11 @@ import { FiSearch } from "react-icons/fi"
 
 interface PageHeadingProps {
   title: string
-  isLoading?: boolean
+  isDisabled?: boolean
 }
 
 export const PageHeading: FC<PageHeadingProps> = (props) => {
-  const { title, isLoading } = props
+  const { title, isDisabled } = props
 
   const { query, setQuery } = useSearchContext()
 
@@ -35,7 +35,7 @@ export const PageHeading: FC<PageHeadingProps> = (props) => {
             placeholder="Search.."
             value={query}
             onChange={handleSearchQueryChange}
-            isDisabled={isLoading}
+            isDisabled={isDisabled}
           />
 
           {/* Search Icon */}

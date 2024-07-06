@@ -24,10 +24,7 @@ import {
   PurchaseDeliveryStatus,
   PurchaseInStorageStatus,
 } from "constant/purchaseStatus"
-import {
-  GOODS_TABLE_COLUMNS,
-  PURCHASES_TABLE_COLUMNS,
-} from "constant/tableColumns"
+import { GOODS_TABLE_COLUMNS, PURCHASES_TABLE_COLUMNS } from "constant/tables"
 import { FC } from "react"
 import { FiAlertCircle } from "react-icons/fi"
 import { Purchase } from "type/purchase"

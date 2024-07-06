@@ -11,6 +11,7 @@ export const Page: FCC = (props) => {
       direction="column"
       py={5}
       px={10}
+      pb={10}
       overflowX="hidden"
       overflowY="auto"
     >
