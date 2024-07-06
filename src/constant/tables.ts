@@ -17,3 +17,13 @@ export const PURCHASE_DELIVERIES_TABLE_COLUMNS = [
   "Status",
   "Deadline",
 ]
+
+export const STORAGE_GOODS_TABLE_COLUMNS = [
+  "SKU segment",
+  "Name",
+  "Total quantity",
+  "Boxes quantity",
+  "Shelf",
+]
+
+export const ROWS_PER_PAGE = 10
