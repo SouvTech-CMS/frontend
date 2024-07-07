@@ -8,11 +8,11 @@ import Suppliers from "page/Suppliers"
 import Users from "page/Users"
 import { IconType } from "react-icons"
 import {
-  FiBox,
   FiFileText,
   FiGlobe,
   FiHome,
   FiMap,
+  FiPackage,
   FiTruck,
   FiUsers,
 } from "react-icons/fi"
@@ -66,7 +66,7 @@ export const configuration = {
     },
     {
       type: "main",
-      icon: FiBox,
+      icon: FiPackage,
       name: "Storage",
       path: "/storage",
       roles: [Role.STORAGER],
