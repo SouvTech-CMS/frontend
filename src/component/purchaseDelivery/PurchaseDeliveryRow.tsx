@@ -4,6 +4,7 @@ import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/Purchase
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
 import { PurchaseDeliveryModal } from "component/purchaseDelivery/PurchaseDeliveryModal"
 import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
+import { PurchaseInStorageStatus } from "constant/purchaseStatus"
 import { FC } from "react"
 import { FiAlertCircle } from "react-icons/fi"
 import { PurchaseDelivery } from "type/purchaseDelivery"
@@ -68,6 +69,12 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
     deadlineBgColor = "orange.200"
   }
 
+  const allGoodsInStorage = goods.every(
+    (good) => good.status === PurchaseInStorageStatus
+  )
+
+  const allGoodsInDelivery = !allGoodsInStorage
+
   return (
     <>
       <Tr position="relative">
@@ -83,12 +90,12 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
 
         {/* Track Number */}
         <Td>
-          <Text>{purchaseDelivery.track_number || "..."}</Text>
+          <Text>{purchaseDelivery.track_number}</Text>
         </Td>
 
         {/* Track Number after Custom */}
         <Td>
-          <Text>{purchaseDelivery.after_custom_track_number || "..."}</Text>
+          <Text>{purchaseDelivery.after_custom_track_number}</Text>
         </Td>
 
         {/* Status */}
@@ -105,17 +112,19 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
         {/* Deadline */}
         <Td>
           <Flex justifyContent="flex-start">
-            <Flex
-              w="fit-content"
-              bgColor={deadlineBgColor}
-              alignItems="center"
-              p={2}
-              borderRadius={10}
-              gap={2}
-            >
-              {isDeadlineComming && <FiAlertCircle color="red" />}
-              <Text>{purchaseDeadline.toDateString()}</Text>
-            </Flex>
+            {allGoodsInDelivery && (
+              <Flex
+                w="fit-content"
+                bgColor={deadlineBgColor}
+                alignItems="center"
+                p={2}
+                borderRadius={10}
+                gap={2}
+              >
+                {isDeadlineComming && <FiAlertCircle color="red" />}
+                <Text>{purchaseDeadline.toDateString()}</Text>
+              </Flex>
+            )}
           </Flex>
         </Td>
 

@@ -11,7 +11,7 @@ import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { GoodWithStorages } from "type/storageGood"
 import { getPagesCount } from "util/totalPages"
-import { withAuthAndRoles } from "util/withAuthAndRoles"
+import { withAuthAndRoles } from "hook/withAuthAndRoles"
 
 const Storage = () => {
   const [currentPage, setCurrentPage] = useState<number>(0)

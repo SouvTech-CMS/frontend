@@ -141,19 +141,20 @@ export const PurchaseRow: FC<PurchaseRowProps> = (props) => {
 
               {/* In Delivery Badge */}
               {allGoodsInDelivery && (
-                <Badge fontSize="sm" colorScheme="purple">
+                <Badge fontSize="sm" colorScheme="purple" p={2}>
                   In delivery
                 </Badge>
               )}
 
               {/* In Storage Badge */}
               {allGoodsInStorage && (
-                <Badge fontSize="sm" colorScheme="green">
+                <Badge fontSize="sm" colorScheme="green" p={2}>
                   In storage
                 </Badge>
               )}
             </Flex>
 
+            {/* Menu Btn */}
             <Flex position="absolute" right={0} alignItems="center" gap={2}>
               <AccordionIcon />
 

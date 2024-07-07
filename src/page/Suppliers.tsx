@@ -10,7 +10,7 @@ import { useSearchContext } from "context/search"
 import { useQuery } from "react-query"
 import { Supplier } from "type/supplier"
 import { WithId } from "type/withId"
-import { withAuthAndRoles } from "util/withAuthAndRoles"
+import { withAuthAndRoles } from "hook/withAuthAndRoles"
 
 const Suppliers = () => {
   const { query, isQueryExists } = useSearchContext()

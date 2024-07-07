@@ -8,7 +8,7 @@ import { PurchaseDeliveriesTable } from "component/purchaseDelivery/PurchaseDeli
 import { Role } from "constant/roles"
 import { usePurchaseTabsContext } from "context/purchaseTabs"
 import { useSearchContext } from "context/search"
-import { withAuthAndRoles } from "util/withAuthAndRoles"
+import { withAuthAndRoles } from "hook/withAuthAndRoles"
 
 const Purchases = () => {
   const { setQuery } = useSearchContext()
@@ -34,7 +34,7 @@ const Purchases = () => {
       >
         <TabList>
           <Tab fontWeight="bold">Purchases</Tab>
-          <Tab fontWeight="bold">Purchases in Delivery</Tab>
+          <Tab fontWeight="bold">Deliveries</Tab>
         </TabList>
 
         <TabPanels>
