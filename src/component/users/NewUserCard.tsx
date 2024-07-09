@@ -5,18 +5,19 @@ import { FiPlusCircle } from "react-icons/fi"
 
 export const NewUserCard: FC = () => {
   const {
-    isOpen: isUserEditOpenModal,
-    onOpen: onUserEditOpenModal,
-    onClose: onUserEditCloseModal,
+    isOpen: isUserEditModalOpen,
+    onOpen: onUserEditModalOpen,
+    onClose: onUserEditModalClose,
   } = useDisclosure()
 
   return (
     <>
       <Button
         h="full"
-        maxW={400}
+        w="full"
+        minH={360}
         bgColor="gray.200"
-        onClick={onUserEditOpenModal}
+        onClick={onUserEditModalOpen}
         borderRadius={20}
         boxShadow="lg"
       >
@@ -26,15 +27,15 @@ export const NewUserCard: FC = () => {
           alignItems="center"
           gap={5}
         >
-          <FiPlusCircle color="gray" size={64} />
+          <FiPlusCircle color="gray" size={48} />
           <Text color="gray" fontSize={24} fontWeight="bold">
-            Добавить
+            New
           </Text>
         </Flex>
       </Button>
 
       {/* Edit user modal */}
-      <UserModal isOpen={isUserEditOpenModal} onClose={onUserEditCloseModal} />
+      <UserModal isOpen={isUserEditModalOpen} onClose={onUserEditModalClose} />
     </>
   )
 }

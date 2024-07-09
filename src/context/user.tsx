@@ -1,43 +1,58 @@
 import { getCurrentUser } from "api/user"
+import { ADMIN_ROLE } from "constant/roles"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { FCC } from "type/FCC"
+import { FCC } from "type/fcc"
 import { User, UserWithRolesAndShops } from "type/user"
 
-interface AuthContextType {
+interface UserContextProps {
   currentUser?: User
-  roles?: string[]
-  permissions?: string[]
+  userRoles?: string[]
+  userPermissions?: string[]
+  isUserAdmin?: boolean
+  isLoadingCurrentUser: boolean
 }
 
-export const UserContext = createContext<AuthContextType>({})
+export const UserContext = createContext<UserContextProps>({
+  isLoadingCurrentUser: true,
+})
 
 export const UserContextProvider: FCC = (props) => {
   const { children } = props
-  const [roles, setRoles] = useState<string[]>([])
-  const [permissions, setPermissions] = useState<string[]>([])
+  const [userRoles, setUserRoles] = useState<string[]>([])
+  const [userPermissions, setUserPermissions] = useState<string[]>([])
+  const [isLoadingRoles, setIsLoadingRoles] = useState<boolean>(true)
+  const [isLoadingPermissions, setIsLoadingPermissions] =
+    useState<boolean>(true)
 
-  const { data: userWithRolesAndShops } = useQuery<UserWithRolesAndShops>(
-    "currentUser",
-    getCurrentUser
-  )
+  const { data: userWithRolesAndShops, isLoading: isLoadingCurrentUser } =
+    useQuery<UserWithRolesAndShops>("currentUser", getCurrentUser)
+
+  const isLoading =
+    isLoadingCurrentUser || isLoadingRoles || isLoadingPermissions
 
   const currentUser = userWithRolesAndShops?.user
+
+  const isUserAdmin = userRoles.includes(ADMIN_ROLE)
 
   useEffect(() => {
     if (userWithRolesAndShops) {
       const roles = userWithRolesAndShops.roles_with_permissions.map(
-        (roleWithPermissions) => roleWithPermissions.role.name
+        (roleWithPermissions) => roleWithPermissions.role.name.toLowerCase()
       )
-      setRoles(roles)
+      setUserRoles(roles)
+      setIsLoadingRoles(false)
 
       const permissionsList =
         userWithRolesAndShops.roles_with_permissions.flatMap(
           (roleWithPermissions) => roleWithPermissions.permissions
         )
 
-      const permissions = permissionsList.map((permission) => permission.name)
-      setPermissions(permissions)
+      const permissions = permissionsList.map((permission) =>
+        permission.name.toLowerCase()
+      )
+      setUserPermissions(permissions)
+      setIsLoadingPermissions(false)
     }
   }, [userWithRolesAndShops])
 
@@ -45,8 +60,10 @@ export const UserContextProvider: FCC = (props) => {
     <UserContext.Provider
       value={{
         currentUser,
-        roles,
-        permissions,
+        userRoles,
+        userPermissions,
+        isUserAdmin,
+        isLoadingCurrentUser: isLoading,
       }}
     >
       {children}

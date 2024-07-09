@@ -10,7 +10,7 @@ export const AppLayout: FC = () => {
 
   if (isAuthenticated) {
     return (
-      <Flex direction="row" maxW="full">
+      <Flex h="full" maxW="full" direction="row">
         <Sidebar />
 
         <Outlet />

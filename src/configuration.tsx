@@ -1,10 +1,21 @@
 import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
-import { NotFound } from "page/NotFound"
-import { Reports } from "page/Reports"
-import { Users } from "page/Users"
+import { NoAccess } from "page/NoAccess"
+import Purchases from "page/Purchases"
+import Reports from "page/Reports"
+import Storage from "page/Storage"
+import Suppliers from "page/Suppliers"
+import Users from "page/Users"
 import { IconType } from "react-icons"
-import { FiBox, FiFileText, FiHome, FiMap, FiUsers } from "react-icons/fi"
+import {
+  FiBox,
+  FiFileText,
+  FiGlobe,
+  FiHome,
+  FiMap,
+  FiTruck,
+  FiUsers,
+} from "react-icons/fi"
 import { getApiBaseUrl } from "util/apiBaseUrl"
 
 type Route = {
@@ -14,7 +25,7 @@ type Route = {
   name: string
   path: string
   component?: JSX.Element
-  role?: Role
+  roles?: Role[]
 }
 
 export const configuration = {
@@ -25,52 +36,69 @@ export const configuration = {
       index: true,
       type: "main",
       icon: FiHome,
-      name: "Главная",
+      name: "Dashboard",
       path: "/",
-      role: Role.MANAGER,
+      roles: [Role.MANAGER],
     },
     {
       type: "main",
       icon: FiFileText,
-      name: "Отчёты",
+      name: "Reports",
       path: "/reports",
-      role: Role.MANAGER,
+      roles: [Role.MANAGER],
       component: <Reports />,
     },
     {
       type: "main",
+      icon: FiTruck,
+      name: "Purchases",
+      path: "/purchases",
+      roles: [Role.STORAGER],
+      component: <Purchases />,
+    },
+    {
+      type: "main",
+      icon: FiGlobe,
+      name: "Suppliers",
+      path: "/suppliers",
+      roles: [Role.STORAGER],
+      component: <Suppliers />,
+    },
+    {
+      type: "main",
       icon: FiBox,
-      name: "Склад",
+      name: "Storage",
       path: "/storage",
-      role: Role.STORAGER,
+      roles: [Role.STORAGER],
+      component: <Storage />,
     },
     {
       type: "main",
       icon: FiUsers,
-      name: "Сотрудники",
+      name: "Employees",
       path: "/users",
-      role: Role.ADMIN,
+      roles: [Role.ADMIN],
       component: <Users />,
     },
     {
       type: "main",
       icon: FiMap,
-      name: "Логи",
+      name: "Logs",
       path: "/logs",
-      role: Role.ADMIN,
+      roles: [Role.ADMIN],
     },
     //* Side pages
     {
       type: "side",
-      name: "Авторизация",
+      name: "Auth",
       path: "/auth",
       component: <Auth />,
     },
     {
       type: "side",
-      name: "NotFound",
-      path: "/*",
-      component: <NotFound />,
+      name: "NoAccess",
+      path: "/noaccess",
+      component: <NoAccess />,
     },
   ] as Route[],
   api: {

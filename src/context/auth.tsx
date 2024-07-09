@@ -1,17 +1,18 @@
 import { signIn as signInReq } from "api/auth"
+import { queryClient } from "api/queryClient"
 import { createContext, useContext, useState } from "react"
-import { FCC } from "type/FCC"
+import { FCC } from "type/fcc"
 import { clearUserToken, getUserToken, setUserToken } from "util/userToken"
 
-interface AuthContextType {
+interface AuthContextProps {
   isAuthenticated: boolean
   signIn: (username: string, password: string) => Promise<void>
   signOut: () => void
 }
 
-export const AuthContext = createContext<AuthContextType>({
+export const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
-  signIn: async (username: string, password: string) => {},
+  signIn: async () => {},
   signOut: () => {},
 })
 
@@ -26,11 +27,13 @@ export const AuthContextProvider: FCC = (props) => {
     const token = await signInReq(username, password)
     setUserToken(token.access_token)
     setIsAuthenticated(true)
+    queryClient.invalidateQueries("currentUser")
   }
 
   const signOut = () => {
     clearUserToken()
     setIsAuthenticated(false)
+    queryClient.invalidateQueries("currentUser")
   }
 
   return (

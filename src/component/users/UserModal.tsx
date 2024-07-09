@@ -16,6 +16,8 @@ import {
 import { getAllRoles } from "api/role"
 import { getAllShops } from "api/shop"
 import { AxiosError } from "axios"
+import { ADMIN_ROLE } from "constant/roles"
+import { useUserContext } from "context/user"
 import { ChangeEvent, FC, useEffect, useState } from "react"
 import {
   FiAtSign,
@@ -26,18 +28,18 @@ import {
 } from "react-icons/fi"
 import { useQuery } from "react-query"
 import { useUserCreateMutation, useUserUpdateMutation } from "service/user"
+import { ModalProps } from "type/modalProps"
 import { Role } from "type/role"
 import { Shop } from "type/shop"
-import { RoleWithPermissions, User, UserCreateOrUpdate } from "type/user"
+import { RoleWithPermissions, User, UserCreate, UserUpdate } from "type/user"
+import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 import { isPasswordValid, isUsernameValid } from "util/validation"
 
-interface UserModalProps {
-  prevUser?: User
-  shops?: Shop[]
+interface UserModalProps extends ModalProps {
+  prevUser?: WithId<User>
+  shops?: WithId<Shop>[]
   roles?: RoleWithPermissions[]
-  isOpen: boolean
-  onClose: () => void
 }
 
 const newUser: User = {
@@ -51,6 +53,8 @@ const newUser: User = {
 export const UserModal: FC<UserModalProps> = (props) => {
   const { prevUser, shops, roles, isOpen, onClose } = props
 
+  const { currentUser } = useUserContext()
+
   const isNewUser = !prevUser
 
   const [user, setUser] = useState<User>(prevUser || newUser)
@@ -58,14 +62,17 @@ export const UserModal: FC<UserModalProps> = (props) => {
   const [selectedShops, setSelectedShops] = useState<number[]>([])
   const [selectedRoles, setSelectedRoles] = useState<number[]>([])
 
-  const { data: shopsList } = useQuery<Shop[]>("shopsList", getAllShops)
-  const { data: rolesList } = useQuery<Role[]>("rolesList", getAllRoles)
+  const { data: shopsList } = useQuery<WithId<Shop>[]>("shopsList", getAllShops)
+  const { data: rolesList } = useQuery<WithId<Role>[]>("rolesList", getAllRoles)
 
   const userCreateMutation = useUserCreateMutation()
   const userUpdateMutation = useUserUpdateMutation()
 
+  const isLoading = userCreateMutation.isLoading || userUpdateMutation.isLoading
+
   const isUsernameInvalid = !user.username
-  const isPasswordInvalid = (isNewUser && !newPassword) || isUsernameInvalid
+  const isPasswordInvalid =
+    (isNewUser && !newPassword.trim()) || isUsernameInvalid
   const isFioInvalid = !user.fio
   const isSelectedShopsInvalid = selectedShops?.length === 0
   const isSelectedRolesInvalid = selectedRoles?.length === 0
@@ -76,6 +83,8 @@ export const UserModal: FC<UserModalProps> = (props) => {
     isFioInvalid ||
     isSelectedShopsInvalid ||
     isSelectedRolesInvalid
+
+  const isUserIsCurrent = user.username === currentUser?.username
 
   const handleUserUpdate = (param: string, value: number | string) => {
     setUser((prevUser) => ({
@@ -111,23 +120,20 @@ export const UserModal: FC<UserModalProps> = (props) => {
   }
 
   const onUserUpdate = async () => {
-    const body: UserCreateOrUpdate = {
-      user,
-      roles_list: selectedRoles,
-      shops_list: selectedShops,
-    }
+    //* Remove user password param, to not change it if not needed
+    delete user["password"]
 
     const isInvalidUsername = !isUsernameValid(user.username)
     if (isInvalidUsername) {
-      notify("Логин должен содержать минимум 5 символов", "error")
+      notify("Username must contain at least 5 characters", "error")
       return
     }
 
-    if (isNewUser || !!newPassword) {
+    if (isNewUser || !!newPassword.trim()) {
       const isInvalidPassword = !isPasswordValid(newPassword)
       if (isInvalidPassword) {
         notify(
-          "Пароль должен содержать буквы разных регистров и цифры и быть длиной минимум 8 символов",
+          "Password must contain upper and lower case letters and numbers and be at least 8 characters long",
           "error"
         )
         return
@@ -136,23 +142,41 @@ export const UserModal: FC<UserModalProps> = (props) => {
 
     try {
       if (isNewUser) {
-        user.password = newPassword
+        const body: UserCreate = {
+          user: {
+            ...user,
+            password: newPassword,
+          },
+          roles_list: selectedRoles,
+          shops_list: selectedShops,
+        }
 
         await userCreateMutation.mutateAsync(body)
 
-        notify(`Сотрудник ${user.fio} успешно добавлен`, "success")
+        notify(`Employee ${user.fio} successfully added`, "success")
       } else {
-        user.password = undefined
+        const body: UserUpdate = {
+          user: {
+            ...user,
+            id: prevUser.id,
+          },
+          roles_list: selectedRoles,
+          shops_list: selectedShops,
+        }
+
+        if (!!newPassword.trim()) {
+          body.user.password = newPassword
+        }
 
         await userUpdateMutation.mutateAsync(body)
 
-        notify(`Сотрудник ${user.fio} успешно изменён`, "success")
+        notify(`Employee ${user.fio} successfully updated`, "success")
       }
       onClose()
     } catch (e) {
       if (e instanceof AxiosError) {
         if (e.response?.status === 400) {
-          notify("Пользователь с таким логином уже существует", "error")
+          notify("User with this username already exists", "error")
         }
       }
     }
@@ -182,27 +206,26 @@ export const UserModal: FC<UserModalProps> = (props) => {
       <ModalOverlay backdropFilter="blur(10px)" />
 
       <ModalContent>
-        <ModalHeader>
-          {isNewUser ? "Новый сотрудник" : "Cотрудник"}{" "}
-        </ModalHeader>
+        <ModalHeader>{isNewUser ? "New Employee" : "Employee"}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <Flex h="full" w="full" direction="row" gap={10}>
-            <Flex h="full" w="full" direction="column" gap={5}>
+          <Flex w="full" direction="row" gap={10}>
+            <Flex w="full" direction="column" gap={5}>
               {/* Username */}
               <Flex alignItems="center" gap={2}>
                 <FiCornerDownRight color="gray" />
 
                 <FormControl isInvalid={isUsernameInvalid}>
                   <Input
-                    placeholder="Логин"
+                    placeholder="Username"
                     value={user.username}
                     type="text"
                     onChange={(e) => {
                       const value = e.target.value.trim()
                       handleUserUpdate("username", value)
                     }}
+                    isDisabled={isLoading}
                   />
                 </FormControl>
               </Flex>
@@ -213,13 +236,14 @@ export const UserModal: FC<UserModalProps> = (props) => {
 
                 <FormControl isInvalid={isPasswordInvalid}>
                   <Input
-                    placeholder="Новый пароль"
+                    placeholder="New Password"
                     value={newPassword}
                     type="text"
                     onChange={(e) => {
                       const value = e.target.value.trim()
                       setNewPassword(value)
                     }}
+                    isDisabled={isLoading}
                   />
                 </FormControl>
               </Flex>
@@ -230,13 +254,14 @@ export const UserModal: FC<UserModalProps> = (props) => {
 
                 <FormControl isInvalid={isFioInvalid}>
                   <Input
-                    placeholder="ФИО"
+                    placeholder="Full Name"
                     value={user.fio}
                     type="text"
                     onChange={(e) => {
                       const value = e.target.value
                       handleUserUpdate("fio", value)
                     }}
+                    isDisabled={isLoading}
                   />
                 </FormControl>
               </Flex>
@@ -253,6 +278,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
                     const value = e.target.value.trim()
                     handleUserUpdate("email", value)
                   }}
+                  isDisabled={isLoading}
                 />
               </Flex>
 
@@ -261,13 +287,14 @@ export const UserModal: FC<UserModalProps> = (props) => {
                 <FiPhone color="gray" />
 
                 <Input
-                  placeholder="Телефон"
+                  placeholder="Phone"
                   value={user.phone}
                   type="number"
                   onChange={(e) => {
                     const value = e.target.value
                     handleUserUpdate("phone", value)
                   }}
+                  isDisabled={isLoading}
                 />
               </Flex>
 
@@ -276,23 +303,27 @@ export const UserModal: FC<UserModalProps> = (props) => {
                 <FiDollarSign color="gray" />
 
                 <Input
-                  placeholder="Зарплата"
+                  placeholder="Salary"
                   value={user.salary}
                   type="number"
                   onChange={(e) => {
                     const value = e.target.value
                     handleUserUpdate("salary", value)
                   }}
+                  isDisabled={isLoading}
                 />
               </Flex>
             </Flex>
 
-            <Flex h="full" w="full" direction="column" gap={5}>
+            <Flex w="full" direction="column" gap={5}>
               {/* Shops badges */}
               <Flex direction="column">
-                <Text fontWeight="bold">Магазины:</Text>
+                <Text fontWeight="bold">Stores:</Text>
 
-                <FormControl isInvalid={isSelectedShopsInvalid}>
+                <FormControl
+                  isInvalid={isSelectedShopsInvalid}
+                  isDisabled={isLoading}
+                >
                   <Flex direction={"column"}>
                     {shopsList?.map((shop) => (
                       <Checkbox
@@ -310,20 +341,30 @@ export const UserModal: FC<UserModalProps> = (props) => {
 
               {/* Roles badges */}
               <Flex direction="column">
-                <Text fontWeight="bold">Роли:</Text>
+                <Text fontWeight="bold">Roles:</Text>
 
-                <FormControl isInvalid={isSelectedRolesInvalid}>
+                <FormControl
+                  isInvalid={isSelectedRolesInvalid}
+                  isDisabled={isLoading}
+                >
                   <Flex direction={"column"}>
-                    {rolesList?.map((role) => (
-                      <Checkbox
-                        key={role.id}
-                        value={role.id}
-                        isChecked={selectedRoles.includes(role.id)}
-                        onChange={handleRolesUpdate}
-                      >
-                        {role.name}
-                      </Checkbox>
-                    ))}
+                    {rolesList?.map((role) => {
+                      const isAdminRoleCheckboxDisabled =
+                        isUserIsCurrent &&
+                        role.name.toLowerCase() === ADMIN_ROLE.toLowerCase()
+
+                      return (
+                        <Checkbox
+                          key={role.id}
+                          value={role.id}
+                          isChecked={selectedRoles.includes(role.id)}
+                          onChange={handleRolesUpdate}
+                          isDisabled={isAdminRoleCheckboxDisabled || isLoading}
+                        >
+                          {role.name}
+                        </Checkbox>
+                      )
+                    })}
                   </Flex>
                 </FormControl>
               </Flex>
@@ -334,16 +375,22 @@ export const UserModal: FC<UserModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="outline"
-              colorScheme="green"
+              variant="solid"
+              colorScheme="blue"
               onClick={onUserUpdate}
+              isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
             >
-              Сохранить
+              Save
             </Button>
 
-            <Button variant="outline" colorScheme="blue" onClick={onClose}>
-              Отмена
+            <Button
+              variant="solid"
+              colorScheme="gray"
+              onClick={onClose}
+              isLoading={isLoading}
+            >
+              Cancel
             </Button>
           </Flex>
         </ModalFooter>
