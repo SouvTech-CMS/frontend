@@ -25,7 +25,7 @@ export const useCommentInput = (props: useCommentInputProps) => {
     ["comment", objectId, objectName],
     () => getCommentByObjNameAndId(objectId!, objectName),
     {
-      enabled: !!objectId && !!objectName,
+      enabled: !!objectId,
     }
   )
 

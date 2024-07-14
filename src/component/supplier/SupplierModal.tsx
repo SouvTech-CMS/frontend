@@ -12,7 +12,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react"
-import { Comment } from "component/Comment"
+import { CommentInput } from "component/Comment"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { FiMapPin, FiUser } from "react-icons/fi"
@@ -138,7 +138,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
             </InputGroup>
 
             {/* Comment */}
-            <Comment
+            <CommentInput
               comment={comment}
               handleCommentChange={handleCommentChange}
               isDisabled={isCommentLoading}

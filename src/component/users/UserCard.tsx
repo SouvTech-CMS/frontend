@@ -13,8 +13,14 @@ import {
 import { CardMenu } from "component/users/UserCardMenu"
 import { UserDeleteModal } from "component/users/UserDeleteModal"
 import { UserModal } from "component/users/UserModal"
+import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
-import { FiAtSign, FiDollarSign, FiPhone } from "react-icons/fi"
+import {
+  FiAtSign,
+  FiDollarSign,
+  FiMessageSquare,
+  FiPhone,
+} from "react-icons/fi"
 import { Shop } from "type/shop"
 import { RoleWithPermissions, User } from "type/user"
 import { WithId } from "type/withId"
@@ -40,10 +46,16 @@ export const UserCard: FC<UserCardProps> = (props) => {
     onClose: onUserEditModalClose,
   } = useDisclosure()
 
+  const { comment } = useCommentInput({
+    objectName: "user",
+    objectId: user.id,
+  })
+
   const isEmailExists = !!user.email?.trim()
   const isPhoneExists = !!user.phone?.trim()
   const isSalaryExists = !!user.salary && user.salary > 0
   const isShopsExists = shops.length > 0
+  const isCommentExists = !!comment.trim()
 
   const rolesList = roles.map(
     (roleWithPermissions) => roleWithPermissions.role.name
@@ -82,6 +94,16 @@ export const UserCard: FC<UserCardProps> = (props) => {
 
                 <Text color="gray" fontSize="xs">
                   {user.phone}
+                </Text>
+              </Flex>
+            )}
+
+            {isCommentExists && (
+              <Flex alignItems="center" gap={1}>
+                <FiMessageSquare color="gray" />
+
+                <Text color="gray" fontSize="xs">
+                  {comment}
                 </Text>
               </Flex>
             )}

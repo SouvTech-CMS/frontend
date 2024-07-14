@@ -12,7 +12,7 @@ export const getCommentByObjNameAndId = async (
       obj_name: objectName,
     },
   })
-  return comment[0]
+  return comment
 }
 
 export const createComment = async (comment: Comment) => {

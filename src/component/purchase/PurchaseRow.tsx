@@ -14,6 +14,7 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react"
+import { CommentTooltip } from "component/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseGoodRow } from "component/good/PurchaseGoodRow"
 import { PurchaseGoodsStatusUpdateModal } from "component/good/PurchaseGoodsStatusUpdateModal"
@@ -25,6 +26,7 @@ import {
   PurchaseInStorageStatus,
 } from "constant/purchaseStatus"
 import { GOODS_TABLE_COLUMNS, PURCHASES_TABLE_COLUMNS } from "constant/tables"
+import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { FiAlertCircle } from "react-icons/fi"
 import { Purchase } from "type/purchase"
@@ -33,6 +35,8 @@ import { PurchaseGood } from "type/purchaseGood"
 import { Supplier } from "type/supplier"
 import { SupplierManager } from "type/supplierManager"
 import { WithId } from "type/withId"
+
+// TODO: remove "deleting" of suppliers, managers
 
 interface PurchaseRowProps {
   purchase: WithId<Purchase>
@@ -46,6 +50,13 @@ export const PurchaseRow: FC<PurchaseRowProps> = (props) => {
   const { purchase, goods, supplier, supplier_manager, files } = props
 
   const purchaseDeadline = new Date(purchase.deadline * 1000)
+
+  const { comment } = useCommentInput({
+    objectName: "purchase",
+    objectId: purchase.id,
+  })
+
+  const isCommentExists = !!comment.trim()
 
   const {
     isOpen: isDocumentsModalOpen,
@@ -154,8 +165,16 @@ export const PurchaseRow: FC<PurchaseRowProps> = (props) => {
               )}
             </Flex>
 
-            {/* Menu Btn */}
-            <Flex position="absolute" right={0} alignItems="center" gap={2}>
+            {/* Menu Btns */}
+            <Flex
+              position="absolute"
+              right={0}
+              h="full"
+              alignItems="center"
+              gap={2}
+            >
+              {isCommentExists && <CommentTooltip comment={comment} />}
+
               <AccordionIcon />
 
               <PurchaseRowMenu

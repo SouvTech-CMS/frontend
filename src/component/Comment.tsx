@@ -2,13 +2,13 @@ import { Input, InputGroup, InputLeftElement, Textarea } from "@chakra-ui/react"
 import { ChangeEvent, FC } from "react"
 import { FiMessageSquare } from "react-icons/fi"
 
-interface CommentProps {
+interface CommentInputProps {
   comment: string
   handleCommentChange: (event: ChangeEvent<HTMLInputElement>) => void
   isDisabled: boolean
 }
 
-export const Comment: FC<CommentProps> = (props) => {
+export const CommentInput: FC<CommentInputProps> = (props) => {
   const { comment, handleCommentChange, isDisabled } = props
 
   return (

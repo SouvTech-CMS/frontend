@@ -6,8 +6,9 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react"
+import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
-import { FiAtSign, FiPhone, FiTrash2 } from "react-icons/fi"
+import { FiAtSign, FiMessageSquare, FiPhone, FiTrash2 } from "react-icons/fi"
 import { useSupplierManagerDeleteMutation } from "service/supplierManager"
 import { SupplierManager } from "type/supplierManager"
 import { WithId } from "type/withId"
@@ -20,8 +21,14 @@ interface ManagerCardProps {
 export const ManagerCard: FC<ManagerCardProps> = (props) => {
   const { manager } = props
 
-  const isEmailExists = !!manager.email
-  const isPhoneExists = !!manager.phone_number
+  const { comment } = useCommentInput({
+    objectName: "supplier_manager",
+    objectId: manager.id,
+  })
+
+  const isEmailExists = !!manager.email.trim()
+  const isPhoneExists = !!manager.phone_number.trim()
+  const isCommentExists = !!comment.trim()
 
   const managerDeleteMutation = useSupplierManagerDeleteMutation()
 
@@ -53,6 +60,15 @@ export const ManagerCard: FC<ManagerCardProps> = (props) => {
               <FiPhone color="gray" />
 
               <Text color="gray">{manager.phone_number}</Text>
+            </Flex>
+          )}
+
+          {/* Comment */}
+          {isCommentExists && (
+            <Flex alignItems="center" gap={2}>
+              <FiMessageSquare color="gray" />
+
+              <Text color="gray">{comment}</Text>
             </Flex>
           )}
 
