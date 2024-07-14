@@ -7,5 +7,5 @@ export type Storage = {
   cost_per_item?: number
   box_quantity?: number
   in_box_quantity: number
-  shelf: string
+  shelf?: string
 }

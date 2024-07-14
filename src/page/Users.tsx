@@ -9,7 +9,7 @@ import { Role } from "constant/roles"
 import { useSearchContext } from "context/search"
 import { useQuery } from "react-query"
 import { UserWithRolesAndShops } from "type/user"
-import { withAuthAndRoles } from "util/withAuthAndRoles"
+import { withAuthAndRoles } from "hook/withAuthAndRoles"
 
 const Users = () => {
   const { query, isQueryExists } = useSearchContext()

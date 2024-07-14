@@ -17,7 +17,7 @@ export const getAllPurchaseDeliveries = async (): Promise<
 
 export const createPurchaseDelivery = async (
   body: PurchaseDeliveryCreate
-): Promise<WithId<PurchaseDelivery>> => {
+): Promise<FullPurchaseDelivery> => {
   const { data: newPurchase } = await axiosClient.post(
     "/purchase_delivery/",
     body
@@ -27,7 +27,7 @@ export const createPurchaseDelivery = async (
 
 export const updatePurchaseDelivery = async (
   purchase: WithId<PurchaseDelivery>
-): Promise<WithId<PurchaseDelivery>> => {
+): Promise<FullPurchaseDelivery> => {
   const { data: newPurchase } = await axiosClient.put(
     "/purchase_delivery/",
     purchase

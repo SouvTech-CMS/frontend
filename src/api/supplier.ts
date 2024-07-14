@@ -7,8 +7,11 @@ export const getAllSuppliers = async (): Promise<WithId<Supplier>[]> => {
   return suppliersList
 }
 
-export const createSupplier = async (supplier: Supplier) => {
-  await axiosClient.post("/supplier/", supplier)
+export const createSupplier = async (
+  supplier: Supplier
+): Promise<WithId<Supplier>> => {
+  const { data: newSupplier } = await axiosClient.post("/supplier/", supplier)
+  return newSupplier
 }
 
 export const updateSupplier = async (supplier: WithId<Supplier>) => {

@@ -1,5 +1,6 @@
 import { Button, Flex, Heading } from "@chakra-ui/react"
 import { LoadingPage } from "component/LoadingPage"
+import { Logo } from "component/Logo"
 import { SidebarListItem } from "component/sidebar/SidebarListItem"
 import { configuration } from "configuration"
 import { useAuthContext } from "context/auth"
@@ -30,8 +31,8 @@ export const Sidebar: FC = () => {
       gap={10}
     >
       {/* TODO: replace this with logo image */}
-      <Heading w="full" textAlign="center">
-        Logo
+      <Heading w="full" size="md">
+        <Logo />
       </Heading>
 
       {isLoadingCurrentUser ? (

@@ -1,8 +1,9 @@
 import {
   Button,
   Flex,
-  FormControl,
   Input,
+  InputGroup,
+  InputLeftElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,6 +12,8 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react"
+import { CommentInput } from "component/Comment"
+import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { FiAtSign, FiPhone, FiUser } from "react-icons/fi"
 import { useSupplierManagerCreateMutation } from "service/supplierManager"
@@ -36,6 +39,11 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
     supplier_id: supplierId,
   })
 
+  const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
+    useCommentInput({
+      objectName: "supplier_manager",
+    })
+
   const supplierManagerCreateMutation = useSupplierManagerCreateMutation()
 
   const isLoading = supplierManagerCreateMutation.isLoading
@@ -49,7 +57,11 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
   }
 
   const onManagerCreate = async () => {
-    await supplierManagerCreateMutation.mutateAsync(manager)
+    const { id: managerId } = await supplierManagerCreateMutation.mutateAsync(
+      manager
+    )
+
+    await onCommentSubmit(managerId)
 
     notify(`Manager ${manager.name} created successfully`, "success")
     onClose()
@@ -73,55 +85,56 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
         <ModalBody>
           <Flex direction="column" gap={3}>
             {/* Name */}
-            <Flex alignItems="center" gap={2}>
-              <FiUser color="gray" />
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiUser />
+              </InputLeftElement>
 
-              <FormControl isInvalid={isManagerNameInvalid}>
-                <Input
-                  placeholder="Name"
-                  value={manager.name}
-                  type="text"
-                  onChange={(e) => {
-                    const value = e.target.value
-                    handleManagerUpdate("name", value)
-                  }}
-                />
-              </FormControl>
-            </Flex>
+              <Input
+                placeholder="Name"
+                value={manager.name}
+                type="text"
+                onChange={(e) => handleManagerUpdate("name", e.target.value)}
+                isInvalid={isManagerNameInvalid}
+              />
+            </InputGroup>
 
             {/* Email */}
-            <Flex alignItems="center" gap={2}>
-              <FiAtSign color="gray" />
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiAtSign />
+              </InputLeftElement>
 
-              <FormControl>
-                <Input
-                  placeholder="Email"
-                  value={manager.email}
-                  type="email"
-                  onChange={(e) => {
-                    const value = e.target.value
-                    handleManagerUpdate("email", value)
-                  }}
-                />
-              </FormControl>
-            </Flex>
+              <Input
+                placeholder="Email"
+                value={manager.email}
+                type="email"
+                onChange={(e) => handleManagerUpdate("email", e.target.value)}
+              />
+            </InputGroup>
 
             {/* Phone Number */}
-            <Flex alignItems="center" gap={2}>
-              <FiPhone color="gray" />
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiPhone />
+              </InputLeftElement>
 
-              <FormControl>
-                <Input
-                  placeholder="Phone Number"
-                  value={manager.phone_number}
-                  type="number"
-                  onChange={(e) => {
-                    const value = e.target.value
-                    handleManagerUpdate("phone_number", value)
-                  }}
-                />
-              </FormControl>
-            </Flex>
+              <Input
+                placeholder="Phone Number"
+                value={manager.phone_number}
+                type="number"
+                onChange={(e) =>
+                  handleManagerUpdate("phone_number", e.target.value)
+                }
+              />
+            </InputGroup>
+
+            {/* Comment */}
+            <CommentInput
+              comment={comment}
+              handleCommentChange={handleCommentChange}
+              isDisabled={isCommentLoading}
+            />
           </Flex>
         </ModalBody>
 

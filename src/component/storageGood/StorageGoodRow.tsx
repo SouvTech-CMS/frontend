@@ -22,7 +22,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
     0
   )
 
-  const goodsShelfsList = storagesList.flatMap(({ shelf }) => shelf.split(";"))
+  const goodsShelfsList = storagesList.flatMap(({ shelf }) => shelf?.split(";"))
 
   return (
     <Tr>

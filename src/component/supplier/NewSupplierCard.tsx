@@ -1,5 +1,5 @@
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react"
-import { SupplierModal } from "component/suppliers/SupplierModal"
+import { SupplierModal } from "component/supplier/SupplierModal"
 import { FC } from "react"
 import { FiPlusCircle } from "react-icons/fi"
 

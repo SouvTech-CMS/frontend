@@ -13,8 +13,12 @@ export const getManagersBySupplierId = async (
 
 export const createSupplierManager = async (
   supplierManager: SupplierManager
-) => {
-  await axiosClient.post("/supplier_manager/", supplierManager)
+): Promise<WithId<SupplierManager>> => {
+  const { data: newSupplierManager } = await axiosClient.post(
+    "/supplier_manager/",
+    supplierManager
+  )
+  return newSupplierManager
 }
 
 export const updateSupplierManager = async (
