@@ -1,5 +1,6 @@
 import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
+import Dashboard from "page/Dashboard"
 import Goods from "page/Goods"
 import { NoAccess } from "page/NoAccess"
 import OrderInfo from "page/OrderInfo"
@@ -45,7 +46,8 @@ export const configuration = {
       icon: FiHome,
       name: "Dashboard",
       path: "/",
-      roles: [Role.MANAGER],
+      roles: [Role.ADMIN],
+      component: <Dashboard />,
     },
     // Reports
     {
