@@ -46,7 +46,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
 
   const purchaseGood = purchaseGoods?.find(
     (good) => good.id === goodsPair.purchase_good_id,
-  )!
+  )
 
   const [shelf, setShelf] = useState<string>("")
   const [shelfsList, setShelfsList] = useState<string[]>([])
@@ -56,7 +56,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
   const isSelectedStorageGoodInvalid = !goodsPair.storage_good_id
 
   const handleGoodChange = (param: string, value: number | string) => {
-    handleGoodsPairUpdate(param, value, purchaseGood.id)
+    handleGoodsPairUpdate(param, value, purchaseGood!.id)
   }
 
   const handleShelfChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -103,7 +103,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
           {/* Goods Pair */}
           <Flex alignItems="center" gap={5}>
             {/* Delivery Good */}
-            <Input defaultValue={purchaseGood.name} isDisabled />
+            <Input defaultValue={purchaseGood?.name} isDisabled />
 
             {/* Arrow Icon */}
             <Flex>
