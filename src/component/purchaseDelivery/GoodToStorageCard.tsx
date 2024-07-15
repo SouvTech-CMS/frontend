@@ -6,8 +6,8 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  Select,
 } from "@chakra-ui/react"
+import { ChakraStylesConfig, Select } from "chakra-react-select"
 import { ShelfBadge } from "component/storageGood/ShelfBadge"
 import { ChangeEvent, FC, KeyboardEvent, useState } from "react"
 import {
@@ -66,6 +66,20 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
     }
   }
 
+  const handleShelfRemove = (shelfCode: string) => {
+    const newShelfsList = shelfsList.filter((shelf) => shelf !== shelfCode)
+    setShelfsList(newShelfsList)
+    handleGoodChange("shelf", newShelfsList.join(";"))
+    setShelf("")
+  }
+
+  const storageGoodSelectStyles: ChakraStylesConfig = {
+    container: (provided) => ({
+      ...provided,
+      width: "full",
+    }),
+  }
+
   return (
     <Card>
       <CardBody>
@@ -82,13 +96,16 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
 
             {/* Storage Good Select */}
             <Select
+              chakraStyles={storageGoodSelectStyles}
               placeholder="Select storage good"
+              options={storageGoods?.map((storageGood) => ({
+                value: storageGood.id,
+                label: storageGood.name,
+              }))}
+              isSearchable
+              isRequired
               isDisabled={isStorageGoodsLoading}
-            >
-              {storageGoods?.map((storageGood) => (
-                <option value={storageGood.id}>{storageGood.name}</option>
-              ))}
-            </Select>
+            />
           </Flex>
 
           {/* Quantities and Shelf Inputs */}
@@ -151,7 +168,12 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
 
               <Flex alignItems="center" flexWrap="wrap" gap={2}>
                 {shelfsList.map((shelfCode, index) => (
-                  <ShelfBadge key={index} shelf={shelfCode} />
+                  <ShelfBadge
+                    key={index}
+                    shelf={shelfCode}
+                    onRemove={() => handleShelfRemove(shelfCode)}
+                    isCanRemove
+                  />
                 ))}
               </Flex>
             </Flex>
