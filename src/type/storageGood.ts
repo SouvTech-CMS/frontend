@@ -2,7 +2,6 @@ import { Storage } from "type/storage"
 import { WithId } from "type/withId"
 
 export type StorageGood = {
-  id: number
   uniquename: string
   name: string
   description?: string

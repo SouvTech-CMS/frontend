@@ -7,24 +7,34 @@ import {
 } from "@chakra-ui/react"
 import { FC } from "react"
 import {
-  FiBox,
   FiEdit,
   FiFileText,
   FiMoreVertical,
+  FiPackage,
+  FiPlusSquare,
   FiTrash2,
 } from "react-icons/fi"
 
 interface PurchaseDeliveryRowMenuProps {
+  onMoveGoodsToStorage: () => void
   onDocuments: () => void
   onGoods: () => void
   onEdit: () => void
   onDelete: () => void
+  isMoveGoodsToStorageBtnHidden: boolean
 }
 
 export const PurchaseDeliveryRowMenu: FC<PurchaseDeliveryRowMenuProps> = (
-  props
+  props,
 ) => {
-  const { onDocuments, onGoods, onEdit, onDelete } = props
+  const {
+    onMoveGoodsToStorage,
+    onDocuments,
+    onGoods,
+    onEdit,
+    onDelete,
+    isMoveGoodsToStorageBtnHidden,
+  } = props
 
   return (
     <Menu>
@@ -36,11 +46,17 @@ export const PurchaseDeliveryRowMenu: FC<PurchaseDeliveryRowMenuProps> = (
       />
 
       <MenuList>
+        {!isMoveGoodsToStorageBtnHidden && (
+          <MenuItem icon={<FiPlusSquare />} onClick={onMoveGoodsToStorage}>
+            Move to storage
+          </MenuItem>
+        )}
+
         <MenuItem icon={<FiFileText />} onClick={onDocuments}>
           Documents
         </MenuItem>
 
-        <MenuItem icon={<FiBox />} onClick={onGoods}>
+        <MenuItem icon={<FiPackage />} onClick={onGoods}>
           Goods
         </MenuItem>
 

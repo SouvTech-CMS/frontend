@@ -3,6 +3,7 @@ import { FC } from "react"
 import { Storage } from "type/storage"
 import { StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
+import { ShelfBadge } from "./ShelfBadge"
 
 interface StorageGoodRowProps {
   storageGood: WithId<StorageGood>
@@ -22,7 +23,9 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
     0
   )
 
-  const goodsShelfsList = storagesList.flatMap(({ shelf }) => shelf?.split(";"))
+  const goodsShelfsList = storagesList
+    .flatMap(({ shelf }) => shelf?.split(";") || "")
+    .filter((shelf) => !!shelf.trim())
 
   return (
     <Tr>
@@ -46,9 +49,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
       <Td>
         <Flex gap={2}>
           {goodsShelfsList.map((shelf) => (
-            <Badge fontSize="sm" colorScheme="purple">
-              {shelf}
-            </Badge>
+            <ShelfBadge shelf={shelf} />
           ))}
         </Flex>
       </Td>
