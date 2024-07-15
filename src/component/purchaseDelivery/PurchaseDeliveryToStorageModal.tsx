@@ -20,6 +20,7 @@ import { PurchaseGood } from "type/purchaseGood"
 import { DeliveryToStorage, DeliveryToStorageGood } from "type/storage"
 import { StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
+import { notify } from "util/toasts"
 
 interface PurchaseDeliveryToStorageModalProps extends ModalProps {
   purchaseDelivery: WithId<PurchaseDelivery>
@@ -74,6 +75,12 @@ export const PurchaseDeliveryToStorageModal: FC<
       goods: goodsPairs,
     }
     await moveGoodsToStorageMutation.mutateAsync(body)
+
+    notify(
+      `Goods from delivery #${purchaseDelivery.id} was moved to Storage successfully`,
+      "success",
+    )
+    onClose()
   }
 
   useEffect(

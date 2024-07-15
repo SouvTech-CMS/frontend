@@ -7,7 +7,7 @@ import {
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react"
-import { ChakraStylesConfig, Select } from "chakra-react-select"
+import { ActionMeta, ChakraStylesConfig, Select } from "chakra-react-select"
 import { ShelfBadge } from "component/storageGood/ShelfBadge"
 import { ChangeEvent, FC, KeyboardEvent, useState } from "react"
 import {
@@ -33,6 +33,11 @@ interface GoodToStorageCardProps {
   ) => void
 }
 
+type SelectOption = {
+  value: number
+  label: string
+}
+
 export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
   const { goodsPair, purchaseGoods, storageGoods, handleGoodsPairUpdate } =
     props
@@ -47,6 +52,8 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
   const [shelfsList, setShelfsList] = useState<string[]>([])
 
   const isShelfExists = !!shelf.trim() && shelf.trim().length >= 2
+
+  const isSelectedStorageGoodInvalid = !goodsPair.storage_good_id
 
   const handleGoodChange = (param: string, value: number | string) => {
     handleGoodsPairUpdate(param, value, purchaseGood.id)
@@ -71,6 +78,15 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
     setShelfsList(newShelfsList)
     handleGoodChange("shelf", newShelfsList.join(";"))
     setShelf("")
+  }
+
+  const handleStorageGoodSelect = (
+    newValue: unknown,
+    actionMeta: ActionMeta<unknown>,
+  ) => {
+    const selectedOption = newValue as SelectOption
+    const storageGoodId = Number(selectedOption.value as number)
+    handleGoodChange("storage_good_id", storageGoodId)
   }
 
   const storageGoodSelectStyles: ChakraStylesConfig = {
@@ -102,8 +118,9 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
                 value: storageGood.id,
                 label: storageGood.name,
               }))}
+              onChange={handleStorageGoodSelect}
               isSearchable
-              isRequired
+              isInvalid={isSelectedStorageGoodInvalid}
               isDisabled={isStorageGoodsLoading}
             />
           </Flex>
