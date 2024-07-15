@@ -3,7 +3,6 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Badge,
   Flex,
   Grid,
   Table,
@@ -18,25 +17,19 @@ import { CommentTooltip } from "component/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseGoodRow } from "component/good/PurchaseGoodRow"
 import { PurchaseGoodsStatusUpdateModal } from "component/good/PurchaseGoodsStatusUpdateModal"
+import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
-import {
-  PurchaseDeliveryStatus,
-  PurchaseInStorageStatus,
-} from "constant/purchaseStatus"
 import { GOODS_TABLE_COLUMNS, PURCHASES_TABLE_COLUMNS } from "constant/tables"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
-import { FiAlertCircle } from "react-icons/fi"
 import { Purchase } from "type/purchase"
 import { PurchaseFile } from "type/purchaseFile"
 import { PurchaseGood } from "type/purchaseGood"
 import { Supplier } from "type/supplier"
 import { SupplierManager } from "type/supplierManager"
 import { WithId } from "type/withId"
-
-// TODO: remove "deleting" of suppliers, managers
 
 interface PurchaseRowProps {
   purchase: WithId<Purchase>
@@ -82,37 +75,6 @@ export const PurchaseRow: FC<PurchaseRowProps> = (props) => {
     onClose: onSupplierManagerModalClose,
   } = useDisclosure()
 
-  const getDeadlineDaysDiff = () => {
-    const now = new Date()
-    const timeDiff = purchaseDeadline.getTime() - now.getTime()
-    // Calculate the difference in days between the current date and the purchase deadline
-    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
-    return daysDiff
-  }
-
-  const deadlineDaysDiff = getDeadlineDaysDiff()
-  const isDeadlineGone = deadlineDaysDiff <= 0
-  const isDeadlineComming = deadlineDaysDiff <= 3
-
-  let deadlineBgColor = ""
-  if (isDeadlineGone) {
-    deadlineBgColor = "red.200"
-  } else if (isDeadlineComming) {
-    deadlineBgColor = "orange.200"
-  }
-
-  const allGoodsInDelivery = goods.every((good) =>
-    Object.values(PurchaseDeliveryStatus).includes(
-      good.status as PurchaseDeliveryStatus
-    )
-  )
-
-  const allGoodsInStorage = goods.every(
-    (good) => good.status === PurchaseInStorageStatus
-  )
-
-  const allGoodsInWaiting = !allGoodsInDelivery && !allGoodsInStorage
-
   return (
     <>
       <AccordionItem>
@@ -136,33 +98,10 @@ export const PurchaseRow: FC<PurchaseRowProps> = (props) => {
 
             {/* Deadline */}
             <Flex justifyContent="flex-start">
-              {allGoodsInWaiting && (
-                <Flex
-                  w="fit-content"
-                  bgColor={deadlineBgColor}
-                  alignItems="center"
-                  p={2}
-                  borderRadius={10}
-                  gap={2}
-                >
-                  {isDeadlineComming && <FiAlertCircle color="red" />}
-                  <Text>{purchaseDeadline.toDateString()}</Text>
-                </Flex>
-              )}
-
-              {/* In Delivery Badge */}
-              {allGoodsInDelivery && (
-                <Badge fontSize="sm" colorScheme="purple" p={2}>
-                  In delivery
-                </Badge>
-              )}
-
-              {/* In Storage Badge */}
-              {allGoodsInStorage && (
-                <Badge fontSize="sm" colorScheme="green" p={2}>
-                  In storage
-                </Badge>
-              )}
+              <PurchaseDeadlineBadge
+                goods={goods}
+                deadline={purchaseDeadline}
+              />
             </Flex>
 
             {/* Menu Btns */}
