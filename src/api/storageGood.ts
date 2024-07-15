@@ -4,7 +4,7 @@ import { GoodWithStorages, StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
 
 export const getAllStorageGoods = async (
-  offset: number
+  offset: number,
 ): Promise<GoodWithStorages[]> => {
   const { data: storageGoodsList } = await axiosClient.get("/storage_good/", {
     params: {
@@ -15,9 +15,18 @@ export const getAllStorageGoods = async (
   return storageGoodsList
 }
 
+export const getFullStorageGoodsList = async (): Promise<
+  WithId<StorageGood>[]
+> => {
+  const { data: storageGoodsList } = await axiosClient.get(
+    "/storage_good/full_list/",
+  )
+  return storageGoodsList
+}
+
 export const getStorageGoodsCount = async (): Promise<number> => {
   const { data: storageGoodsCount } = await axiosClient.get(
-    "/storage_good/count/"
+    "/storage_good/count/",
   )
   return storageGoodsCount
 }

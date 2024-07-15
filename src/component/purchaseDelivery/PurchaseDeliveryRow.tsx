@@ -5,7 +5,11 @@ import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/Purchase
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
 import { PurchaseDeliveryModal } from "component/purchaseDelivery/PurchaseDeliveryModal"
 import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
-import { PurchaseInStorageStatus } from "constant/purchaseStatus"
+import { PurchaseDeliveryToStorageModal } from "component/purchaseDelivery/PurchaseDeliveryToStorageModal"
+import {
+  PurchaseDeliveryStatus,
+  PurchaseInStorageStatus,
+} from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { FiAlertCircle } from "react-icons/fi"
@@ -50,6 +54,12 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
     onClose: onPurchaseDeliveryDeleteModalClose,
   } = useDisclosure()
 
+  const {
+    isOpen: isPurchaseDeliveryToStorageModalOpen,
+    onOpen: onPurchaseDeliveryToStorageModalOpen,
+    onClose: onPurchaseDeliveryToStorageModalClose,
+  } = useDisclosure()
+
   const { comment } = useCommentInput({
     objectName: "purchase_delivery",
     objectId: purchaseDelivery.id,
@@ -79,10 +89,12 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
   }
 
   const allGoodsInStorage = goods.every(
-    (good) => good.status === PurchaseInStorageStatus
+    (good) => good.status === PurchaseInStorageStatus,
   )
 
   const allGoodsInDelivery = !allGoodsInStorage
+  const isMoveGoodsToStorageBtnHidden =
+    purchaseDeliveryStatus !== PurchaseDeliveryStatus.Custom
 
   return (
     <>
@@ -142,10 +154,12 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
           {isCommentExists && <CommentTooltip comment={comment} />}
 
           <PurchaseDeliveryRowMenu
+            onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
             onDocuments={onDocumentsModalOpen}
             onGoods={onPurchaseDeliveryGoodsStatusModalOpen}
             onEdit={onPurchaseDeliveryEditModalOpen}
             onDelete={onPurchaseDeliveryDeleteModalOpen}
+            isMoveGoodsToStorageBtnHidden={isMoveGoodsToStorageBtnHidden}
           />
         </Flex>
       </Tr>
@@ -176,6 +190,13 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
         prevGoods={goods}
         isOpen={isPurchaseDeliveryEditModalOpen}
         onClose={onPurchaseDeliveryEditModalClose}
+      />
+
+      <PurchaseDeliveryToStorageModal
+        purchaseDelivery={purchaseDelivery}
+        purchaseGoods={goods}
+        isOpen={isPurchaseDeliveryToStorageModalOpen}
+        onClose={onPurchaseDeliveryToStorageModalClose}
       />
     </>
   )

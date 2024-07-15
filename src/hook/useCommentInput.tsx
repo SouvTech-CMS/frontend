@@ -41,7 +41,7 @@ export const useCommentInput = (props: useCommentInputProps) => {
     commentDeleteMutation.isLoading
 
   const isPrevCommentExists = !!prevComment
-  const isCommentEmpty = !comment.trim()
+  const isCommentEmpty = isPrevCommentExists && !comment.trim()
   const isCommentChanged = prevComment?.comment?.trim() !== comment.trim()
 
   const handleCommentChange = (event: ChangeEvent<HTMLInputElement>) => {
