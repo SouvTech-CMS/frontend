@@ -11,8 +11,11 @@ export const getAllUsers = async (): Promise<UserWithRolesAndShops[]> => {
   return usersList
 }
 
-export const createUser = async (user: UserCreate) => {
-  await axiosClient.post("/user/", user)
+export const createUser = async (
+  user: UserCreate
+): Promise<UserWithRolesAndShops> => {
+  const { data: newUser } = await axiosClient.post("/user/", user)
+  return newUser
 }
 
 export const updateUser = async (user: UserUpdate) => {

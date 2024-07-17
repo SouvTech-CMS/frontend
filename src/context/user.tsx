@@ -4,9 +4,10 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { FCC } from "type/fcc"
 import { User, UserWithRolesAndShops } from "type/user"
+import { WithId } from "type/withId"
 
 interface UserContextProps {
-  currentUser?: User
+  currentUser?: WithId<User>
   userRoles?: string[]
   userPermissions?: string[]
   isUserAdmin?: boolean

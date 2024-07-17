@@ -14,7 +14,9 @@ import {
 } from "@chakra-ui/react"
 import { getAllSuppliers } from "api/supplier"
 import { getManagersBySupplierId } from "api/supplierManager"
+import { CommentInput } from "component/Comment"
 import { PurchaseGoodsTable } from "component/good/PurchaseGoodsTable"
+import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { usePurchaseCreateMutation } from "service/purchase"
@@ -64,6 +66,11 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
     { enabled: !!purchase.supplier_id }
   )
 
+  const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
+    useCommentInput({
+      objectName: "purchase",
+    })
+
   const isManagerSelectDisabled = isManagersLoading || !purchase.supplier_id
   const isSaveBtnDisabled =
     isLoading ||
@@ -103,6 +110,8 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
       }
       await purchaseGoodCreateMutation.mutateAsync(body)
     })
+
+    await onCommentSubmit(purchaseId)
 
     notify("Purchase created successfully", "success")
     onClose()
@@ -202,6 +211,13 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
                 />
               </Flex>
             </Flex>
+
+            {/* Comment */}
+            <CommentInput
+              comment={comment}
+              handleCommentChange={handleCommentChange}
+              isDisabled={isCommentLoading}
+            />
           </Flex>
         </ModalBody>
 

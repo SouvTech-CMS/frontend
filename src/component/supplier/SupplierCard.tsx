@@ -8,10 +8,11 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
-import { SupplierManagersModal } from "component/manager/ManagersListModal"
-import { SupplierCardMenu } from "component/suppliers/SupplierCardMenu"
-import { SupplierDeleteModal } from "component/suppliers/SupplierDeleteModal"
-import { SupplierModal } from "component/suppliers/SupplierModal"
+import { SupplierCardMenu } from "component/supplier/SupplierCardMenu"
+import { SupplierDeleteModal } from "component/supplier/SupplierDeleteModal"
+import { SupplierModal } from "component/supplier/SupplierModal"
+import { SupplierManagersModal } from "component/supplierManager/ManagersListModal"
+import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { Supplier } from "type/supplier"
 import { WithId } from "type/withId"
@@ -41,6 +42,13 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
     onClose: onManagersModalClose,
   } = useDisclosure()
 
+  const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
+    useCommentInput({
+      objectName: "supplier",
+      objectId: supplier.id,
+    })
+
+  const isCommentExists = !!comment.trim()
   const isAddressExists = !!supplier.address
 
   return (
@@ -53,6 +61,13 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
             {isAddressExists && (
               <Text color="gray" fontSize="sm">
                 {supplier.address}
+              </Text>
+            )}
+
+            {/* Comment */}
+            {isCommentExists && (
+              <Text color="gray" fontSize="sm">
+                {comment}
               </Text>
             )}
           </Flex>

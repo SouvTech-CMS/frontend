@@ -1,9 +1,16 @@
 import { Badge, Flex, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
+import { CommentTooltip } from "component/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/PurchaseDeliveryDeleteModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
 import { PurchaseDeliveryModal } from "component/purchaseDelivery/PurchaseDeliveryModal"
 import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
+import { PurchaseDeliveryToStorageModal } from "component/purchaseDelivery/PurchaseDeliveryToStorageModal"
+import {
+  PurchaseDeliveryStatus,
+  PurchaseInStorageStatus,
+} from "constant/purchaseStatus"
+import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { FiAlertCircle } from "react-icons/fi"
 import { PurchaseDelivery } from "type/purchaseDelivery"
@@ -47,6 +54,19 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
     onClose: onPurchaseDeliveryDeleteModalClose,
   } = useDisclosure()
 
+  const {
+    isOpen: isPurchaseDeliveryToStorageModalOpen,
+    onOpen: onPurchaseDeliveryToStorageModalOpen,
+    onClose: onPurchaseDeliveryToStorageModalClose,
+  } = useDisclosure()
+
+  const { comment } = useCommentInput({
+    objectName: "purchase_delivery",
+    objectId: purchaseDelivery.id,
+  })
+
+  const isCommentExists = !!comment.trim()
+
   const getDeadlineDaysDiff = () => {
     const now = new Date()
     const timeDiff = purchaseDeadline.getTime() - now.getTime()
@@ -68,6 +88,14 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
     deadlineBgColor = "orange.200"
   }
 
+  const allGoodsInStorage = goods.every(
+    (good) => good.status === PurchaseInStorageStatus,
+  )
+
+  const allGoodsInDelivery = !allGoodsInStorage
+  const isMoveGoodsToStorageBtnHidden =
+    purchaseDeliveryStatus !== PurchaseDeliveryStatus.Custom
+
   return (
     <>
       <Tr position="relative">
@@ -83,12 +111,12 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
 
         {/* Track Number */}
         <Td>
-          <Text>{purchaseDelivery.track_number || "..."}</Text>
+          <Text>{purchaseDelivery.track_number}</Text>
         </Td>
 
         {/* Track Number after Custom */}
         <Td>
-          <Text>{purchaseDelivery.after_custom_track_number || "..."}</Text>
+          <Text>{purchaseDelivery.after_custom_track_number}</Text>
         </Td>
 
         {/* Status */}
@@ -105,33 +133,33 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
         {/* Deadline */}
         <Td>
           <Flex justifyContent="flex-start">
-            <Flex
-              w="fit-content"
-              bgColor={deadlineBgColor}
-              alignItems="center"
-              p={2}
-              borderRadius={10}
-              gap={2}
-            >
-              {isDeadlineComming && <FiAlertCircle color="red" />}
-              <Text>{purchaseDeadline.toDateString()}</Text>
-            </Flex>
+            {allGoodsInDelivery && (
+              <Flex
+                w="fit-content"
+                bgColor={deadlineBgColor}
+                alignItems="center"
+                p={2}
+                borderRadius={10}
+                gap={2}
+              >
+                {isDeadlineComming && <FiAlertCircle color="red" />}
+                <Text>{purchaseDeadline.toDateString()}</Text>
+              </Flex>
+            )}
           </Flex>
         </Td>
 
-        {/* Menu Btn */}
-        <Flex
-          position="absolute"
-          right={2}
-          h="full"
-          alignItems="center"
-          gap={2}
-        >
+        {/* Menu Btns */}
+        <Flex position="absolute" right={0} h="full" alignItems="center">
+          {isCommentExists && <CommentTooltip comment={comment} />}
+
           <PurchaseDeliveryRowMenu
+            onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
             onDocuments={onDocumentsModalOpen}
             onGoods={onPurchaseDeliveryGoodsStatusModalOpen}
             onEdit={onPurchaseDeliveryEditModalOpen}
             onDelete={onPurchaseDeliveryDeleteModalOpen}
+            isMoveGoodsToStorageBtnHidden={isMoveGoodsToStorageBtnHidden}
           />
         </Flex>
       </Tr>
@@ -162,6 +190,13 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
         prevGoods={goods}
         isOpen={isPurchaseDeliveryEditModalOpen}
         onClose={onPurchaseDeliveryEditModalClose}
+      />
+
+      <PurchaseDeliveryToStorageModal
+        purchaseDelivery={purchaseDelivery}
+        purchaseGoods={goods}
+        isOpen={isPurchaseDeliveryToStorageModalOpen}
+        onClose={onPurchaseDeliveryToStorageModalClose}
       />
     </>
   )

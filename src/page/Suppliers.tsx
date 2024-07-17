@@ -3,14 +3,14 @@ import { getAllSuppliers } from "api/supplier"
 import { LoadingPage } from "component/LoadingPage"
 import { Page } from "component/Page"
 import { PageHeading } from "component/PageHeading"
-import { NewSupplierCard } from "component/suppliers/NewSupplierCard"
-import { SupplierCard } from "component/suppliers/SupplierCard"
+import { NewSupplierCard } from "component/supplier/NewSupplierCard"
+import { SupplierCard } from "component/supplier/SupplierCard"
 import { Role } from "constant/roles"
 import { useSearchContext } from "context/search"
 import { useQuery } from "react-query"
 import { Supplier } from "type/supplier"
 import { WithId } from "type/withId"
-import { withAuthAndRoles } from "util/withAuthAndRoles"
+import { withAuthAndRoles } from "hook/withAuthAndRoles"
 
 const Suppliers = () => {
   const { query, isQueryExists } = useSearchContext()

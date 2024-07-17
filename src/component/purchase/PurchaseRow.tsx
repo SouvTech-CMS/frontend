@@ -3,7 +3,6 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Badge,
   Flex,
   Grid,
   Table,
@@ -14,19 +13,17 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react"
+import { CommentTooltip } from "component/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseGoodRow } from "component/good/PurchaseGoodRow"
 import { PurchaseGoodsStatusUpdateModal } from "component/good/PurchaseGoodsStatusUpdateModal"
+import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
-import {
-  PurchaseDeliveryStatus,
-  PurchaseInStorageStatus,
-} from "constant/purchaseStatus"
 import { GOODS_TABLE_COLUMNS, PURCHASES_TABLE_COLUMNS } from "constant/tables"
+import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
-import { FiAlertCircle } from "react-icons/fi"
 import { Purchase } from "type/purchase"
 import { PurchaseFile } from "type/purchaseFile"
 import { PurchaseGood } from "type/purchaseGood"
@@ -46,6 +43,13 @@ export const PurchaseRow: FC<PurchaseRowProps> = (props) => {
   const { purchase, goods, supplier, supplier_manager, files } = props
 
   const purchaseDeadline = new Date(purchase.deadline * 1000)
+
+  const { comment } = useCommentInput({
+    objectName: "purchase",
+    objectId: purchase.id,
+  })
+
+  const isCommentExists = !!comment.trim()
 
   const {
     isOpen: isDocumentsModalOpen,
@@ -71,37 +75,6 @@ export const PurchaseRow: FC<PurchaseRowProps> = (props) => {
     onClose: onSupplierManagerModalClose,
   } = useDisclosure()
 
-  const getDeadlineDaysDiff = () => {
-    const now = new Date()
-    const timeDiff = purchaseDeadline.getTime() - now.getTime()
-    // Calculate the difference in days between the current date and the purchase deadline
-    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
-    return daysDiff
-  }
-
-  const deadlineDaysDiff = getDeadlineDaysDiff()
-  const isDeadlineGone = deadlineDaysDiff <= 0
-  const isDeadlineComming = deadlineDaysDiff <= 3
-
-  let deadlineBgColor = ""
-  if (isDeadlineGone) {
-    deadlineBgColor = "red.200"
-  } else if (isDeadlineComming) {
-    deadlineBgColor = "orange.200"
-  }
-
-  const allGoodsInDelivery = goods.every((good) =>
-    Object.values(PurchaseDeliveryStatus).includes(
-      good.status as PurchaseDeliveryStatus
-    )
-  )
-
-  const allGoodsInStorage = goods.every(
-    (good) => good.status === PurchaseInStorageStatus
-  )
-
-  const allGoodsInWaiting = !allGoodsInDelivery && !allGoodsInStorage
-
   return (
     <>
       <AccordionItem>
@@ -125,36 +98,22 @@ export const PurchaseRow: FC<PurchaseRowProps> = (props) => {
 
             {/* Deadline */}
             <Flex justifyContent="flex-start">
-              {allGoodsInWaiting && (
-                <Flex
-                  w="fit-content"
-                  bgColor={deadlineBgColor}
-                  alignItems="center"
-                  p={2}
-                  borderRadius={10}
-                  gap={2}
-                >
-                  {isDeadlineComming && <FiAlertCircle color="red" />}
-                  <Text>{purchaseDeadline.toDateString()}</Text>
-                </Flex>
-              )}
-
-              {/* In Delivery Badge */}
-              {allGoodsInDelivery && (
-                <Badge fontSize="sm" colorScheme="purple">
-                  In delivery
-                </Badge>
-              )}
-
-              {/* In Storage Badge */}
-              {allGoodsInStorage && (
-                <Badge fontSize="sm" colorScheme="green">
-                  In storage
-                </Badge>
-              )}
+              <PurchaseDeadlineBadge
+                goods={goods}
+                deadline={purchaseDeadline}
+              />
             </Flex>
 
-            <Flex position="absolute" right={0} alignItems="center" gap={2}>
+            {/* Menu Btns */}
+            <Flex
+              position="absolute"
+              right={0}
+              h="full"
+              alignItems="center"
+              gap={2}
+            >
+              {isCommentExists && <CommentTooltip comment={comment} />}
+
               <AccordionIcon />
 
               <PurchaseRowMenu

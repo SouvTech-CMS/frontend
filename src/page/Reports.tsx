@@ -1,6 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react"
 import { Role } from "constant/roles"
-import { withAuthAndRoles } from "util/withAuthAndRoles"
+import { withAuthAndRoles } from "hook/withAuthAndRoles"
 
 const Reports = () => {
   return (

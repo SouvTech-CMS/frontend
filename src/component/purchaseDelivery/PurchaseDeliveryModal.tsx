@@ -13,8 +13,10 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react"
+import { CommentInput } from "component/Comment"
 import { PurchaseDeliveryGoodsSelectList } from "component/purchaseDelivery/PurchaseDeliveryGoodsSelectList"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
+import { useCommentInput } from "hook/useCommentInput"
 import { ChangeEvent, FC, useEffect, useState } from "react"
 import { FiArrowRight } from "react-icons/fi"
 import {
@@ -60,6 +62,12 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
   )
   const [newStatus, setNewStatus] = useState<string>("")
 
+  const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
+    useCommentInput({
+      objectName: "purchase_delivery",
+      objectId: prevPurchaseDelivery?.id,
+    })
+
   const purchaseDeliveryCreateMutation = usePurchaseDeliveryCreateMutation()
   const purchaseDeliveryUpdateMutation = usePurchaseDeliveryUpdateMutation()
   const purchaseGoodUpdateMutation = usePurchaseGoodUpdateMutation()
@@ -101,7 +109,10 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
         purchase_delivery_good: purchaseDeliveryGoodsIds,
       }
 
-      await purchaseDeliveryCreateMutation.mutateAsync(body)
+      const { purchase_delivery: newPurchaseDelivery } =
+        await purchaseDeliveryCreateMutation.mutateAsync(body)
+
+      await onCommentSubmit(newPurchaseDelivery.id)
 
       notify("Delivery was created successfully", "success")
     } else {
@@ -127,6 +138,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
           await purchaseGoodUpdateMutation.mutateAsync(body)
         })
       }
+      await onCommentSubmit()
 
       notify(
         `Delivery #${purchaseDeliveryId} was updated successfully`,
@@ -160,7 +172,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
         <ModalCloseButton />
 
         <ModalBody>
-          <Flex direction="column" gap={10}>
+          <Flex direction="column" gap={5}>
             <PurchaseDeliveryGoodsSelectList
               selectedGoods={goods}
               setSelectedGoods={setGoods}
@@ -273,6 +285,13 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
                 </Flex>
               </Flex>
             )}
+
+            {/* Comment */}
+            <CommentInput
+              comment={comment}
+              handleCommentChange={handleCommentChange}
+              isDisabled={isCommentLoading}
+            />
           </Flex>
         </ModalBody>
 

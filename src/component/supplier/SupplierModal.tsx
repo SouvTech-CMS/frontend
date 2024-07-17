@@ -1,8 +1,9 @@
 import {
   Button,
   Flex,
-  FormControl,
   Input,
+  InputGroup,
+  InputLeftElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -10,8 +11,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Textarea,
 } from "@chakra-ui/react"
+import { CommentInput } from "component/Comment"
+import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { FiMapPin, FiUser } from "react-icons/fi"
 import {
@@ -46,6 +48,12 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
   const isLoading =
     supplierCreateMutation.isLoading || supplierUpdateMutation.isLoading
 
+  const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
+    useCommentInput({
+      objectName: "supplier",
+      objectId: prevSupplier?.id,
+    })
+
   const isSupplierNameInvalid = !supplier.name.trim()
 
   const handleSupplierUpdate = (param: string, value: number | string) => {
@@ -57,7 +65,10 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
 
   const onSupplierUpdate = async () => {
     if (isNewSupplier) {
-      await supplierCreateMutation.mutateAsync(supplier)
+      const { id: newSupplierId } = await supplierCreateMutation.mutateAsync(
+        supplier
+      )
+      await onCommentSubmit(newSupplierId)
 
       notify(`Supplier ${supplier.name} created successfully`, "success")
     } else {
@@ -65,6 +76,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
         ...supplier,
         id: prevSupplier.id,
       })
+      await onCommentSubmit()
 
       notify(`Supplier ${supplier.name} updated successfully`, "success")
     }
@@ -90,37 +102,47 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
         <ModalBody>
           <Flex w="full" direction="column" gap={5}>
             {/* Name */}
-            <Flex alignItems="center" gap={2}>
-              <FiUser color="gray" />
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiUser />
+              </InputLeftElement>
 
-              <FormControl isInvalid={isSupplierNameInvalid}>
-                <Input
-                  placeholder="Name"
-                  value={supplier.name}
-                  type="text"
-                  onChange={(e) => {
-                    const value = e.target.value
-                    handleSupplierUpdate("name", value)
-                  }}
-                />
-              </FormControl>
-            </Flex>
+              <Input
+                placeholder="Name"
+                value={supplier.name}
+                type="text"
+                onChange={(e) => {
+                  const value = e.target.value
+                  handleSupplierUpdate("name", value)
+                }}
+                isInvalid={isSupplierNameInvalid}
+                isDisabled={isLoading}
+              />
+            </InputGroup>
 
             {/* Address */}
-            <Flex alignItems="center" gap={2}>
-              <FiMapPin color="gray" />
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiMapPin />
+              </InputLeftElement>
 
-              <FormControl>
-                <Textarea
-                  placeholder="Address"
-                  value={supplier.address}
-                  onChange={(e) => {
-                    const value = e.target.value
-                    handleSupplierUpdate("address", value)
-                  }}
-                />
-              </FormControl>
-            </Flex>
+              <Input
+                placeholder="Address"
+                value={supplier.address}
+                onChange={(e) => {
+                  const value = e.target.value
+                  handleSupplierUpdate("address", value)
+                }}
+                isDisabled={isLoading}
+              />
+            </InputGroup>
+
+            {/* Comment */}
+            <CommentInput
+              comment={comment}
+              handleCommentChange={handleCommentChange}
+              isDisabled={isCommentLoading}
+            />
           </Flex>
         </ModalBody>
 

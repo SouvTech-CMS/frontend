@@ -11,8 +11,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react"
 import { getManagersBySupplierId } from "api/supplierManager"
-import { ManagerCard } from "component/manager/ManagerCard"
-import { NewManagerModal } from "component/manager/NewManagerModal"
+import { ManagerCard } from "component/supplierManager/ManagerCard"
+import { NewManagerModal } from "component/supplierManager/NewManagerModal"
 import { FC } from "react"
 import { useQuery } from "react-query"
 import { ModalProps } from "type/modalProps"

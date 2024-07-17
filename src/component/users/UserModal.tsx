@@ -4,6 +4,8 @@ import {
   Flex,
   FormControl,
   Input,
+  InputGroup,
+  InputLeftElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -16,13 +18,16 @@ import {
 import { getAllRoles } from "api/role"
 import { getAllShops } from "api/shop"
 import { AxiosError } from "axios"
+import { CommentInput } from "component/Comment"
 import { ADMIN_ROLE } from "constant/roles"
 import { useUserContext } from "context/user"
+import { useCommentInput } from "hook/useCommentInput"
 import { ChangeEvent, FC, useEffect, useState } from "react"
 import {
   FiAtSign,
-  FiCornerDownRight,
   FiDollarSign,
+  FiLock,
+  FiLogIn,
   FiPhone,
   FiUser,
 } from "react-icons/fi"
@@ -44,10 +49,6 @@ interface UserModalProps extends ModalProps {
 
 const newUser: User = {
   username: "",
-  fio: "",
-  salary: 0,
-  email: "",
-  phone: "",
 }
 
 export const UserModal: FC<UserModalProps> = (props) => {
@@ -64,6 +65,12 @@ export const UserModal: FC<UserModalProps> = (props) => {
 
   const { data: shopsList } = useQuery<WithId<Shop>[]>("shopsList", getAllShops)
   const { data: rolesList } = useQuery<WithId<Role>[]>("rolesList", getAllRoles)
+
+  const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
+    useCommentInput({
+      objectName: "user",
+      objectId: prevUser?.id,
+    })
 
   const userCreateMutation = useUserCreateMutation()
   const userUpdateMutation = useUserUpdateMutation()
@@ -151,7 +158,9 @@ export const UserModal: FC<UserModalProps> = (props) => {
           shops_list: selectedShops,
         }
 
-        await userCreateMutation.mutateAsync(body)
+        const { user: newUser } = await userCreateMutation.mutateAsync(body)
+
+        await onCommentSubmit(newUser.id)
 
         notify(`Employee ${user.fio} successfully added`, "success")
       } else {
@@ -169,6 +178,8 @@ export const UserModal: FC<UserModalProps> = (props) => {
         }
 
         await userUpdateMutation.mutateAsync(body)
+
+        await onCommentSubmit()
 
         notify(`Employee ${user.fio} successfully updated`, "success")
       }
@@ -213,62 +224,67 @@ export const UserModal: FC<UserModalProps> = (props) => {
           <Flex w="full" direction="row" gap={10}>
             <Flex w="full" direction="column" gap={5}>
               {/* Username */}
-              <Flex alignItems="center" gap={2}>
-                <FiCornerDownRight color="gray" />
+              <InputGroup>
+                <InputLeftElement color="gray">
+                  <FiLogIn />
+                </InputLeftElement>
 
-                <FormControl isInvalid={isUsernameInvalid}>
-                  <Input
-                    placeholder="Username"
-                    value={user.username}
-                    type="text"
-                    onChange={(e) => {
-                      const value = e.target.value.trim()
-                      handleUserUpdate("username", value)
-                    }}
-                    isDisabled={isLoading}
-                  />
-                </FormControl>
-              </Flex>
+                <Input
+                  placeholder="Username"
+                  value={user.username}
+                  type="text"
+                  onChange={(e) => {
+                    const value = e.target.value.trim()
+                    handleUserUpdate("username", value)
+                  }}
+                  isDisabled={isLoading}
+                  isInvalid={isUsernameInvalid}
+                />
+              </InputGroup>
 
               {/* Password */}
-              <Flex alignItems="center" gap={2}>
-                <FiCornerDownRight color="gray" />
+              <InputGroup>
+                <InputLeftElement color="gray">
+                  <FiLock />
+                </InputLeftElement>
 
-                <FormControl isInvalid={isPasswordInvalid}>
-                  <Input
-                    placeholder="New Password"
-                    value={newPassword}
-                    type="text"
-                    onChange={(e) => {
-                      const value = e.target.value.trim()
-                      setNewPassword(value)
-                    }}
-                    isDisabled={isLoading}
-                  />
-                </FormControl>
-              </Flex>
+                <Input
+                  placeholder="New Password"
+                  value={newPassword}
+                  type="text"
+                  onChange={(e) => {
+                    const value = e.target.value.trim()
+                    setNewPassword(value)
+                  }}
+                  isDisabled={isLoading}
+                  isInvalid={isPasswordInvalid}
+                />
+              </InputGroup>
 
               {/* FIO */}
-              <Flex alignItems="center" gap={2}>
-                <FiUser color="gray" />
+              <InputGroup>
+                <InputLeftElement color="gray">
+                  <FiUser />
+                </InputLeftElement>
 
-                <FormControl isInvalid={isFioInvalid}>
-                  <Input
-                    placeholder="Full Name"
-                    value={user.fio}
-                    type="text"
-                    onChange={(e) => {
-                      const value = e.target.value
-                      handleUserUpdate("fio", value)
-                    }}
-                    isDisabled={isLoading}
-                  />
-                </FormControl>
-              </Flex>
+                <Input
+                  placeholder="Full Name"
+                  value={user.fio}
+                  type="text"
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleUserUpdate("fio", value)
+                  }}
+                  isDisabled={isLoading}
+                  isInvalid={isFioInvalid}
+                />
+              </InputGroup>
 
               {/* Email */}
-              <Flex alignItems="center" gap={2}>
-                <FiAtSign color="gray" />
+              <InputGroup>
+                <InputLeftElement color="gray">
+                  <FiAtSign />
+                </InputLeftElement>
 
                 <Input
                   placeholder="Email"
@@ -280,11 +296,13 @@ export const UserModal: FC<UserModalProps> = (props) => {
                   }}
                   isDisabled={isLoading}
                 />
-              </Flex>
+              </InputGroup>
 
               {/* Phone */}
-              <Flex alignItems="center" gap={2}>
-                <FiPhone color="gray" />
+              <InputGroup>
+                <InputLeftElement color="gray">
+                  <FiPhone />
+                </InputLeftElement>
 
                 <Input
                   placeholder="Phone"
@@ -296,11 +314,13 @@ export const UserModal: FC<UserModalProps> = (props) => {
                   }}
                   isDisabled={isLoading}
                 />
-              </Flex>
+              </InputGroup>
 
               {/* Salary */}
-              <Flex alignItems="center">
-                <FiDollarSign color="gray" />
+              <InputGroup>
+                <InputLeftElement color="gray">
+                  <FiDollarSign />
+                </InputLeftElement>
 
                 <Input
                   placeholder="Salary"
@@ -312,7 +332,14 @@ export const UserModal: FC<UserModalProps> = (props) => {
                   }}
                   isDisabled={isLoading}
                 />
-              </Flex>
+              </InputGroup>
+
+              {/* Comment */}
+              <CommentInput
+                comment={comment}
+                handleCommentChange={handleCommentChange}
+                isDisabled={isCommentLoading}
+              />
             </Flex>
 
             <Flex w="full" direction="column" gap={5}>
