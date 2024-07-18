@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react"
 import { getAllPurchases } from "api/purchase"
-import { LoadingPage } from "component/LoadingPage"
+import { LoadingPage } from "component/page/LoadingPage"
 import { PurchasesTableStatusColumn } from "component/purchase/PurchasesTableStatusColumn"
 import { PurchaseStatus } from "constant/purchaseStatus"
 import { FC } from "react"

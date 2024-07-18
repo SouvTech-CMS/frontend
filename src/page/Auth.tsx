@@ -1,25 +1,24 @@
 import {
   Button,
-  Card,
   Flex,
-  FormControl,
-  FormLabel,
+  Heading,
   IconButton,
   Input,
   InputGroup,
+  InputLeftElement,
   InputRightElement,
-  Text,
 } from "@chakra-ui/react"
 import { AxiosError } from "axios"
+import { Logo } from "component/Logo"
 import { AuthContext } from "context/auth"
 import {
   ChangeEvent,
-  FormEvent,
   HTMLInputTypeAttribute,
+  MouseEvent,
   useContext,
   useState,
 } from "react"
-import { FiEye, FiEyeOff } from "react-icons/fi"
+import { FiEye, FiEyeOff, FiLock, FiUser } from "react-icons/fi"
 import { useLocation, useNavigate } from "react-router-dom"
 import { notify } from "util/toasts"
 
@@ -59,7 +58,7 @@ export const Auth = () => {
     setIsPasswordVisible((prevIsVisible) => !prevIsVisible)
   }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setIsLoading(true)
 
@@ -83,81 +82,95 @@ export const Auth = () => {
   }
 
   return (
-    <Flex h="full" w="full" bgColor="gray.200" justify="center" align="center">
-      <Card borderRadius={30} w="xl">
-        <Flex
-          direction="column"
-          justify="center"
-          align="center"
-          p={10}
-          gap={10}
-        >
-          <Flex direction="column" alignItems="center" gap={10}>
-            {/* TODO: add logo image here */}
-
-            <Text textAlign="center" fontSize="2xl" fontWeight="bold">
-              Sign in
-            </Text>
+    <Flex
+      h="full"
+      w="full"
+      bgColor="auth.base"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Flex h="full" w="50%" justifyContent="center" alignItems="center">
+        {/* Sign In Form */}
+        <Flex direction="column" gap={5}>
+          <Flex w="full" justifyContent="flex-start">
+            <Heading size="xl">Sign in</Heading>
           </Flex>
 
-          <form
-            onSubmit={handleSubmit}
-            style={{ height: "100%", width: "100%" }}
-          >
-            <Flex direction="column" gap={5}>
-              {/* Username Input */}
-              <FormControl>
-                <FormLabel>Login</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="Enter login"
-                  value={username}
-                  onChange={handleUsernameChange}
+          <Flex direction="column" gap={5}>
+            {/* Username Input */}
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiUser />
+              </InputLeftElement>
+
+              <Input
+                type="text"
+                placeholder="Login"
+                value={username}
+                onChange={handleUsernameChange}
+                isDisabled={isLoading}
+              />
+            </InputGroup>
+
+            {/* Password Input */}
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiLock />
+              </InputLeftElement>
+
+              <Input
+                type={passwordInputType}
+                placeholder="Password"
+                value={password}
+                onChange={handlePasswordChange}
+                isDisabled={isLoading}
+              />
+
+              {/* Password Visibility Btn */}
+              <InputRightElement>
+                <IconButton
+                  aria-label="password-visibility"
+                  variant="ghost"
+                  colorScheme="gray"
+                  color="bodyText"
+                  icon={passwordVisibilityIcon}
+                  onClick={handlePasswordVisibilityChange}
                   isDisabled={isLoading}
                 />
-              </FormControl>
+              </InputRightElement>
+            </InputGroup>
 
-              {/* Password Input */}
-              <FormControl>
-                <FormLabel>Password</FormLabel>
-
-                <InputGroup>
-                  <Input
-                    type={passwordInputType}
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                    isDisabled={isLoading}
-                  />
-
-                  <InputRightElement>
-                    <IconButton
-                      aria-label="password-visibility"
-                      variant="ghost"
-                      colorScheme="gray"
-                      icon={passwordVisibilityIcon}
-                      onClick={handlePasswordVisibilityChange}
-                      isDisabled={isLoading}
-                    />
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-
-              {/* Sign In Btn */}
-              <Button
-                w="full"
-                size="md"
-                colorScheme="blue"
-                type="submit"
-                isDisabled={isSubmitBtnDisabled}
-                isLoading={isLoading}
-              >
-                Sign in
-              </Button>
-            </Flex>
-          </form>
+            {/* Sign In Btn */}
+            <Button
+              w="full"
+              size="md"
+              colorScheme="blue"
+              type="submit"
+              onClick={handleSubmit}
+              isDisabled={isSubmitBtnDisabled}
+              isLoading={isLoading}
+            >
+              Sign in
+            </Button>
+          </Flex>
         </Flex>
-      </Card>
+      </Flex>
+
+      {/* Logo Card */}
+      <Flex
+        position="absolute"
+        right={0}
+        top={0}
+        h="full"
+        w="50%"
+        bgColor="auth.card"
+        justifyContent="center"
+        alignItems="center"
+        pb={20}
+        borderBottomLeftRadius="50%"
+      >
+        <Logo imageSize="sm" textSize="2xl" gap={5} />
+      </Flex>
     </Flex>
   )
 }

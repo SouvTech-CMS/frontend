@@ -13,7 +13,7 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react"
-import { CommentInput } from "component/Comment"
+import { CommentInput } from "component/comment/Comment"
 import { PurchaseDeliveryGoodsSelectList } from "component/purchaseDelivery/PurchaseDeliveryGoodsSelectList"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"

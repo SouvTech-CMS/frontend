@@ -12,7 +12,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react"
-import { CommentInput } from "component/Comment"
+import { CommentInput } from "component/comment/Comment"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { FiAtSign, FiPhone, FiUser } from "react-icons/fi"

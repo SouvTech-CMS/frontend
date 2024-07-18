@@ -1,6 +1,6 @@
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
-import { Page } from "component/Page"
-import { PageHeading } from "component/PageHeading"
+import { Page } from "component/page/Page"
+import { PageHeading } from "component/page/PageHeading"
 import { NewPurchaseBtn } from "component/purchase/NewPurchaseBtn"
 import { PurchasesTable } from "component/purchase/PurchasesTable"
 import { NewPurchaseDeliveryBtn } from "component/purchaseDelivery/NewPurchaseDeliveryBtn"
@@ -32,9 +32,13 @@ const Purchases = () => {
         isFitted
         isLazy
       >
-        <TabList>
-          <Tab fontWeight="bold">Purchases</Tab>
-          <Tab fontWeight="bold">Deliveries</Tab>
+        <TabList border="none">
+          <Tab fontWeight="bold" border="none" borderRadius={20}>
+            Purchases
+          </Tab>
+          <Tab fontWeight="bold" border="none" borderRadius={20}>
+            Deliveries
+          </Tab>
         </TabList>
 
         <TabPanels>
@@ -43,7 +47,9 @@ const Purchases = () => {
             <Flex w="full" direction="column" gap={5}>
               <NewPurchaseBtn />
 
-              <PurchasesTable />
+              <Flex w="full" bgColor="white" p={5} borderRadius={20}>
+                <PurchasesTable />
+              </Flex>
             </Flex>
           </TabPanel>
 
@@ -52,7 +58,9 @@ const Purchases = () => {
             <Flex w="full" direction="column" gap={5}>
               <NewPurchaseDeliveryBtn />
 
-              <PurchaseDeliveriesTable />
+              <Flex w="full" bgColor="white" p={5} borderRadius={20}>
+                <PurchaseDeliveriesTable />
+              </Flex>
             </Flex>
           </TabPanel>
         </TabPanels>

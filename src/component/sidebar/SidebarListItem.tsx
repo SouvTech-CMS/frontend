@@ -19,6 +19,7 @@ export const SidebarListItem: FC<SidebarListItemProps> = (props) => {
       variant="ghost"
       justifyContent="flex-start"
       alignItems="center"
+      pr={20}
       gap={3}
       to={to}
       replace

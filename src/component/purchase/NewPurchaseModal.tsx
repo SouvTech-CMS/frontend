@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react"
 import { getAllSuppliers } from "api/supplier"
 import { getManagersBySupplierId } from "api/supplierManager"
-import { CommentInput } from "component/Comment"
+import { CommentInput } from "component/comment/Comment"
 import { PurchaseGoodsTable } from "component/purchaseGood/PurchaseGoodsTable"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
