@@ -1,4 +1,4 @@
-import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react"
+import { Button, Card, Flex, Text, useDisclosure } from "@chakra-ui/react"
 import { SupplierModal } from "component/supplier/SupplierModal"
 import { FC } from "react"
 import { FiPlusCircle } from "react-icons/fi"
@@ -12,7 +12,8 @@ export const NewSupplierCard: FC = () => {
 
   return (
     <>
-      <Button
+      <Card
+        as={Button}
         h="full"
         w="full"
         minH={250}
@@ -31,7 +32,7 @@ export const NewSupplierCard: FC = () => {
             New
           </Text>
         </Flex>
-      </Button>
+      </Card>
 
       {/* Edit supplier modal */}
       <SupplierModal
