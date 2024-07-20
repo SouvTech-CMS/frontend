@@ -13,3 +13,8 @@ export const getFileUrl = (fileName: string) => {
 
   return `${apiBaseUrl}/static/${fileName}`
 }
+
+export const getEtsyOrderUrl = (orderId: string) => {
+  const orderUrl = `https://www.etsy.com/your/orders/sold/completed?search_query=${orderId}&order_id=${orderId}`
+  return orderUrl
+}

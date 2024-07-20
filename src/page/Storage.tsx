@@ -7,11 +7,10 @@ import { Pagination } from "component/Pagination"
 import { StorageGoodRow } from "component/storageGood/StorageGoodRow"
 import { Role } from "constant/roles"
 import { ROWS_PER_PAGE, STORAGE_GOODS_TABLE_COLUMNS } from "constant/tables"
+import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { GoodWithStorages } from "type/storageGood"
-import { getPagesCount } from "util/totalPages"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 
 const Storage = () => {
   const [currentPage, setCurrentPage] = useState<number>(0)
@@ -23,7 +22,7 @@ const Storage = () => {
     refetch,
     isRefetching: isRefetchingStorageGoodsList,
   } = useQuery<GoodWithStorages[]>("storageGoodsList", () =>
-    getAllStorageGoods(offset)
+    getAllStorageGoods(offset),
   )
 
   const { data: storageGoodsCount, isLoading: isLoadingStorageGoodsCount } =
@@ -32,8 +31,6 @@ const Storage = () => {
   const isLoading = isLoadingStorageGoodsList || isLoadingStorageGoodsCount
 
   const isRefetching = isRefetchingStorageGoodsList
-
-  const pagesCount = getPagesCount(storageGoodsCount)
 
   useEffect(() => {
     const newOffset = currentPage * ROWS_PER_PAGE
@@ -71,7 +68,7 @@ const Storage = () => {
           </Table>
 
           <Pagination
-            totalPages={pagesCount}
+            totalItemsCount={storageGoodsCount}
             currentPage={currentPage}
             handlePageChange={setCurrentPage}
             isLoading={isRefetching}

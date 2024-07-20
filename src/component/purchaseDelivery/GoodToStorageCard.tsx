@@ -18,6 +18,7 @@ import {
   FiPackage,
 } from "react-icons/fi"
 import { PurchaseGood } from "type/purchaseGood"
+import { SelectOption } from "type/selectOption"
 import { DeliveryToStorageGood } from "type/storage"
 import { StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
@@ -31,11 +32,6 @@ interface GoodToStorageCardProps {
     value: number | string,
     purchaseGoodId: number,
   ) => void
-}
-
-type SelectOption = {
-  value: number
-  label: string
 }
 
 export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {

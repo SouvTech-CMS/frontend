@@ -1,3 +1,5 @@
+export const ROWS_PER_PAGE = 10
+
 export const PURCHASES_TABLE_COLUMNS = ["ID", "Amount", "Shipping", "Deadline"]
 
 export const GOODS_TABLE_COLUMNS = [
@@ -26,4 +28,14 @@ export const STORAGE_GOODS_TABLE_COLUMNS = [
   "Shelf",
 ]
 
-export const ROWS_PER_PAGE = 10
+export const ORDERS_TABLE_COLUMNS = [
+  "Order ID",
+  "Shop",
+  "Date",
+  "Qty",
+  "Buyer Paid",
+  "Tax",
+  "Shipping",
+  "Full Fee",
+  "Profit",
+]

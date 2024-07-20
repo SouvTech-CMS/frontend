@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance } from "axios"
-import { getApiBaseUrl } from "util/apiBaseUrl"
+import { getApiBaseUrl } from "util/urls"
 import { clearUserToken, getUserToken } from "util/userToken"
 
 export const axiosClient: AxiosInstance = axios.create({

@@ -5,5 +5,5 @@ export const getPagesCount = (count?: number) => {
     return 0
   }
 
-  return Math.floor(count / ROWS_PER_PAGE) + 1
+  return Math.ceil(count / ROWS_PER_PAGE)
 }
