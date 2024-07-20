@@ -30,6 +30,7 @@ export const OrdersTable: FC<OrdersTableProps> = (props) => {
                 <Text>{columnName}</Text>
               </Th>
             ))}
+            <Th></Th>
           </Tr>
         </Thead>
 

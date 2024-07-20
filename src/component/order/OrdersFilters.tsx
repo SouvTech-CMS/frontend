@@ -30,6 +30,7 @@ export const OrdersFilters: FC<OrdersFiltersProps> = (props) => {
           label: shop.name,
         }))}
         isClearable
+        useBasicStyles
         onChange={handleShopSelect}
         isLoading={isLoadingCurrentUser}
         isDisabled={isLoadingCurrentUser}

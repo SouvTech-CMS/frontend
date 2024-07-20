@@ -150,18 +150,20 @@ export const PurchaseDeliveryRow: FC<PurchaseDeliveryRowProps> = (props) => {
         </Td>
 
         {/* Menu Btns */}
-        <Flex position="absolute" right={0} h="full" alignItems="center">
-          {isCommentExists && <CommentTooltip comment={comment} />}
+        <Td p={0}>
+          <Flex alignItems="center">
+            {isCommentExists && <CommentTooltip comment={comment} />}
 
-          <PurchaseDeliveryRowMenu
-            onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
-            onDocuments={onDocumentsModalOpen}
-            onGoods={onPurchaseDeliveryGoodsStatusModalOpen}
-            onEdit={onPurchaseDeliveryEditModalOpen}
-            onDelete={onPurchaseDeliveryDeleteModalOpen}
-            isMoveGoodsToStorageBtnHidden={isMoveGoodsToStorageBtnHidden}
-          />
-        </Flex>
+            <PurchaseDeliveryRowMenu
+              onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
+              onDocuments={onDocumentsModalOpen}
+              onGoods={onPurchaseDeliveryGoodsStatusModalOpen}
+              onEdit={onPurchaseDeliveryEditModalOpen}
+              onDelete={onPurchaseDeliveryDeleteModalOpen}
+              isMoveGoodsToStorageBtnHidden={isMoveGoodsToStorageBtnHidden}
+            />
+          </Flex>
+        </Td>
       </Tr>
 
       <PurchaseDeliveryDeleteModal

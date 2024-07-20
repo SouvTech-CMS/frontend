@@ -1,7 +1,8 @@
-import { Flex, Td, Text, Tooltip, Tr } from "@chakra-ui/react"
+import { Flex, IconButton, Td, Text, Tooltip, Tr } from "@chakra-ui/react"
 import { getShopById } from "api/shop"
 import { MarketplaceAvatar } from "component/marketplace/MarketplaceAvatar"
 import { FC } from "react"
+import { FiExternalLink } from "react-icons/fi"
 import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import { Order } from "type/order"
@@ -30,14 +31,16 @@ export const OrdersTableRow: FC<OrdersTableRowProps> = (props) => {
   const orderDate = stringToDate(order.date).toDateString()
 
   return (
-    <Tr>
+    <Tr position="relative">
       {/* Order Id on Marketplace */}
       <Td>
-        <Tooltip label="Open on Etsy">
-          <Link to={orderUrl} target="_blank">
-            <Text textDecoration="underline">#{order.order_id}</Text>
-          </Link>
-        </Tooltip>
+        <Flex>
+          <Tooltip label="Open on Etsy">
+            <Link to={orderUrl} target="_blank">
+              <Text textDecoration="underline">#{order.order_id}</Text>
+            </Link>
+          </Tooltip>
+        </Flex>
       </Td>
 
       {/* Shop */}
@@ -89,6 +92,20 @@ export const OrdersTableRow: FC<OrdersTableRowProps> = (props) => {
       {/* Profit */}
       <Td>
         <Text>{numberWithCurrency(roundNumber(order.profit))}</Text>
+      </Td>
+
+      {/* Open Order Btn */}
+      <Td p={0}>
+        <Flex alignItems="center">
+          <Link to={`/order/${order.id}`}>
+            <IconButton
+              aria-label="open-order"
+              variant="ghost"
+              colorScheme="gray"
+              icon={<FiExternalLink />}
+            />
+          </Link>
+        </Flex>
       </Td>
     </Tr>
   )

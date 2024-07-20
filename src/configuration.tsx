@@ -1,6 +1,7 @@
 import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
 import { NoAccess } from "page/NoAccess"
+import OrderInfo from "page/OrderInfo"
 import Orders from "page/Orders"
 import Purchases from "page/Purchases"
 import Reports from "page/Reports"
@@ -22,7 +23,7 @@ import { getApiBaseUrl } from "util/urls"
 
 type Route = {
   index?: boolean
-  type: "main" | "side"
+  type: "main" | "child" | "side"
   icon?: IconType
   name: string
   path: string
@@ -57,6 +58,13 @@ export const configuration = {
       path: "/orders",
       roles: [Role.MANAGER],
       component: <Orders />,
+    },
+    {
+      type: "child",
+      name: "Order :id",
+      path: "/order/:id",
+      roles: [Role.MANAGER],
+      component: <OrderInfo />,
     },
     {
       type: "main",

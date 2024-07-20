@@ -13,10 +13,10 @@ import "react-toastify/dist/ReactToastify.css"
 
 export const AppRouter = () => {
   const mainPages = configuration.sidebarItems.filter(
-    ({ type, component }) => type === "main" && component
+    ({ type, component }) => (type === "main" || type === "child") && component,
   )
   const sidePages = configuration.sidebarItems.filter(
-    ({ type, component }) => type === "side" && component
+    ({ type, component }) => type === "side" && component,
   )
 
   return (
@@ -35,14 +35,14 @@ export const AppRouter = () => {
                 <Routes>
                   <Route path="/" element={<AppLayout />}>
                     {mainPages.map(
-                      ({ name, index = false, path, component, roles }) => (
+                      ({ name, index = false, path, component }) => (
                         <Route
                           key={name}
                           index={index}
                           path={path}
                           element={component}
                         />
-                      )
+                      ),
                     )}
                   </Route>
                 </Routes>
