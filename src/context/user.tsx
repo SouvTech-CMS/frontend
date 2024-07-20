@@ -3,6 +3,7 @@ import { ADMIN_ROLE } from "constant/roles"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { FCC } from "type/fcc"
+import { Shop } from "type/shop"
 import { User, UserWithRolesAndShops } from "type/user"
 import { WithId } from "type/withId"
 
@@ -10,6 +11,7 @@ interface UserContextProps {
   currentUser?: WithId<User>
   userRoles?: string[]
   userPermissions?: string[]
+  userShops?: WithId<Shop>[]
   isUserAdmin?: boolean
   isLoadingCurrentUser: boolean
 }
@@ -21,16 +23,21 @@ export const UserContext = createContext<UserContextProps>({
 export const UserContextProvider: FCC = (props) => {
   const { children } = props
   const [userRoles, setUserRoles] = useState<string[]>([])
+  const [userShops, setUserShops] = useState<WithId<Shop>[]>([])
   const [userPermissions, setUserPermissions] = useState<string[]>([])
   const [isLoadingRoles, setIsLoadingRoles] = useState<boolean>(true)
   const [isLoadingPermissions, setIsLoadingPermissions] =
     useState<boolean>(true)
+  const [isLoadingShops, setIsLoadingShops] = useState<boolean>(true)
 
   const { data: userWithRolesAndShops, isLoading: isLoadingCurrentUser } =
     useQuery<UserWithRolesAndShops>("currentUser", getCurrentUser)
 
   const isLoading =
-    isLoadingCurrentUser || isLoadingRoles || isLoadingPermissions
+    isLoadingCurrentUser ||
+    isLoadingRoles ||
+    isLoadingPermissions ||
+    isLoadingShops
 
   const currentUser = userWithRolesAndShops?.user
 
@@ -39,21 +46,23 @@ export const UserContextProvider: FCC = (props) => {
   useEffect(() => {
     if (userWithRolesAndShops) {
       const roles = userWithRolesAndShops.roles_with_permissions.map(
-        (roleWithPermissions) => roleWithPermissions.role.name.toLowerCase()
+        (roleWithPermissions) => roleWithPermissions.role.name.toLowerCase(),
       )
       setUserRoles(roles)
       setIsLoadingRoles(false)
 
       const permissionsList =
         userWithRolesAndShops.roles_with_permissions.flatMap(
-          (roleWithPermissions) => roleWithPermissions.permissions
+          (roleWithPermissions) => roleWithPermissions.permissions,
         )
-
       const permissions = permissionsList.map((permission) =>
-        permission.name.toLowerCase()
+        permission.name.toLowerCase(),
       )
       setUserPermissions(permissions)
       setIsLoadingPermissions(false)
+
+      setUserShops(userWithRolesAndShops.shops)
+      setIsLoadingShops(false)
     }
   }, [userWithRolesAndShops])
 
@@ -63,6 +72,7 @@ export const UserContextProvider: FCC = (props) => {
         currentUser,
         userRoles,
         userPermissions,
+        userShops,
         isUserAdmin,
         isLoadingCurrentUser: isLoading,
       }}

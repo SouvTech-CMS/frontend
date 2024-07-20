@@ -1,6 +1,7 @@
 import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
 import { NoAccess } from "page/NoAccess"
+import Orders from "page/Orders"
 import Purchases from "page/Purchases"
 import Reports from "page/Reports"
 import Storage from "page/Storage"
@@ -13,10 +14,11 @@ import {
   FiHome,
   FiMap,
   FiPackage,
+  FiShoppingCart,
   FiTruck,
   FiUsers,
 } from "react-icons/fi"
-import { getApiBaseUrl } from "util/apiBaseUrl"
+import { getApiBaseUrl } from "util/urls"
 
 type Route = {
   index?: boolean
@@ -47,6 +49,14 @@ export const configuration = {
       path: "/reports",
       roles: [Role.MANAGER],
       component: <Reports />,
+    },
+    {
+      type: "main",
+      icon: FiShoppingCart,
+      name: "Orders",
+      path: "/orders",
+      roles: [Role.MANAGER],
+      component: <Orders />,
     },
     {
       type: "main",

@@ -6,9 +6,10 @@ import {
   FiChevronsLeft,
   FiChevronsRight,
 } from "react-icons/fi"
+import { getPagesCount } from "util/totalPages"
 
 interface PaginationProps {
-  totalPages?: number
+  totalItemsCount?: number
   currentPage: number
   handlePageChange: (index: number) => void
   isLoading?: boolean
@@ -17,21 +18,23 @@ interface PaginationProps {
 const pageLimit = 5
 
 export const Pagination: FC<PaginationProps> = (props) => {
-  const { totalPages, currentPage, handlePageChange, isLoading } = props
+  const { totalItemsCount, currentPage, handlePageChange, isLoading } = props
 
-  if (!totalPages) {
+  const pagesCount = getPagesCount(totalItemsCount)
+
+  if (!pagesCount) {
     return <></>
   }
 
   const isPrevPagesExists = currentPage > 0 && !isLoading
-  const isNextPagesExists = currentPage < totalPages - 1 && !isLoading
+  const isNextPagesExists = currentPage < pagesCount - 1 && !isLoading
 
   const getPageNumbers = () => {
     let startPage = Math.floor(currentPage / pageLimit) * pageLimit
     let endPage = startPage + pageLimit
 
-    if (endPage > totalPages) {
-      endPage = totalPages
+    if (endPage > pagesCount) {
+      endPage = pagesCount
       startPage = Math.max(endPage - pageLimit, 1)
     }
 
@@ -58,7 +61,7 @@ export const Pagination: FC<PaginationProps> = (props) => {
 
   const handleToEndPages = () => {
     if (isNextPagesExists) {
-      handlePageChange(totalPages - 1)
+      handlePageChange(pagesCount - 1)
     }
   }
 
