@@ -1,7 +1,7 @@
 import { axiosClient } from "api/axiosClient"
 import { ROWS_PER_PAGE } from "constant/tables"
 import { ApiResponse } from "type/apiResponse"
-import { Order } from "type/order"
+import { Order, OrderWithGoods } from "type/order"
 import { WithId } from "type/withId"
 
 export const getAllOrders = async (
@@ -16,11 +16,6 @@ export const getAllOrders = async (
     },
   })
   return ordersList
-}
-
-export const getOrderById = async (orderId: number): Promise<WithId<Order>> => {
-  const { data: order } = await axiosClient.get(`/order/${orderId}`)
-  return order
 }
 
 export const getAllNoneGoodOrders = async (
@@ -38,4 +33,11 @@ export const getAllNoneGoodOrders = async (
     },
   )
   return ordersList
+}
+
+export const getOrderById = async (
+  orderId: number,
+): Promise<WithId<OrderWithGoods>> => {
+  const { data: order } = await axiosClient.get(`/order/${orderId}`)
+  return order
 }
