@@ -16,7 +16,7 @@ import { FiCalendar, FiTrash2 } from "react-icons/fi"
 import { Link } from "react-router-dom"
 import { PurchaseFile } from "type/purchaseFile"
 import { WithId } from "type/withId"
-import { getFileUrl } from "util/apiBaseUrl"
+import { getFileUrl } from "util/urls"
 
 interface PurchaseDocumentCardProps {
   document: WithId<PurchaseFile>

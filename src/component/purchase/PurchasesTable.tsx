@@ -13,13 +13,13 @@ export const PurchasesTable: FC = () => {
 
   const { data: purchasesList, isLoading } = useQuery<FullPurchase[]>(
     "purchasesList",
-    getAllPurchases
+    getAllPurchases,
   )
 
   const filteredGoodsPurchasesList = purchasesList?.map((purchase) => {
     if (isQueryExists) {
       const searchGoods = purchase.goods.filter(({ name }) =>
-        name.toLowerCase().includes(query.toLowerCase())
+        name.toLowerCase().includes(query.toLowerCase()),
       )
 
       return {
@@ -32,7 +32,7 @@ export const PurchasesTable: FC = () => {
   })
 
   const filteredPurchasesList = filteredGoodsPurchasesList?.filter(
-    ({ goods }) => goods.length > 0
+    ({ goods }) => goods.length > 0,
   )
 
   if (isLoading) {
