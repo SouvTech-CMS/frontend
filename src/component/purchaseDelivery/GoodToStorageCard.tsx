@@ -94,7 +94,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
   }
 
   return (
-    <Card>
+    <Card boxShadow="md">
       <CardBody>
         <Flex direction="column" gap={5}>
           {/* Goods Pair */}

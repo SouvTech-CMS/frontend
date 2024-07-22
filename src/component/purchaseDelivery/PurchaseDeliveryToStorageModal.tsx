@@ -47,9 +47,10 @@ export const PurchaseDeliveryToStorageModal: FC<
 
   const moveGoodsToStorageMutation = useMoveGoodsToStorageMutation()
 
+  const isGoodsPairsInvalid = !!goodsPairs.find((pair) => !pair.storage_good_id)
   const isLoading =
     isLoadingStorageGoodsList || moveGoodsToStorageMutation.isLoading
-  const isSaveBtnDisabled = isLoading
+  const isSaveBtnDisabled = isLoading || isGoodsPairsInvalid
 
   const handleGoodsPairUpdate = (
     param: string,
