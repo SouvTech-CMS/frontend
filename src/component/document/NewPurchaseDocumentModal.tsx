@@ -1,8 +1,9 @@
 import {
   Button,
   Flex,
-  FormControl,
   Input,
+  InputGroup,
+  InputLeftElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -25,7 +26,7 @@ interface NewPurchaseDocumentModalProps extends ModalProps {
 }
 
 export const NewPurchaseDocumentModal: FC<NewPurchaseDocumentModalProps> = (
-  props
+  props,
 ) => {
   const { purchaseId, isDelivery = false, isOpen, onClose } = props
 
@@ -87,49 +88,47 @@ export const NewPurchaseDocumentModal: FC<NewPurchaseDocumentModalProps> = (
 
         <ModalBody>
           <Flex direction="column" gap={5}>
-            {/* Name Input */}
-            <Flex alignItems="center" gap={2}>
-              <FiEdit color="gray" />
+            {/* File Name Input */}
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiEdit />
+              </InputLeftElement>
 
-              <FormControl isInvalid={isNameInvalid}>
-                <Input
-                  placeholder="File name"
-                  value={name}
-                  type="text"
-                  onChange={handleFileNameChange}
-                />
-              </FormControl>
-            </Flex>
+              <Input
+                placeholder="File name"
+                value={name}
+                type="text"
+                onChange={handleFileNameChange}
+                isInvalid={isNameInvalid}
+              />
+            </InputGroup>
 
             {/* File Upload */}
             <Flex alignItems="center" gap={2}>
-              <FiUpload color="gray" />
-
               {/* Upload Btn */}
-              <Flex alignItems="center" gap={2}>
-                <Button
-                  variant="outline"
-                  colorScheme="blue"
-                  onClick={handleUploadBtnClick}
-                >
-                  Upload Document
-                </Button>
+              <Button
+                variant="outline"
+                colorScheme="blue"
+                onClick={handleUploadBtnClick}
+                leftIcon={<FiUpload />}
+              >
+                Upload Document
+              </Button>
 
-                {/* Uploaded file name */}
-                {file && (
-                  <Text fontSize="sm" color="gray">
-                    {file.name}
-                  </Text>
-                )}
+              {/* Uploaded file name */}
+              {file && (
+                <Text fontSize="sm" color="gray">
+                  {file.name}
+                </Text>
+              )}
 
-                {/* File input */}
-                <Input
-                  ref={fileInputRef}
-                  type="file"
-                  onChange={handleFileUpload}
-                  hidden
-                />
-              </Flex>
+              {/* File input */}
+              <Input
+                ref={fileInputRef}
+                type="file"
+                onChange={handleFileUpload}
+                hidden
+              />
             </Flex>
           </Flex>
         </ModalBody>

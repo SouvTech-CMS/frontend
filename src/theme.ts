@@ -45,7 +45,7 @@ export const appTheme = extendTheme({
           bgColor: "bodyText",
           color: baseTheme.colors.white,
           _hover: {
-            bgColor: baseTheme.colors.gray["200"],
+            bgColor: baseTheme.colors.gray["300"],
             color: "bodyText",
           },
         },

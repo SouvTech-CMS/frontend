@@ -39,7 +39,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
   const isNewSupplier = !prevSupplier
 
   const [supplier, setSupplier] = useState<Supplier>(
-    prevSupplier || newSupplier
+    prevSupplier || newSupplier,
   )
 
   const supplierCreateMutation = useSupplierCreateMutation()
@@ -66,7 +66,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
   const onSupplierUpdate = async () => {
     if (isNewSupplier) {
       const { id: newSupplierId } = await supplierCreateMutation.mutateAsync(
-        supplier
+        supplier,
       )
       await onCommentSubmit(newSupplierId)
 
