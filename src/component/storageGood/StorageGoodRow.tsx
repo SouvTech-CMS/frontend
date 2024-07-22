@@ -1,9 +1,9 @@
 import { Badge, Flex, Td, Tr } from "@chakra-ui/react"
+import { ShelfBadge } from "component/storageGood/ShelfBadge"
 import { FC } from "react"
 import { Storage } from "type/storage"
 import { StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
-import { ShelfBadge } from "./ShelfBadge"
 
 interface StorageGoodRowProps {
   storageGood: WithId<StorageGood>
@@ -15,12 +15,12 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
   const goodTotalQuantity = storagesList.reduce(
     (acc, storage) => acc + storage.quantity,
-    0
+    0,
   )
 
   const goodBoxesQuantity = storagesList.reduce(
     (acc, storage) => acc + (storage.box_quantity || 0),
-    0
+    0,
   )
 
   const goodsShelfsList = storagesList

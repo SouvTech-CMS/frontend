@@ -15,7 +15,7 @@ import {
 import { getAllSuppliers } from "api/supplier"
 import { getManagersBySupplierId } from "api/supplierManager"
 import { CommentInput } from "component/Comment"
-import { PurchaseGoodsTable } from "component/good/PurchaseGoodsTable"
+import { PurchaseGoodsTable } from "component/purchaseGood/PurchaseGoodsTable"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
