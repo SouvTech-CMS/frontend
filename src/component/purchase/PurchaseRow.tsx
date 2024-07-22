@@ -15,13 +15,16 @@ import {
 } from "@chakra-ui/react"
 import { CommentTooltip } from "component/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
-import { PurchaseGoodRow } from "component/purchaseGood/PurchaseGoodRow"
-import { PurchaseGoodsStatusUpdateModal } from "component/purchaseGood/PurchaseGoodsStatusUpdateModal"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
-import { GOODS_TABLE_COLUMNS, PURCHASES_TABLE_COLUMNS } from "constant/tables"
+import { PurchaseGoodRow } from "component/purchaseGood/PurchaseGoodRow"
+import { PurchaseGoodsStatusUpdateModal } from "component/purchaseGood/PurchaseGoodsStatusUpdateModal"
+import {
+  PURCHASES_TABLE_COLUMNS,
+  PURCHASE_GOODS_TABLE_COLUMNS,
+} from "constant/tables"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { Purchase } from "type/purchase"
@@ -131,7 +134,7 @@ export const PurchaseRow: FC<PurchaseRowProps> = (props) => {
           <Table variant="simple" w="full">
             <Thead>
               <Tr>
-                {GOODS_TABLE_COLUMNS.map((columnName) => (
+                {PURCHASE_GOODS_TABLE_COLUMNS.map((columnName) => (
                   <Th key={columnName}>{columnName}</Th>
                 ))}
               </Tr>
