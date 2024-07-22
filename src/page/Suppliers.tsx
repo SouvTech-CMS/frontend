@@ -29,7 +29,7 @@ const Suppliers = () => {
 
   return (
     <Page>
-      <PageHeading title="Suppliers" isDisabled={isLoading} />
+      <PageHeading title="Suppliers" isSearchDisabled={isLoading} />
 
       {!isLoading ? (
         <SimpleGrid
