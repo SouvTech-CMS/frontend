@@ -42,6 +42,7 @@ export const PageHeading: FC<PageHeadingProps> = (props) => {
               border="none"
               outline="none"
               value={query}
+              type="search"
               onChange={handleSearchQueryChange}
               isDisabled={isDisabled}
             />
