@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react"
 import { getAllNoneGoodOrders, getAllOrders } from "api/order"
+import { Container } from "component/Container"
 import { OrdersFilters } from "component/order/OrdersFilters"
 import { OrdersTable } from "component/order/OrdersTable"
 import { LoadingPage } from "component/page/LoadingPage"
@@ -54,16 +55,18 @@ const Orders = () => {
   return (
     <Page>
       <PageHeading title="Orders" isDisabled />
+
       {isLoading && <LoadingPage />}
 
       {isOrdersExist && (
-        <Flex w="full" direction="column" gap={10}>
+        <Container>
           <Flex w="full" direction="column" gap={2}>
             <OrdersFilters
               handleShopSelect={handleShopSelect}
               isShowNoneGoodOrders={isShowNoneGoodOrders}
               setIsShowNoneGoodOrders={setIsShowNoneGoodOrders}
             />
+
             <OrdersTable ordersList={ordersList} />
           </Flex>
 
@@ -73,7 +76,7 @@ const Orders = () => {
             handlePageChange={setCurrentPage}
             isLoading={isRefetching}
           />
-        </Flex>
+        </Container>
       )}
     </Page>
   )

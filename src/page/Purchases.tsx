@@ -1,4 +1,5 @@
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
+import { Container } from "component/Container"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { NewPurchaseBtn } from "component/purchase/NewPurchaseBtn"
@@ -47,9 +48,9 @@ const Purchases = () => {
             <Flex w="full" direction="column" gap={5}>
               <NewPurchaseBtn />
 
-              <Flex w="full" bgColor="white" p={5} borderRadius={20}>
+              <Container>
                 <PurchasesTable />
-              </Flex>
+              </Container>
             </Flex>
           </TabPanel>
 
@@ -58,9 +59,9 @@ const Purchases = () => {
             <Flex w="full" direction="column" gap={5}>
               <NewPurchaseDeliveryBtn />
 
-              <Flex w="full" bgColor="white" p={5} borderRadius={20}>
+              <Container>
                 <PurchaseDeliveriesTable />
-              </Flex>
+              </Container>
             </Flex>
           </TabPanel>
         </TabPanels>

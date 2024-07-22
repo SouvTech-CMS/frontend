@@ -32,6 +32,7 @@ export const OrderInfo = () => {
   return (
     <Page>
       <PageHeading title={`Order ${orderId}`} isDisabled />
+
       {isLoading && <LoadingPage />}
 
       {isOrderExists && (

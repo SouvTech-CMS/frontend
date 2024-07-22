@@ -25,7 +25,7 @@ export const PageHeading: FC<PageHeadingProps> = (props) => {
   }
 
   return (
-    <Flex justifyContent="space-between" pb={10}>
+    <Flex justifyContent="space-between" pb={5}>
       {/* Page Title */}
       <Flex direction="column">
         <Heading>{title}</Heading>

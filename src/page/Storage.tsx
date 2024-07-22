@@ -1,13 +1,12 @@
-import { Flex, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
 import { getAllStorageGoods, getStorageGoodsCount } from "api/storageGood"
+import { Container } from "component/Container"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
-import { NewStorageGoodBtn } from "component/storageGood/NewStorageGoodBtn"
-import { StorageGoodRow } from "component/storageGood/StorageGoodRow"
+import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
 import { Role } from "constant/roles"
-import { ROWS_PER_PAGE, STORAGE_GOODS_TABLE_COLUMNS } from "constant/tables"
+import { ROWS_PER_PAGE } from "constant/tables"
 import { useUserContext } from "context/user"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
@@ -36,6 +35,8 @@ const Storage = () => {
 
   const isRefetching = isRefetchingStorageGoodsList
 
+  const isStorageGoodsExist = storageGoodsList !== undefined
+
   useEffect(() => {
     const newOffset = currentPage * ROWS_PER_PAGE
     setOffset(newOffset)
@@ -49,30 +50,11 @@ const Storage = () => {
     <Page>
       <PageHeading title="Storage" isDisabled />
 
-      {!isLoading ? (
-        <Flex w="full" direction="column" gap={10}>
-          {isUserAdmin && <NewStorageGoodBtn />}
+      {isLoading && <LoadingPage />}
 
-          <Table size="md" variant="striped">
-            <Thead>
-              <Tr>
-                {STORAGE_GOODS_TABLE_COLUMNS.map((columnName, index) => (
-                  <Th key={index}>{columnName}</Th>
-                ))}
-                <Th></Th>
-              </Tr>
-            </Thead>
-
-            <Tbody>
-              {storageGoodsList?.map((goodWithStorage, index) => (
-                <StorageGoodRow
-                  key={index}
-                  storageGood={goodWithStorage.storage_good}
-                  storagesList={goodWithStorage.storage_list}
-                />
-              ))}
-            </Tbody>
-          </Table>
+      {isStorageGoodsExist && (
+        <Container>
+          <StorageGoodsTable storageGoodsList={storageGoodsList} />
 
           <Pagination
             totalItemsCount={storageGoodsCount}
@@ -80,9 +62,7 @@ const Storage = () => {
             handlePageChange={setCurrentPage}
             isLoading={isRefetching}
           />
-        </Flex>
-      ) : (
-        <LoadingPage />
+        </Container>
       )}
     </Page>
   )
