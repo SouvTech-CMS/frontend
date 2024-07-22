@@ -1,4 +1,4 @@
-import { Divider, Flex } from "@chakra-ui/react"
+import { Divider, Flex, Text } from "@chakra-ui/react"
 import { Logo } from "component/Logo"
 import { LoadingPage } from "component/page/LoadingPage"
 import { SidebarListItem } from "component/sidebar/SidebarListItem"
@@ -32,6 +32,7 @@ export const Sidebar: FC = () => {
 
       <Divider borderColor="thinBorder" />
 
+      {/* Sidebar Routes */}
       {isLoadingCurrentUser ? (
         <LoadingPage />
       ) : (
@@ -41,6 +42,13 @@ export const Sidebar: FC = () => {
           ))}
         </Flex>
       )}
+
+      {/* Site Version */}
+      <Flex w="full" justifyContent="center" mt="auto">
+        <Text fontWeight="light" color="gray">
+          {`Site Version: ${configuration.version}`}
+        </Text>
+      </Flex>
     </Flex>
   )
 }
