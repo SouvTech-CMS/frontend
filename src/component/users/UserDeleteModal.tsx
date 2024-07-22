@@ -41,7 +41,7 @@ export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
 
     notify(
       `Employee ${user.fio || user.username} was successfully deleted`,
-      "success"
+      "success",
     )
     onClose()
   }
@@ -62,8 +62,7 @@ export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="outline"
-              colorScheme="red"
+              variant="danger"
               onClick={onUserDeleteConfirm}
               isLoading={isLoading}
               isDisabled={isLoading}
@@ -71,7 +70,7 @@ export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
               Delete
             </Button>
 
-            <Button variant="outline" colorScheme="blue" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

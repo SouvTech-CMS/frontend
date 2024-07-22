@@ -42,7 +42,7 @@ export const PurchaseDeliveryGoodsModal: FC<PurchaseDeliveryGoodsModalProps> = (
         </ModalBody>
 
         <ModalFooter>
-          <Button variant="solid" colorScheme="gray" onClick={onClose}>
+          <Button variant="secondary" onClick={onClose}>
             Close
           </Button>
         </ModalFooter>

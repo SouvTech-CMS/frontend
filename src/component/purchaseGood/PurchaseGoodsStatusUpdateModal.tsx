@@ -36,7 +36,7 @@ export const PurchaseGoodsStatusUpdateModal: FC<
 
   const [newStatus, setNewStatus] = useState<string>("")
   const [newDeadline, setNewDeadline] = useState<string>(
-    new Date(purchase.deadline * 1000).toISOString().split("T")[0]
+    new Date(purchase.deadline * 1000).toISOString().split("T")[0],
   )
 
   const purchaseUpdateMutation = usePurchaseUpdateMutation()
@@ -68,7 +68,7 @@ export const PurchaseGoodsStatusUpdateModal: FC<
 
   const onGoodsStatusUpdate = async () => {
     const filteredGoods = goods.filter((good) =>
-      Object.values(PurchaseStatus).includes(good.status as PurchaseStatus)
+      Object.values(PurchaseStatus).includes(good.status as PurchaseStatus),
     )
 
     filteredGoods.forEach(async (good) => {
@@ -144,8 +144,6 @@ export const PurchaseGoodsStatusUpdateModal: FC<
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onGoodsStatusUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
@@ -153,7 +151,7 @@ export const PurchaseGoodsStatusUpdateModal: FC<
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

@@ -136,8 +136,6 @@ export const NewPurchaseDocumentModal: FC<NewPurchaseDocumentModalProps> = (
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onSaveDocument}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
@@ -145,7 +143,7 @@ export const NewPurchaseDocumentModal: FC<NewPurchaseDocumentModalProps> = (
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Close
             </Button>
           </Flex>

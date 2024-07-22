@@ -298,8 +298,6 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onPurchaseDeliveryUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
@@ -307,7 +305,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

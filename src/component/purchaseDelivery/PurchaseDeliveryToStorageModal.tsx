@@ -114,8 +114,6 @@ export const PurchaseDeliveryToStorageModal: FC<
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onMoveToStorage}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
@@ -123,7 +121,7 @@ export const PurchaseDeliveryToStorageModal: FC<
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

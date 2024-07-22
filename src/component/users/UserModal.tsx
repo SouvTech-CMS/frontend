@@ -108,7 +108,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
       setSelectedShops((prevShopsIds) => [...prevShopsIds, shopId])
     } else {
       setSelectedShops((prevShops) =>
-        prevShops.filter((prevShopId) => prevShopId !== shopId)
+        prevShops.filter((prevShopId) => prevShopId !== shopId),
       )
     }
   }
@@ -121,7 +121,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
       setSelectedRoles((prevRolesIds) => [...prevRolesIds, roleId])
     } else {
       setSelectedRoles((prevRoles) =>
-        prevRoles.filter((prevRoleId) => prevRoleId !== roleId)
+        prevRoles.filter((prevRoleId) => prevRoleId !== roleId),
       )
     }
   }
@@ -141,7 +141,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
       if (isInvalidPassword) {
         notify(
           "Password must contain upper and lower case letters and numbers and be at least 8 characters long",
-          "error"
+          "error",
         )
         return
       }
@@ -402,8 +402,6 @@ export const UserModal: FC<UserModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onUserUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
@@ -411,12 +409,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
               Save
             </Button>
 
-            <Button
-              variant="solid"
-              colorScheme="gray"
-              onClick={onClose}
-              isLoading={isLoading}
-            >
+            <Button variant="secondary" onClick={onClose} isLoading={isLoading}>
               Cancel
             </Button>
           </Flex>

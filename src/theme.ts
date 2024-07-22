@@ -45,8 +45,32 @@ export const appTheme = extendTheme({
           bgColor: "bodyText",
           color: baseTheme.colors.white,
           _hover: {
+            bgColor: baseTheme.colors.blue["800"],
+            color: baseTheme.colors.white,
+            _disabled: {
+              bgColor: baseTheme.colors.gray["400"],
+              color: "bodyText",
+            },
+          },
+          _disabled: {
+            bgColor: "bodyText",
+            color: baseTheme.colors.white,
+          },
+        },
+        secondary: {
+          bgColor: baseTheme.colors.gray["200"],
+          color: "bodyText",
+          _hover: {
             bgColor: baseTheme.colors.gray["300"],
             color: "bodyText",
+          },
+        },
+        danger: {
+          bgColor: baseTheme.colors.red["500"],
+          color: baseTheme.colors.white,
+          _hover: {
+            bgColor: baseTheme.colors.red["600"],
+            color: baseTheme.colors.white,
           },
         },
       },

@@ -149,8 +149,6 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onSupplierUpdate}
               isLoading={isLoading}
               isDisabled={isSupplierNameInvalid}
@@ -158,7 +156,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>
