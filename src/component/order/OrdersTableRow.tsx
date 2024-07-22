@@ -94,17 +94,19 @@ export const OrdersTableRow: FC<OrdersTableRowProps> = (props) => {
         <Text>{numberWithCurrency(roundNumber(order.profit))}</Text>
       </Td>
 
-      {/* Open Order Btn */}
+      {/* Order Info Btn */}
       <Td p={0}>
         <Flex alignItems="center">
-          <Link to={`/order/${order.id}`}>
-            <IconButton
-              aria-label="open-order"
-              variant="ghost"
-              colorScheme="gray"
-              icon={<FiExternalLink />}
-            />
-          </Link>
+          <Tooltip label="Open Order Details">
+            <Link to={`/order/${order.id}`}>
+              <IconButton
+                aria-label="open-order"
+                variant="ghost"
+                colorScheme="gray"
+                icon={<FiExternalLink />}
+              />
+            </Link>
+          </Tooltip>
         </Flex>
       </Td>
     </Tr>

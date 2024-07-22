@@ -1,5 +1,6 @@
 import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
+import Goods from "page/Goods"
 import { NoAccess } from "page/NoAccess"
 import OrderInfo from "page/OrderInfo"
 import Orders from "page/Orders"
@@ -15,6 +16,7 @@ import {
   FiHome,
   FiMap,
   FiPackage,
+  FiShoppingBag,
   FiShoppingCart,
   FiTruck,
   FiUsers,
@@ -35,6 +37,7 @@ export const configuration = {
   isDevEnv: process.env.NODE_ENV === "development",
   sidebarItems: [
     //* Main pages
+    // Dashboard
     {
       index: true,
       type: "main",
@@ -43,6 +46,7 @@ export const configuration = {
       path: "/",
       roles: [Role.MANAGER],
     },
+    // Reports
     {
       type: "main",
       icon: FiFileText,
@@ -51,6 +55,7 @@ export const configuration = {
       roles: [Role.MANAGER],
       component: <Reports />,
     },
+    // Orders
     {
       type: "main",
       icon: FiShoppingCart,
@@ -59,6 +64,7 @@ export const configuration = {
       roles: [Role.MANAGER],
       component: <Orders />,
     },
+    // Order Info
     {
       type: "child",
       name: "Order :id",
@@ -66,6 +72,16 @@ export const configuration = {
       roles: [Role.MANAGER],
       component: <OrderInfo />,
     },
+    // Goods
+    {
+      type: "main",
+      icon: FiShoppingBag,
+      name: "Goods",
+      path: "/goods",
+      roles: [Role.MANAGER],
+      component: <Goods />,
+    },
+    // Purchases
     {
       type: "main",
       icon: FiTruck,
@@ -74,6 +90,7 @@ export const configuration = {
       roles: [Role.STORAGER],
       component: <Purchases />,
     },
+    // Suppliers
     {
       type: "main",
       icon: FiGlobe,
@@ -82,6 +99,7 @@ export const configuration = {
       roles: [Role.STORAGER],
       component: <Suppliers />,
     },
+    // Storage
     {
       type: "main",
       icon: FiPackage,
@@ -90,6 +108,7 @@ export const configuration = {
       roles: [Role.STORAGER],
       component: <Storage />,
     },
+    // Employees
     {
       type: "main",
       icon: FiUsers,
@@ -98,6 +117,7 @@ export const configuration = {
       roles: [Role.ADMIN],
       component: <Users />,
     },
+    // Logs
     {
       type: "main",
       icon: FiMap,
@@ -106,12 +126,14 @@ export const configuration = {
       roles: [Role.ADMIN],
     },
     //* Side pages
+    // Auth
     {
       type: "side",
       name: "Auth",
       path: "/auth",
       component: <Auth />,
     },
+    // NoAccess
     {
       type: "side",
       name: "NoAccess",

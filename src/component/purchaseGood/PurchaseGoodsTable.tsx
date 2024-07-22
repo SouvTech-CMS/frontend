@@ -8,8 +8,8 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react"
-import { NewPurchaseGoodModal } from "component/good/NewPurchaseGoodModal"
-import { NewPurchaseGoodRow } from "component/good/NewPurchaseGoodRow"
+import { NewPurchaseGoodModal } from "component/purchaseGood/NewPurchaseGoodModal"
+import { NewPurchaseGoodRow } from "component/purchaseGood/NewPurchaseGoodRow"
 import { Dispatch, FC, SetStateAction } from "react"
 import { PurchaseGood } from "type/purchaseGood"
 

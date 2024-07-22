@@ -6,6 +6,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Tooltip,
 } from "@chakra-ui/react"
 import { ActionMeta, ChakraStylesConfig, Select } from "chakra-react-select"
 import { ShelfBadge } from "component/storageGood/ShelfBadge"
@@ -78,7 +79,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
 
   const handleStorageGoodSelect = (
     newValue: unknown,
-    actionMeta: ActionMeta<unknown>,
+    _: ActionMeta<unknown>,
   ) => {
     const selectedOption = newValue as SelectOption
     const storageGoodId = Number(selectedOption.value as number)
@@ -159,25 +160,27 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
 
             {/* Shelf Input */}
             <Flex w="full" direction="column" gap={2}>
-              <InputGroup>
-                <InputLeftElement color="gray">
-                  <FiHash />
-                </InputLeftElement>
+              <Tooltip label="Press Enter to add shelf">
+                <InputGroup>
+                  <InputLeftElement color="gray">
+                    <FiHash />
+                  </InputLeftElement>
 
-                <Input
-                  placeholder="Shelf"
-                  type="text"
-                  value={shelf}
-                  onChange={handleShelfChange}
-                  onKeyDown={handleShelfEnterPress}
-                />
+                  <Input
+                    placeholder="Shelf"
+                    type="text"
+                    value={shelf}
+                    onChange={handleShelfChange}
+                    onKeyDown={handleShelfEnterPress}
+                  />
 
-                {isShelfExists && (
-                  <InputRightElement color="green">
-                    <FiCheck />
-                  </InputRightElement>
-                )}
-              </InputGroup>
+                  {isShelfExists && (
+                    <InputRightElement color="green">
+                      <FiCheck />
+                    </InputRightElement>
+                  )}
+                </InputGroup>
+              </Tooltip>
 
               <Flex alignItems="center" flexWrap="wrap" gap={2}>
                 {shelfsList.map((shelfCode, index) => (
