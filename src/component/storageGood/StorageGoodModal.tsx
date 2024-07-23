@@ -38,7 +38,7 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
 
   const isNewGood = !prevGood
 
-  const [good, setGood] = useState<StorageGood>(newGood)
+  const [good, setGood] = useState<StorageGood>(prevGood || newGood)
 
   const storageGoodCreateMutation = useStorageGoodCreateMutation()
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
@@ -46,10 +46,10 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
   const isLoading =
     storageGoodCreateMutation.isLoading || storageGoodUpdateMutation.isLoading
 
-  const isUniqueNameDisabled = !isNewGood && !isLoading
+  const isUniqueNameDisabled = !isNewGood || !isLoading
 
-  const isUniqueNameInvalid = !isUniqueNameDisabled && !good.uniquename.trim()
-  const isNameInvalid = !good.name.trim()
+  const isUniqueNameInvalid = !isUniqueNameDisabled && !good.uniquename?.trim()
+  const isNameInvalid = !good.name?.trim()
 
   const isSaveBtnDisabled = isLoading || isUniqueNameInvalid || isNameInvalid
 

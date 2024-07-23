@@ -1,12 +1,14 @@
 import { GridItem, Text } from "@chakra-ui/react"
 import { FC } from "react"
 
-interface OrderPropertyRowProps {
+interface StorageGoodPropertyRowProps {
   name: string
   value?: string | number | JSX.Element
 }
 
-export const OrderPropertyRow: FC<OrderPropertyRowProps> = (props) => {
+export const StorageGoodPropertyRow: FC<StorageGoodPropertyRowProps> = (
+  props,
+) => {
   const { name, value } = props
 
   return (

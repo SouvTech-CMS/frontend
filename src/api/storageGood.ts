@@ -31,6 +31,15 @@ export const getStorageGoodsCount = async (): Promise<number> => {
   return storageGoodsCount
 }
 
+export const getGoodWithStoragesById = async (
+  storageGoodId: number,
+): Promise<GoodWithStorages> => {
+  const { data: goodWithStorages } = await axiosClient.get(
+    `/storage_good/${storageGoodId}`,
+  )
+  return goodWithStorages
+}
+
 export const createStorageGood = async (storageGood: StorageGood) => {
   await axiosClient.post("/storage_good/", storageGood)
 }

@@ -14,7 +14,6 @@ export const useStorageGoodCreateMutation = () => {
 export const useStorageGoodUpdateMutation = () => {
   return useMutation(updateStorageGood, {
     onSuccess: () => {
-      queryClient.invalidateQueries("storageGoodsCount")
       queryClient.invalidateQueries("storageGoodsList")
     },
   })

@@ -56,9 +56,10 @@ const Storage = () => {
           <Table size="md" variant="striped">
             <Thead>
               <Tr>
-                {STORAGE_GOODS_TABLE_COLUMNS.map((columnName) => (
-                  <Th>{columnName}</Th>
+                {STORAGE_GOODS_TABLE_COLUMNS.map((columnName, index) => (
+                  <Th key={index}>{columnName}</Th>
                 ))}
+                <Th></Th>
               </Tr>
             </Thead>
 

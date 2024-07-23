@@ -7,6 +7,7 @@ import Orders from "page/Orders"
 import Purchases from "page/Purchases"
 import Reports from "page/Reports"
 import Storage from "page/Storage"
+import StorageGoodDetails from "page/StorageGoodDetails"
 import Suppliers from "page/Suppliers"
 import Users from "page/Users"
 import { IconType } from "react-icons"
@@ -107,6 +108,14 @@ export const configuration = {
       path: "/storage",
       roles: [Role.STORAGER],
       component: <Storage />,
+    },
+    // Storage Good Details
+    {
+      type: "child",
+      name: "Storage Good :id",
+      path: "/storage-good/:id",
+      roles: [Role.STORAGER],
+      component: <StorageGoodDetails />,
     },
     // Employees
     {
