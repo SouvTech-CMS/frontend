@@ -52,8 +52,10 @@ export const GoodModal: FC<GoodModalProps> = (props) => {
     goodUpdateMutation.isLoading ||
     isLoadingCurrentUser
 
+  const isUniqueNameDisabled = !isNewGood && !isLoading
+
   const isShopInvalid = !good.shop_id
-  const isUniqueNameInvalid = !good.uniquename.trim()
+  const isUniqueNameInvalid = !isUniqueNameDisabled && !good.uniquename.trim()
   const isNameInvalid = !good.name.trim()
   const isPriceInvalid = !good.price
 
@@ -157,7 +159,7 @@ export const GoodModal: FC<GoodModalProps> = (props) => {
                   handleGoodChange("uniquename", value)
                 }}
                 isInvalid={isUniqueNameInvalid}
-                isDisabled={isLoading}
+                isDisabled={isUniqueNameDisabled}
               />
             </InputGroup>
 
