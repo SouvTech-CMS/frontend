@@ -4,15 +4,19 @@ import { LoadingPage } from "component/LoadingPage"
 import { Page } from "component/Page"
 import { PageHeading } from "component/PageHeading"
 import { Pagination } from "component/Pagination"
+import { NewStorageGoodBtn } from "component/storageGood/NewStorageGoodBtn"
 import { StorageGoodRow } from "component/storageGood/StorageGoodRow"
 import { Role } from "constant/roles"
 import { ROWS_PER_PAGE, STORAGE_GOODS_TABLE_COLUMNS } from "constant/tables"
+import { useUserContext } from "context/user"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { GoodWithStorages } from "type/storageGood"
 
 const Storage = () => {
+  const { isUserAdmin } = useUserContext()
+
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [offset, setOffset] = useState<number>(0)
 
@@ -47,6 +51,8 @@ const Storage = () => {
 
       {!isLoading ? (
         <Flex w="full" direction="column" gap={10}>
+          {isUserAdmin && <NewStorageGoodBtn />}
+
           <Table size="md" variant="striped">
             <Thead>
               <Tr>
