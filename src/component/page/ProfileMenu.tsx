@@ -20,23 +20,27 @@ export const ProfileMenu: FC = () => {
       </MenuButton>
 
       <MenuList>
-        <MenuItem
-          icon={<FiUser />}
-          isDisabled
-          // onClick={}
-          // isDisabled={isLoadingCurrentUser}
-        >
-          <CommingSoonTooltip>Profile</CommingSoonTooltip>
-        </MenuItem>
+        <CommingSoonTooltip>
+          <MenuItem
+            icon={<FiUser />}
+            isDisabled
+            // onClick={}
+            // isDisabled={isLoadingCurrentUser}
+          >
+            Profile
+          </MenuItem>
+        </CommingSoonTooltip>
 
-        <MenuItem
-          icon={<FiSettings />}
-          isDisabled
-          // onClick={}
-          // isDisabled={isLoadingCurrentUser}
-        >
-          <CommingSoonTooltip>Settings</CommingSoonTooltip>
-        </MenuItem>
+        <CommingSoonTooltip>
+          <MenuItem
+            icon={<FiSettings />}
+            isDisabled
+            // onClick={}
+            // isDisabled={isLoadingCurrentUser}
+          >
+            Settings
+          </MenuItem>
+        </CommingSoonTooltip>
 
         <MenuItem
           icon={<FiLogOut />}

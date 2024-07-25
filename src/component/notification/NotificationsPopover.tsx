@@ -4,7 +4,6 @@ import {
   Button,
   Flex,
   Popover,
-  PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverHeader,
@@ -48,8 +47,6 @@ export const NotificationsPopover: FC = () => {
       </PopoverTrigger>
 
       <PopoverContent>
-        <PopoverArrow />
-
         <PopoverHeader>
           <Flex justifyContent="space-between" alignItems="center">
             <Text fontWeight="semibold">Notifications</Text>

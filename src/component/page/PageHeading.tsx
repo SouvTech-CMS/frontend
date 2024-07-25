@@ -4,11 +4,12 @@ import { FC } from "react"
 
 interface PageHeadingProps {
   title: string
+  isSearchHidden?: boolean
   isSearchDisabled?: boolean
 }
 
 export const PageHeading: FC<PageHeadingProps> = (props) => {
-  const { title, isSearchDisabled } = props
+  const { title, isSearchHidden, isSearchDisabled } = props
 
   return (
     <Flex justifyContent="space-between" pb={5}>
@@ -18,7 +19,10 @@ export const PageHeading: FC<PageHeadingProps> = (props) => {
       </Flex>
 
       {/* Buttons List */}
-      <HeadingBtns isSearchDisabled={isSearchDisabled} />
+      <HeadingBtns
+        isSearchHidden={isSearchHidden}
+        isSearchDisabled={isSearchDisabled}
+      />
     </Flex>
   )
 }

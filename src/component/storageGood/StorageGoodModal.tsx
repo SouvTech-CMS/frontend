@@ -156,8 +156,6 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onStorageGoodUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}

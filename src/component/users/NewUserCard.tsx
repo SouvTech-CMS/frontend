@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Text, useDisclosure } from "@chakra-ui/react"
+import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react"
 import { UserModal } from "component/users/UserModal"
 import { FC } from "react"
 import { FiPlusCircle } from "react-icons/fi"
@@ -12,8 +12,7 @@ export const NewUserCard: FC = () => {
 
   return (
     <>
-      <Card
-        as={Button}
+      <Button
         h="full"
         w="full"
         minH={360}
@@ -32,7 +31,7 @@ export const NewUserCard: FC = () => {
             New
           </Text>
         </Flex>
-      </Card>
+      </Button>
 
       {/* Edit user modal */}
       <UserModal isOpen={isUserEditModalOpen} onClose={onUserEditModalClose} />
