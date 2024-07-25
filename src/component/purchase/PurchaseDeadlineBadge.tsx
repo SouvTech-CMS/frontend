@@ -1,4 +1,4 @@
-import { Badge, Flex, Text } from "@chakra-ui/react"
+import { Badge, Flex, Text, Tooltip } from "@chakra-ui/react"
 import {
   PurchaseDeliveryStatus,
   PurchaseInStorageStatus,
@@ -9,6 +9,7 @@ import { PurchaseGood } from "type/purchaseGood"
 import { WithId } from "type/withId"
 
 interface PurchaseDeadlineBadgeProps {
+  type: "Purchase" | "PurchaseDelivery"
   goods: WithId<PurchaseGood>[]
   deadline: Date
 }
@@ -16,7 +17,7 @@ interface PurchaseDeadlineBadgeProps {
 export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
   props,
 ) => {
-  const { goods, deadline } = props
+  const { type, goods, deadline } = props
 
   const anyGoodsInDelivery = goods.some((good) =>
     Object.values(PurchaseDeliveryStatus).includes(
@@ -48,7 +49,7 @@ export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
   }
 
   // In Delivery Badge
-  if (anyGoodsInDelivery) {
+  if (anyGoodsInDelivery && type === "Purchase") {
     return (
       <Badge fontSize="xs" colorScheme="purple">
         In delivery
@@ -65,13 +66,23 @@ export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
     )
   }
 
-  // Deadline badge
+  // Tooltip
+  let tooltipText = ""
+  if (isDeadlineGone) {
+    tooltipText = "Deadline passed"
+  } else if (isDeadlineComming) {
+    tooltipText = "Deadline is comming"
+  }
+
   return (
-    <Flex w="fit-content" alignItems="center" gap={2}>
-      {isDeadlineComming && <FiAlertTriangle color={deadlineColor} />}
-      <Text fontSize="sm" color={deadlineColor}>
-        {deadline.toDateString()}
-      </Text>
-    </Flex>
+    <Tooltip label={tooltipText}>
+      <Flex w="fit-content" alignItems="center" gap={2}>
+        {isDeadlineComming && <FiAlertTriangle color={deadlineColor} />}
+
+        <Text fontSize="sm" color={deadlineColor}>
+          {deadline.toDateString()}
+        </Text>
+      </Flex>
+    </Tooltip>
   )
 }

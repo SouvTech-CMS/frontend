@@ -1,22 +1,19 @@
-import { Flex, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
 import { getAllStorageGoods, getStorageGoodsCount } from "api/storageGood"
-import { LoadingPage } from "component/LoadingPage"
-import { Page } from "component/Page"
+import { Container } from "component/Container"
 import { PageHeading } from "component/PageHeading"
-import { Pagination } from "component/Pagination"
+import { LoadingPage } from "component/page/LoadingPage"
+import { Page } from "component/page/Page"
+import { Pagination } from "component/page/Pagination"
 import { NewStorageGoodBtn } from "component/storageGood/NewStorageGoodBtn"
-import { StorageGoodRow } from "component/storageGood/StorageGoodRow"
+import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
 import { Role } from "constant/roles"
-import { ROWS_PER_PAGE, STORAGE_GOODS_TABLE_COLUMNS } from "constant/tables"
-import { useUserContext } from "context/user"
+import { ROWS_PER_PAGE } from "constant/tables"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { GoodWithStorages } from "type/storageGood"
 
 const Storage = () => {
-  const { isUserAdmin } = useUserContext()
-
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [offset, setOffset] = useState<number>(0)
 
@@ -36,6 +33,8 @@ const Storage = () => {
 
   const isRefetching = isRefetchingStorageGoodsList
 
+  const isStorageGoodsExist = storageGoodsList !== undefined
+
   useEffect(() => {
     const newOffset = currentPage * ROWS_PER_PAGE
     setOffset(newOffset)
@@ -47,32 +46,15 @@ const Storage = () => {
 
   return (
     <Page>
-      <PageHeading title="Storage" isDisabled />
+      <PageHeading title="Storage" isSearchHidden />
 
-      {!isLoading ? (
-        <Flex w="full" direction="column" gap={10}>
-          {isUserAdmin && <NewStorageGoodBtn />}
+      {isLoading && <LoadingPage />}
 
-          <Table size="md" variant="striped">
-            <Thead>
-              <Tr>
-                {STORAGE_GOODS_TABLE_COLUMNS.map((columnName, index) => (
-                  <Th key={index}>{columnName}</Th>
-                ))}
-                <Th></Th>
-              </Tr>
-            </Thead>
+      {isStorageGoodsExist && (
+        <Container>
+          <NewStorageGoodBtn />
 
-            <Tbody>
-              {storageGoodsList?.map((goodWithStorage, index) => (
-                <StorageGoodRow
-                  key={index}
-                  storageGood={goodWithStorage.storage_good}
-                  storagesList={goodWithStorage.storage_list}
-                />
-              ))}
-            </Tbody>
-          </Table>
+          <StorageGoodsTable storageGoodsList={storageGoodsList} />
 
           <Pagination
             totalItemsCount={storageGoodsCount}
@@ -80,9 +62,7 @@ const Storage = () => {
             handlePageChange={setCurrentPage}
             isLoading={isRefetching}
           />
-        </Flex>
-      ) : (
-        <LoadingPage />
+        </Container>
       )}
     </Page>
   )

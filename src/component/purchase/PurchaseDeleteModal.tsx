@@ -51,8 +51,7 @@ export const PurchaseDeleteModal: FC<PurchaseDeleteModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="outline"
-              colorScheme="red"
+              variant="danger"
               onClick={onDeleteConfirm}
               isLoading={isLoading}
               isDisabled={isLoading}
@@ -60,7 +59,7 @@ export const PurchaseDeleteModal: FC<PurchaseDeleteModalProps> = (props) => {
               Delete
             </Button>
 
-            <Button variant="outline" colorScheme="blue" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

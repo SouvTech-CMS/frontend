@@ -12,7 +12,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react"
-import { CommentInput } from "component/Comment"
+import { CommentInput } from "component/comment/Comment"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { FiMapPin, FiUser } from "react-icons/fi"
@@ -39,7 +39,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
   const isNewSupplier = !prevSupplier
 
   const [supplier, setSupplier] = useState<Supplier>(
-    prevSupplier || newSupplier
+    prevSupplier || newSupplier,
   )
 
   const supplierCreateMutation = useSupplierCreateMutation()
@@ -66,7 +66,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
   const onSupplierUpdate = async () => {
     if (isNewSupplier) {
       const { id: newSupplierId } = await supplierCreateMutation.mutateAsync(
-        supplier
+        supplier,
       )
       await onCommentSubmit(newSupplierId)
 
@@ -149,8 +149,6 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onSupplierUpdate}
               isLoading={isLoading}
               isDisabled={isSupplierNameInvalid}
@@ -158,7 +156,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

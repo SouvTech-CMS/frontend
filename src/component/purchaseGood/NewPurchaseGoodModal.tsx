@@ -134,15 +134,13 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={() => handleAddGood(good)}
               isDisabled={isSaveBtnDisabled}
             >
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

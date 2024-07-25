@@ -13,7 +13,7 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react"
-import { CommentInput } from "component/Comment"
+import { CommentInput } from "component/comment/Comment"
 import { PurchaseDeliveryGoodsSelectList } from "component/purchaseDelivery/PurchaseDeliveryGoodsSelectList"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
@@ -298,8 +298,6 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onPurchaseDeliveryUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
@@ -307,7 +305,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

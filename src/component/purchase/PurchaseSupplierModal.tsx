@@ -1,9 +1,5 @@
 import {
   Button,
-  Card,
-  CardBody,
-  Flex,
-  Heading,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,11 +7,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
 } from "@chakra-ui/react"
-import { useCommentInput } from "hook/useCommentInput"
+import { PurchaseSupplierModalCard } from "component/purchase/PurchaseSupplierModalCard"
 import { FC } from "react"
-import { FiAtSign, FiMessageSquare, FiPhone } from "react-icons/fi"
 import { ModalProps } from "type/modalProps"
 import { Supplier } from "type/supplier"
 import { SupplierManager } from "type/supplierManager"
@@ -28,18 +22,9 @@ interface PurchaseSupplierModalProps extends ModalProps {
 }
 
 export const PurchaseSupplierModal: FC<PurchaseSupplierModalProps> = (
-  props
+  props,
 ) => {
   const { purchaseId, supplier, manager, isOpen, onClose } = props
-
-  const { comment } = useCommentInput({
-    objectName: "supplier_manager",
-    objectId: manager.id,
-  })
-
-  const isEmailExists = !!manager.email.trim()
-  const isPhoneExists = !!manager.phone_number.trim()
-  const isCommentExists = !!comment.trim()
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
@@ -50,54 +35,11 @@ export const PurchaseSupplierModal: FC<PurchaseSupplierModalProps> = (
         <ModalCloseButton />
 
         <ModalBody>
-          <Card>
-            <CardBody>
-              <Flex w="full" direction="column" gap={5}>
-                {/* Supplier & Manager names */}
-                <Heading size="md">
-                  {supplier.name} - {manager.name}
-                </Heading>
-
-                {/* Manager Info */}
-                <Flex direction="column" gap={2}>
-                  {/* Email */}
-                  {isEmailExists && (
-                    <Flex alignItems="center" gap={2}>
-                      <FiAtSign color="gray" />
-
-                      <Text fontSize="md" color="gray">
-                        {manager.email}
-                      </Text>
-                    </Flex>
-                  )}
-
-                  {/* Phone */}
-                  {isPhoneExists && (
-                    <Flex alignItems="center" gap={2}>
-                      <FiPhone color="gray" />
-
-                      <Text fontSize="md" color="gray">
-                        {manager.phone_number}
-                      </Text>
-                    </Flex>
-                  )}
-
-                  {/* Comment */}
-                  {isCommentExists && (
-                    <Flex alignItems="center" gap={2}>
-                      <FiMessageSquare color="gray" />
-
-                      <Text color="gray">{comment}</Text>
-                    </Flex>
-                  )}
-                </Flex>
-              </Flex>
-            </CardBody>
-          </Card>
+          <PurchaseSupplierModalCard supplier={supplier} manager={manager} />
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="gray" onClick={onClose}>
+          <Button variant="secondary" onClick={onClose}>
             Close
           </Button>
         </ModalFooter>

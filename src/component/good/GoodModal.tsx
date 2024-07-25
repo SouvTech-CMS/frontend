@@ -29,9 +29,9 @@ interface GoodModalProps extends ModalProps {
 }
 
 const newGood: Good = {
-  shop_id: 0,
+  shop_id: NaN,
   uniquename: "",
-  price: 0,
+  price: NaN,
   name: "",
 }
 
@@ -52,7 +52,7 @@ export const GoodModal: FC<GoodModalProps> = (props) => {
     goodUpdateMutation.isLoading ||
     isLoadingCurrentUser
 
-  const isUniqueNameDisabled = !isNewGood && !isLoading
+  const isUniqueNameDisabled = !isNewGood || isLoading
 
   const isShopInvalid = !good.shop_id
   const isUniqueNameInvalid = !isUniqueNameDisabled && !good.uniquename.trim()
@@ -225,8 +225,6 @@ export const GoodModal: FC<GoodModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onGoodUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
@@ -234,7 +232,7 @@ export const GoodModal: FC<GoodModalProps> = (props) => {
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

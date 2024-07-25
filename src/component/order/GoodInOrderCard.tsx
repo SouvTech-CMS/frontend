@@ -21,7 +21,7 @@ export const GoodInOrderCard: FC<GoodInOrderCardProps> = (props) => {
   const { good } = props
 
   return (
-    <Card size="sm">
+    <Card borderRadius={20}>
       <CardHeader>
         <Flex direction="column" gap={2}>
           {/* Name */}

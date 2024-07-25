@@ -16,10 +16,9 @@ export const NewUserCard: FC = () => {
         h="full"
         w="full"
         minH={360}
-        bgColor="gray.200"
+        variant="newCard"
         onClick={onUserEditModalOpen}
         borderRadius={20}
-        boxShadow="lg"
       >
         <Flex
           direction="column"
@@ -27,8 +26,8 @@ export const NewUserCard: FC = () => {
           alignItems="center"
           gap={5}
         >
-          <FiPlusCircle color="gray" size={48} />
-          <Text color="gray" fontSize={24} fontWeight="bold">
+          <FiPlusCircle size={48} />
+          <Text fontSize={24} fontWeight="bold">
             New
           </Text>
         </Flex>

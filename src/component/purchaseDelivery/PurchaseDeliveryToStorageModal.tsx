@@ -47,9 +47,10 @@ export const PurchaseDeliveryToStorageModal: FC<
 
   const moveGoodsToStorageMutation = useMoveGoodsToStorageMutation()
 
+  const isGoodsPairsInvalid = !!goodsPairs.find((pair) => !pair.storage_good_id)
   const isLoading =
     isLoadingStorageGoodsList || moveGoodsToStorageMutation.isLoading
-  const isSaveBtnDisabled = isLoading
+  const isSaveBtnDisabled = isLoading || isGoodsPairsInvalid
 
   const handleGoodsPairUpdate = (
     param: string,
@@ -114,8 +115,6 @@ export const PurchaseDeliveryToStorageModal: FC<
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onMoveToStorage}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
@@ -123,7 +122,7 @@ export const PurchaseDeliveryToStorageModal: FC<
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

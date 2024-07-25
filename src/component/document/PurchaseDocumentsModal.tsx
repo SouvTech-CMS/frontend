@@ -53,7 +53,7 @@ export const PurchaseDocumentsModal: FC<PurchaseDocumentsModalProps> = (
 
         <ModalFooter>
           <Flex>
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Close
             </Button>
           </Flex>

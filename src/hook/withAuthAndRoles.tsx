@@ -1,4 +1,4 @@
-import { LoadingPage } from "component/LoadingPage"
+import { LoadingPage } from "component/page/LoadingPage"
 import { Role } from "constant/roles"
 import { useUserContext } from "context/user"
 import { ComponentType, FC } from "react"

@@ -35,7 +35,7 @@ export const PurchaseDocumentDeleteModal: FC<
 
     notify(
       `Document ${document.front_name} was successfully deleted`,
-      "success"
+      "success",
     )
     onClose()
   }
@@ -56,8 +56,7 @@ export const PurchaseDocumentDeleteModal: FC<
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="outline"
-              colorScheme="red"
+              variant="danger"
               onClick={onDeleteConfirm}
               isLoading={isLoading}
               isDisabled={isLoading}
@@ -65,7 +64,7 @@ export const PurchaseDocumentDeleteModal: FC<
               Delete
             </Button>
 
-            <Button variant="outline" colorScheme="blue" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

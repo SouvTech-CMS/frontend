@@ -1,14 +1,10 @@
 import { Flex, Grid, Heading } from "@chakra-ui/react"
-import { Page } from "component/Page"
-import { PageHeading } from "component/PageHeading"
 import { ChartCard } from "component/dashboard/ChartCard"
+import { Page } from "component/page/Page"
+import { PageHeading } from "component/PageHeading"
 import { Role } from "constant/roles"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
-import {
-  FiBarChart2,
-  FiDollarSign,
-  // FiShoppingCart
-} from "react-icons/fi"
+import { FiBarChart2, FiDollarSign } from "react-icons/fi"
 
 const Dashboard = () => {
   return (

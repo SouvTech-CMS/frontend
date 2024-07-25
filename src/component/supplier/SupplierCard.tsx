@@ -42,18 +42,17 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
     onClose: onManagersModalClose,
   } = useDisclosure()
 
-  const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
-    useCommentInput({
-      objectName: "supplier",
-      objectId: supplier.id,
-    })
+  const { comment } = useCommentInput({
+    objectName: "supplier",
+    objectId: supplier.id,
+  })
 
   const isCommentExists = !!comment.trim()
   const isAddressExists = !!supplier.address
 
   return (
     <>
-      <Card h="full" w="full" minH={250} boxShadow="lg" borderRadius={20}>
+      <Card h="full" w="full" minH={250} borderRadius={20}>
         <CardHeader>
           <Flex direction="column" gap={2}>
             <Heading size="md">{supplier.name}</Heading>
