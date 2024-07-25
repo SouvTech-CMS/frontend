@@ -12,10 +12,11 @@ import { FiSearch } from "react-icons/fi"
 interface PageHeadingProps {
   title: string
   isDisabled?: boolean
+  isSearchHidden?: boolean
 }
 
 export const PageHeading: FC<PageHeadingProps> = (props) => {
-  const { title, isDisabled } = props
+  const { title, isDisabled, isSearchHidden } = props
 
   const { query, setQuery } = useSearchContext()
 
@@ -28,22 +29,24 @@ export const PageHeading: FC<PageHeadingProps> = (props) => {
       <Heading>{title}</Heading>
 
       {/* Search */}
-      <Flex justifyContent="flex-end" gap={2}>
-        <InputGroup maxW={360}>
-          {/* Search Query */}
-          <Input
-            placeholder="Search.."
-            value={query}
-            onChange={handleSearchQueryChange}
-            isDisabled={isDisabled}
-          />
+      {!isSearchHidden && (
+        <Flex justifyContent="flex-end" gap={2}>
+          <InputGroup maxW={360}>
+            {/* Search Query */}
+            <Input
+              placeholder="Search.."
+              value={query}
+              onChange={handleSearchQueryChange}
+              isDisabled={isDisabled}
+            />
 
-          {/* Search Icon */}
-          <InputRightElement>
-            <FiSearch color="gray" />
-          </InputRightElement>
-        </InputGroup>
-      </Flex>
+            {/* Search Icon */}
+            <InputRightElement>
+              <FiSearch color="gray" />
+            </InputRightElement>
+          </InputGroup>
+        </Flex>
+      )}
     </Flex>
   )
 }
