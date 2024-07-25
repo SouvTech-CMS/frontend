@@ -2,7 +2,7 @@ import { SimpleGrid } from "@chakra-ui/react"
 import { getAllUsers } from "api/user"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
-import { PageHeading } from "component/PageHeading"
+import { PageHeading } from "component/page/PageHeading"
 import { NewUserCard } from "component/users/NewUserCard"
 import { UserCard } from "component/users/UserCard"
 import { Role } from "constant/roles"
@@ -30,7 +30,7 @@ const Users = () => {
 
   return (
     <Page>
-      <PageHeading title="Employees" isDisabled={isLoading} />
+      <PageHeading title="Employees" isSearchDisabled={isLoading} />
 
       {!isLoading ? (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>

@@ -1,7 +1,7 @@
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import { Container } from "component/Container"
 import { Page } from "component/page/Page"
-import { PageHeading } from "component/PageHeading"
+import { PageHeading } from "component/page/PageHeading"
 import { NewPurchaseBtn } from "component/purchase/NewPurchaseBtn"
 import { PurchasesTable } from "component/purchase/PurchasesTable"
 import { NewPurchaseDeliveryBtn } from "component/purchaseDelivery/NewPurchaseDeliveryBtn"

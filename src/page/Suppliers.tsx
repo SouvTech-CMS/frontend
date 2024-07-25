@@ -2,7 +2,7 @@ import { SimpleGrid } from "@chakra-ui/react"
 import { getAllSuppliers } from "api/supplier"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
-import { PageHeading } from "component/PageHeading"
+import { PageHeading } from "component/page/PageHeading"
 import { NewSupplierCard } from "component/supplier/NewSupplierCard"
 import { SupplierCard } from "component/supplier/SupplierCard"
 import { Role } from "constant/roles"
@@ -29,7 +29,7 @@ const Suppliers = () => {
 
   return (
     <Page>
-      <PageHeading title="Suppliers" isDisabled={isLoading} />
+      <PageHeading title="Suppliers" isSearchDisabled={isLoading} />
 
       {!isLoading ? (
         <SimpleGrid
