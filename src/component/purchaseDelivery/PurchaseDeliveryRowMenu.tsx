@@ -40,7 +40,8 @@ export const PurchaseDeliveryRowMenu: FC<PurchaseDeliveryRowMenuProps> = (
     <Menu>
       <MenuButton
         as={IconButton}
-        aria-label="purchase-delivery-row-menu"
+        size="sm"
+        aria-label="delivery-menu"
         icon={<FiMoreVertical />}
         variant="ghost"
       />

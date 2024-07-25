@@ -29,7 +29,7 @@ export const PurchaseRowMenu: FC<PurchaseRowMenuProps> = (props) => {
       <MenuButton
         as={IconButton}
         size="sm"
-        aria-label="Actions"
+        aria-label="purchase-menu"
         icon={<FiMoreVertical />}
         variant="ghost"
       />

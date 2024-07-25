@@ -116,7 +116,6 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
           </Flex>
         </AccordionPanel>
 
-        {/* <Flex justifyContent="space-between" alignItems="center" px={2}> */}
         <Flex alignItems="center" px={2} gap={5}>
           <PurchaseDeadlineBadge goods={goods} deadline={purchaseDeadline} />
         </Flex>
