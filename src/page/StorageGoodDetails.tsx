@@ -33,7 +33,7 @@ export const StorageGoodDetails = () => {
 
   return (
     <Page>
-      <PageHeading title={`StorageGood ${storageGoodId}`} isDisabled />
+      <PageHeading title={`Storage Good #${storageGoodId}`} isSearchHidden />
 
       {isLoading && <LoadingPage />}
 

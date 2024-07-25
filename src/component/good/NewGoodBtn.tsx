@@ -11,9 +11,7 @@ export const NewGoodBtn: FC = () => {
 
   return (
     <>
-      <Button variant="solid" colorScheme="blue" onClick={onGoodModalOpen}>
-        Create Good
-      </Button>
+      <Button onClick={onGoodModalOpen}>Create Good</Button>
 
       <GoodModal isOpen={isGoodModalOpen} onClose={onGoodModalClose} />
     </>

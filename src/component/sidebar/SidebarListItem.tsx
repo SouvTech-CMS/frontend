@@ -1,4 +1,5 @@
-import { Button, Icon, Text, Tooltip } from "@chakra-ui/react"
+import { Button, Icon, Text } from "@chakra-ui/react"
+import { CommingSoonTooltip } from "component/CommingSoonTooltip"
 import { FC } from "react"
 import { IconType } from "react-icons"
 import { Link } from "react-router-dom"
@@ -25,16 +26,9 @@ export const SidebarListItem: FC<SidebarListItemProps> = (props) => {
       >
         <Icon as={icon} />
 
-        <Tooltip
-          label={
-            <Text fontWeight="semibold" fontStyle="italic">
-              Commint Soon..
-            </Text>
-          }
-          placement="end"
-        >
+        <CommingSoonTooltip>
           <Text>{label}</Text>
-        </Tooltip>
+        </CommingSoonTooltip>
       </Button>
     )
   }

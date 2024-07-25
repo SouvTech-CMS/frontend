@@ -29,9 +29,9 @@ interface GoodModalProps extends ModalProps {
 }
 
 const newGood: Good = {
-  shop_id: 0,
+  shop_id: NaN,
   uniquename: "",
-  price: 0,
+  price: NaN,
   name: "",
 }
 
@@ -52,7 +52,7 @@ export const GoodModal: FC<GoodModalProps> = (props) => {
     goodUpdateMutation.isLoading ||
     isLoadingCurrentUser
 
-  const isUniqueNameDisabled = !isNewGood && !isLoading
+  const isUniqueNameDisabled = !isNewGood || isLoading
 
   const isShopInvalid = !good.shop_id
   const isUniqueNameInvalid = !isUniqueNameDisabled && !good.uniquename.trim()

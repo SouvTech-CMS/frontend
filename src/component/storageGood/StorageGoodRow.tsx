@@ -88,7 +88,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
           <Flex alignItems="center">
             {/* Details Page Btn */}
             <Tooltip label="Open Storage Good Details">
-              <Link to={`/storage-good/${storageGood.id}`}>
+              <Link to={`/storage-good/${storageGood.id}`} target="_blank">
                 <IconButton
                   aria-label="open-storage-good"
                   variant="ghost"

@@ -5,7 +5,7 @@ import { GoodsFilters } from "component/good/GoodsFilters"
 import { GoodsTable } from "component/good/GoodsTable"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
-import { PageHeading } from "component/page/PageHeading"
+import { PageHeading } from "component/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { Role } from "constant/roles"
 import { ROWS_PER_PAGE } from "constant/tables"
@@ -48,7 +48,7 @@ const Goods = () => {
 
   return (
     <Page>
-      <PageHeading title="Goods" isDisabled />
+      <PageHeading title="Goods" isSearchHidden />
 
       {isLoading && <LoadingPage />}
 

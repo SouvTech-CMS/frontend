@@ -91,8 +91,8 @@ export const Pagination: FC<PaginationProps> = (props) => {
       {getPageNumbers().map((page) => (
         <Button
           key={page}
-          variant="solid"
-          colorScheme={page === currentPage ? "blue" : "gray"}
+          variant={page === currentPage ? "active" : "secondary"}
+          // colorScheme={page === currentPage ? "blue" : "gray"}
           onClick={() => handlePageChange(page)}
           isDisabled={isLoading}
         >

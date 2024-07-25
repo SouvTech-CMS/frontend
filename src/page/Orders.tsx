@@ -5,7 +5,7 @@ import { OrdersFilters } from "component/order/OrdersFilters"
 import { OrdersTable } from "component/order/OrdersTable"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
-import { PageHeading } from "component/page/PageHeading"
+import { PageHeading } from "component/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { Role } from "constant/roles"
 import { ROWS_PER_PAGE } from "constant/tables"
@@ -54,7 +54,7 @@ const Orders = () => {
 
   return (
     <Page>
-      <PageHeading title="Orders" isDisabled />
+      <PageHeading title="Orders" isSearchHidden />
 
       {isLoading && <LoadingPage />}
 

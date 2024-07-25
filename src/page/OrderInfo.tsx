@@ -4,7 +4,7 @@ import { GoodInOrderCard } from "component/order/GoodInOrderCard"
 import { OrderProperties } from "component/order/OrderProperties"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
-import { PageHeading } from "component/page/PageHeading"
+import { PageHeading } from "component/PageHeading"
 import { Role } from "constant/roles"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useQuery } from "react-query"
@@ -31,7 +31,7 @@ export const OrderInfo = () => {
 
   return (
     <Page>
-      <PageHeading title={`Order ${orderId}`} isDisabled />
+      <PageHeading title={`Order ${orderId}`} isSearchHidden />
 
       {isLoading && <LoadingPage />}
 

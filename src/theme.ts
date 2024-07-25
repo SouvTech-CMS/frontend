@@ -73,6 +73,12 @@ export const appTheme = extendTheme({
             color: baseTheme.colors.white,
           },
         },
+        newCard: {
+          bgColor: baseTheme.colors.white,
+          _hover: {
+            bgColor: baseTheme.colors.gray["300"],
+          },
+        },
       },
       defaultProps: {
         variant: "active",

@@ -1,21 +1,19 @@
 import { getAllStorageGoods, getStorageGoodsCount } from "api/storageGood"
 import { Container } from "component/Container"
+import { PageHeading } from "component/PageHeading"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
-import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
+import { NewStorageGoodBtn } from "component/storageGood/NewStorageGoodBtn"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
 import { Role } from "constant/roles"
 import { ROWS_PER_PAGE } from "constant/tables"
-import { useUserContext } from "context/user"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { GoodWithStorages } from "type/storageGood"
 
 const Storage = () => {
-  const { isUserAdmin } = useUserContext()
-
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [offset, setOffset] = useState<number>(0)
 
@@ -48,12 +46,14 @@ const Storage = () => {
 
   return (
     <Page>
-      <PageHeading title="Storage" isDisabled />
+      <PageHeading title="Storage" isSearchHidden />
 
       {isLoading && <LoadingPage />}
 
       {isStorageGoodsExist && (
         <Container>
+          <NewStorageGoodBtn />
+
           <StorageGoodsTable storageGoodsList={storageGoodsList} />
 
           <Pagination

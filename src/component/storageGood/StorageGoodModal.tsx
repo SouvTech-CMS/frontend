@@ -46,7 +46,7 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
   const isLoading =
     storageGoodCreateMutation.isLoading || storageGoodUpdateMutation.isLoading
 
-  const isUniqueNameDisabled = !isNewGood || !isLoading
+  const isUniqueNameDisabled = !isNewGood || isLoading
 
   const isUniqueNameInvalid = !isUniqueNameDisabled && !good.uniquename?.trim()
   const isNameInvalid = !good.name?.trim()

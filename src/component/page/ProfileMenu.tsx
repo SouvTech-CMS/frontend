@@ -1,4 +1,5 @@
 import { Avatar, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react"
+import { CommingSoonTooltip } from "component/CommingSoonTooltip"
 import { useAuthContext } from "context/auth"
 import { useUserContext } from "context/user"
 import { FC } from "react"
@@ -25,7 +26,7 @@ export const ProfileMenu: FC = () => {
           // onClick={}
           // isDisabled={isLoadingCurrentUser}
         >
-          Profile
+          <CommingSoonTooltip>Profile</CommingSoonTooltip>
         </MenuItem>
 
         <MenuItem
@@ -34,7 +35,7 @@ export const ProfileMenu: FC = () => {
           // onClick={}
           // isDisabled={isLoadingCurrentUser}
         >
-          Settings
+          <CommingSoonTooltip>Settings</CommingSoonTooltip>
         </MenuItem>
 
         <MenuItem

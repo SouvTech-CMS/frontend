@@ -35,14 +35,15 @@ export const AppRouter = () => {
                 <Routes>
                   <Route path="/" element={<AppLayout />}>
                     {mainPages.map(
-                      ({ name, index = false, path, component }) => (
-                        <Route
-                          key={name}
-                          index={index}
-                          path={path}
-                          element={component}
-                        />
-                      ),
+                      ({ name, index = false, path, component, isDisabled }) =>
+                        !isDisabled && (
+                          <Route
+                            key={name}
+                            index={index}
+                            path={path}
+                            element={component}
+                          />
+                        ),
                     )}
                   </Route>
                 </Routes>

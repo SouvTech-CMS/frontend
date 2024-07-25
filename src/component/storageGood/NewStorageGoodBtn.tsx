@@ -11,12 +11,7 @@ export const NewStorageGoodBtn: FC = () => {
 
   return (
     <>
-      <Button
-        w="fit-content"
-        variant="solid"
-        colorScheme="blue"
-        onClick={onNewStorageGoodModalOpen}
-      >
+      <Button w="fit-content" onClick={onNewStorageGoodModalOpen}>
         Create Storage Good
       </Button>
 
