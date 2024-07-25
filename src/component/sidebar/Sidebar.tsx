@@ -37,8 +37,14 @@ export const Sidebar: FC = () => {
         <LoadingPage />
       ) : (
         <Flex direction="column" w="full" gap={2}>
-          {sideBarRoutes.map(({ icon, name, path }) => (
-            <SidebarListItem key={name} icon={icon!} text={name!} to={path} />
+          {sideBarRoutes.map(({ icon, name, path, isDisabled }) => (
+            <SidebarListItem
+              key={name}
+              icon={icon}
+              label={name}
+              to={path}
+              isDisabled={isDisabled}
+            />
           ))}
         </Flex>
       )}
