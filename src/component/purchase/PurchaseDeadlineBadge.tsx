@@ -4,7 +4,7 @@ import {
   PurchaseInStorageStatus,
 } from "constant/purchaseStatus"
 import { FC } from "react"
-import { FiAlertCircle } from "react-icons/fi"
+import { FiAlertTriangle } from "react-icons/fi"
 import { PurchaseGood } from "type/purchaseGood"
 import { WithId } from "type/withId"
 
@@ -40,17 +40,17 @@ export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
   const isDeadlineGone = deadlineDaysDiff <= 0
   const isDeadlineComming = deadlineDaysDiff <= 3
 
-  let deadlineBgColor = ""
+  let deadlineColor = ""
   if (isDeadlineGone) {
-    deadlineBgColor = "red.200"
+    deadlineColor = "red"
   } else if (isDeadlineComming) {
-    deadlineBgColor = "orange.200"
+    deadlineColor = "orange"
   }
 
   // In Delivery Badge
   if (anyGoodsInDelivery) {
     return (
-      <Badge fontSize="sm" colorScheme="purple" p={2}>
+      <Badge fontSize="xs" colorScheme="purple">
         In delivery
       </Badge>
     )
@@ -59,7 +59,7 @@ export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
   // In Storage Badge
   if (anyGoodsInStorage) {
     return (
-      <Badge fontSize="sm" colorScheme="green" p={2}>
+      <Badge fontSize="xs" colorScheme="green">
         In storage
       </Badge>
     )
@@ -67,16 +67,11 @@ export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
 
   // Deadline badge
   return (
-    <Flex
-      w="fit-content"
-      bgColor={deadlineBgColor}
-      alignItems="center"
-      p={2}
-      borderRadius={10}
-      gap={2}
-    >
-      {isDeadlineComming && <FiAlertCircle color="red" />}
-      <Text>{deadline.toDateString()}</Text>
+    <Flex w="fit-content" alignItems="center" gap={2}>
+      {isDeadlineComming && <FiAlertTriangle color={deadlineColor} />}
+      <Text fontSize="sm" color={deadlineColor}>
+        {deadline.toDateString()}
+      </Text>
     </Flex>
   )
 }

@@ -1,8 +1,9 @@
 import {
   Button,
   Flex,
-  FormControl,
   Input,
+  InputGroup,
+  InputLeftElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,7 +14,7 @@ import {
 } from "@chakra-ui/react"
 import { PurchaseStatus } from "constant/purchaseStatus"
 import { FC, useEffect, useState } from "react"
-import { FiDollarSign, FiEdit, FiLayers } from "react-icons/fi"
+import { FiAlignLeft, FiDollarSign, FiLayers, FiType } from "react-icons/fi"
 import { ModalProps } from "type/modalProps"
 import { PurchaseGood } from "type/purchaseGood"
 
@@ -23,8 +24,8 @@ interface NewPurchaseGoodModalProps extends ModalProps {
 
 const newGood: PurchaseGood = {
   name: "",
-  quantity: 0,
-  price_per_item: 0,
+  quantity: NaN,
+  price_per_item: NaN,
   status: PurchaseStatus.Order,
 }
 
@@ -34,15 +35,11 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
   const [good, setGood] = useState<PurchaseGood>(newGood)
 
   const isNameInvalid = !good?.name.trim()
-  const isPriceInvalid = good.price_per_item <= 0
-  const isQuantityInvalid = good.quantity <= 0
+  const isPriceInvalid = !good.price_per_item
+  const isQuantityInvalid = !good.quantity
   const isSaveBtnDisabled = isNameInvalid || isPriceInvalid || isQuantityInvalid
 
   const handleGoodUpdate = (param: string, value: number | string) => {
-    if (param !== "name" && param !== "description") {
-      value = Number(value)
-    }
-
     setGood((prevGood) => ({
       ...prevGood,
       [param]: value,
@@ -64,72 +61,73 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
         <ModalBody>
           <Flex w="full" direction="column" gap={5}>
             {/* Name */}
-            <Flex alignItems="center" gap={2}>
-              <FiEdit color="gray" />
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiType />
+              </InputLeftElement>
 
-              <FormControl isInvalid={isNameInvalid}>
-                <Input
-                  placeholder="Name"
-                  value={good.name}
-                  type="text"
-                  onChange={(e) => {
-                    const value = e.target.value
-                    handleGoodUpdate("name", value)
-                  }}
-                />
-              </FormControl>
-            </Flex>
+              <Input
+                placeholder="Name"
+                value={good.name}
+                onChange={(e) => {
+                  const value = e.target.value
+                  handleGoodUpdate("name", value)
+                }}
+                isInvalid={isNameInvalid}
+              />
+            </InputGroup>
 
             {/* Description */}
-            <Flex alignItems="center" gap={2}>
-              <FiEdit color="gray" />
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiAlignLeft />
+              </InputLeftElement>
 
-              <FormControl>
-                <Input
-                  placeholder="Description"
-                  value={good.description}
-                  type="text"
-                  onChange={(e) => {
-                    const value = e.target.value
-                    handleGoodUpdate("description", value)
-                  }}
-                />
-              </FormControl>
-            </Flex>
+              <Input
+                placeholder="Description"
+                value={good.description}
+                onChange={(e) => {
+                  const value = e.target.value
+                  handleGoodUpdate("description", value)
+                }}
+              />
+            </InputGroup>
 
             {/* Quantity */}
-            <Flex alignItems="center" gap={2}>
-              <FiLayers color="gray" />
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiLayers />
+              </InputLeftElement>
 
-              <FormControl isInvalid={isQuantityInvalid}>
-                <Input
-                  placeholder="Quantity"
-                  value={good.quantity}
-                  type="number"
-                  onChange={(e) => {
-                    const value = e.target.value
-                    handleGoodUpdate("quantity", value)
-                  }}
-                />
-              </FormControl>
-            </Flex>
+              <Input
+                placeholder="Quantity"
+                value={good.quantity}
+                type="number"
+                onChange={(e) => {
+                  const value = e.target.valueAsNumber
+                  handleGoodUpdate("quantity", value)
+                }}
+                isInvalid={isQuantityInvalid}
+              />
+            </InputGroup>
 
             {/* Price per Item */}
-            <Flex alignItems="center" gap={2}>
-              <FiDollarSign color="gray" />
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiDollarSign />
+              </InputLeftElement>
 
-              <FormControl isInvalid={isPriceInvalid}>
-                <Input
-                  placeholder="Unit Price"
-                  value={good.price_per_item}
-                  type="number"
-                  onChange={(e) => {
-                    const value = e.target.value
-                    handleGoodUpdate("price_per_item", value)
-                  }}
-                />
-              </FormControl>
-            </Flex>
+              <Input
+                placeholder="Unit Price"
+                value={good.price_per_item}
+                type="number"
+                onChange={(e) => {
+                  const value = e.target.valueAsNumber
+                  handleGoodUpdate("price_per_item", value)
+                }}
+                isInvalid={isPriceInvalid}
+              />
+            </InputGroup>
           </Flex>
         </ModalBody>
 

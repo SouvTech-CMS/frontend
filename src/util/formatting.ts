@@ -15,3 +15,8 @@ export const roundNumber = (
 export const numberWithCurrency = (num: number, currencyChar: string = "$") => {
   return `${currencyChar}${num}`
 }
+
+export const timestampToDate = (timestamp: number) => {
+  const date = new Date(timestamp * 1000)
+  return date
+}

@@ -28,6 +28,7 @@ export const PurchaseRowMenu: FC<PurchaseRowMenuProps> = (props) => {
     <Menu>
       <MenuButton
         as={IconButton}
+        size="sm"
         aria-label="Actions"
         icon={<FiMoreVertical />}
         variant="ghost"
@@ -39,11 +40,11 @@ export const PurchaseRowMenu: FC<PurchaseRowMenuProps> = (props) => {
         </MenuItem>
 
         <MenuItem icon={<FiUsers />} onClick={onSupplierManager}>
-          Supplier & manager
+          Supplier & Manager
         </MenuItem>
 
         <MenuItem icon={<FiCalendar />} onClick={onStatusUpdate}>
-          Update status & deadline
+          Update Status & Deadline
         </MenuItem>
 
         <MenuItem icon={<FiTrash2 />} color="red" onClick={onDelete}>
