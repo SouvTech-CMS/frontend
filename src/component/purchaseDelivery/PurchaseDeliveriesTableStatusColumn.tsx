@@ -1,18 +1,19 @@
 import { Accordion, AccordionItem, Flex, Heading } from "@chakra-ui/react"
-import { PurchaseColumnCard } from "component/purchase/PurchaseColumnCard"
+import { DeliveryColumnCard } from "component/purchaseDelivery/DeliveryColumnCard"
+import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { FC } from "react"
 import { titleCase } from "title-case"
-import { FullPurchase } from "type/purchase"
+import { FullPurchaseDelivery } from "type/purchaseDelivery"
 
-interface PurchasesTableStatusColumnProps {
-  status: string
-  purchasesList: FullPurchase[]
+interface DeliveriesTableStatusColumnProps {
+  status: PurchaseDeliveryStatus
+  deliveriesList: FullPurchaseDelivery[]
 }
 
-export const PurchasesTableStatusColumn: FC<PurchasesTableStatusColumnProps> = (
-  props,
-) => {
-  const { status, purchasesList } = props
+export const DeliveriesTableStatusColumn: FC<
+  DeliveriesTableStatusColumnProps
+> = (props) => {
+  const { status, deliveriesList } = props
 
   return (
     <Accordion w="full" allowMultiple>
@@ -30,9 +31,9 @@ export const PurchasesTableStatusColumn: FC<PurchasesTableStatusColumnProps> = (
         </Flex>
 
         <Flex w="full" direction="column" gap={2}>
-          {purchasesList.map((purchaseData, index) => (
+          {deliveriesList.map((deliveryData, index) => (
             <AccordionItem key={index} w="full">
-              <PurchaseColumnCard purchaseData={purchaseData} />
+              <DeliveryColumnCard status={status} deliveryData={deliveryData} />
             </AccordionItem>
           ))}
         </Flex>
