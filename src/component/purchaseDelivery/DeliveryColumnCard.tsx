@@ -8,7 +8,7 @@ import {
   UnorderedList,
   useDisclosure,
 } from "@chakra-ui/react"
-import { CommentTooltip } from "component/CommentTooltip"
+import { CommentTooltip } from "component/comment/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/PurchaseDeliveryDeleteModal"
@@ -129,7 +129,11 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
         </AccordionPanel>
 
         <Flex alignItems="center" px={2} gap={5}>
-          <PurchaseDeadlineBadge goods={goods} deadline={purchaseDeadline} />
+          <PurchaseDeadlineBadge
+            type="PurchaseDelivery"
+            goods={goods}
+            deadline={purchaseDeadline}
+          />
         </Flex>
       </Flex>
 
