@@ -1,14 +1,15 @@
-import { Badge, Flex, Text } from "@chakra-ui/react"
+import { Badge, Flex, Text, Tooltip } from "@chakra-ui/react"
 import {
   PurchaseDeliveryStatus,
   PurchaseInStorageStatus,
 } from "constant/purchaseStatus"
 import { FC } from "react"
-import { FiAlertCircle } from "react-icons/fi"
+import { FiAlertTriangle } from "react-icons/fi"
 import { PurchaseGood } from "type/purchaseGood"
 import { WithId } from "type/withId"
 
 interface PurchaseDeadlineBadgeProps {
+  type: "Purchase" | "PurchaseDelivery"
   goods: WithId<PurchaseGood>[]
   deadline: Date
 }
@@ -16,7 +17,7 @@ interface PurchaseDeadlineBadgeProps {
 export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
   props,
 ) => {
-  const { goods, deadline } = props
+  const { type, goods, deadline } = props
 
   const anyGoodsInDelivery = goods.some((good) =>
     Object.values(PurchaseDeliveryStatus).includes(
@@ -40,17 +41,17 @@ export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
   const isDeadlineGone = deadlineDaysDiff <= 0
   const isDeadlineComming = deadlineDaysDiff <= 3
 
-  let deadlineBgColor = ""
+  let deadlineColor = ""
   if (isDeadlineGone) {
-    deadlineBgColor = "red.200"
+    deadlineColor = "red"
   } else if (isDeadlineComming) {
-    deadlineBgColor = "orange.200"
+    deadlineColor = "orange"
   }
 
   // In Delivery Badge
-  if (anyGoodsInDelivery) {
+  if (anyGoodsInDelivery && type === "Purchase") {
     return (
-      <Badge fontSize="sm" colorScheme="purple" p={2}>
+      <Badge fontSize="xs" colorScheme="purple">
         In delivery
       </Badge>
     )
@@ -59,24 +60,29 @@ export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
   // In Storage Badge
   if (anyGoodsInStorage) {
     return (
-      <Badge fontSize="sm" colorScheme="green" p={2}>
+      <Badge fontSize="xs" colorScheme="green">
         In storage
       </Badge>
     )
   }
 
-  // Deadline badge
+  // Tooltip
+  let tooltipText = ""
+  if (isDeadlineGone) {
+    tooltipText = "Deadline passed"
+  } else if (isDeadlineComming) {
+    tooltipText = "Deadline is comming"
+  }
+
   return (
-    <Flex
-      w="fit-content"
-      bgColor={deadlineBgColor}
-      alignItems="center"
-      p={2}
-      borderRadius={10}
-      gap={2}
-    >
-      {isDeadlineComming && <FiAlertCircle color="red" />}
-      <Text>{deadline.toDateString()}</Text>
-    </Flex>
+    <Tooltip label={tooltipText}>
+      <Flex w="fit-content" alignItems="center" gap={2}>
+        {isDeadlineComming && <FiAlertTriangle color={deadlineColor} />}
+
+        <Text fontSize="sm" color={deadlineColor}>
+          {deadline.toDateString()}
+        </Text>
+      </Flex>
+    </Tooltip>
   )
 }

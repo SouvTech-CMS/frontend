@@ -11,12 +11,7 @@ export const NewPurchaseDeliveryBtn: FC = () => {
 
   return (
     <>
-      <Button
-        w="fit-content"
-        variant="solid"
-        colorScheme="blue"
-        onClick={onNewPurchaseDeliveryModalOpen}
-      >
+      <Button w="fit-content" onClick={onNewPurchaseDeliveryModalOpen}>
         Add delivery
       </Button>
 

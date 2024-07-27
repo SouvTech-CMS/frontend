@@ -11,7 +11,7 @@ export type Purchase = {
   updated_at?: number
   deadline: number
   amount: number
-  shipping: number
+  shipping?: number
 }
 
 export type FullPurchase = {

@@ -13,7 +13,7 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react"
-import { CommentInput } from "component/Comment"
+import { CommentInput } from "component/comment/Comment"
 import { PurchaseDeliveryGoodsSelectList } from "component/purchaseDelivery/PurchaseDeliveryGoodsSelectList"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
@@ -38,13 +38,13 @@ interface PurchaseDeliveryModalProps extends ModalProps {
 
 const newPurchaseDelivery: PurchaseDelivery = {
   deadline: Math.floor(Date.now() / 1000),
-  after_custom_shipping: 0,
+  after_custom_shipping: NaN,
   track_number: "",
   after_custom_track_number: "",
 }
 
 export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
-  props
+  props,
 ) => {
   const { prevPurchaseDelivery, prevGoods, isOpen, onClose } = props
 
@@ -54,11 +54,11 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
     (prevGoods && titleCase(prevGoods[0].status)) || ""
 
   const [purchaseDelivery, setPurchaseDelivery] = useState<PurchaseDelivery>(
-    prevPurchaseDelivery || newPurchaseDelivery
+    prevPurchaseDelivery || newPurchaseDelivery,
   )
   const [goods, setGoods] = useState<WithId<PurchaseGood>[]>(prevGoods || [])
   const [deadline, setDeadline] = useState<string>(
-    new Date(newPurchaseDelivery.deadline * 1000).toISOString().split("T")[0]
+    new Date(newPurchaseDelivery.deadline * 1000).toISOString().split("T")[0],
   )
   const [newStatus, setNewStatus] = useState<string>("")
 
@@ -79,7 +79,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
   const isSaveBtnDisabled = isLoading || goods.length === 0 || !deadline.trim()
 
   const handlePurchaseDeliveryStatusUpdate = (
-    e: ChangeEvent<HTMLSelectElement>
+    e: ChangeEvent<HTMLSelectElement>,
   ) => {
     const newStatus = e.target.value
     setNewStatus(newStatus)
@@ -87,7 +87,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
 
   const handlePurchaseDeliveryUpdate = (
     param: string,
-    value: number | string
+    value: number | string,
   ) => {
     setPurchaseDelivery((prevPurchaseDelivery) => ({
       ...prevPurchaseDelivery,
@@ -142,7 +142,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
 
       notify(
         `Delivery #${purchaseDeliveryId} was updated successfully`,
-        "success"
+        "success",
       )
     }
     onClose()
@@ -207,7 +207,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
                     const value = e.target.value
                     handlePurchaseDeliveryUpdate(
                       "after_custom_track_number",
-                      value
+                      value,
                     )
                   }}
                 />
@@ -225,7 +225,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
                   value={purchaseDelivery.after_custom_shipping}
                   type="number"
                   onChange={(e) => {
-                    const value = Number(e.target.value)
+                    const value = e.target.valueAsNumber
                     handlePurchaseDeliveryUpdate("after_custom_shipping", value)
                   }}
                 />
@@ -278,7 +278,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
                           <option key={index} value={status}>
                             {titleCase(status)}
                           </option>
-                        )
+                        ),
                       )}
                     </Select>
                   </FormControl>
@@ -298,8 +298,6 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onPurchaseDeliveryUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
@@ -307,7 +305,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

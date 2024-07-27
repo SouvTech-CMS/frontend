@@ -46,7 +46,7 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
   const isLoading =
     storageGoodCreateMutation.isLoading || storageGoodUpdateMutation.isLoading
 
-  const isUniqueNameDisabled = !isNewGood || !isLoading
+  const isUniqueNameDisabled = !isNewGood || isLoading
 
   const isUniqueNameInvalid = !isUniqueNameDisabled && !good.uniquename?.trim()
   const isNameInvalid = !good.name?.trim()
@@ -156,8 +156,6 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onStorageGoodUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}

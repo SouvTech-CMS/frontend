@@ -12,7 +12,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react"
-import { CommentInput } from "component/Comment"
+import { CommentInput } from "component/comment/Comment"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { FiAtSign, FiPhone, FiUser } from "react-icons/fi"
@@ -58,7 +58,7 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
 
   const onManagerCreate = async () => {
     const { id: managerId } = await supplierManagerCreateMutation.mutateAsync(
-      manager
+      manager,
     )
 
     await onCommentSubmit(managerId)
@@ -141,8 +141,6 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onManagerCreate}
               isLoading={isLoading}
               isDisabled={isManagerNameInvalid}
@@ -150,7 +148,7 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

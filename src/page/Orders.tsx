@@ -1,11 +1,12 @@
 import { Flex } from "@chakra-ui/react"
 import { getAllNoneGoodOrders, getAllOrders } from "api/order"
-import { LoadingPage } from "component/LoadingPage"
-import { Page } from "component/Page"
-import { PageHeading } from "component/PageHeading"
-import { Pagination } from "component/Pagination"
+import { Container } from "component/Container"
 import { OrdersFilters } from "component/order/OrdersFilters"
 import { OrdersTable } from "component/order/OrdersTable"
+import { LoadingPage } from "component/page/LoadingPage"
+import { Page } from "component/page/Page"
+import { PageHeading } from "component/page/PageHeading"
+import { Pagination } from "component/page/Pagination"
 import { Role } from "constant/roles"
 import { ROWS_PER_PAGE } from "constant/tables"
 import { useShopFilter } from "hook/useShopFilter"
@@ -53,17 +54,19 @@ const Orders = () => {
 
   return (
     <Page>
-      <PageHeading title="Orders" isDisabled />
+      <PageHeading title="Orders" isSearchHidden />
+
       {isLoading && <LoadingPage />}
 
       {isOrdersExist && (
-        <Flex w="full" direction="column" gap={10}>
+        <Container>
           <Flex w="full" direction="column" gap={2}>
             <OrdersFilters
               handleShopSelect={handleShopSelect}
               isShowNoneGoodOrders={isShowNoneGoodOrders}
               setIsShowNoneGoodOrders={setIsShowNoneGoodOrders}
             />
+
             <OrdersTable ordersList={ordersList} />
           </Flex>
 
@@ -73,7 +76,7 @@ const Orders = () => {
             handlePageChange={setCurrentPage}
             isLoading={isRefetching}
           />
-        </Flex>
+        </Container>
       )}
     </Page>
   )

@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react"
 import { getAllSuppliers } from "api/supplier"
 import { getManagersBySupplierId } from "api/supplierManager"
-import { CommentInput } from "component/Comment"
+import { CommentInput } from "component/comment/Comment"
 import { PurchaseGoodsTable } from "component/purchaseGood/PurchaseGoodsTable"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
@@ -32,11 +32,10 @@ import { notify } from "util/toasts"
 interface NewPurchaseModalProps extends ModalProps {}
 
 const newPurchase: Purchase = {
-  supplier_id: 0,
-  supplier_manager_id: 0,
+  supplier_id: NaN,
+  supplier_manager_id: NaN,
   deadline: Math.floor(Date.now() / 1000),
-  amount: 0,
-  shipping: 0,
+  amount: NaN,
 }
 
 export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
@@ -45,7 +44,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
   const [purchase, setPurchase] = useState<Purchase>(newPurchase)
   const [goods, setGoods] = useState<PurchaseGood[]>([])
   const [deadline, setDeadline] = useState<string>(
-    new Date(newPurchase.deadline * 1000).toISOString().split("T")[0]
+    new Date(newPurchase.deadline * 1000).toISOString().split("T")[0],
   )
 
   const purchaseCreateMutation = usePurchaseCreateMutation()
@@ -63,7 +62,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
   >(
     ["suppliersList", purchase.supplier_id],
     () => getManagersBySupplierId(purchase.supplier_id!),
-    { enabled: !!purchase.supplier_id }
+    { enabled: !!purchase.supplier_id },
   )
 
   const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
@@ -77,7 +76,6 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
     !purchase.supplier_id ||
     !purchase.supplier_manager_id ||
     goods.length === 0 ||
-    !purchase.shipping ||
     !deadline.trim()
 
   const handlePurchaseUpdate = (param: string, value: number | string) => {
@@ -90,7 +88,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
   const onPurchaseCreate = async () => {
     const goodsAmountSum = goods.reduce(
       (sum, good) => sum + (good.amount || 0),
-      0
+      0,
     )
 
     const formattedDeadline = new Date(deadline).getTime() / 1000
@@ -190,7 +188,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
                   value={purchase.shipping}
                   type="number"
                   onChange={(e) => {
-                    const value = Number(e.target.value)
+                    const value = e.target.valueAsNumber
                     handlePurchaseUpdate("shipping", value)
                   }}
                 />
@@ -224,8 +222,6 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              variant="solid"
-              colorScheme="blue"
               onClick={onPurchaseCreate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
@@ -233,7 +229,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

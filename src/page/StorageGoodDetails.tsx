@@ -1,8 +1,8 @@
 import { Divider, Flex, Grid, GridItem, Heading } from "@chakra-ui/react"
 import { getGoodWithStoragesById } from "api/storageGood"
-import { LoadingPage } from "component/LoadingPage"
-import { Page } from "component/Page"
-import { PageHeading } from "component/PageHeading"
+import { LoadingPage } from "component/page/LoadingPage"
+import { Page } from "component/page/Page"
+import { PageHeading } from "component/page/PageHeading"
 import { GoodStorageCard } from "component/storageGood/GoodStorageCard"
 import { StorageGoodProperties } from "component/storageGood/StorageGoodProperties"
 import { Role } from "constant/roles"
@@ -33,7 +33,7 @@ export const StorageGoodDetails = () => {
 
   return (
     <Page>
-      <PageHeading title={`StorageGood ${storageGoodId}`} isDisabled />
+      <PageHeading title={`Storage Good #${storageGoodId}`} isSearchHidden />
 
       {isLoading && <LoadingPage />}
 

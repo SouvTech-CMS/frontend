@@ -1,35 +1,35 @@
 import { SimpleGrid } from "@chakra-ui/react"
 import { getAllSuppliers } from "api/supplier"
-import { LoadingPage } from "component/LoadingPage"
-import { Page } from "component/Page"
-import { PageHeading } from "component/PageHeading"
+import { LoadingPage } from "component/page/LoadingPage"
+import { Page } from "component/page/Page"
+import { PageHeading } from "component/page/PageHeading"
 import { NewSupplierCard } from "component/supplier/NewSupplierCard"
 import { SupplierCard } from "component/supplier/SupplierCard"
 import { Role } from "constant/roles"
 import { useSearchContext } from "context/search"
+import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useQuery } from "react-query"
 import { Supplier } from "type/supplier"
 import { WithId } from "type/withId"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 
 const Suppliers = () => {
   const { query, isQueryExists } = useSearchContext()
 
   const { data: suppliersList, isLoading } = useQuery<WithId<Supplier>[]>(
     "suppliersList",
-    getAllSuppliers
+    getAllSuppliers,
   )
 
   const filteredSuppliersList = suppliersList?.filter(({ name, address }) =>
     isQueryExists
       ? name.toLowerCase().includes(query.toLowerCase()) ||
         address?.toLowerCase().includes(query.toLowerCase())
-      : suppliersList
+      : suppliersList,
   )
 
   return (
     <Page>
-      <PageHeading title="Suppliers" isDisabled={isLoading} />
+      <PageHeading title="Suppliers" isSearchDisabled={isLoading} />
 
       {!isLoading ? (
         <SimpleGrid

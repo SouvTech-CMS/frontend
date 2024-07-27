@@ -98,7 +98,7 @@ export const OrdersTableRow: FC<OrdersTableRowProps> = (props) => {
       <Td p={0}>
         <Flex alignItems="center">
           <Tooltip label="Open Order Details">
-            <Link to={`/order/${order.id}`}>
+            <Link to={`/order/${order.id}`} target="_blank">
               <IconButton
                 aria-label="open-order"
                 variant="ghost"

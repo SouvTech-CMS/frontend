@@ -1,10 +1,10 @@
 import { Divider, Flex, Grid, GridItem, Heading } from "@chakra-ui/react"
 import { getOrderById } from "api/order"
-import { LoadingPage } from "component/LoadingPage"
-import { Page } from "component/Page"
-import { PageHeading } from "component/PageHeading"
 import { GoodInOrderCard } from "component/order/GoodInOrderCard"
 import { OrderProperties } from "component/order/OrderProperties"
+import { LoadingPage } from "component/page/LoadingPage"
+import { Page } from "component/page/Page"
+import { PageHeading } from "component/page/PageHeading"
 import { Role } from "constant/roles"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useQuery } from "react-query"
@@ -31,7 +31,8 @@ export const OrderInfo = () => {
 
   return (
     <Page>
-      <PageHeading title={`Order ${orderId}`} isDisabled />
+      <PageHeading title={`Order ${orderId}`} isSearchHidden />
+
       {isLoading && <LoadingPage />}
 
       {isOrderExists && (

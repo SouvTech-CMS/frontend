@@ -58,7 +58,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
   const isCommentExists = !!comment.trim()
 
   const rolesList = roles.map(
-    (roleWithPermissions) => roleWithPermissions.role.name
+    (roleWithPermissions) => roleWithPermissions.role.name,
   )
   const isRolesExists = roles.length > 0
 
@@ -71,7 +71,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
 
   return (
     <>
-      <Card h="full" w="full" minH={360} boxShadow="lg" borderRadius={20}>
+      <Card h="full" w="full" minH={360} variant="card" borderRadius={20}>
         <CardHeader>
           <Flex direction="column" gap={2}>
             <Heading size="md">{user.fio}</Heading>

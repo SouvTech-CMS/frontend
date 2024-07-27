@@ -1,9 +1,10 @@
 import { ChakraProvider } from "@chakra-ui/react"
 import { AppRouter } from "component/Router"
+import { appTheme } from "theme"
 
 export const App = () => {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={appTheme}>
       <AppRouter />
     </ChakraProvider>
   )

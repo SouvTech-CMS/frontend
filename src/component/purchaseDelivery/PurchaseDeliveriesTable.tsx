@@ -1,56 +1,43 @@
-import { Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
+import { Flex } from "@chakra-ui/react"
 import { getAllPurchaseDeliveries } from "api/purchaseDelivery"
-import { LoadingPage } from "component/LoadingPage"
-import { PurchaseDeliveryRow } from "component/purchaseDelivery/PurchaseDeliveryRow"
-import { PURCHASE_DELIVERIES_TABLE_COLUMNS } from "constant/tables"
-import { useSearchContext } from "context/search"
+import { LoadingPage } from "component/page/LoadingPage"
+import { DeliveriesTableStatusColumn } from "component/purchaseDelivery/PurchaseDeliveriesTableStatusColumn"
+import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { FC } from "react"
 import { useQuery } from "react-query"
 import { FullPurchaseDelivery } from "type/purchaseDelivery"
 
 export const PurchaseDeliveriesTable: FC = () => {
-  const { query, isQueryExists } = useSearchContext()
-
-  const { data: purchaseDeliveriesList, isLoading } = useQuery<
-    FullPurchaseDelivery[]
-  >("purchaseDeliveriesList", getAllPurchaseDeliveries)
-
-  const filteredPurchaseDeliveriesList = purchaseDeliveriesList?.filter(
-    ({ purchase_delivery }) =>
-      isQueryExists
-        ? purchase_delivery.id.toString().includes(query.toLowerCase()) ||
-          purchase_delivery.track_number?.includes(query.toLowerCase()) ||
-          purchase_delivery.after_custom_track_number?.includes(
-            query.toLowerCase()
-          )
-        : purchaseDeliveriesList
+  const { data: deliveriesList, isLoading } = useQuery<FullPurchaseDelivery[]>(
+    "purchaseDeliveriesList",
+    getAllPurchaseDeliveries,
   )
+  const isDeliveriesListExists = deliveriesList !== undefined
+
+  const getDeliveriesListByStatus = (status: PurchaseDeliveryStatus) => {
+    if (!isDeliveriesListExists) return []
+
+    const filteredDeliveriesList = deliveriesList.filter((delivery) =>
+      delivery.goods.some(
+        (good) => good.status.toLowerCase() === status.toLowerCase(),
+      ),
+    )
+    return filteredDeliveriesList
+  }
+
   if (isLoading) {
     return <LoadingPage />
   }
 
   return (
-    <Table variant="striped">
-      <Thead>
-        <Tr>
-          {PURCHASE_DELIVERIES_TABLE_COLUMNS.map((columnName, index) => (
-            <Th key={index} fontWeight="bold">
-              {columnName}
-            </Th>
-          ))}
-        </Tr>
-      </Thead>
-
-      <Tbody>
-        {filteredPurchaseDeliveriesList?.map((purchaseDeliveryData, index) => (
-          <PurchaseDeliveryRow
-            key={index}
-            purchaseDelivery={purchaseDeliveryData.purchase_delivery}
-            goods={purchaseDeliveryData.goods}
-            files={purchaseDeliveryData.files}
-          />
-        ))}
-      </Tbody>
-    </Table>
+    <Flex w="full" direction="row" gap={10}>
+      {Object.values(PurchaseDeliveryStatus).map((status, index) => (
+        <DeliveriesTableStatusColumn
+          key={index}
+          status={status}
+          deliveriesList={getDeliveriesListByStatus(status)}
+        />
+      ))}
+    </Flex>
   )
 }

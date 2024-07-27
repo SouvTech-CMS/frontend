@@ -1,5 +1,6 @@
 import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
+import Dashboard from "page/Dashboard"
 import Goods from "page/Goods"
 import { NoAccess } from "page/NoAccess"
 import OrderInfo from "page/OrderInfo"
@@ -27,14 +28,16 @@ import { getApiBaseUrl } from "util/urls"
 type Route = {
   index?: boolean
   type: "main" | "child" | "side"
-  icon?: IconType
+  icon: IconType
   name: string
   path: string
   component?: JSX.Element
   roles?: Role[]
+  isDisabled?: boolean
 }
 
 export const configuration = {
+  version: "v0.0.37",
   isDevEnv: process.env.NODE_ENV === "development",
   sidebarItems: [
     //* Main pages
@@ -45,7 +48,9 @@ export const configuration = {
       icon: FiHome,
       name: "Dashboard",
       path: "/",
-      roles: [Role.MANAGER],
+      roles: [Role.ADMIN],
+      component: <Dashboard />,
+      isDisabled: true,
     },
     // Reports
     {
@@ -55,6 +60,7 @@ export const configuration = {
       path: "/reports",
       roles: [Role.MANAGER],
       component: <Reports />,
+      isDisabled: true,
     },
     // Orders
     {
