@@ -27,14 +27,15 @@ import { notify } from "util/toasts"
 interface PurchaseGoodsStatusUpdateModalProps extends ModalProps {
   purchase: WithId<Purchase>
   goods: WithId<PurchaseGood>[]
+  prevStatus: string
 }
 
 export const PurchaseGoodsStatusUpdateModal: FC<
   PurchaseGoodsStatusUpdateModalProps
 > = (props) => {
-  const { purchase, goods, isOpen, onClose } = props
+  const { purchase, goods, prevStatus, isOpen, onClose } = props
 
-  const [newStatus, setNewStatus] = useState<string>("")
+  const [newStatus, setNewStatus] = useState<string>(prevStatus)
   const [newDeadline, setNewDeadline] = useState<string>(
     new Date(purchase.deadline * 1000).toISOString().split("T")[0],
   )
@@ -45,16 +46,10 @@ export const PurchaseGoodsStatusUpdateModal: FC<
   const isLoading =
     purchaseUpdateMutation.isLoading || purchaseGoodUpdateMutation.isLoading
 
-  const prevStatus = goods.length > 0 ? titleCase(goods[0].status) : ""
-
-  const isStatusesEqual =
-    newStatus.toLocaleLowerCase() === prevStatus.toLocaleLowerCase()
-
-  const isStatusInvalid = !newStatus.trim() || isStatusesEqual
+  const isStatusInvalid = !newStatus.trim()
   const isDeadlineInvalid = !newDeadline?.trim()
 
-  const isSaveBtnDisabled =
-    isStatusInvalid || isStatusesEqual || isDeadlineInvalid
+  const isSaveBtnDisabled = isStatusInvalid || isDeadlineInvalid
 
   const handleNewStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const status = e.target.value
@@ -98,14 +93,14 @@ export const PurchaseGoodsStatusUpdateModal: FC<
       <ModalOverlay backdropFilter="blur(10px)" />
 
       <ModalContent>
-        <ModalHeader>Update Purchase Status</ModalHeader>
+        <ModalHeader>Update Purchase Status & Deadline</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <Flex w="full" direction="column" gap={5}>
             {/* New Status */}
             <Flex alignItems="center" gap={5}>
-              <Input value={prevStatus} type="text" isDisabled />
+              <Input value={titleCase(prevStatus)} type="text" isDisabled />
 
               {/* Arrow Icon */}
               <Flex>
@@ -116,6 +111,7 @@ export const PurchaseGoodsStatusUpdateModal: FC<
               <FormControl isInvalid={isStatusInvalid}>
                 <Select
                   placeholder="Select new status"
+                  value={newStatus}
                   onChange={handleNewStatusChange}
                   isInvalid={isStatusInvalid}
                   isDisabled={isLoading}

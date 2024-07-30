@@ -27,10 +27,11 @@ import {
 
 interface PurchaseColumnCardProps {
   purchaseData: FullPurchase
+  status: string
 }
 
 export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
-  const { purchaseData } = props
+  const { purchaseData, status } = props
 
   const purchase = purchaseData.purchase
   const files = purchaseData.files
@@ -151,6 +152,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
         <PurchaseGoodsStatusUpdateModal
           purchase={purchase}
           goods={goods}
+          prevStatus={status}
           isOpen={isPurchaseGoodsStatusModalOpen}
           onClose={onPurchaseGoodsStatusModalClose}
         />
