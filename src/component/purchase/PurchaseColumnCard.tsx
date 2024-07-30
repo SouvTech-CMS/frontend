@@ -19,7 +19,11 @@ import { PurchaseGoodsStatusUpdateModal } from "component/purchaseGood/PurchaseG
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { FullPurchase } from "type/purchase"
-import { timestampToDate } from "util/formatting"
+import {
+  numberWithCurrency,
+  roundNumber,
+  timestampToDate,
+} from "util/formatting"
 
 interface PurchaseColumnCardProps {
   purchaseData: FullPurchase
@@ -105,7 +109,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
 
         {/* Card Content with Goods */}
         <AccordionPanel>
-          <Flex direction="column">
+          <Flex direction="column" gap={5}>
             <UnorderedList>
               {goods.map((good, index) => (
                 <ListItem key={index}>
@@ -113,6 +117,10 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
                 </ListItem>
               ))}
             </UnorderedList>
+
+            <Text fontWeight="semibold">
+              Total amount: {numberWithCurrency(roundNumber(purchase.amount))}
+            </Text>
           </Flex>
         </AccordionPanel>
 
