@@ -37,7 +37,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
 
   const purchase = purchaseData.purchase
   const files = purchaseData.files
-  const goods = purchaseData.goods
+  const goods = purchaseData.goods.filter((good) => good.status === status)
   const supplier = purchaseData.supplier
   const supplierManager = purchaseData.supplier_manager
 
