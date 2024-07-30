@@ -20,7 +20,7 @@ export const DeliveriesTableStatusColumn: FC<
       <Flex
         w="full"
         direction="column"
-        bgColor="gray.200"
+        bgColor="gray.100"
         px={5}
         py={4}
         borderRadius={10}

@@ -1,11 +1,15 @@
 import { Flex } from "@chakra-ui/react"
-import { ActionMeta, Select } from "chakra-react-select"
+import { ActionMeta, GroupBase, Select, SingleValue } from "chakra-react-select"
 import { NewGoodBtn } from "component/good/NewGoodBtn"
 import { useUserContext } from "context/user"
 import { FC } from "react"
+import { SelectOption } from "type/selectOption"
 
 interface GoodsFiltersProps {
-  handleShopSelect: (newValue: unknown, actionMeta: ActionMeta<unknown>) => void
+  handleShopSelect: (
+    newValue: SingleValue<SelectOption>,
+    actionMeta: ActionMeta<SelectOption>,
+  ) => void
 }
 
 export const GoodsFilters: FC<GoodsFiltersProps> = (props) => {
@@ -17,7 +21,7 @@ export const GoodsFilters: FC<GoodsFiltersProps> = (props) => {
       <NewGoodBtn />
 
       {/* Shops Select */}
-      <Select
+      <Select<SelectOption, false, GroupBase<SelectOption>>
         placeholder="All shops"
         options={userShops?.map((shop) => ({
           value: shop.id,

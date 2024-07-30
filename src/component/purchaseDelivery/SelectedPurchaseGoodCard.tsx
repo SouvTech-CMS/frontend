@@ -18,18 +18,18 @@ interface SelectedPurchaseGoodCardProps {
 }
 
 export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
-  props
+  props,
 ) => {
   const { good, setSelectedGoods } = props
 
   const handleGoodRemove = () => {
     setSelectedGoods((prevGoods) =>
-      prevGoods.filter((prevGood) => prevGood.id !== good.id)
+      prevGoods.filter((prevGood) => prevGood.id !== good.id),
     )
   }
 
   return (
-    <Card borderRadius={20}>
+    <Card boxShadow="md" borderRadius={20}>
       <CardHeader>
         <Flex direction="column" gap={2}>
           <Flex alignItems="center" gap={10}>

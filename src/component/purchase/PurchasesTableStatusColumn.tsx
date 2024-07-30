@@ -19,7 +19,7 @@ export const PurchasesTableStatusColumn: FC<PurchasesTableStatusColumnProps> = (
       <Flex
         w="full"
         direction="column"
-        bgColor="gray.200"
+        bgColor="gray.100"
         px={5}
         py={4}
         borderRadius={10}
