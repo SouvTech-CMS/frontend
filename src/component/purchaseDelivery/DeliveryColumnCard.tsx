@@ -3,6 +3,7 @@ import {
   AccordionIcon,
   AccordionPanel,
   Flex,
+  IconButton,
   ListItem,
   Text,
   UnorderedList,
@@ -20,6 +21,7 @@ import { PurchaseGoodCard } from "component/purchaseGood/PurchaseGoodCard"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
+import { FiFileText } from "react-icons/fi"
 import { FullPurchaseDelivery } from "type/purchaseDelivery"
 import { timestampToDate } from "util/formatting"
 
@@ -34,6 +36,8 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   const delivery = deliveryData.purchase_delivery
   const files = deliveryData.files
   const goods = deliveryData.goods
+
+  const isDocumentsExist = files.length > 0
 
   const purchaseDeadline = timestampToDate(delivery.deadline)
 
@@ -103,6 +107,17 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
           <Flex alignItems="center" gap={2}>
             {/* Comment */}
             {isCommentExists && <CommentTooltip comment={comment} />}
+
+            {/* Documents */}
+            {isDocumentsExist && (
+              <IconButton
+                aria-label="documents-icon-btn"
+                size="sm"
+                variant="ghost"
+                icon={<FiFileText />}
+                onClick={onDocumentsModalOpen}
+              />
+            )}
 
             <PurchaseDeliveryRowMenu
               onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}

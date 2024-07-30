@@ -3,6 +3,7 @@ import {
   AccordionIcon,
   AccordionPanel,
   Flex,
+  IconButton,
   ListItem,
   Text,
   UnorderedList,
@@ -18,6 +19,7 @@ import { PurchaseGoodCard } from "component/purchaseGood/PurchaseGoodCard"
 import { PurchaseGoodsStatusUpdateModal } from "component/purchaseGood/PurchaseGoodsStatusUpdateModal"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
+import { FiFileText } from "react-icons/fi"
 import { FullPurchase } from "type/purchase"
 import {
   numberWithCurrency,
@@ -38,6 +40,8 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
   const goods = purchaseData.goods
   const supplier = purchaseData.supplier
   const supplierManager = purchaseData.supplier_manager
+
+  const isDocumentsExist = files.length > 0
 
   const purchaseDeadline = timestampToDate(purchase.deadline)
 
@@ -98,6 +102,17 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
           <Flex alignItems="center" gap={2}>
             {/* Comment */}
             {isCommentExists && <CommentTooltip comment={comment} />}
+
+            {/* Documents */}
+            {isDocumentsExist && (
+              <IconButton
+                aria-label="documents-icon-btn"
+                size="sm"
+                variant="ghost"
+                icon={<FiFileText />}
+                onClick={onDocumentsModalOpen}
+              />
+            )}
 
             <PurchaseRowMenu
               onDocuments={onDocumentsModalOpen}
