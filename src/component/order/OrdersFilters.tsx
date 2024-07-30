@@ -1,10 +1,14 @@
 import { Checkbox, Flex } from "@chakra-ui/react"
-import { ActionMeta, Select } from "chakra-react-select"
+import { ActionMeta, GroupBase, Select, SingleValue } from "chakra-react-select"
 import { useUserContext } from "context/user"
 import { Dispatch, FC, SetStateAction } from "react"
+import { SelectOption } from "type/selectOption"
 
 interface OrdersFiltersProps {
-  handleShopSelect: (newValue: unknown, actionMeta: ActionMeta<unknown>) => void
+  handleShopSelect: (
+    newValue: SingleValue<SelectOption>,
+    actionMeta: ActionMeta<SelectOption>,
+  ) => void
   isShowNoneGoodOrders: boolean
   setIsShowNoneGoodOrders: Dispatch<SetStateAction<boolean>>
 }
@@ -23,7 +27,7 @@ export const OrdersFilters: FC<OrdersFiltersProps> = (props) => {
   return (
     <Flex justifyContent="flex-start" alignItems="center" gap={5}>
       {/* Shops Select */}
-      <Select
+      <Select<SelectOption, false, GroupBase<SelectOption>>
         placeholder="All shops"
         options={userShops?.map((shop) => ({
           value: shop.id,

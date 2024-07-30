@@ -8,7 +8,13 @@ import {
   InputRightElement,
   Tooltip,
 } from "@chakra-ui/react"
-import { ActionMeta, ChakraStylesConfig, Select } from "chakra-react-select"
+import {
+  ActionMeta,
+  ChakraStylesConfig,
+  GroupBase,
+  Select,
+  SingleValue,
+} from "chakra-react-select"
 import { ShelfBadge } from "component/storageGood/ShelfBadge"
 import { ChangeEvent, FC, KeyboardEvent, useState } from "react"
 import {
@@ -78,15 +84,19 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
   }
 
   const handleStorageGoodSelect = (
-    newValue: unknown,
-    _: ActionMeta<unknown>,
+    newValue: SingleValue<SelectOption>,
+    _: ActionMeta<SelectOption>,
   ) => {
     const selectedOption = newValue as SelectOption
     const storageGoodId = Number(selectedOption.value as number)
     handleGoodChange("storage_good_id", storageGoodId)
   }
 
-  const storageGoodSelectStyles: ChakraStylesConfig = {
+  const storageGoodSelectStyles: ChakraStylesConfig<
+    SelectOption,
+    false,
+    GroupBase<SelectOption>
+  > = {
     container: (provided) => ({
       ...provided,
       width: "full",
@@ -108,7 +118,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
             </Flex>
 
             {/* Storage Good Select */}
-            <Select
+            <Select<SelectOption, false, GroupBase<SelectOption>>
               chakraStyles={storageGoodSelectStyles}
               placeholder="Select storage good"
               options={storageGoods?.map((storageGood) => ({
@@ -182,6 +192,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
                 </InputGroup>
               </Tooltip>
 
+              {/* Shelfs List */}
               <Flex alignItems="center" flexWrap="wrap" gap={2}>
                 {shelfsList.map((shelfCode, index) => (
                   <ShelfBadge
