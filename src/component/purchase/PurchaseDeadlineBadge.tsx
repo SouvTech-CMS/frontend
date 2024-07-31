@@ -4,7 +4,7 @@ import {
   PurchaseInStorageStatus,
 } from "constant/purchaseStatus"
 import { FC } from "react"
-import { FiAlertTriangle } from "react-icons/fi"
+import { FiAlertTriangle, FiClock } from "react-icons/fi"
 import { PurchaseGood } from "type/purchaseGood"
 import { WithId } from "type/withId"
 
@@ -77,7 +77,11 @@ export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
   return (
     <Tooltip label={tooltipText}>
       <Flex w="fit-content" alignItems="center" gap={2}>
-        {isDeadlineComming && <FiAlertTriangle color={deadlineColor} />}
+        {isDeadlineComming ? (
+          <FiAlertTriangle color={deadlineColor} />
+        ) : (
+          <FiClock color="bodyText" />
+        )}
 
         <Text fontSize="sm" color={deadlineColor}>
           {deadline.toDateString()}

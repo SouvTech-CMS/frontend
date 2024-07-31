@@ -28,10 +28,10 @@ export const PurchaseRowMenu: FC<PurchaseRowMenuProps> = (props) => {
     <Menu>
       <MenuButton
         as={IconButton}
-        size="sm"
         aria-label="purchase-menu"
-        icon={<FiMoreVertical />}
+        size="sm"
         variant="ghost"
+        icon={<FiMoreVertical />}
       />
 
       <MenuList>

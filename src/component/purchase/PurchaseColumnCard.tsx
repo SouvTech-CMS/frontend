@@ -3,6 +3,7 @@ import {
   AccordionIcon,
   AccordionPanel,
   Flex,
+  IconButton,
   ListItem,
   Text,
   UnorderedList,
@@ -18,21 +19,29 @@ import { PurchaseGoodCard } from "component/purchaseGood/PurchaseGoodCard"
 import { PurchaseGoodsStatusUpdateModal } from "component/purchaseGood/PurchaseGoodsStatusUpdateModal"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
+import { FiFileText } from "react-icons/fi"
 import { FullPurchase } from "type/purchase"
-import { timestampToDate } from "util/formatting"
+import {
+  numberWithCurrency,
+  roundNumber,
+  timestampToDate,
+} from "util/formatting"
 
 interface PurchaseColumnCardProps {
   purchaseData: FullPurchase
+  status: string
 }
 
 export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
-  const { purchaseData } = props
+  const { purchaseData, status } = props
 
   const purchase = purchaseData.purchase
   const files = purchaseData.files
-  const goods = purchaseData.goods
+  const goods = purchaseData.goods.filter((good) => good.status === status)
   const supplier = purchaseData.supplier
   const supplierManager = purchaseData.supplier_manager
+
+  const isDocumentsExist = files.length > 0
 
   const purchaseDeadline = timestampToDate(purchase.deadline)
 
@@ -94,6 +103,17 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
             {/* Comment */}
             {isCommentExists && <CommentTooltip comment={comment} />}
 
+            {/* Documents */}
+            {isDocumentsExist && (
+              <IconButton
+                aria-label="documents-icon-btn"
+                size="sm"
+                variant="ghost"
+                icon={<FiFileText />}
+                onClick={onDocumentsModalOpen}
+              />
+            )}
+
             <PurchaseRowMenu
               onDocuments={onDocumentsModalOpen}
               onSupplierManager={onSupplierManagerModalOpen}
@@ -105,7 +125,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
 
         {/* Card Content with Goods */}
         <AccordionPanel>
-          <Flex direction="column">
+          <Flex direction="column" gap={5}>
             <UnorderedList>
               {goods.map((good, index) => (
                 <ListItem key={index}>
@@ -113,6 +133,10 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
                 </ListItem>
               ))}
             </UnorderedList>
+
+            <Text fontWeight="semibold">
+              Total amount: {numberWithCurrency(roundNumber(purchase.amount))}
+            </Text>
           </Flex>
         </AccordionPanel>
 
@@ -143,6 +167,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
         <PurchaseGoodsStatusUpdateModal
           purchase={purchase}
           goods={goods}
+          prevStatus={status}
           isOpen={isPurchaseGoodsStatusModalOpen}
           onClose={onPurchaseGoodsStatusModalClose}
         />

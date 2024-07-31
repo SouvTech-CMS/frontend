@@ -18,24 +18,28 @@ interface SelectedPurchaseGoodCardProps {
 }
 
 export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
-  props
+  props,
 ) => {
   const { good, setSelectedGoods } = props
 
   const handleGoodRemove = () => {
     setSelectedGoods((prevGoods) =>
-      prevGoods.filter((prevGood) => prevGood.id !== good.id)
+      prevGoods.filter((prevGood) => prevGood.id !== good.id),
     )
   }
 
   return (
-    <Card borderRadius={20}>
+    <Card boxShadow="md" borderRadius={20}>
       <CardHeader>
         <Flex direction="column" gap={2}>
+          <Flex>
+            <Badge colorScheme="blue">Purchase #{good.purchase_id}</Badge>
+          </Flex>
+
           <Flex alignItems="center" gap={10}>
             <Heading size="md">{good.name}</Heading>
 
-            <Flex direction="row" gap={5}>
+            <Flex alignItems="center" gap={5}>
               <Badge>Quantity: {good.quantity}</Badge>
               <Badge>Unit Price: ${good.price_per_item}</Badge>
               <Badge>Amount: ${good.amount}</Badge>
