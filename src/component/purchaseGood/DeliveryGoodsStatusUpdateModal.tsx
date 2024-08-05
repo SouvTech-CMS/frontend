@@ -11,79 +11,79 @@ import {
   Select,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { PurchaseStatus } from "constant/purchaseStatus"
+import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { ChangeEvent, FC, useState } from "react"
 import { FiArrowRight } from "react-icons/fi"
-import { usePurchaseUpdateMutation } from "service/purchase"
+import { usePurchaseDeliveryUpdateMutation } from "service/purchaseDelivery"
 import { usePurchaseGoodUpdateMutation } from "service/purchaseGood"
 import { titleCase } from "title-case"
 import { ModalProps } from "type/modalProps"
-import { Purchase } from "type/purchase"
+import { PurchaseDelivery } from "type/purchaseDelivery"
 import { PurchaseGood } from "type/purchaseGood"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
-interface PurchaseGoodsStatusUpdateModalProps extends ModalProps {
-  purchase: WithId<Purchase>
+interface DeliveryGoodsStatusUpdateModalProps extends ModalProps {
+  delivery: WithId<PurchaseDelivery>
   goods: WithId<PurchaseGood>[]
   prevStatus: string
 }
 
-export const PurchaseGoodsStatusUpdateModal: FC<
-  PurchaseGoodsStatusUpdateModalProps
+export const DeliveryGoodsStatusUpdateModal: FC<
+  DeliveryGoodsStatusUpdateModalProps
 > = (props) => {
-  const { purchase, goods, prevStatus, isOpen, onClose } = props
+  const { delivery, goods, prevStatus, isOpen, onClose } = props
 
   const [newStatus, setNewStatus] = useState<string>(prevStatus)
-  const [newDeadline, setNewDeadline] = useState<string>(
-    new Date(purchase.deadline * 1000).toISOString().split("T")[0],
+  const [deadline, setDeadline] = useState<string>(
+    new Date(delivery.deadline * 1000).toISOString().split("T")[0],
   )
 
-  const purchaseUpdateMutation = usePurchaseUpdateMutation()
+  const deliveryUpdateMutation = usePurchaseDeliveryUpdateMutation()
   const purchaseGoodUpdateMutation = usePurchaseGoodUpdateMutation()
 
-  const isLoading =
-    purchaseUpdateMutation.isLoading || purchaseGoodUpdateMutation.isLoading
+  const isLoading = deliveryUpdateMutation.isLoading
 
-  const isStatusInvalid = !newStatus.trim()
-  const isDeadlineInvalid = !newDeadline?.trim()
+  const isSaveBtnDisabled = isLoading || goods.length === 0 || !deadline.trim()
 
-  const isSaveBtnDisabled = isStatusInvalid || isDeadlineInvalid
-
-  const handleNewStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const status = e.target.value
-    setNewStatus(status)
+  const handlePurchaseDeliveryStatusUpdate = (
+    e: ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const newStatus = e.target.value
+    setNewStatus(newStatus)
   }
 
-  const handleNewDeadlineChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setNewDeadline(value)
-  }
+  const onPurchaseDeliveryUpdate = async () => {
+    const formattedDeadline = new Date(deadline).getTime() / 1000
 
-  const onGoodsStatusUpdate = async () => {
-    const filteredGoods = goods.filter((good) =>
-      Object.values(PurchaseStatus).includes(good.status as PurchaseStatus),
-    )
-
-    filteredGoods.forEach(async (good) => {
-      const body: WithId<PurchaseGood> = {
-        ...good,
-        status: newStatus,
-      }
-
-      await purchaseGoodUpdateMutation.mutateAsync(body)
-    })
-
-    const formattedDeadline = new Date(newDeadline).getTime() / 1000
-
-    const body: WithId<Purchase> = {
-      ...purchase,
+    const purchaseDeliveryId = delivery.id
+    const body: WithId<PurchaseDelivery> = {
+      ...delivery,
+      id: purchaseDeliveryId,
       deadline: formattedDeadline,
     }
 
-    await purchaseUpdateMutation.mutateAsync(body)
+    await deliveryUpdateMutation.mutateAsync(body)
 
-    notify(`Purchase #${purchase.id} was updated successfully`, "success")
+    const isStatusEqual = prevStatus === newStatus
+    const isNewStatusExists = !!newStatus.trim()
+    const isStatusChanged = !isStatusEqual && isNewStatusExists
+    if (isStatusChanged) {
+      goods.forEach(async (good) => {
+        const body: WithId<PurchaseGood> = {
+          ...good,
+          status: newStatus,
+        }
+
+        await purchaseGoodUpdateMutation.mutateAsync(body)
+      })
+    }
+
+    notify(
+      `Delivery #${purchaseDeliveryId} was updated successfully`,
+      "success",
+    )
+
     onClose()
   }
 
@@ -99,6 +99,7 @@ export const PurchaseGoodsStatusUpdateModal: FC<
           <Flex w="full" direction="column" gap={5}>
             {/* New Status */}
             <Flex alignItems="center" gap={5}>
+              {/* Prev Status */}
               <Input value={titleCase(prevStatus)} type="text" isDisabled />
 
               {/* Arrow Icon */}
@@ -110,11 +111,10 @@ export const PurchaseGoodsStatusUpdateModal: FC<
               <Select
                 placeholder="Select new status"
                 value={newStatus}
-                onChange={handleNewStatusChange}
-                isInvalid={isStatusInvalid}
+                onChange={handlePurchaseDeliveryStatusUpdate}
                 isDisabled={isLoading}
               >
-                {Object.values(PurchaseStatus).map((status, index) => (
+                {Object.values(PurchaseDeliveryStatus).map((status, index) => (
                   <option key={index} value={status}>
                     {titleCase(status)}
                   </option>
@@ -122,14 +122,15 @@ export const PurchaseGoodsStatusUpdateModal: FC<
               </Select>
             </Flex>
 
-            {/* Deadline Input */}
+            {/* Deadline */}
             <Input
-              placeholder="New deadline"
-              value={newDeadline}
+              placeholder="Deadline"
+              value={deadline}
               type="date"
-              onChange={handleNewDeadlineChange}
-              isInvalid={isDeadlineInvalid}
-              isDisabled={isLoading}
+              onChange={(e) => {
+                const value = e.target.value
+                setDeadline(value)
+              }}
             />
           </Flex>
         </ModalBody>
@@ -137,7 +138,7 @@ export const PurchaseGoodsStatusUpdateModal: FC<
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              onClick={onGoodsStatusUpdate}
+              onClick={onPurchaseDeliveryUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
             >

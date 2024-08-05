@@ -1,5 +1,5 @@
 import { Button, useDisclosure } from "@chakra-ui/react"
-import { PurchaseDeliveryModal } from "component/purchaseDelivery/PurchaseDeliveryModal"
+import { NewDeliveryModal } from "component/purchaseDelivery/NewPurchaseDeliveryModal"
 import { FC } from "react"
 
 export const NewPurchaseDeliveryBtn: FC = () => {
@@ -15,7 +15,7 @@ export const NewPurchaseDeliveryBtn: FC = () => {
         Add delivery
       </Button>
 
-      <PurchaseDeliveryModal
+      <NewDeliveryModal
         isOpen={isNewPurchaseDeliveryModalOpen}
         onClose={onNewPurchaseDeliveryModalClose}
       />

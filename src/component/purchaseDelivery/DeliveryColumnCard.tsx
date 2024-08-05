@@ -15,9 +15,9 @@ import { PurchaseCardGoodsList } from "component/purchase/PurchaseCardGoodsList"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/PurchaseDeliveryDeleteModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
-import { PurchaseDeliveryModal } from "component/purchaseDelivery/PurchaseDeliveryModal"
 import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
 import { PurchaseDeliveryToStorageModal } from "component/purchaseDelivery/PurchaseDeliveryToStorageModal"
+import { DeliveryGoodsStatusUpdateModal } from "component/purchaseGood/DeliveryGoodsStatusUpdateModal"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
@@ -62,9 +62,9 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   } = useDisclosure()
 
   const {
-    isOpen: isPurchaseDeliveryEditModalOpen,
-    onOpen: onPurchaseDeliveryEditModalOpen,
-    onClose: onPurchaseDeliveryEditModalClose,
+    isOpen: isDeliveryGoodsStatusModalOpen,
+    onOpen: onDeliveryGoodsStatusModalOpen,
+    onClose: onDeliveryGoodsStatusModalClose,
   } = useDisclosure()
 
   const {
@@ -119,7 +119,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
               onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
               onDocuments={onDocumentsModalOpen}
               onGoods={onPurchaseDeliveryGoodsStatusModalOpen}
-              onEdit={onPurchaseDeliveryEditModalOpen}
+              onStatusUpdate={onDeliveryGoodsStatusModalOpen}
               onDelete={onPurchaseDeliveryDeleteModalOpen}
               isMoveGoodsToStorageBtnHidden={isMoveGoodsToStorageBtnHidden}
             />
@@ -169,11 +169,12 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
           onClose={onPurchaseDeliveryGoodsStatusModalClose}
         />
 
-        <PurchaseDeliveryModal
-          prevPurchaseDelivery={delivery}
-          prevGoods={goods}
-          isOpen={isPurchaseDeliveryEditModalOpen}
-          onClose={onPurchaseDeliveryEditModalClose}
+        <DeliveryGoodsStatusUpdateModal
+          delivery={delivery}
+          goods={goods}
+          prevStatus={status}
+          isOpen={isDeliveryGoodsStatusModalOpen}
+          onClose={onDeliveryGoodsStatusModalClose}
         />
 
         <PurchaseDeliveryToStorageModal
