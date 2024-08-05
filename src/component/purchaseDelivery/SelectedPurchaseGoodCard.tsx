@@ -32,23 +32,31 @@ export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
     <Card boxShadow="md" borderRadius={20}>
       <CardHeader>
         <Flex direction="column" gap={2}>
-          <Flex>
-            <Badge colorScheme="blue">Purchase #{good.purchase_id}</Badge>
-          </Flex>
+          <Flex justifyContent="space-between">
+            <Flex w="full" direction="column" gap={2}>
+              {/* Purchase ID */}
+              <Flex>
+                <Badge colorScheme="blue">Purchase #{good.purchase_id}</Badge>
+              </Flex>
 
-          <Flex alignItems="center" gap={10}>
-            <Heading size="md">{good.name}</Heading>
+              {/* Good Name */}
+              <Heading size="md">
+                #{good.id} {good.name}
+              </Heading>
 
-            <Flex alignItems="center" gap={5}>
+              {/* Good Description */}
+              <Text fontSize="sm" fontStyle="italic" color="gray">
+                {good.description}
+              </Text>
+            </Flex>
+
+            {/* Good Qty & Price per Item & Total Amount */}
+            <Flex w="full" direction="column" alignItems="flex-start" gap={5}>
               <Badge>Quantity: {good.quantity}</Badge>
               <Badge>Unit Price: ${good.price_per_item}</Badge>
               <Badge>Amount: ${good.amount}</Badge>
             </Flex>
           </Flex>
-
-          <Text fontSize="sm" fontStyle="italic" color="gray">
-            {good.description}
-          </Text>
         </Flex>
 
         {/* Delete Good Btn */}
