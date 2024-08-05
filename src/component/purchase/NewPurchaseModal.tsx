@@ -8,12 +8,12 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Select,
   Text,
 } from "@chakra-ui/react"
 import { getAllSuppliers } from "api/supplier"
 import { getManagersBySupplierId } from "api/supplierManager"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { PurchaseGoodsTable } from "component/purchaseGood/PurchaseGoodsTable"
 import { useCommentInput } from "hook/useCommentInput"
@@ -122,7 +122,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
 
   return (
     <Modal size="4xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>New Purchase</ModalHeader>

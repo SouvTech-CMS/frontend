@@ -10,9 +10,9 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Text,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react"
 import { FiEdit, FiUpload } from "react-icons/fi"
 import { usePurchaseFileCreateMutation } from "service/purchaseFile"
@@ -80,7 +80,7 @@ export const NewPurchaseDocumentModal: FC<NewPurchaseDocumentModalProps> = (
 
   return (
     <Modal size="lg" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>Upload Document</ModalHeader>

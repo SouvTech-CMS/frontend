@@ -7,10 +7,10 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react"
 import { getManagersBySupplierId } from "api/supplierManager"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ManagerCard } from "component/supplierManager/ManagerCard"
 import { NewManagerModal } from "component/supplierManager/NewManagerModal"
 import { FC } from "react"
@@ -24,13 +24,13 @@ interface SupplierManagersModalProps extends ModalProps {
 }
 
 export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
-  props
+  props,
 ) => {
   const { supplierId, isOpen, onClose } = props
 
   const { data: managersList } = useQuery<WithId<SupplierManager>[]>(
     ["supplierManagersList", supplierId],
-    () => getManagersBySupplierId(supplierId)
+    () => getManagersBySupplierId(supplierId),
   )
 
   const {
@@ -42,7 +42,7 @@ export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
   return (
     <>
       <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay backdropFilter="blur(10px)" />
+        <ModalBackgroundBlur />
 
         <ModalContent>
           <ModalHeader>Managers</ModalHeader>

@@ -9,10 +9,10 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Select,
   Text,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { PurchaseDeliveryGoodsSelectList } from "component/purchaseDelivery/PurchaseDeliveryGoodsSelectList"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
@@ -161,7 +161,7 @@ export const PurchaseDeliveryModal: FC<PurchaseDeliveryModalProps> = (
 
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>

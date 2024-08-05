@@ -10,10 +10,10 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Textarea,
 } from "@chakra-ui/react"
 import { ActionMeta, GroupBase, Select, SingleValue } from "chakra-react-select"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { useUserContext } from "context/user"
 import { FC, useEffect, useState } from "react"
 import { FiAlignLeft, FiDollarSign, FiHash, FiType } from "react-icons/fi"
@@ -112,7 +112,7 @@ export const GoodModal: FC<GoodModalProps> = (props) => {
 
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>

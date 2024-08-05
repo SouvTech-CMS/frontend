@@ -10,8 +10,8 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
@@ -76,7 +76,7 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>New manager</ModalHeader>

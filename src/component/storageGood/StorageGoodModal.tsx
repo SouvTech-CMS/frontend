@@ -10,9 +10,9 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Textarea,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { FC, useState } from "react"
 import { FiAlignLeft, FiHash, FiType } from "react-icons/fi"
 import {
@@ -23,7 +23,6 @@ import { ModalProps } from "type/modalProps"
 import { StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
-
 interface StorageGoodModalProps extends ModalProps {
   prevGood?: WithId<StorageGood>
 }
@@ -84,7 +83,7 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
 
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>

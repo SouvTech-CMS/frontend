@@ -12,12 +12,12 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Text,
 } from "@chakra-ui/react"
 import { getAllRoles } from "api/role"
 import { getAllShops } from "api/shop"
 import { AxiosError } from "axios"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { ADMIN_ROLE } from "constant/roles"
 import { useUserContext } from "context/user"
@@ -214,7 +214,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
 
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>{isNewUser ? "New Employee" : "Employee"}</ModalHeader>

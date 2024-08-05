@@ -7,9 +7,9 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Text,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { FC } from "react"
 import { usePurchaseDeliveryDeleteMutation } from "service/purchaseDelivery"
 import { ModalProps } from "type/modalProps"
@@ -42,7 +42,7 @@ export const PurchaseDeliveryDeleteModal: FC<
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>Delete Delivery</ModalHeader>

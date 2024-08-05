@@ -10,8 +10,8 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { PurchaseStatus } from "constant/purchaseStatus"
 import { FC, useEffect, useState } from "react"
 import { FiAlignLeft, FiDollarSign, FiLayers, FiType } from "react-icons/fi"
@@ -52,7 +52,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>New Good</ModalHeader>

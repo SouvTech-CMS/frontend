@@ -7,9 +7,9 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react"
 import { getFullStorageGoodsList } from "api/storageGood"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { GoodToStorageCard } from "component/purchaseDelivery/GoodToStorageCard"
 import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
@@ -94,7 +94,7 @@ export const PurchaseDeliveryToStorageModal: FC<
 
   return (
     <Modal size="4xl" isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>Move Goods to Storage</ModalHeader>

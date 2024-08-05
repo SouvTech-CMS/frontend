@@ -9,9 +9,9 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Select,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { PurchaseStatus } from "constant/purchaseStatus"
 import { ChangeEvent, FC, useState } from "react"
 import { FiArrowRight } from "react-icons/fi"
@@ -90,7 +90,7 @@ export const PurchaseGoodsStatusUpdateModal: FC<
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>Update Purchase Status & Deadline</ModalHeader>

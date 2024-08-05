@@ -7,8 +7,8 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { PurchaseDeliveryGoodsModalCard } from "component/purchaseDelivery/PurchaseDeliveryGoodsModalCard"
 import { FC } from "react"
 import { ModalProps } from "type/modalProps"
@@ -27,7 +27,7 @@ export const PurchaseDeliveryGoodsModal: FC<PurchaseDeliveryGoodsModalProps> = (
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>Delivery #{purchaseDeliveryId} Goods</ModalHeader>
