@@ -2,20 +2,20 @@ import {
   AccordionButton,
   AccordionIcon,
   AccordionPanel,
+  Divider,
   Flex,
   IconButton,
-  ListItem,
   Text,
-  UnorderedList,
   useDisclosure,
 } from "@chakra-ui/react"
+import { DividerWithTitle } from "component/DividerWithTitle"
 import { CommentTooltip } from "component/comment/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
+import { PurchaseCardGoodsList } from "component/purchase/PurchaseCardGoodsList"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
-import { PurchaseGoodCard } from "component/purchaseGood/PurchaseGoodCard"
 import { PurchaseGoodsStatusUpdateModal } from "component/purchaseGood/PurchaseGoodsStatusUpdateModal"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
@@ -26,7 +26,6 @@ import {
   roundNumber,
   timestampToDate,
 } from "util/formatting"
-
 interface PurchaseColumnCardProps {
   purchaseData: FullPurchase
   status: string
@@ -122,17 +121,17 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
         {/* Card Content with Goods */}
         <AccordionPanel>
           <Flex direction="column" gap={5}>
-            <UnorderedList>
-              {goods.map((good, index) => (
-                <ListItem key={index}>
-                  <PurchaseGoodCard good={good} />
-                </ListItem>
-              ))}
-            </UnorderedList>
+            <DividerWithTitle title="Goods" />
 
-            <Text fontWeight="semibold">
-              Total amount: {numberWithCurrency(roundNumber(purchase.amount))}
-            </Text>
+            <Flex direction="column" gap={2}>
+              <PurchaseCardGoodsList goods={goods} />
+
+              <Text fontWeight="semibold">
+                Total amount: {numberWithCurrency(roundNumber(purchase.amount))}
+              </Text>
+            </Flex>
+
+            <Divider />
           </Flex>
         </AccordionPanel>
 

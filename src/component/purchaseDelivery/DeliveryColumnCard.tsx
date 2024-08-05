@@ -2,22 +2,22 @@ import {
   AccordionButton,
   AccordionIcon,
   AccordionPanel,
+  Divider,
   Flex,
   IconButton,
-  ListItem,
   Text,
-  UnorderedList,
   useDisclosure,
 } from "@chakra-ui/react"
+import { DividerWithTitle } from "component/DividerWithTitle"
 import { CommentTooltip } from "component/comment/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
+import { PurchaseCardGoodsList } from "component/purchase/PurchaseCardGoodsList"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/PurchaseDeliveryDeleteModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
 import { PurchaseDeliveryModal } from "component/purchaseDelivery/PurchaseDeliveryModal"
 import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
 import { PurchaseDeliveryToStorageModal } from "component/purchaseDelivery/PurchaseDeliveryToStorageModal"
-import { PurchaseGoodCard } from "component/purchaseGood/PurchaseGoodCard"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
@@ -128,14 +128,12 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
 
         {/* Card Content with Goods */}
         <AccordionPanel>
-          <Flex direction="column">
-            <UnorderedList>
-              {goods.map((good, index) => (
-                <ListItem key={index}>
-                  <PurchaseGoodCard good={good} />
-                </ListItem>
-              ))}
-            </UnorderedList>
+          <Flex direction="column" gap={5}>
+            <DividerWithTitle title="Goods" />
+
+            <PurchaseCardGoodsList goods={goods} />
+
+            <Divider />
           </Flex>
         </AccordionPanel>
 
