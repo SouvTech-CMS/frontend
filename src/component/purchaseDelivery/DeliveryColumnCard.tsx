@@ -49,7 +49,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   const isCommentExists = !!comment.trim()
 
   const isMoveGoodsToStorageBtnHidden =
-    status !== PurchaseDeliveryStatus.OnWayToStorage
+    status !== PurchaseDeliveryStatus.Delivered
 
   const {
     isOpen: isDocumentsModalOpen,
