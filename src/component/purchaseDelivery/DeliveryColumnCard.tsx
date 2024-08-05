@@ -100,7 +100,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
 
             {/* Purchase ID */}
             <Text fontSize="lg" fontWeight="semibold">
-              #{delivery.id}
+              Delivery {delivery.id}
             </Text>
           </Flex>
 

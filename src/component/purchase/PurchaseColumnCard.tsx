@@ -95,7 +95,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
 
             {/* Purchase ID */}
             <Text fontSize="lg" fontWeight="semibold">
-              #{purchase.id}
+              Order {purchase.id}
             </Text>
           </Flex>
 
