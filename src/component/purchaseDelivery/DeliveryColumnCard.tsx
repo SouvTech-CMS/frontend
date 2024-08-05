@@ -37,8 +37,6 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   const files = deliveryData.files
   const goods = deliveryData.goods
 
-  const isDocumentsExist = files.length > 0
-
   const purchaseDeadline = timestampToDate(delivery.deadline)
 
   const { comment } = useCommentInput({
@@ -104,20 +102,18 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
             </Text>
           </Flex>
 
-          <Flex alignItems="center" gap={2}>
+          <Flex alignItems="center" gap={1}>
             {/* Comment */}
             {isCommentExists && <CommentTooltip comment={comment} />}
 
             {/* Documents */}
-            {isDocumentsExist && (
-              <IconButton
-                aria-label="documents-icon-btn"
-                size="sm"
-                variant="ghost"
-                icon={<FiFileText />}
-                onClick={onDocumentsModalOpen}
-              />
-            )}
+            <IconButton
+              aria-label="documents-icon-btn"
+              size="sm"
+              variant="ghost"
+              icon={<FiFileText />}
+              onClick={onDocumentsModalOpen}
+            />
 
             <PurchaseDeliveryRowMenu
               onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
