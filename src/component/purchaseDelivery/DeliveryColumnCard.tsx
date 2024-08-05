@@ -91,7 +91,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
       >
         {/* Purchase Card Header */}
         <Flex w="full" justifyContent="space-between" alignItems="center">
-          <Flex alignItems="center" gap={2}>
+          <Flex alignItems="center" gap={1}>
             <AccordionButton w="fit-content" p={2} borderRadius={5}>
               <AccordionIcon />
             </AccordionButton>
