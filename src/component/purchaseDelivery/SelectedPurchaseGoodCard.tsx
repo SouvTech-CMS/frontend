@@ -52,9 +52,9 @@ export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
 
             {/* Good Qty & Price per Item & Total Amount */}
             <Flex w="full" direction="column" alignItems="flex-start" gap={5}>
-              <Badge>Quantity: {good.quantity}</Badge>
-              <Badge>Unit Price: ${good.price_per_item}</Badge>
-              <Badge>Amount: ${good.amount}</Badge>
+              <Badge fontSize="sm">Quantity: {good.quantity}</Badge>
+              <Badge fontSize="sm">Unit Price: ${good.price_per_item}</Badge>
+              <Badge fontSize="sm">Amount: ${good.amount}</Badge>
             </Flex>
           </Flex>
         </Flex>
