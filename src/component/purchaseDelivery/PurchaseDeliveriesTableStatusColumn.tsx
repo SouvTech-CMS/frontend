@@ -32,7 +32,7 @@ export const DeliveriesTableStatusColumn: FC<
 
         <Flex w="full" direction="column" gap={2}>
           {deliveriesList.map((deliveryData, index) => (
-            <AccordionItem key={index} w="full">
+            <AccordionItem key={index} w="full" border="none">
               <DeliveryColumnCard status={status} deliveryData={deliveryData} />
             </AccordionItem>
           ))}
