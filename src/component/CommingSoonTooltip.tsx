@@ -12,7 +12,7 @@ export const CommingSoonTooltip: FCC<CommingSoonTooltipProps> = (props) => {
     <Tooltip
       label={
         <Text fontWeight="semibold" fontStyle="italic">
-          Commint Soon..
+          Coming Soon..
         </Text>
       }
       placement={placement}
