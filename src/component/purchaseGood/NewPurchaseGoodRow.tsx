@@ -12,7 +12,7 @@ export const NewPurchaseGoodRow: FC<NewPurchaseGoodRowProps> = (props) => {
   const { good, handleRemoveGood } = props
 
   return (
-    <Tr position="relative">
+    <Tr position="relative" fontWeight="semibold">
       <Td>{good.name}</Td>
       <Td>${good.price_per_item}</Td>
       <Td>{good.quantity}</Td>

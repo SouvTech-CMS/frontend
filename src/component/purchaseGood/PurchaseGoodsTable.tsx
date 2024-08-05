@@ -41,7 +41,7 @@ export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
 
   return (
     <>
-      <Table w="full" variant="simple">
+      <Table w="full" variant="simple" bgColor="gray.200" borderRadius={10}>
         <Thead>
           <Tr>
             {TABLE_COLUMNS.map((columnName, index) => (
