@@ -16,7 +16,7 @@ export const appTheme = extendTheme({
       card: baseTheme.colors.gray["200"],
     },
     modal: {
-      base: baseTheme.colors.gray["200"],
+      base: baseTheme.colors.gray["100"],
     },
   },
   fonts: {

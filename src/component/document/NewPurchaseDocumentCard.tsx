@@ -35,9 +35,9 @@ export const NewPurchaseDocumentCard: FC<NewPurchaseDocumentCardProps> = (
           alignItems="center"
           gap={5}
         >
-          <FiUpload color="gray" size={36} />
+          <FiUpload size={36} />
 
-          <Text color="gray" fontSize={20} fontWeight="bold">
+          <Text fontSize={20} fontWeight="bold">
             Upload
           </Text>
         </Flex>
