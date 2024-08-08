@@ -20,3 +20,14 @@ export const timestampToDate = (timestamp: number) => {
   const date = new Date(timestamp * 1000)
   return date
 }
+
+export const dateAsStringToTimestamp = (dateAsString: string) => {
+  const timestamp = new Date(dateAsString).getTime() / 1000
+  return timestamp
+}
+
+export const timestampToDateAsString = (timestamp: number) => {
+  const date = timestampToDate(timestamp)
+  const dateAsString = date.toISOString().split("T")[0]
+  return dateAsString
+}

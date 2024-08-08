@@ -1,16 +1,18 @@
 import { Badge, Card, CardHeader, Flex, Heading, Text } from "@chakra-ui/react"
 import { FC } from "react"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseDelivereryGood } from "type/purchaseDelivery/purchaseDelivereryGood"
 import { WithId } from "type/withId"
 
 interface PurchaseDeliveryGoodsModalCardProps {
-  good: WithId<PurchaseGood>
+  good: WithId<PurchaseDelivereryGood>
 }
 
 export const PurchaseDeliveryGoodsModalCard: FC<
   PurchaseDeliveryGoodsModalCardProps
 > = (props) => {
   const { good } = props
+
+  const purchaseGood = good.purchase_good
 
   // const { setQuery } = useSearchContext()
   // const { setTabIndex } = usePurchaseTabsContext()
@@ -27,19 +29,21 @@ export const PurchaseDeliveryGoodsModalCard: FC<
           {/* Good Info */}
           <Flex justifyContent="space-between">
             <Flex direction="column" gap={2}>
-              {/* Purchase Id Badge */}
+              {/* Purchase ID Badge */}
               <Flex>
-                <Badge colorScheme="blue">Purchase #{good.purchase_id}</Badge>
+                <Badge colorScheme="blue">
+                  Purchase #{purchaseGood.purchase_id}
+                </Badge>
               </Flex>
 
               <Flex alignItems="center" gap={5}>
                 <Heading size="md">
-                  #{good.id} {good.name}
+                  #{good.id} {purchaseGood.name}
                 </Heading>
               </Flex>
 
               <Text fontSize="sm" fontStyle="italic" color="gray">
-                {good.description}
+                {purchaseGood.description}
               </Text>
             </Flex>
 

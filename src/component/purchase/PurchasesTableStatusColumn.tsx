@@ -2,7 +2,7 @@ import { Accordion, AccordionItem, Flex, Heading } from "@chakra-ui/react"
 import { PurchaseColumnCard } from "component/purchase/PurchaseColumnCard"
 import { FC } from "react"
 import { titleCase } from "title-case"
-import { FullPurchase } from "type/purchase"
+import { FullPurchase } from "type/purchase/purchase"
 
 interface PurchasesTableStatusColumnProps {
   status: string
@@ -30,9 +30,9 @@ export const PurchasesTableStatusColumn: FC<PurchasesTableStatusColumnProps> = (
         </Flex>
 
         <Flex w="full" direction="column" gap={2}>
-          {purchasesList.map((purchaseData, index) => (
+          {purchasesList.map((purchase, index) => (
             <AccordionItem key={index} w="full" border="none">
-              <PurchaseColumnCard purchaseData={purchaseData} status={status} />
+              <PurchaseColumnCard purchase={purchase} status={status} />
             </AccordionItem>
           ))}
         </Flex>

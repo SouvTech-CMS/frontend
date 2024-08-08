@@ -1,4 +1,4 @@
-import { getCommentByObjNameAndId } from "api/comment"
+import { getCommentByObjNameAndId } from "api/comment/comment"
 import { useUserContext } from "context/user"
 import { ChangeEvent, useEffect, useState } from "react"
 import { useQuery } from "react-query"
@@ -6,8 +6,8 @@ import {
   useCommentCreateMutation,
   useCommentDeleteMutation,
   useCommentUpdateMutation,
-} from "service/comment"
-import { Comment } from "type/comment"
+} from "service/comment/comment"
+import { Comment } from "type/comment/comment"
 import { WithId } from "type/withId"
 
 interface useCommentInputProps {
@@ -26,7 +26,7 @@ export const useCommentInput = (props: useCommentInputProps) => {
     () => getCommentByObjNameAndId(objectId!, objectName),
     {
       enabled: !!objectId,
-    }
+    },
   )
 
   const [comment, setComment] = useState<string>(prevComment?.comment || "")

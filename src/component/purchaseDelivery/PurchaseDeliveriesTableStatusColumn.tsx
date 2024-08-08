@@ -3,7 +3,7 @@ import { DeliveryColumnCard } from "component/purchaseDelivery/DeliveryColumnCar
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { FC } from "react"
 import { titleCase } from "title-case"
-import { FullPurchaseDelivery } from "type/purchaseDelivery"
+import { FullPurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
 
 interface DeliveriesTableStatusColumnProps {
   status: PurchaseDeliveryStatus
@@ -31,9 +31,9 @@ export const DeliveriesTableStatusColumn: FC<
         </Flex>
 
         <Flex w="full" direction="column" gap={2}>
-          {deliveriesList.map((deliveryData, index) => (
+          {deliveriesList.map((delivery, index) => (
             <AccordionItem key={index} w="full" border="none">
-              <DeliveryColumnCard status={status} deliveryData={deliveryData} />
+              <DeliveryColumnCard status={status} delivery={delivery} />
             </AccordionItem>
           ))}
         </Flex>

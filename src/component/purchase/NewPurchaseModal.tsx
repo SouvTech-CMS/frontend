@@ -11,72 +11,74 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react"
-import { getAllSuppliers } from "api/supplier"
-import { getManagersBySupplierId } from "api/supplierManager"
+import { getAllSuppliers } from "api/supplier/supplier"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { PurchaseGoodsTable } from "component/purchaseGood/PurchaseGoodsTable"
+import { PurchaseStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
-import { FC, useEffect, useState } from "react"
+import { ChangeEvent, FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { usePurchaseCreateMutation } from "service/purchase"
-import { usePurchaseGoodCreateMutation } from "service/purchaseGood"
+import { usePurchaseCreateMutation } from "service/purchase/purchase"
 import { ModalProps } from "type/modalProps"
-import { Purchase } from "type/purchase"
-import { PurchaseGood } from "type/purchaseGood"
-import { Supplier } from "type/supplier"
-import { SupplierManager } from "type/supplierManager"
-import { WithId } from "type/withId"
+import { PurchaseCreate, PurchaseCreateWithGoods } from "type/purchase/purchase"
+import { PurchaseGood } from "type/purchase/purchaseGood"
+import { SupplierWithManagers } from "type/supplier/supplier"
+import {
+  dateAsStringToTimestamp,
+  timestampToDateAsString,
+} from "util/formatting"
 import { notify } from "util/toasts"
 
 interface NewPurchaseModalProps extends ModalProps {}
 
-const newPurchase: Purchase = {
-  supplier_id: NaN,
+const newPurchase: PurchaseCreate = {
   supplier_manager_id: NaN,
   deadline: Math.floor(Date.now() / 1000),
   amount: NaN,
+  status: PurchaseStatus.Order,
 }
 
 export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
   const { isOpen, onClose } = props
 
-  const [purchase, setPurchase] = useState<Purchase>(newPurchase)
+  const [purchase, setPurchase] = useState<PurchaseCreate>(newPurchase)
+  const [supplierId, setSupplierId] = useState<number>(0)
   const [goods, setGoods] = useState<PurchaseGood[]>([])
   const [deadline, setDeadline] = useState<string>(
-    new Date(newPurchase.deadline * 1000).toISOString().split("T")[0],
+    timestampToDateAsString(newPurchase.deadline),
   )
 
   const purchaseCreateMutation = usePurchaseCreateMutation()
-  const purchaseGoodCreateMutation = usePurchaseGoodCreateMutation()
-
-  const isLoading =
-    purchaseCreateMutation.isLoading || purchaseGoodCreateMutation.isLoading
 
   const { data: suppliersList, isLoading: isSuppliersLoading } = useQuery<
-    WithId<Supplier>[]
+    SupplierWithManagers[]
   >("suppliersList", getAllSuppliers)
 
-  const { data: managersList, isLoading: isManagersLoading } = useQuery<
-    WithId<SupplierManager>[]
-  >(
-    ["suppliersList", purchase.supplier_id],
-    () => getManagersBySupplierId(purchase.supplier_id!),
-    { enabled: !!purchase.supplier_id },
+  const selectedSupplier = suppliersList?.find(
+    (supplier) => supplier.id === supplierId,
   )
+  const managersList = selectedSupplier?.managers
 
   const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
     useCommentInput({
       objectName: "purchase",
     })
 
-  const isManagerSelectDisabled = isManagersLoading || !purchase.supplier_id
+  const isLoading = purchaseCreateMutation.isLoading
+
+  const isManagerSelectDisabled = supplierId === 0
   const isSaveBtnDisabled =
     isLoading ||
-    !purchase.supplier_id ||
+    isManagerSelectDisabled ||
     !purchase.supplier_manager_id ||
     goods.length === 0 ||
     !deadline.trim()
+
+  const handleSupplierUpdate = (e: ChangeEvent<HTMLSelectElement>) => {
+    const value = Number(e.target.value)
+    setSupplierId(value)
+  }
 
   const handlePurchaseUpdate = (param: string, value: number | string) => {
     setPurchase((prevPurchase) => ({
@@ -86,28 +88,24 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
   }
 
   const onPurchaseCreate = async () => {
+    // Count full purchase amount
     const goodsAmountSum = goods.reduce(
       (sum, good) => sum + (good.amount || 0),
       0,
     )
 
-    const formattedDeadline = new Date(deadline).getTime() / 1000
+    const formattedDeadline = dateAsStringToTimestamp(deadline)
 
-    const body: Purchase = {
-      ...purchase,
-      deadline: formattedDeadline,
-      amount: goodsAmountSum,
+    const body: PurchaseCreateWithGoods = {
+      purchase: {
+        ...purchase,
+        amount: goodsAmountSum,
+        deadline: formattedDeadline,
+      },
+      goods,
     }
 
     const { id: purchaseId } = await purchaseCreateMutation.mutateAsync(body)
-
-    goods.forEach(async (good) => {
-      const body: PurchaseGood = {
-        ...good,
-        purchase_id: purchaseId,
-      }
-      await purchaseGoodCreateMutation.mutateAsync(body)
-    })
 
     await onCommentSubmit(purchaseId)
 
@@ -141,11 +139,8 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
                 <Select
                   placeholder="Select supplier"
                   isDisabled={isSuppliersLoading}
-                  value={purchase.supplier_id}
-                  onChange={(e) => {
-                    const value = Number(e.target.value)
-                    handlePurchaseUpdate("supplier_id", value)
-                  }}
+                  value={supplierId}
+                  onChange={handleSupplierUpdate}
                 >
                   {suppliersList?.map(({ id, name }) => (
                     <option key={id} value={id}>
@@ -177,37 +172,19 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
               </Flex>
             </Flex>
 
-            {/* Shipping and Deadline */}
-            <Flex w="full" gap={10}>
-              {/* Shipping */}
-              <Flex w="full" direction="column" gap={1}>
-                <Text fontWeight="bold">Shipping:</Text>
+            {/* Deadline */}
+            <Flex w="full" direction="column" gap={1}>
+              <Text fontWeight="bold">Deadline:</Text>
 
-                <Input
-                  placeholder="Shipping"
-                  value={purchase.shipping}
-                  type="number"
-                  onChange={(e) => {
-                    const value = e.target.valueAsNumber
-                    handlePurchaseUpdate("shipping", value)
-                  }}
-                />
-              </Flex>
-
-              {/* Deadline */}
-              <Flex w="full" direction="column" gap={1}>
-                <Text fontWeight="bold">Deadline:</Text>
-
-                <Input
-                  placeholder="Deadline"
-                  value={deadline}
-                  type="date"
-                  onChange={(e) => {
-                    const value = e.target.value
-                    setDeadline(value)
-                  }}
-                />
-              </Flex>
+              <Input
+                placeholder="Deadline"
+                value={deadline}
+                type="date"
+                onChange={(e) => {
+                  const value = e.target.value
+                  setDeadline(value)
+                }}
+              />
             </Flex>
 
             {/* Comment */}

@@ -2,7 +2,7 @@ import {
   createPurchaseDelivery,
   deletePurchaseDelivery,
   updatePurchaseDelivery,
-} from "api/purchaseDelivery"
+} from "api/purchaseDelivery/purchaseDelivery"
 import { queryClient } from "api/queryClient"
 import { useMutation } from "react-query"
 

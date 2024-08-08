@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react"
 import { Dispatch, FC, SetStateAction } from "react"
 import { FiTrash2 } from "react-icons/fi"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseGood } from "type/purchase/purchaseGood"
 import { WithId } from "type/withId"
 
 interface SelectedPurchaseGoodCardProps {

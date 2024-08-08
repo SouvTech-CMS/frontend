@@ -19,9 +19,9 @@ import { FiMapPin, FiUser } from "react-icons/fi"
 import {
   useSupplierCreateMutation,
   useSupplierUpdateMutation,
-} from "service/supplier"
+} from "service/supplier/supplier"
 import { ModalProps } from "type/modalProps"
-import { Supplier } from "type/supplier"
+import { Supplier } from "type/supplier/supplier"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 

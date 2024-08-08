@@ -11,14 +11,14 @@ import {
 import { NewPurchaseGoodModal } from "component/purchaseGood/NewPurchaseGoodModal"
 import { NewPurchaseGoodRow } from "component/purchaseGood/NewPurchaseGoodRow"
 import { Dispatch, FC, SetStateAction } from "react"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseGood } from "type/purchase/purchaseGood"
 
 interface PurchaseGoodsTableProps {
   goods: PurchaseGood[]
   setGoods: Dispatch<SetStateAction<PurchaseGood[]>>
 }
 
-const TABLE_COLUMNS = ["Name", "Unit Price", "Quantity", "Total"]
+const TABLE_COLUMNS = ["Name", "Unit Price", "Quantity", "Total", ""]
 
 export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
   const { goods, setGoods } = props

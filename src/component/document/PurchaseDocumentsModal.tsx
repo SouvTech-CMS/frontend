@@ -14,7 +14,7 @@ import { NewPurchaseDocumentCard } from "component/document/NewPurchaseDocumentC
 import { PurchaseDocumentCard } from "component/document/PurchaseDocumentCard"
 import { FC } from "react"
 import { ModalProps } from "type/modalProps"
-import { PurchaseFile } from "type/purchaseFile"
+import { PurchaseFile } from "type/purchase/purchaseFile"
 import { WithId } from "type/withId"
 
 interface PurchaseDocumentsModalProps extends ModalProps {

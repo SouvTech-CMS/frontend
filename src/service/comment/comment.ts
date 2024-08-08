@@ -1,4 +1,8 @@
-import { createComment, deleteComment, updateComment } from "api/comment"
+import {
+  createComment,
+  deleteComment,
+  updateComment,
+} from "api/comment/comment"
 import { queryClient } from "api/queryClient"
 import { useMutation } from "react-query"
 

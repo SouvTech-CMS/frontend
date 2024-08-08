@@ -11,9 +11,9 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { FC } from "react"
-import { useSupplierDeleteMutation } from "service/supplier"
+import { useSupplierDeleteMutation } from "service/supplier/supplier"
 import { ModalProps } from "type/modalProps"
-import { Supplier } from "type/supplier"
+import { Supplier } from "type/supplier/supplier"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 

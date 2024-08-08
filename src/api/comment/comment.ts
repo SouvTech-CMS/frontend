@@ -1,10 +1,10 @@
 import { axiosClient } from "api/axiosClient"
-import { Comment } from "type/comment"
+import { Comment } from "type/comment/comment"
 import { WithId } from "type/withId"
 
 export const getCommentByObjNameAndId = async (
   objectId: number,
-  objectName: string
+  objectName: string,
 ): Promise<WithId<Comment>> => {
   const { data: comment } = await axiosClient.get("/comment/", {
     params: {

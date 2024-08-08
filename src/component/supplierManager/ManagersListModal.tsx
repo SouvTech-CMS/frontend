@@ -9,29 +9,23 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@chakra-ui/react"
-import { getManagersBySupplierId } from "api/supplierManager"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ManagerCard } from "component/supplierManager/ManagerCard"
 import { NewManagerModal } from "component/supplierManager/NewManagerModal"
 import { FC } from "react"
-import { useQuery } from "react-query"
 import { ModalProps } from "type/modalProps"
-import { SupplierManager } from "type/supplierManager"
+import { SupplierManager } from "type/supplier/supplierManager"
 import { WithId } from "type/withId"
 
 interface SupplierManagersModalProps extends ModalProps {
   supplierId: number
+  managers: WithId<SupplierManager>[]
 }
 
 export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
   props,
 ) => {
-  const { supplierId, isOpen, onClose } = props
-
-  const { data: managersList } = useQuery<WithId<SupplierManager>[]>(
-    ["supplierManagersList", supplierId],
-    () => getManagersBySupplierId(supplierId),
-  )
+  const { supplierId, managers, isOpen, onClose } = props
 
   const {
     isOpen: isNewManagerModalOpen,
@@ -50,7 +44,7 @@ export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
 
           <ModalBody>
             <Flex w="full" direction="column" gap={5}>
-              {managersList?.map((manager, index) => (
+              {managers?.map((manager, index) => (
                 <ManagerCard key={index} manager={manager} />
               ))}
             </Flex>

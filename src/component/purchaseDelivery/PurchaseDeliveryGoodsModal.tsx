@@ -12,25 +12,25 @@ import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { PurchaseDeliveryGoodsModalCard } from "component/purchaseDelivery/PurchaseDeliveryGoodsModalCard"
 import { FC } from "react"
 import { ModalProps } from "type/modalProps"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseDelivereryGood } from "type/purchaseDelivery/purchaseDelivereryGood"
 import { WithId } from "type/withId"
 
 interface PurchaseDeliveryGoodsModalProps extends ModalProps {
-  purchaseDeliveryId: number
-  goods: WithId<PurchaseGood>[]
+  deliveryId: number
+  goods: WithId<PurchaseDelivereryGood>[]
 }
 
 export const PurchaseDeliveryGoodsModal: FC<PurchaseDeliveryGoodsModalProps> = (
   props,
 ) => {
-  const { purchaseDeliveryId, goods, isOpen, onClose } = props
+  const { deliveryId, goods, isOpen, onClose } = props
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Delivery #{purchaseDeliveryId} Goods</ModalHeader>
+        <ModalHeader>Delivery #{deliveryId} Goods</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>

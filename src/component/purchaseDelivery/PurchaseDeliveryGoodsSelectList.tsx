@@ -1,11 +1,10 @@
 import { Flex } from "@chakra-ui/react"
-import { getPurchaseGoodsByStatus } from "api/purchaseGood"
+import { getReadyToDeliveryPurchaseGoods } from "api/purchase/purchaseGood"
 import { ActionMeta, GroupBase, Select, SingleValue } from "chakra-react-select"
 import { SelectedPurchaseGoodCard } from "component/purchaseDelivery/SelectedPurchaseGoodCard"
-import { PurchaseStatus } from "constant/purchaseStatus"
 import { Dispatch, FC, SetStateAction } from "react"
 import { useQuery } from "react-query"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseGood } from "type/purchase/purchaseGood"
 import { SelectOption } from "type/selectOption"
 import { WithId } from "type/withId"
 
@@ -14,16 +13,14 @@ interface PurchaseDeliveryGoodsSelectListProps {
   setSelectedGoods: Dispatch<SetStateAction<WithId<PurchaseGood>[]>>
 }
 
-const GOODS_STATUS = PurchaseStatus.Processing
-
 export const PurchaseDeliveryGoodsSelectList: FC<
   PurchaseDeliveryGoodsSelectListProps
 > = (props) => {
   const { selectedGoods, setSelectedGoods } = props
 
   const { data: goods, isLoading } = useQuery<WithId<PurchaseGood>[]>(
-    ["purchaseGoods", GOODS_STATUS],
-    () => getPurchaseGoodsByStatus(GOODS_STATUS),
+    "readyToDeliveryPurchaseGoods",
+    getReadyToDeliveryPurchaseGoods,
   )
 
   const filteredGoods =

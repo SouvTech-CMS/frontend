@@ -2,8 +2,8 @@ import { Card, CardBody, Flex, Heading, Text } from "@chakra-ui/react"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { FiAtSign, FiMessageSquare, FiPhone } from "react-icons/fi"
-import { Supplier } from "type/supplier"
-import { SupplierManager } from "type/supplierManager"
+import { Supplier } from "type/supplier/supplier"
+import { SupplierManager } from "type/supplier/supplierManager"
 import { WithId } from "type/withId"
 
 interface PurchaseSupplierModalCardProps {

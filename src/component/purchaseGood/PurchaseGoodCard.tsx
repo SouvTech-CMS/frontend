@@ -1,6 +1,6 @@
 import { GridItem, Text } from "@chakra-ui/react"
 import { FC } from "react"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseGood } from "type/purchase/purchaseGood"
 import { WithId } from "type/withId"
 
 interface PurchaseGoodCardProps {
