@@ -14,37 +14,34 @@ import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { ChangeEvent, FC, useState } from "react"
 import { FiArrowRight } from "react-icons/fi"
-import { usePurchaseDeliveryUpdateMutation } from "service/purchaseDelivery"
-import { usePurchaseGoodUpdateMutation } from "service/purchaseGood"
+import { usePurchaseDeliveryUpdateMutation } from "service/purchaseDelivery/purchaseDelivery"
 import { titleCase } from "title-case"
 import { ModalProps } from "type/modalProps"
-import { PurchaseDelivery } from "type/purchaseDelivery"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
 import { WithId } from "type/withId"
+import { timestampToDateAsString } from "util/formatting"
 import { notify } from "util/toasts"
 
-interface DeliveryGoodsStatusUpdateModalProps extends ModalProps {
+interface DeliveryStatusUpdateModalProps extends ModalProps {
   delivery: WithId<PurchaseDelivery>
-  goods: WithId<PurchaseGood>[]
   prevStatus: string
 }
 
-export const DeliveryGoodsStatusUpdateModal: FC<
-  DeliveryGoodsStatusUpdateModalProps
-> = (props) => {
-  const { delivery, goods, prevStatus, isOpen, onClose } = props
+export const DeliveryStatusUpdateModal: FC<DeliveryStatusUpdateModalProps> = (
+  props,
+) => {
+  const { delivery, prevStatus, isOpen, onClose } = props
 
   const [newStatus, setNewStatus] = useState<string>(prevStatus)
   const [deadline, setDeadline] = useState<string>(
-    new Date(delivery.deadline * 1000).toISOString().split("T")[0],
+    timestampToDateAsString(delivery.deadline),
   )
 
   const deliveryUpdateMutation = usePurchaseDeliveryUpdateMutation()
-  const purchaseGoodUpdateMutation = usePurchaseGoodUpdateMutation()
 
   const isLoading = deliveryUpdateMutation.isLoading
 
-  const isSaveBtnDisabled = isLoading || goods.length === 0 || !deadline.trim()
+  const isSaveBtnDisabled = isLoading || !deadline.trim()
 
   const handlePurchaseDeliveryStatusUpdate = (
     e: ChangeEvent<HTMLSelectElement>,
@@ -54,36 +51,25 @@ export const DeliveryGoodsStatusUpdateModal: FC<
   }
 
   const onPurchaseDeliveryUpdate = async () => {
+    const purchaseDeliveryId = delivery.id
     const formattedDeadline = new Date(deadline).getTime() / 1000
 
-    const purchaseDeliveryId = delivery.id
     const body: WithId<PurchaseDelivery> = {
-      ...delivery,
       id: purchaseDeliveryId,
+      shipping: delivery.shipping,
+      after_custom_shipping: delivery.after_custom_shipping,
+      track_number: delivery.track_number,
+      after_custom_track_number: delivery.after_custom_track_number,
       deadline: formattedDeadline,
+      status: newStatus,
     }
 
     await deliveryUpdateMutation.mutateAsync(body)
-
-    const isStatusEqual = prevStatus === newStatus
-    const isNewStatusExists = !!newStatus.trim()
-    const isStatusChanged = !isStatusEqual && isNewStatusExists
-    if (isStatusChanged) {
-      goods.forEach(async (good) => {
-        const body: WithId<PurchaseGood> = {
-          ...good,
-          status: newStatus,
-        }
-
-        await purchaseGoodUpdateMutation.mutateAsync(body)
-      })
-    }
 
     notify(
       `Delivery #${purchaseDeliveryId} was updated successfully`,
       "success",
     )
-
     onClose()
   }
 

@@ -1,14 +1,18 @@
 import { axiosClient } from "api/axiosClient"
-import { FullPurchase, Purchase } from "type/purchase"
+import {
+  FullPurchase,
+  Purchase,
+  PurchaseCreateWithGoods,
+} from "type/purchase/purchase"
 import { WithId } from "type/withId"
 
 export const getAllPurchases = async (): Promise<FullPurchase[]> => {
-  const { data: purchasesList } = await axiosClient.get("/purchase/")
+  const { data: purchasesList } = await axiosClient.get("/purchase/all/")
   return purchasesList
 }
 
 export const createPurchase = async (
-  purchase: Purchase
+  purchase: PurchaseCreateWithGoods,
 ): Promise<WithId<Purchase>> => {
   const { data: newPurchase } = await axiosClient.post("/purchase/", purchase)
   return newPurchase

@@ -3,13 +3,13 @@ import {
   createSupplierManager,
   deleteSupplierManager,
   updateSupplierManager,
-} from "api/supplierManager"
+} from "api/supplier/supplierManager"
 import { useMutation } from "react-query"
 
 export const useSupplierManagerCreateMutation = () => {
   return useMutation(createSupplierManager, {
     onSuccess: () => {
-      queryClient.invalidateQueries("supplierManagersList")
+      queryClient.invalidateQueries("suppliersWithManagersList")
     },
   })
 }
@@ -17,7 +17,7 @@ export const useSupplierManagerCreateMutation = () => {
 export const useSupplierManagerUpdateMutation = () => {
   return useMutation(updateSupplierManager, {
     onSuccess: () => {
-      queryClient.invalidateQueries("supplierManagersList")
+      queryClient.invalidateQueries("suppliersWithManagersList")
     },
   })
 }
@@ -25,7 +25,7 @@ export const useSupplierManagerUpdateMutation = () => {
 export const useSupplierManagerDeleteMutation = () => {
   return useMutation(deleteSupplierManager, {
     onSuccess: () => {
-      queryClient.invalidateQueries("supplierManagersList")
+      queryClient.invalidateQueries("suppliersWithManagersList")
     },
   })
 }

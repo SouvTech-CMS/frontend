@@ -15,36 +15,36 @@ import { PurchaseCardGoodsList } from "component/purchase/PurchaseCardGoodsList"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
+import { PurchaseStatusUpdateModal } from "component/purchase/PurchaseStatusUpdateModal"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
-import { PurchaseGoodsStatusUpdateModal } from "component/purchaseGood/PurchaseGoodsStatusUpdateModal"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { FiFileText } from "react-icons/fi"
-import { FullPurchase } from "type/purchase"
+import { FullPurchase } from "type/purchase/purchase"
 import {
   numberWithCurrency,
   roundNumber,
   timestampToDate,
 } from "util/formatting"
 interface PurchaseColumnCardProps {
-  purchaseData: FullPurchase
+  purchase: FullPurchase
   status: string
 }
 
 export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
-  const { purchaseData, status } = props
+  const { purchase, status } = props
 
-  const purchase = purchaseData.purchase
-  const files = purchaseData.files
-  const goods = purchaseData.goods.filter((good) => good.status === status)
-  const supplier = purchaseData.supplier
-  const supplierManager = purchaseData.supplier_manager
+  const purchaseId = purchase.id
+  const goods = purchase.goods.filter((good) => !good.in_delivery)
+  const manager = purchase.manager
+  const supplier = manager.supplier
+  const files = purchase.files
 
   const purchaseDeadline = timestampToDate(purchase.deadline)
 
   const { comment } = useCommentInput({
     objectName: "purchase",
-    objectId: purchase.id,
+    objectId: purchaseId,
   })
 
   const isCommentExists = !!comment.trim()
@@ -92,7 +92,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
 
             {/* Purchase ID */}
             <Text fontSize="lg" fontWeight="semibold">
-              Order #{purchase.id}
+              Order #{purchaseId}
             </Text>
           </Flex>
 
@@ -136,41 +136,36 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
         </AccordionPanel>
 
         <Flex alignItems="center" px={2} gap={5}>
-          <PurchaseDeadlineBadge
-            type="Purchase"
-            goods={goods}
-            deadline={purchaseDeadline}
-          />
+          <PurchaseDeadlineBadge deadline={purchaseDeadline} />
         </Flex>
       </Flex>
 
       {/* Purchase Modals */}
       <>
         <PurchaseDeleteModal
-          purchase={purchase}
+          purchaseId={purchaseId}
           isOpen={isPurchaseDeleteModalOpen}
           onClose={onPurchaseDeleteModalClose}
         />
 
         <PurchaseDocumentsModal
-          purchaseId={purchase.id}
+          purchaseId={purchaseId}
           documents={files}
           isOpen={isDocumentsModalOpen}
           onClose={onDocumentsModalClose}
         />
 
-        <PurchaseGoodsStatusUpdateModal
+        <PurchaseStatusUpdateModal
           purchase={purchase}
-          goods={goods}
           prevStatus={status}
           isOpen={isPurchaseGoodsStatusModalOpen}
           onClose={onPurchaseGoodsStatusModalClose}
         />
 
         <PurchaseSupplierModal
-          purchaseId={purchase.id}
+          purchaseId={purchaseId}
           supplier={supplier}
-          manager={supplierManager}
+          manager={manager}
           isOpen={isSupplierManagerModalOpen}
           onClose={onSupplierManagerModalClose}
         />

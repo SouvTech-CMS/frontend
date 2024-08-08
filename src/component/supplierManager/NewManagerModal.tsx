@@ -16,9 +16,9 @@ import { CommentInput } from "component/comment/Comment"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { FiAtSign, FiPhone, FiUser } from "react-icons/fi"
-import { useSupplierManagerCreateMutation } from "service/supplierManager"
+import { useSupplierManagerCreateMutation } from "service/supplier/supplierManager"
 import { ModalProps } from "type/modalProps"
-import { SupplierManager } from "type/supplierManager"
+import { SupplierManager } from "type/supplier/supplierManager"
 import { notify } from "util/toasts"
 
 interface NewManagerModalProps extends ModalProps {

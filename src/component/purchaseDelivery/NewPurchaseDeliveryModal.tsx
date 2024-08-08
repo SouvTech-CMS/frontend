@@ -13,19 +13,30 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { PurchaseDeliveryGoodsSelectList } from "component/purchaseDelivery/PurchaseDeliveryGoodsSelectList"
+import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
-import { usePurchaseDeliveryCreateMutation } from "service/purchaseDelivery"
+import { usePurchaseDeliveryCreateMutation } from "service/purchaseDelivery/purchaseDelivery"
 import { ModalProps } from "type/modalProps"
-import { PurchaseDelivery, PurchaseDeliveryCreate } from "type/purchaseDelivery"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseGood } from "type/purchase/purchaseGood"
+import { PurchaseDelivereryGoodCreate } from "type/purchaseDelivery/purchaseDelivereryGood"
+import {
+  PurchaseDelivery,
+  PurchaseDeliveryCreate,
+} from "type/purchaseDelivery/purchaseDelivery"
 import { WithId } from "type/withId"
+import {
+  dateAsStringToTimestamp,
+  timestampToDateAsString,
+} from "util/formatting"
 import { notify } from "util/toasts"
 
 interface NewDeliveryModalProps extends ModalProps {}
 
 const newDelivery: PurchaseDelivery = {
   deadline: Math.floor(Date.now() / 1000),
+  shipping: NaN,
+  status: PurchaseDeliveryStatus.Packing,
 }
 
 export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
@@ -34,7 +45,7 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
   const [delivery, setDelivery] = useState<PurchaseDelivery>(newDelivery)
   const [goods, setGoods] = useState<WithId<PurchaseGood>[]>([])
   const [deadline, setDeadline] = useState<string>(
-    new Date(newDelivery.deadline * 1000).toISOString().split("T")[0],
+    timestampToDateAsString(newDelivery.deadline),
   )
 
   const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
@@ -56,25 +67,27 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
   }
 
   const onPurchaseDeliveryCreate = async () => {
-    const formattedDeadline = new Date(deadline).getTime() / 1000
+    const formattedDeadline = dateAsStringToTimestamp(deadline)
 
-    const purchaseDeliveryGoodsIds = goods.map((good) => good.id)
+    const deliveryGoods: PurchaseDelivereryGoodCreate[] = goods.map((good) => ({
+      id: good.id,
+      quantity: good.quantity,
+    }))
 
     const body: PurchaseDeliveryCreate = {
       purchase_delivery: {
         ...delivery,
         deadline: formattedDeadline,
       },
-      purchase_delivery_good: purchaseDeliveryGoodsIds,
+      purchase_goods: deliveryGoods,
     }
 
-    const { purchase_delivery: newPurchaseDelivery } =
+    const { id: newDeliveryId } =
       await purchaseDeliveryCreateMutation.mutateAsync(body)
 
-    await onCommentSubmit(newPurchaseDelivery.id)
+    await onCommentSubmit(newDeliveryId)
 
     notify("Delivery was created successfully", "success")
-
     onClose()
   }
 
@@ -97,7 +110,40 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
               setSelectedGoods={setGoods}
             />
 
-            {/* Track Number and Track Number after Custom */}
+            {/* Shipping & Shipping after Custom */}
+            <Flex w="full" gap={10}>
+              {/* Shipping */}
+              <Flex w="full" direction="column" gap={1}>
+                <Text fontWeight="bold">Shipping:</Text>
+
+                <Input
+                  placeholder="Shipping"
+                  value={delivery.shipping}
+                  type="number"
+                  onChange={(e) => {
+                    const value = e.target.valueAsNumber
+                    handleDeliveryUpdate("shipping", value)
+                  }}
+                />
+              </Flex>
+
+              {/* Shipping after Custom */}
+              <Flex w="full" direction="column" gap={1}>
+                <Text fontWeight="bold">Shipping after Custom:</Text>
+
+                <Input
+                  placeholder="Shipping after Custom"
+                  value={delivery.after_custom_shipping}
+                  type="number"
+                  onChange={(e) => {
+                    const value = e.target.valueAsNumber
+                    handleDeliveryUpdate("after_custom_shipping", value)
+                  }}
+                />
+              </Flex>
+            </Flex>
+
+            {/* Track Number & Track Number after Custom */}
             <Flex w="full" gap={10}>
               {/* Track Number */}
               <Flex w="full" direction="column" gap={1}>
@@ -130,37 +176,19 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
               </Flex>
             </Flex>
 
-            {/* Shipping after Custom and Deadline */}
-            <Flex w="full" gap={10}>
-              {/* Shipping after Custom */}
-              <Flex w="full" direction="column" gap={1}>
-                <Text fontWeight="bold">Shipping after Custom:</Text>
+            {/* Deadline */}
+            <Flex w="full" direction="column" gap={1}>
+              <Text fontWeight="bold">Deadline:</Text>
 
-                <Input
-                  placeholder="Shipping after Custom"
-                  value={delivery.after_custom_shipping}
-                  type="number"
-                  onChange={(e) => {
-                    const value = e.target.valueAsNumber
-                    handleDeliveryUpdate("after_custom_shipping", value)
-                  }}
-                />
-              </Flex>
-
-              {/* Deadline */}
-              <Flex w="full" direction="column" gap={1}>
-                <Text fontWeight="bold">Deadline:</Text>
-
-                <Input
-                  placeholder="Deadline"
-                  value={deadline}
-                  type="date"
-                  onChange={(e) => {
-                    const value = e.target.value
-                    setDeadline(value)
-                  }}
-                />
-              </Flex>
+              <Input
+                placeholder="Deadline"
+                value={deadline}
+                type="date"
+                onChange={(e) => {
+                  const value = e.target.value
+                  setDeadline(value)
+                }}
+              />
             </Flex>
 
             {/* Comment */}

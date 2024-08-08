@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react"
-import { getAllPurchaseDeliveries } from "api/purchaseDelivery"
+import { getAllPurchaseDeliveries } from "api/purchaseDelivery/purchaseDelivery"
 import { LoadingPage } from "component/page/LoadingPage"
 import { DeliveriesTableStatusColumn } from "component/purchaseDelivery/PurchaseDeliveriesTableStatusColumn"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { FC } from "react"
 import { useQuery } from "react-query"
-import { FullPurchaseDelivery } from "type/purchaseDelivery"
+import { FullPurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
 
 export const PurchaseDeliveriesTable: FC = () => {
   const { data: deliveriesList, isLoading } = useQuery<FullPurchaseDelivery[]>(
@@ -17,15 +17,14 @@ export const PurchaseDeliveriesTable: FC = () => {
   const getDeliveriesListByStatus = (status: PurchaseDeliveryStatus) => {
     if (!isDeliveriesListExists) return []
 
-    const filteredDeliveriesList = deliveriesList.filter((delivery) =>
-      delivery.goods.some(
-        (good) => good.status.toLowerCase() === status.toLowerCase(),
-      ),
+    const filteredDeliveriesList = deliveriesList.filter(
+      (delivery) => delivery.status.toLowerCase() === status.toLowerCase(),
     )
+
     return filteredDeliveriesList
   }
 
-  if (isLoading) {
+  if (isLoading || !isDeliveriesListExists) {
     return <LoadingPage />
   }
 

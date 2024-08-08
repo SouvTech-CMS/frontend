@@ -1,4 +1,7 @@
-import { createPurchaseFile, deletePurchaseFile } from "api/purchaseFile"
+import {
+  createPurchaseFile,
+  deletePurchaseFile,
+} from "api/purchase/purchaseFile"
 import { queryClient } from "api/queryClient"
 import { useMutation } from "react-query"
 

@@ -11,37 +11,37 @@ import {
 import { DividerWithTitle } from "component/DividerWithTitle"
 import { CommentTooltip } from "component/comment/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
-import { PurchaseCardGoodsList } from "component/purchase/PurchaseCardGoodsList"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
+import { DeliveryCardGoodsList } from "component/purchaseDelivery/DeliveryCardGoodsList"
+import { DeliveryStatusUpdateModal } from "component/purchaseDelivery/DeliveryStatusUpdateModal"
 import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/PurchaseDeliveryDeleteModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
 import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
 import { PurchaseDeliveryToStorageModal } from "component/purchaseDelivery/PurchaseDeliveryToStorageModal"
-import { DeliveryGoodsStatusUpdateModal } from "component/purchaseGood/DeliveryGoodsStatusUpdateModal"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { FiFileText } from "react-icons/fi"
-import { FullPurchaseDelivery } from "type/purchaseDelivery"
+import { FullPurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
 import { timestampToDate } from "util/formatting"
 
 interface DeliveryColumnCardProps {
   status: PurchaseDeliveryStatus
-  deliveryData: FullPurchaseDelivery
+  delivery: FullPurchaseDelivery
 }
 
 export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
-  const { status, deliveryData } = props
+  const { status, delivery } = props
 
-  const delivery = deliveryData.purchase_delivery
-  const files = deliveryData.files
-  const goods = deliveryData.goods
+  const deliveryId = delivery.id
+  const files = delivery.files
+  const goods = delivery.goods
 
   const purchaseDeadline = timestampToDate(delivery.deadline)
 
   const { comment } = useCommentInput({
     objectName: "purchase_delivery",
-    objectId: delivery.id,
+    objectId: deliveryId,
   })
 
   const isCommentExists = !!comment.trim()
@@ -98,7 +98,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
 
             {/* Purchase ID */}
             <Text fontSize="lg" fontWeight="semibold">
-              Delivery #{delivery.id}
+              Delivery #{deliveryId}
             </Text>
           </Flex>
 
@@ -131,31 +131,27 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
           <Flex direction="column" gap={5}>
             <DividerWithTitle title="Goods" />
 
-            <PurchaseCardGoodsList goods={goods} />
+            <DeliveryCardGoodsList goods={goods} />
 
             <Divider />
           </Flex>
         </AccordionPanel>
 
         <Flex alignItems="center" px={2} gap={5}>
-          <PurchaseDeadlineBadge
-            type="PurchaseDelivery"
-            goods={goods}
-            deadline={purchaseDeadline}
-          />
+          <PurchaseDeadlineBadge deadline={purchaseDeadline} />
         </Flex>
       </Flex>
 
       {/* Purchase Modals */}
       <>
         <PurchaseDeliveryDeleteModal
-          purchaseDelivery={delivery}
+          deliveryId={deliveryId}
           isOpen={isPurchaseDeliveryDeleteModalOpen}
           onClose={onPurchaseDeliveryDeleteModalClose}
         />
 
         <PurchaseDocumentsModal
-          purchaseId={delivery.id}
+          purchaseId={deliveryId}
           documents={files}
           isOpen={isDocumentsModalOpen}
           onClose={onDocumentsModalClose}
@@ -163,23 +159,22 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
         />
 
         <PurchaseDeliveryGoodsModal
-          purchaseDeliveryId={delivery.id}
+          deliveryId={deliveryId}
           goods={goods}
           isOpen={isPurchaseDeliveryGoodsStatusModalOpen}
           onClose={onPurchaseDeliveryGoodsStatusModalClose}
         />
 
-        <DeliveryGoodsStatusUpdateModal
+        <DeliveryStatusUpdateModal
           delivery={delivery}
-          goods={goods}
           prevStatus={status}
           isOpen={isDeliveryGoodsStatusModalOpen}
           onClose={onDeliveryGoodsStatusModalClose}
         />
 
         <PurchaseDeliveryToStorageModal
-          purchaseDelivery={delivery}
-          purchaseGoods={goods}
+          delivery={delivery}
+          goods={goods}
           isOpen={isPurchaseDeliveryToStorageModalOpen}
           onClose={onPurchaseDeliveryToStorageModalClose}
         />

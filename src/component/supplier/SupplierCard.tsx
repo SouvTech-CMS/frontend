@@ -14,15 +14,18 @@ import { SupplierModal } from "component/supplier/SupplierModal"
 import { SupplierManagersModal } from "component/supplierManager/ManagersListModal"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
-import { Supplier } from "type/supplier"
+import { SupplierWithManagers } from "type/supplier/supplier"
 import { WithId } from "type/withId"
 
 interface SupplierCardProps {
-  supplier: WithId<Supplier>
+  supplier: WithId<SupplierWithManagers>
 }
 
 export const SupplierCard: FC<SupplierCardProps> = (props) => {
   const { supplier } = props
+
+  const supplierId = supplier.id
+  const managers = supplier.managers
 
   const {
     isOpen: isSupplierDeleteModalOpen,
@@ -44,7 +47,7 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
 
   const { comment } = useCommentInput({
     objectName: "supplier",
-    objectId: supplier.id,
+    objectId: supplierId,
   })
 
   const isCommentExists = !!comment.trim()
@@ -107,7 +110,8 @@ export const SupplierCard: FC<SupplierCardProps> = (props) => {
 
       {/* Edit supplier modal */}
       <SupplierManagersModal
-        supplierId={supplier.id}
+        supplierId={supplierId}
+        managers={managers}
         isOpen={isManagersModalOpen}
         onClose={onManagersModalClose}
       />

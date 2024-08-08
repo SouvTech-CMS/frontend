@@ -15,9 +15,9 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react"
 import { FiEdit, FiUpload } from "react-icons/fi"
-import { usePurchaseFileCreateMutation } from "service/purchaseFile"
+import { usePurchaseFileCreateMutation } from "service/purchase/purchaseFile"
 import { ModalProps } from "type/modalProps"
-import { PurchaseFileCreate } from "type/purchaseFile"
+import { PurchaseFileCreate } from "type/purchase/purchaseFile"
 import { notify } from "util/toasts"
 
 interface NewPurchaseDocumentModalProps extends ModalProps {

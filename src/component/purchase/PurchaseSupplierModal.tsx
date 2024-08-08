@@ -11,8 +11,8 @@ import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { PurchaseSupplierModalCard } from "component/purchase/PurchaseSupplierModalCard"
 import { FC } from "react"
 import { ModalProps } from "type/modalProps"
-import { Supplier } from "type/supplier"
-import { SupplierManager } from "type/supplierManager"
+import { Supplier } from "type/supplier/supplier"
+import { SupplierManager } from "type/supplier/supplierManager"
 import { WithId } from "type/withId"
 
 interface PurchaseSupplierModalProps extends ModalProps {

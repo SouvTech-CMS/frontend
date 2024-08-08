@@ -12,11 +12,16 @@ import {
   ModalHeader,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { PurchaseStatus } from "constant/purchaseStatus"
 import { FC, useEffect, useState } from "react"
-import { FiAlignLeft, FiDollarSign, FiLayers, FiType } from "react-icons/fi"
+import {
+  FiAlignLeft,
+  FiDollarSign,
+  FiHash,
+  FiLayers,
+  FiType,
+} from "react-icons/fi"
 import { ModalProps } from "type/modalProps"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseGood } from "type/purchase/purchaseGood"
 
 interface NewPurchaseGoodModalProps extends ModalProps {
   handleAddGood: (good: PurchaseGood) => void
@@ -26,7 +31,6 @@ const newGood: PurchaseGood = {
   name: "",
   quantity: NaN,
   price_per_item: NaN,
-  status: PurchaseStatus.Order,
 }
 
 export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
@@ -60,6 +64,22 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
 
         <ModalBody>
           <Flex w="full" direction="column" gap={5}>
+            {/* SKU */}
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiHash />
+              </InputLeftElement>
+
+              <Input
+                placeholder="SKU"
+                value={good.sku}
+                onChange={(e) => {
+                  const value = e.target.value
+                  handleGoodUpdate("sku", value)
+                }}
+              />
+            </InputGroup>
+
             {/* Name */}
             <InputGroup>
               <InputLeftElement color="gray">
