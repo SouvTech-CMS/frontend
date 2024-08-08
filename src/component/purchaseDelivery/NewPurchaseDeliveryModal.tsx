@@ -35,7 +35,6 @@ interface NewDeliveryModalProps extends ModalProps {}
 
 const newDelivery: PurchaseDelivery = {
   deadline: Math.floor(Date.now() / 1000),
-  shipping: NaN,
   status: PurchaseDeliveryStatus.Packing,
 }
 
