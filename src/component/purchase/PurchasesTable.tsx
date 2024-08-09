@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react"
-import { getAllPurchases } from "api/purchase"
+import { getAllPurchases } from "api/purchase/purchase"
 import { LoadingPage } from "component/page/LoadingPage"
 import { PurchasesTableStatusColumn } from "component/purchase/PurchasesTableStatusColumn"
 import { PurchaseStatus } from "constant/purchaseStatus"
 import { FC } from "react"
 import { useQuery } from "react-query"
-import { FullPurchase } from "type/purchase"
+import { FullPurchase } from "type/purchase/purchase"
 
 export const PurchasesTable: FC = () => {
   const { data: purchasesList, isLoading } = useQuery<FullPurchase[]>(
@@ -17,10 +17,8 @@ export const PurchasesTable: FC = () => {
   const getPurchasesListByStatus = (status: PurchaseStatus) => {
     if (!isPurchasesListExists) return []
 
-    const filteredPurchasesList = purchasesList.filter((purchase) =>
-      purchase.goods.some(
-        (good) => good.status.toLowerCase() === status.toLowerCase(),
-      ),
+    const filteredPurchasesList = purchasesList.filter(
+      (purchase) => purchase.status.toLowerCase() === status.toLowerCase(),
     )
     return filteredPurchasesList
   }

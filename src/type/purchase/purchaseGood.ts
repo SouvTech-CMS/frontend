@@ -1,9 +1,10 @@
 export type PurchaseGood = {
+  purchase_id?: number
   name: string
   description?: string
-  purchase_id?: number
+  sku?: string
   quantity: number
-  amount?: number
   price_per_item: number
-  status: string
+  amount?: number
+  in_delivery: number
 }

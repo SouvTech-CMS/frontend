@@ -7,9 +7,9 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Text,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { useUserContext } from "context/user"
 import { FC } from "react"
 import { useUserDeleteMutation } from "service/user"
@@ -48,7 +48,7 @@ export const UserDeleteModal: FC<UserDeleteModalProps> = (props) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>Delete Employee</ModalHeader>

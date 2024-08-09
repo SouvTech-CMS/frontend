@@ -2,54 +2,52 @@ import {
   AccordionButton,
   AccordionIcon,
   AccordionPanel,
+  Divider,
   Flex,
   IconButton,
-  ListItem,
   Text,
-  UnorderedList,
   useDisclosure,
 } from "@chakra-ui/react"
+import { DividerWithTitle } from "component/DividerWithTitle"
 import { CommentTooltip } from "component/comment/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
+import { DeliveryCardGoodsList } from "component/purchaseDelivery/DeliveryCardGoodsList"
+import { DeliveryStatusUpdateModal } from "component/purchaseDelivery/DeliveryStatusUpdateModal"
 import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/PurchaseDeliveryDeleteModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
-import { PurchaseDeliveryModal } from "component/purchaseDelivery/PurchaseDeliveryModal"
 import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
 import { PurchaseDeliveryToStorageModal } from "component/purchaseDelivery/PurchaseDeliveryToStorageModal"
-import { PurchaseGoodCard } from "component/purchaseGood/PurchaseGoodCard"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { FiFileText } from "react-icons/fi"
-import { FullPurchaseDelivery } from "type/purchaseDelivery"
+import { FullPurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
 import { timestampToDate } from "util/formatting"
 
 interface DeliveryColumnCardProps {
   status: PurchaseDeliveryStatus
-  deliveryData: FullPurchaseDelivery
+  delivery: FullPurchaseDelivery
 }
 
 export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
-  const { status, deliveryData } = props
+  const { status, delivery } = props
 
-  const delivery = deliveryData.purchase_delivery
-  const files = deliveryData.files
-  const goods = deliveryData.goods
-
-  const isDocumentsExist = files.length > 0
+  const deliveryId = delivery.id
+  const files = delivery.files
+  const goods = delivery.goods
 
   const purchaseDeadline = timestampToDate(delivery.deadline)
 
   const { comment } = useCommentInput({
     objectName: "purchase_delivery",
-    objectId: delivery.id,
+    objectId: deliveryId,
   })
 
   const isCommentExists = !!comment.trim()
 
   const isMoveGoodsToStorageBtnHidden =
-    status !== PurchaseDeliveryStatus.OnWayToStorage
+    status !== PurchaseDeliveryStatus.Delivered
 
   const {
     isOpen: isDocumentsModalOpen,
@@ -64,9 +62,9 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   } = useDisclosure()
 
   const {
-    isOpen: isPurchaseDeliveryEditModalOpen,
-    onOpen: onPurchaseDeliveryEditModalOpen,
-    onClose: onPurchaseDeliveryEditModalClose,
+    isOpen: isDeliveryGoodsStatusModalOpen,
+    onOpen: onDeliveryGoodsStatusModalOpen,
+    onClose: onDeliveryGoodsStatusModalClose,
   } = useDisclosure()
 
   const {
@@ -93,37 +91,35 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
       >
         {/* Purchase Card Header */}
         <Flex w="full" justifyContent="space-between" alignItems="center">
-          <Flex alignItems="center" gap={2}>
-            <AccordionButton p={2} borderRadius={5}>
+          <Flex alignItems="center" gap={1}>
+            <AccordionButton w="fit-content" p={2} borderRadius={5}>
               <AccordionIcon />
             </AccordionButton>
 
             {/* Purchase ID */}
             <Text fontSize="lg" fontWeight="semibold">
-              #{delivery.id}
+              Delivery #{deliveryId}
             </Text>
           </Flex>
 
-          <Flex alignItems="center" gap={2}>
+          <Flex alignItems="center" gap={1}>
             {/* Comment */}
             {isCommentExists && <CommentTooltip comment={comment} />}
 
             {/* Documents */}
-            {isDocumentsExist && (
-              <IconButton
-                aria-label="documents-icon-btn"
-                size="sm"
-                variant="ghost"
-                icon={<FiFileText />}
-                onClick={onDocumentsModalOpen}
-              />
-            )}
+            <IconButton
+              aria-label="documents-icon-btn"
+              size="sm"
+              variant="ghost"
+              icon={<FiFileText />}
+              onClick={onDocumentsModalOpen}
+            />
 
             <PurchaseDeliveryRowMenu
               onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
               onDocuments={onDocumentsModalOpen}
               onGoods={onPurchaseDeliveryGoodsStatusModalOpen}
-              onEdit={onPurchaseDeliveryEditModalOpen}
+              onStatusUpdate={onDeliveryGoodsStatusModalOpen}
               onDelete={onPurchaseDeliveryDeleteModalOpen}
               isMoveGoodsToStorageBtnHidden={isMoveGoodsToStorageBtnHidden}
             />
@@ -132,36 +128,30 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
 
         {/* Card Content with Goods */}
         <AccordionPanel>
-          <Flex direction="column">
-            <UnorderedList>
-              {goods.map((good, index) => (
-                <ListItem key={index}>
-                  <PurchaseGoodCard good={good} />
-                </ListItem>
-              ))}
-            </UnorderedList>
+          <Flex direction="column" gap={5}>
+            <DividerWithTitle title="Goods" />
+
+            <DeliveryCardGoodsList goods={goods} />
+
+            <Divider />
           </Flex>
         </AccordionPanel>
 
         <Flex alignItems="center" px={2} gap={5}>
-          <PurchaseDeadlineBadge
-            type="PurchaseDelivery"
-            goods={goods}
-            deadline={purchaseDeadline}
-          />
+          <PurchaseDeadlineBadge deadline={purchaseDeadline} />
         </Flex>
       </Flex>
 
       {/* Purchase Modals */}
       <>
         <PurchaseDeliveryDeleteModal
-          purchaseDelivery={delivery}
+          deliveryId={deliveryId}
           isOpen={isPurchaseDeliveryDeleteModalOpen}
           onClose={onPurchaseDeliveryDeleteModalClose}
         />
 
         <PurchaseDocumentsModal
-          purchaseId={delivery.id}
+          purchaseId={deliveryId}
           documents={files}
           isOpen={isDocumentsModalOpen}
           onClose={onDocumentsModalClose}
@@ -169,22 +159,22 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
         />
 
         <PurchaseDeliveryGoodsModal
-          purchaseDeliveryId={delivery.id}
+          deliveryId={deliveryId}
           goods={goods}
           isOpen={isPurchaseDeliveryGoodsStatusModalOpen}
           onClose={onPurchaseDeliveryGoodsStatusModalClose}
         />
 
-        <PurchaseDeliveryModal
-          prevPurchaseDelivery={delivery}
-          prevGoods={goods}
-          isOpen={isPurchaseDeliveryEditModalOpen}
-          onClose={onPurchaseDeliveryEditModalClose}
+        <DeliveryStatusUpdateModal
+          delivery={delivery}
+          prevStatus={status}
+          isOpen={isDeliveryGoodsStatusModalOpen}
+          onClose={onDeliveryGoodsStatusModalClose}
         />
 
         <PurchaseDeliveryToStorageModal
-          purchaseDelivery={delivery}
-          purchaseGoods={goods}
+          delivery={delivery}
+          goods={goods}
           isOpen={isPurchaseDeliveryToStorageModalOpen}
           onClose={onPurchaseDeliveryToStorageModalClose}
         />

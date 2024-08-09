@@ -24,7 +24,7 @@ import {
   FiInbox,
   FiPackage,
 } from "react-icons/fi"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseGood } from "type/purchase/purchaseGood"
 import { SelectOption } from "type/selectOption"
 import { DeliveryToStorageGood } from "type/storage"
 import { StorageGood } from "type/storageGood"

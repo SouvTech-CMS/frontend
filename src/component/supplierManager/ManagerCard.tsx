@@ -9,8 +9,8 @@ import {
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { FiAtSign, FiMessageSquare, FiPhone, FiTrash2 } from "react-icons/fi"
-import { useSupplierManagerDeleteMutation } from "service/supplierManager"
-import { SupplierManager } from "type/supplierManager"
+import { useSupplierManagerDeleteMutation } from "service/supplier/supplierManager"
+import { SupplierManager } from "type/supplier/supplierManager"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 

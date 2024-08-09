@@ -1,7 +1,6 @@
 import {
   Button,
   Flex,
-  FormControl,
   Input,
   Modal,
   ModalBody,
@@ -9,45 +8,41 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Select,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { PurchaseStatus } from "constant/purchaseStatus"
 import { ChangeEvent, FC, useState } from "react"
 import { FiArrowRight } from "react-icons/fi"
-import { usePurchaseUpdateMutation } from "service/purchase"
-import { usePurchaseGoodUpdateMutation } from "service/purchaseGood"
+import { usePurchaseUpdateMutation } from "service/purchase/purchase"
 import { titleCase } from "title-case"
 import { ModalProps } from "type/modalProps"
-import { Purchase } from "type/purchase"
-import { PurchaseGood } from "type/purchaseGood"
+import { Purchase } from "type/purchase/purchase"
 import { WithId } from "type/withId"
+import { timestampToDateAsString } from "util/formatting"
 import { notify } from "util/toasts"
 
-interface PurchaseGoodsStatusUpdateModalProps extends ModalProps {
+interface PurchaseStatusUpdateModalProps extends ModalProps {
   purchase: WithId<Purchase>
-  goods: WithId<PurchaseGood>[]
   prevStatus: string
 }
 
-export const PurchaseGoodsStatusUpdateModal: FC<
-  PurchaseGoodsStatusUpdateModalProps
-> = (props) => {
-  const { purchase, goods, prevStatus, isOpen, onClose } = props
+export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
+  props,
+) => {
+  const { purchase, prevStatus, isOpen, onClose } = props
 
   const [newStatus, setNewStatus] = useState<string>(prevStatus)
   const [newDeadline, setNewDeadline] = useState<string>(
-    new Date(purchase.deadline * 1000).toISOString().split("T")[0],
+    timestampToDateAsString(purchase.deadline),
   )
 
   const purchaseUpdateMutation = usePurchaseUpdateMutation()
-  const purchaseGoodUpdateMutation = usePurchaseGoodUpdateMutation()
 
-  const isLoading =
-    purchaseUpdateMutation.isLoading || purchaseGoodUpdateMutation.isLoading
+  const isLoading = purchaseUpdateMutation.isLoading
 
   const isStatusInvalid = !newStatus.trim()
-  const isDeadlineInvalid = !newDeadline?.trim()
+  const isDeadlineInvalid = !newDeadline.trim()
 
   const isSaveBtnDisabled = isStatusInvalid || isDeadlineInvalid
 
@@ -61,24 +56,13 @@ export const PurchaseGoodsStatusUpdateModal: FC<
     setNewDeadline(value)
   }
 
-  const onGoodsStatusUpdate = async () => {
-    const filteredGoods = goods.filter((good) =>
-      Object.values(PurchaseStatus).includes(good.status as PurchaseStatus),
-    )
-
-    filteredGoods.forEach(async (good) => {
-      const body: WithId<PurchaseGood> = {
-        ...good,
-        status: newStatus,
-      }
-
-      await purchaseGoodUpdateMutation.mutateAsync(body)
-    })
-
+  const onPurchaseStatusUpdate = async () => {
     const formattedDeadline = new Date(newDeadline).getTime() / 1000
 
     const body: WithId<Purchase> = {
-      ...purchase,
+      id: purchase.id,
+      amount: purchase.amount,
+      status: newStatus,
       deadline: formattedDeadline,
     }
 
@@ -90,7 +74,7 @@ export const PurchaseGoodsStatusUpdateModal: FC<
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>Update Purchase Status & Deadline</ModalHeader>
@@ -108,21 +92,19 @@ export const PurchaseGoodsStatusUpdateModal: FC<
               </Flex>
 
               {/* New Status Select */}
-              <FormControl isInvalid={isStatusInvalid}>
-                <Select
-                  placeholder="Select new status"
-                  value={newStatus}
-                  onChange={handleNewStatusChange}
-                  isInvalid={isStatusInvalid}
-                  isDisabled={isLoading}
-                >
-                  {Object.values(PurchaseStatus).map((status, index) => (
-                    <option key={index} value={status}>
-                      {titleCase(status)}
-                    </option>
-                  ))}
-                </Select>
-              </FormControl>
+              <Select
+                placeholder="Select new status"
+                value={newStatus}
+                onChange={handleNewStatusChange}
+                isInvalid={isStatusInvalid}
+                isDisabled={isLoading}
+              >
+                {Object.values(PurchaseStatus).map((status, index) => (
+                  <option key={index} value={status}>
+                    {titleCase(status)}
+                  </option>
+                ))}
+              </Select>
             </Flex>
 
             {/* Deadline Input */}
@@ -140,7 +122,7 @@ export const PurchaseGoodsStatusUpdateModal: FC<
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              onClick={onGoodsStatusUpdate}
+              onClick={onPurchaseStatusUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
             >

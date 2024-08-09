@@ -6,13 +6,13 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { PurchaseSupplierModalCard } from "component/purchase/PurchaseSupplierModalCard"
 import { FC } from "react"
 import { ModalProps } from "type/modalProps"
-import { Supplier } from "type/supplier"
-import { SupplierManager } from "type/supplierManager"
+import { Supplier } from "type/supplier/supplier"
+import { SupplierManager } from "type/supplier/supplierManager"
 import { WithId } from "type/withId"
 
 interface PurchaseSupplierModalProps extends ModalProps {
@@ -28,7 +28,7 @@ export const PurchaseSupplierModal: FC<PurchaseSupplierModalProps> = (
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>Purchase #{purchaseId} Manager</ModalHeader>

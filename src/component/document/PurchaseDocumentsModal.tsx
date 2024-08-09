@@ -7,14 +7,14 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   SimpleGrid,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { NewPurchaseDocumentCard } from "component/document/NewPurchaseDocumentCard"
 import { PurchaseDocumentCard } from "component/document/PurchaseDocumentCard"
 import { FC } from "react"
 import { ModalProps } from "type/modalProps"
-import { PurchaseFile } from "type/purchaseFile"
+import { PurchaseFile } from "type/purchase/purchaseFile"
 import { WithId } from "type/withId"
 
 interface PurchaseDocumentsModalProps extends ModalProps {
@@ -24,15 +24,21 @@ interface PurchaseDocumentsModalProps extends ModalProps {
 }
 
 export const PurchaseDocumentsModal: FC<PurchaseDocumentsModalProps> = (
-  props
+  props,
 ) => {
   const { purchaseId, documents, isDelivery = false, isOpen, onClose } = props
 
   return (
-    <Modal size="4xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+    <Modal
+      variant="active"
+      size="4xl"
+      isOpen={isOpen}
+      onClose={onClose}
+      isCentered
+    >
+      <ModalBackgroundBlur />
 
-      <ModalContent>
+      <ModalContent bgColor="modal.base">
         <ModalHeader>
           {isDelivery ? "Delivery" : "Purchase"} #{purchaseId} Documents
         </ModalHeader>

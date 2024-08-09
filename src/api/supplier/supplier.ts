@@ -1,14 +1,14 @@
 import { axiosClient } from "api/axiosClient"
-import { Supplier } from "type/supplier"
+import { Supplier, SupplierWithManagers } from "type/supplier/supplier"
 import { WithId } from "type/withId"
 
-export const getAllSuppliers = async (): Promise<WithId<Supplier>[]> => {
+export const getAllSuppliers = async (): Promise<SupplierWithManagers[]> => {
   const { data: suppliersList } = await axiosClient.get("/supplier/")
   return suppliersList
 }
 
 export const createSupplier = async (
-  supplier: Supplier
+  supplier: Supplier,
 ): Promise<WithId<Supplier>> => {
   const { data: newSupplier } = await axiosClient.post("/supplier/", supplier)
   return newSupplier

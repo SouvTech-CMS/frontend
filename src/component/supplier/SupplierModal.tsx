@@ -10,8 +10,8 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
@@ -19,9 +19,9 @@ import { FiMapPin, FiUser } from "react-icons/fi"
 import {
   useSupplierCreateMutation,
   useSupplierUpdateMutation,
-} from "service/supplier"
+} from "service/supplier/supplier"
 import { ModalProps } from "type/modalProps"
-import { Supplier } from "type/supplier"
+import { Supplier } from "type/supplier/supplier"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
@@ -93,7 +93,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>{isNewSupplier ? "New supplier" : "Supplier"}</ModalHeader>

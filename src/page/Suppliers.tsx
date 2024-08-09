@@ -1,5 +1,5 @@
 import { SimpleGrid } from "@chakra-ui/react"
-import { getAllSuppliers } from "api/supplier"
+import { getAllSuppliers } from "api/supplier/supplier"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
@@ -9,14 +9,13 @@ import { Role } from "constant/roles"
 import { useSearchContext } from "context/search"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useQuery } from "react-query"
-import { Supplier } from "type/supplier"
-import { WithId } from "type/withId"
+import { SupplierWithManagers } from "type/supplier/supplier"
 
 const Suppliers = () => {
   const { query, isQueryExists } = useSearchContext()
 
-  const { data: suppliersList, isLoading } = useQuery<WithId<Supplier>[]>(
-    "suppliersList",
+  const { data: suppliersList, isLoading } = useQuery<SupplierWithManagers[]>(
+    "suppliersWithManagersList",
     getAllSuppliers,
   )
 

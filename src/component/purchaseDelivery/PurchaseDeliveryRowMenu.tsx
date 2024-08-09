@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react"
 import { FC } from "react"
 import {
-  FiEdit,
+  FiCalendar,
   FiFileText,
   FiMoreVertical,
   FiPackage,
@@ -19,7 +19,7 @@ interface PurchaseDeliveryRowMenuProps {
   onMoveGoodsToStorage: () => void
   onDocuments: () => void
   onGoods: () => void
-  onEdit: () => void
+  onStatusUpdate: () => void
   onDelete: () => void
   isMoveGoodsToStorageBtnHidden: boolean
 }
@@ -31,7 +31,7 @@ export const PurchaseDeliveryRowMenu: FC<PurchaseDeliveryRowMenuProps> = (
     onMoveGoodsToStorage,
     onDocuments,
     onGoods,
-    onEdit,
+    onStatusUpdate,
     onDelete,
     isMoveGoodsToStorageBtnHidden,
   } = props
@@ -61,8 +61,8 @@ export const PurchaseDeliveryRowMenu: FC<PurchaseDeliveryRowMenuProps> = (
           Goods
         </MenuItem>
 
-        <MenuItem icon={<FiEdit />} onClick={onEdit}>
-          Edit
+        <MenuItem icon={<FiCalendar />} onClick={onStatusUpdate}>
+          Update Status & Deadline
         </MenuItem>
 
         <MenuItem icon={<FiTrash2 />} color="red" onClick={onDelete}>

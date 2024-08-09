@@ -1,33 +1,15 @@
-import { Badge, Flex, Text, Tooltip } from "@chakra-ui/react"
-import {
-  PurchaseDeliveryStatus,
-  PurchaseInStorageStatus,
-} from "constant/purchaseStatus"
+import { Flex, Text, Tooltip } from "@chakra-ui/react"
 import { FC } from "react"
 import { FiAlertTriangle, FiClock } from "react-icons/fi"
-import { PurchaseGood } from "type/purchaseGood"
-import { WithId } from "type/withId"
 
 interface PurchaseDeadlineBadgeProps {
-  type: "Purchase" | "PurchaseDelivery"
-  goods: WithId<PurchaseGood>[]
   deadline: Date
 }
 
 export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
   props,
 ) => {
-  const { type, goods, deadline } = props
-
-  const anyGoodsInDelivery = goods.some((good) =>
-    Object.values(PurchaseDeliveryStatus).includes(
-      good.status as PurchaseDeliveryStatus,
-    ),
-  )
-
-  const anyGoodsInStorage = goods.some(
-    (good) => good.status === PurchaseInStorageStatus,
-  )
+  const { deadline } = props
 
   const getDeadlineDaysDiff = () => {
     const now = new Date()
@@ -46,24 +28,6 @@ export const PurchaseDeadlineBadge: FC<PurchaseDeadlineBadgeProps> = (
     deadlineColor = "red"
   } else if (isDeadlineComming) {
     deadlineColor = "orange"
-  }
-
-  // In Delivery Badge
-  if (anyGoodsInDelivery && type === "Purchase") {
-    return (
-      <Badge fontSize="xs" colorScheme="purple">
-        In delivery
-      </Badge>
-    )
-  }
-
-  // In Storage Badge
-  if (anyGoodsInStorage) {
-    return (
-      <Badge fontSize="xs" colorScheme="green">
-        In storage
-      </Badge>
-    )
   }
 
   // Tooltip

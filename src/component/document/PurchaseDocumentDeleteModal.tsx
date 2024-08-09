@@ -7,13 +7,13 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Text,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { FC } from "react"
-import { usePurchaseFileDeleteMutation } from "service/purchaseFile"
+import { usePurchaseFileDeleteMutation } from "service/purchase/purchaseFile"
 import { ModalProps } from "type/modalProps"
-import { PurchaseFile } from "type/purchaseFile"
+import { PurchaseFile } from "type/purchase/purchaseFile"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
@@ -42,7 +42,7 @@ export const PurchaseDocumentDeleteModal: FC<
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>Delete Document</ModalHeader>

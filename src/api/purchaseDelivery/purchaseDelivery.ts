@@ -3,36 +3,32 @@ import {
   FullPurchaseDelivery,
   PurchaseDelivery,
   PurchaseDeliveryCreate,
-} from "type/purchaseDelivery"
+} from "type/purchaseDelivery/purchaseDelivery"
 import { WithId } from "type/withId"
 
 export const getAllPurchaseDeliveries = async (): Promise<
   FullPurchaseDelivery[]
 > => {
-  const { data: purchaseDeliveriesList } = await axiosClient.get(
-    "/purchase_delivery/"
+  const { data: deliveriesList } = await axiosClient.get(
+    "/purchase_delivery/all/",
   )
-  return purchaseDeliveriesList
+  return deliveriesList
 }
 
 export const createPurchaseDelivery = async (
-  body: PurchaseDeliveryCreate
+  body: PurchaseDeliveryCreate,
 ): Promise<FullPurchaseDelivery> => {
-  const { data: newPurchase } = await axiosClient.post(
+  const { data: newDelivery } = await axiosClient.post(
     "/purchase_delivery/",
-    body
+    body,
   )
-  return newPurchase
+  return newDelivery
 }
 
 export const updatePurchaseDelivery = async (
-  purchase: WithId<PurchaseDelivery>
-): Promise<FullPurchaseDelivery> => {
-  const { data: newPurchase } = await axiosClient.put(
-    "/purchase_delivery/",
-    purchase
-  )
-  return newPurchase
+  purchase: WithId<PurchaseDelivery>,
+) => {
+  await axiosClient.put("/purchase_delivery/", purchase)
 }
 
 export const deletePurchaseDelivery = async (purchaseId: number) => {

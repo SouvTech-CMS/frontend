@@ -1,14 +1,14 @@
 export enum PurchaseStatus {
   Order = "order",
-  Invoice = "invoice",
+  Payment = "payment",
   Processing = "processing",
 }
 
 export enum PurchaseDeliveryStatus {
   Packing = "packing",
   InTransit = "in transit",
-  Custom = "custom",
-  OnWayToStorage = "on way to storage",
+  DutyTaxPaid = "duty tax paid",
+  Delivered = "delivered",
 }
 
 export const PurchaseInStorageStatus = "storage"

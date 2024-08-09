@@ -7,9 +7,10 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react"
+import { SelectedGoodEditableQuantityBadge } from "component/purchaseDelivery/SelectedGoodEditableQuantityBadge"
 import { Dispatch, FC, SetStateAction } from "react"
 import { FiTrash2 } from "react-icons/fi"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseGood } from "type/purchase/purchaseGood"
 import { WithId } from "type/withId"
 
 interface SelectedPurchaseGoodCardProps {
@@ -22,9 +23,11 @@ export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
 ) => {
   const { good, setSelectedGoods } = props
 
+  const goodId = good.id
+
   const handleGoodRemove = () => {
     setSelectedGoods((prevGoods) =>
-      prevGoods.filter((prevGood) => prevGood.id !== good.id),
+      prevGoods.filter((prevGood) => prevGood.id !== goodId),
     )
   }
 
@@ -32,23 +35,34 @@ export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
     <Card boxShadow="md" borderRadius={20}>
       <CardHeader>
         <Flex direction="column" gap={2}>
-          <Flex>
-            <Badge colorScheme="blue">Purchase #{good.purchase_id}</Badge>
-          </Flex>
+          <Flex justifyContent="space-between">
+            <Flex w="full" direction="column" gap={2}>
+              {/* Purchase ID */}
+              <Flex>
+                <Badge colorScheme="blue">Purchase #{good.purchase_id}</Badge>
+              </Flex>
 
-          <Flex alignItems="center" gap={10}>
-            <Heading size="md">{good.name}</Heading>
+              {/* Good Name */}
+              <Heading size="md">
+                #{goodId} {good.name}
+              </Heading>
 
-            <Flex alignItems="center" gap={5}>
-              <Badge>Quantity: {good.quantity}</Badge>
-              <Badge>Unit Price: ${good.price_per_item}</Badge>
-              <Badge>Amount: ${good.amount}</Badge>
+              {/* Good Description */}
+              <Text fontSize="sm" fontStyle="italic" color="gray">
+                {good.description}
+              </Text>
+            </Flex>
+
+            {/* Good Qty & Price per Item & Total Amount */}
+            <Flex w="full" direction="column" alignItems="flex-start" gap={5}>
+              <SelectedGoodEditableQuantityBadge
+                good={good}
+                setSelectedGoods={setSelectedGoods}
+              />
+              <Badge fontSize="sm">Unit Price: ${good.price_per_item}</Badge>
+              <Badge fontSize="sm">Amount: ${good.amount}</Badge>
             </Flex>
           </Flex>
-
-          <Text fontSize="sm" fontStyle="italic" color="gray">
-            {good.description}
-          </Text>
         </Flex>
 
         {/* Delete Good Btn */}

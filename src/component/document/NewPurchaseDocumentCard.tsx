@@ -9,7 +9,7 @@ interface NewPurchaseDocumentCardProps {
 }
 
 export const NewPurchaseDocumentCard: FC<NewPurchaseDocumentCardProps> = (
-  props
+  props,
 ) => {
   const { purchaseId, isDelivery = false } = props
 
@@ -25,10 +25,9 @@ export const NewPurchaseDocumentCard: FC<NewPurchaseDocumentCardProps> = (
         h="full"
         w="full"
         minH={150}
-        bgColor="gray.200"
+        variant="newCard"
         onClick={onPurchaseFileCreateModalOpen}
         borderRadius={20}
-        boxShadow="lg"
       >
         <Flex
           direction="column"
@@ -36,9 +35,9 @@ export const NewPurchaseDocumentCard: FC<NewPurchaseDocumentCardProps> = (
           alignItems="center"
           gap={5}
         >
-          <FiUpload color="gray" size={36} />
+          <FiUpload size={36} />
 
-          <Text color="gray" fontSize={20} fontWeight="bold">
+          <Text fontSize={20} fontWeight="bold">
             Upload
           </Text>
         </Flex>

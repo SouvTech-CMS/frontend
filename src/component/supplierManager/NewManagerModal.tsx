@@ -10,15 +10,15 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { FiAtSign, FiPhone, FiUser } from "react-icons/fi"
-import { useSupplierManagerCreateMutation } from "service/supplierManager"
+import { useSupplierManagerCreateMutation } from "service/supplier/supplierManager"
 import { ModalProps } from "type/modalProps"
-import { SupplierManager } from "type/supplierManager"
+import { SupplierManager } from "type/supplier/supplierManager"
 import { notify } from "util/toasts"
 
 interface NewManagerModalProps extends ModalProps {
@@ -76,7 +76,7 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>New manager</ModalHeader>

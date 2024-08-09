@@ -7,31 +7,34 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react"
 import { getFullStorageGoodsList } from "api/storageGood"
+import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { GoodToStorageCard } from "component/purchaseDelivery/GoodToStorageCard"
 import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { useMoveGoodsToStorageMutation } from "service/storage"
 import { ModalProps } from "type/modalProps"
-import { PurchaseDelivery } from "type/purchaseDelivery"
-import { PurchaseGood } from "type/purchaseGood"
+import { PurchaseDelivereryGood } from "type/purchaseDelivery/purchaseDelivereryGood"
+import { PurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
 import { DeliveryToStorage, DeliveryToStorageGood } from "type/storage"
 import { StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
 interface PurchaseDeliveryToStorageModalProps extends ModalProps {
-  purchaseDelivery: WithId<PurchaseDelivery>
-  purchaseGoods: WithId<PurchaseGood>[]
+  delivery: WithId<PurchaseDelivery>
+  goods: WithId<PurchaseDelivereryGood>[]
 }
 
 export const PurchaseDeliveryToStorageModal: FC<
   PurchaseDeliveryToStorageModalProps
 > = (props) => {
-  const { purchaseDelivery, purchaseGoods, isOpen, onClose } = props
+  const { delivery, goods, isOpen, onClose } = props
 
+  const deliveryId = delivery.id
+
+  const purchaseGoods = goods?.map((good) => good.purchase_good)
   const initialGoodsPairList = purchaseGoods.map((good) => ({
     purchase_good_id: good.id,
   }))
@@ -72,13 +75,13 @@ export const PurchaseDeliveryToStorageModal: FC<
 
   const onMoveToStorage = async () => {
     const body: DeliveryToStorage = {
-      purchase_delivery_id: purchaseDelivery.id,
+      purchase_delivery_id: deliveryId,
       goods: goodsPairs,
     }
     await moveGoodsToStorageMutation.mutateAsync(body)
 
     notify(
-      `Goods from delivery #${purchaseDelivery.id} was moved to Storage successfully`,
+      `Goods from delivery #${deliveryId} was moved to Storage successfully`,
       "success",
     )
     onClose()
@@ -94,7 +97,7 @@ export const PurchaseDeliveryToStorageModal: FC<
 
   return (
     <Modal size="4xl" isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay backdropFilter="blur(10px)" />
+      <ModalBackgroundBlur />
 
       <ModalContent>
         <ModalHeader>Move Goods to Storage</ModalHeader>
