@@ -6,5 +6,5 @@ export type PurchaseGood = {
   quantity: number
   price_per_item: number
   amount?: number
-  in_delivery?: number
+  in_delivery: number
 }
