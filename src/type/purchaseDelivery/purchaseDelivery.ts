@@ -10,7 +10,7 @@ import { WithId } from "type/withId"
 export type PurchaseDelivery = {
   deadline: number
   status: string
-  shipping: number
+  shipping?: number
   after_custom_shipping?: number
   track_number?: string
   after_custom_track_number?: string

@@ -31,6 +31,7 @@ const newGood: PurchaseGood = {
   name: "",
   quantity: NaN,
   price_per_item: NaN,
+  in_delivery: 0,
 }
 
 export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {

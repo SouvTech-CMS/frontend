@@ -16,7 +16,7 @@ export const PurchaseCardGoodsList: FC<PurchaseCardGoodsListProps> = (
   return (
     <Grid
       w="fit-content"
-      templateColumns="repeat(2, auto)"
+      templateColumns="repeat(3, auto)"
       columnGap={2}
       rowGap={1}
     >

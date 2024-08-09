@@ -26,6 +26,8 @@ import {
   roundNumber,
   timestampToDate,
 } from "util/formatting"
+import { isGoodFullInDelivery } from "util/purchaseGood"
+
 interface PurchaseColumnCardProps {
   purchase: FullPurchase
   status: string
@@ -35,7 +37,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
   const { purchase, status } = props
 
   const purchaseId = purchase.id
-  const goods = purchase.goods.filter((good) => !good.in_delivery)
+  const goods = purchase.goods.filter((good) => !isGoodFullInDelivery(good))
   const manager = purchase.manager
   const supplier = manager.supplier
   const files = purchase.files

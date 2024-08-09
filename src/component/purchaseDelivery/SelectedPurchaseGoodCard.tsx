@@ -7,6 +7,7 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react"
+import { SelectedGoodEditableQuantityBadge } from "component/purchaseDelivery/SelectedGoodEditableQuantityBadge"
 import { Dispatch, FC, SetStateAction } from "react"
 import { FiTrash2 } from "react-icons/fi"
 import { PurchaseGood } from "type/purchase/purchaseGood"
@@ -22,9 +23,11 @@ export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
 ) => {
   const { good, setSelectedGoods } = props
 
+  const goodId = good.id
+
   const handleGoodRemove = () => {
     setSelectedGoods((prevGoods) =>
-      prevGoods.filter((prevGood) => prevGood.id !== good.id),
+      prevGoods.filter((prevGood) => prevGood.id !== goodId),
     )
   }
 
@@ -41,7 +44,7 @@ export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
 
               {/* Good Name */}
               <Heading size="md">
-                #{good.id} {good.name}
+                #{goodId} {good.name}
               </Heading>
 
               {/* Good Description */}
@@ -52,7 +55,10 @@ export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
 
             {/* Good Qty & Price per Item & Total Amount */}
             <Flex w="full" direction="column" alignItems="flex-start" gap={5}>
-              <Badge fontSize="sm">Quantity: {good.quantity}</Badge>
+              <SelectedGoodEditableQuantityBadge
+                good={good}
+                setSelectedGoods={setSelectedGoods}
+              />
               <Badge fontSize="sm">Unit Price: ${good.price_per_item}</Badge>
               <Badge fontSize="sm">Amount: ${good.amount}</Badge>
             </Flex>
