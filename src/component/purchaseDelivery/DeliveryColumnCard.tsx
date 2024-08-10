@@ -14,6 +14,7 @@ import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModa
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { DeliveryCardGoodsList } from "component/purchaseDelivery/DeliveryCardGoodsList"
 import { DeliveryStatusUpdateModal } from "component/purchaseDelivery/DeliveryStatusUpdateModal"
+import { DeliveryUpdateModal } from "component/purchaseDelivery/DeliveryUpdateModal"
 import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/PurchaseDeliveryDeleteModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
 import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
@@ -79,6 +80,12 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
     onClose: onPurchaseDeliveryToStorageModalClose,
   } = useDisclosure()
 
+  const {
+    isOpen: isDeliveryUpdateModalOpen,
+    onOpen: onDeliveryUpdateModalOpen,
+    onClose: onDeliveryUpdateModalClose,
+  } = useDisclosure()
+
   return (
     <>
       <Flex
@@ -120,6 +127,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
               onDocuments={onDocumentsModalOpen}
               onGoods={onPurchaseDeliveryGoodsStatusModalOpen}
               onStatusUpdate={onDeliveryGoodsStatusModalOpen}
+              onEdit={onDeliveryUpdateModalOpen}
               onDelete={onPurchaseDeliveryDeleteModalOpen}
               isMoveGoodsToStorageBtnHidden={isMoveGoodsToStorageBtnHidden}
             />
@@ -177,6 +185,12 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
           goods={goods}
           isOpen={isPurchaseDeliveryToStorageModalOpen}
           onClose={onPurchaseDeliveryToStorageModalClose}
+        />
+
+        <DeliveryUpdateModal
+          prevDelivery={delivery}
+          isOpen={isDeliveryUpdateModalOpen}
+          onClose={onDeliveryUpdateModalClose}
         />
       </>
     </>
