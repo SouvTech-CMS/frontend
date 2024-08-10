@@ -2,6 +2,7 @@ export type PurchaseFile = {
   name?: string
   front_name: string
   timestamp?: number
+  purchase_id?: number
 }
 
 export type PurchaseFileCreate = {

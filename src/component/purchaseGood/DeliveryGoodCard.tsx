@@ -15,7 +15,7 @@ export const DeliveryGoodCard: FC<DeliveryGoodCardProps> = (props) => {
   return (
     <>
       <GridItem>
-        <Text>#{good.id}</Text>
+        <Text>#{purchaseGood.id}</Text>
       </GridItem>
 
       <GridItem>

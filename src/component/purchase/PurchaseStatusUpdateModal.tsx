@@ -17,20 +17,21 @@ import { FiArrowRight } from "react-icons/fi"
 import { usePurchaseUpdateMutation } from "service/purchase/purchase"
 import { titleCase } from "title-case"
 import { ModalProps } from "type/modalProps"
-import { Purchase } from "type/purchase/purchase"
+import { Purchase, PurchaseUpdate } from "type/purchase/purchase"
 import { WithId } from "type/withId"
 import { timestampToDateAsString } from "util/formatting"
 import { notify } from "util/toasts"
 
 interface PurchaseStatusUpdateModalProps extends ModalProps {
   purchase: WithId<Purchase>
+  managerId: number
   prevStatus: string
 }
 
 export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
   props,
 ) => {
-  const { purchase, prevStatus, isOpen, onClose } = props
+  const { purchase, managerId, prevStatus, isOpen, onClose } = props
 
   const [newStatus, setNewStatus] = useState<string>(prevStatus)
   const [newDeadline, setNewDeadline] = useState<string>(
@@ -59,11 +60,12 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
   const onPurchaseStatusUpdate = async () => {
     const formattedDeadline = new Date(newDeadline).getTime() / 1000
 
-    const body: WithId<Purchase> = {
+    const body: PurchaseUpdate = {
       id: purchase.id,
       amount: purchase.amount,
       status: newStatus,
       deadline: formattedDeadline,
+      supplier_manager_id: managerId,
     }
 
     await purchaseUpdateMutation.mutateAsync(body)
