@@ -8,6 +8,7 @@ import {
 import { FC } from "react"
 import {
   FiCalendar,
+  FiEdit,
   FiFileText,
   FiMoreVertical,
   FiTrash2,
@@ -18,11 +19,13 @@ interface PurchaseRowMenuProps {
   onDocuments: () => void
   onSupplierManager: () => void
   onStatusUpdate: () => void
+  onEdit: () => void
   onDelete: () => void
 }
 
 export const PurchaseRowMenu: FC<PurchaseRowMenuProps> = (props) => {
-  const { onDocuments, onSupplierManager, onStatusUpdate, onDelete } = props
+  const { onDocuments, onSupplierManager, onStatusUpdate, onEdit, onDelete } =
+    props
 
   return (
     <Menu>
@@ -45,6 +48,10 @@ export const PurchaseRowMenu: FC<PurchaseRowMenuProps> = (props) => {
 
         <MenuItem icon={<FiCalendar />} onClick={onStatusUpdate}>
           Update Status & Deadline
+        </MenuItem>
+
+        <MenuItem icon={<FiEdit />} onClick={onEdit}>
+          Edit
         </MenuItem>
 
         <MenuItem icon={<FiTrash2 />} color="red" onClick={onDelete}>
