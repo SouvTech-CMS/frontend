@@ -12,14 +12,18 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { PurchaseStatus } from "constant/purchaseStatus"
-import { ChangeEvent, FC, useState } from "react"
+import { ChangeEvent, FC, useEffect, useState } from "react"
 import { FiArrowRight } from "react-icons/fi"
 import { usePurchaseUpdateMutation } from "service/purchase/purchase"
 import { titleCase } from "title-case"
 import { ModalProps } from "type/modalProps"
 import { Purchase, PurchaseUpdate } from "type/purchase/purchase"
 import { WithId } from "type/withId"
-import { timestampToDateAsString } from "util/formatting"
+import {
+  dateAsStringToTimestamp,
+  timestampToDateAsString,
+} from "util/formatting"
+import { getPurchaseDeadlineByStatus } from "util/purchaseDeadline"
 import { notify } from "util/toasts"
 
 interface PurchaseStatusUpdateModalProps extends ModalProps {
@@ -50,6 +54,10 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
   const handleNewStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const status = e.target.value
     setNewStatus(status)
+
+    const statusDeadlineTimestamp = getPurchaseDeadlineByStatus(status)
+    const statusDeadline = timestampToDateAsString(statusDeadlineTimestamp)
+    setNewDeadline(statusDeadline)
   }
 
   const handleNewDeadlineChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +66,7 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
   }
 
   const onPurchaseStatusUpdate = async () => {
-    const formattedDeadline = new Date(newDeadline).getTime() / 1000
+    const formattedDeadline = dateAsStringToTimestamp(newDeadline)
 
     const body: PurchaseUpdate = {
       id: purchase.id,
@@ -73,6 +81,11 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
     notify(`Purchase #${purchase.id} was updated successfully`, "success")
     onClose()
   }
+
+  useEffect(() => {
+    setNewStatus(prevStatus)
+    setNewDeadline(timestampToDateAsString(purchase.deadline))
+  }, [isOpen, prevStatus, purchase.deadline])
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>

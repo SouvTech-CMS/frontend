@@ -13,7 +13,7 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { PurchaseDeliveryGoodsSelectList } from "component/purchaseDelivery/PurchaseDeliveryGoodsSelectList"
-import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
+import { INITIAL_DELIVERY_STATUS } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { usePurchaseDeliveryCreateMutation } from "service/purchaseDelivery/purchaseDelivery"
@@ -29,13 +29,14 @@ import {
   dateAsStringToTimestamp,
   timestampToDateAsString,
 } from "util/formatting"
+import { getPurchaseDeadlineByStatus } from "util/purchaseDeadline"
 import { notify } from "util/toasts"
 
 interface NewDeliveryModalProps extends ModalProps {}
 
 const newDelivery: PurchaseDelivery = {
-  deadline: Math.floor(Date.now() / 1000),
-  status: PurchaseDeliveryStatus.Packing,
+  deadline: getPurchaseDeadlineByStatus(INITIAL_DELIVERY_STATUS),
+  status: INITIAL_DELIVERY_STATUS,
 }
 
 export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
