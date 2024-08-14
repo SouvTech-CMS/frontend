@@ -12,14 +12,18 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
-import { ChangeEvent, FC, useState } from "react"
+import { ChangeEvent, FC, useEffect, useState } from "react"
 import { FiArrowRight } from "react-icons/fi"
 import { usePurchaseDeliveryUpdateMutation } from "service/purchaseDelivery/purchaseDelivery"
 import { titleCase } from "title-case"
 import { ModalProps } from "type/modalProps"
 import { PurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
 import { WithId } from "type/withId"
-import { timestampToDateAsString } from "util/formatting"
+import {
+  dateAsStringToTimestamp,
+  timestampToDateAsString,
+} from "util/formatting"
+import { getPurchaseDeadlineByStatus } from "util/purchaseDeadline"
 import { notify } from "util/toasts"
 
 interface DeliveryStatusUpdateModalProps extends ModalProps {
@@ -33,7 +37,7 @@ export const DeliveryStatusUpdateModal: FC<DeliveryStatusUpdateModalProps> = (
   const { delivery, prevStatus, isOpen, onClose } = props
 
   const [newStatus, setNewStatus] = useState<string>(prevStatus)
-  const [deadline, setDeadline] = useState<string>(
+  const [newDeadline, setNewDeadline] = useState<string>(
     timestampToDateAsString(delivery.deadline),
   )
 
@@ -41,18 +45,22 @@ export const DeliveryStatusUpdateModal: FC<DeliveryStatusUpdateModalProps> = (
 
   const isLoading = deliveryUpdateMutation.isLoading
 
-  const isSaveBtnDisabled = isLoading || !deadline.trim()
+  const isSaveBtnDisabled = isLoading || !newDeadline.trim()
 
   const handlePurchaseDeliveryStatusUpdate = (
     e: ChangeEvent<HTMLSelectElement>,
   ) => {
-    const newStatus = e.target.value
-    setNewStatus(newStatus)
+    const status = e.target.value
+    setNewStatus(status)
+
+    const statusDeadlineTimestamp = getPurchaseDeadlineByStatus(status)
+    const statusDeadline = timestampToDateAsString(statusDeadlineTimestamp)
+    setNewDeadline(statusDeadline)
   }
 
   const onPurchaseDeliveryUpdate = async () => {
     const purchaseDeliveryId = delivery.id
-    const formattedDeadline = new Date(deadline).getTime() / 1000
+    const formattedDeadline = dateAsStringToTimestamp(newDeadline)
 
     const body: WithId<PurchaseDelivery> = {
       id: purchaseDeliveryId,
@@ -72,6 +80,11 @@ export const DeliveryStatusUpdateModal: FC<DeliveryStatusUpdateModalProps> = (
     )
     onClose()
   }
+
+  useEffect(() => {
+    setNewStatus(prevStatus)
+    setNewDeadline(timestampToDateAsString(delivery.deadline))
+  }, [isOpen, prevStatus, delivery.deadline])
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
@@ -111,11 +124,11 @@ export const DeliveryStatusUpdateModal: FC<DeliveryStatusUpdateModalProps> = (
             {/* Deadline */}
             <Input
               placeholder="Deadline"
-              value={deadline}
+              value={newDeadline}
               type="date"
               onChange={(e) => {
                 const value = e.target.value
-                setDeadline(value)
+                setNewDeadline(value)
               }}
             />
           </Flex>

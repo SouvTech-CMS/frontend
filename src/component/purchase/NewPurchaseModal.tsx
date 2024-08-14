@@ -15,7 +15,7 @@ import { getAllSuppliers } from "api/supplier/supplier"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { PurchaseGoodsTable } from "component/purchaseGood/PurchaseGoodsTable"
-import { PurchaseStatus } from "constant/purchaseStatus"
+import { INITIAL_PURCHASE_STATUS } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { ChangeEvent, FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
@@ -28,15 +28,16 @@ import {
   dateAsStringToTimestamp,
   timestampToDateAsString,
 } from "util/formatting"
+import { getPurchaseDeadlineByStatus } from "util/purchaseDeadline"
 import { notify } from "util/toasts"
 
 interface NewPurchaseModalProps extends ModalProps {}
 
 const newPurchase: PurchaseCreate = {
   supplier_manager_id: NaN,
-  deadline: Math.floor(Date.now() / 1000),
+  deadline: getPurchaseDeadlineByStatus(INITIAL_PURCHASE_STATUS),
   amount: NaN,
-  status: PurchaseStatus.Order,
+  status: INITIAL_PURCHASE_STATUS,
 }
 
 export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
