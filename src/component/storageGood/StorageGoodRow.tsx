@@ -1,5 +1,4 @@
 import {
-  Badge,
   Flex,
   IconButton,
   Td,
@@ -8,6 +7,7 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react"
+import { SKUBadge } from "component/SKUBadge"
 import { ShelfBadge } from "component/storageGood/ShelfBadge"
 import { StorageGoodModal } from "component/storageGood/StorageGoodModal"
 import { StorageGoodRowMenu } from "component/storageGood/StorageGoodRowMenu"
@@ -54,9 +54,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
       <Tr>
         {/* SKU Segment Badge  */}
         <Td>
-          <Badge fontSize="sm" colorScheme="blue">
-            {storageGood.uniquename}
-          </Badge>
+          <SKUBadge sku={storageGood.uniquename} />
         </Td>
 
         {/* Good Name */}

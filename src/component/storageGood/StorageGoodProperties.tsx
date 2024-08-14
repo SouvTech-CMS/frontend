@@ -1,4 +1,5 @@
-import { Badge, Grid } from "@chakra-ui/react"
+import { Grid } from "@chakra-ui/react"
+import { SKUBadge } from "component/SKUBadge"
 import { StorageGoodPropertyRow } from "component/storageGood/StorageGoodPropertyRow"
 import { FC } from "react"
 import { StorageGood } from "type/storageGood"
@@ -17,11 +18,7 @@ export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
     // SKU segment
     {
       name: "SKU segment",
-      value: (
-        <Badge fontSize="sm" colorScheme="blue">
-          {storageGood.uniquename}
-        </Badge>
-      ),
+      value: <SKUBadge sku={storageGood.uniquename} />,
     },
     // Name
     {

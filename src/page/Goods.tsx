@@ -18,7 +18,7 @@ import { Good } from "type/good"
 import { WithId } from "type/withId"
 
 const Goods = () => {
-  const { selectedShop, handleShopSelect } = useShopFilter()
+  const { selectedShopId, handleShopSelect } = useShopFilter()
 
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [offset, setOffset] = useState<number>(0)
@@ -29,7 +29,7 @@ const Goods = () => {
     refetch,
     isRefetching,
   } = useQuery<ApiResponse<WithId<Good>[]>>("goodsResponse", () =>
-    getAllGoods(offset, selectedShop),
+    getAllGoods(offset, selectedShopId),
   )
 
   const goodsCount = goodsResponse?.count
@@ -44,7 +44,7 @@ const Goods = () => {
 
   useEffect(() => {
     refetch()
-  }, [refetch, offset, selectedShop])
+  }, [refetch, offset, selectedShopId])
 
   return (
     <Page>
@@ -56,6 +56,7 @@ const Goods = () => {
         <Container>
           <Flex w="full" direction="column" gap={2}>
             <GoodsFilters handleShopSelect={handleShopSelect} />
+
             <GoodsTable goodsList={goodsList} />
           </Flex>
 

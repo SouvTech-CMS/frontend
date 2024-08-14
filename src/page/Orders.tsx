@@ -18,7 +18,7 @@ import { Order } from "type/order"
 import { WithId } from "type/withId"
 
 const Orders = () => {
-  const { selectedShop, handleShopSelect } = useShopFilter()
+  const { selectedShopId, handleShopSelect } = useShopFilter()
 
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [offset, setOffset] = useState<number>(0)
@@ -35,7 +35,7 @@ const Orders = () => {
     refetch,
     isRefetching,
   } = useQuery<ApiResponse<WithId<Order>[]>>("ordersResponse", () =>
-    ordersRequestFunc(offset, selectedShop),
+    ordersRequestFunc(offset, selectedShopId),
   )
 
   const ordersCount = ordersResponse?.count
@@ -50,7 +50,7 @@ const Orders = () => {
 
   useEffect(() => {
     refetch()
-  }, [refetch, offset, selectedShop, isShowNoneGoodOrders])
+  }, [refetch, offset, selectedShopId, isShowNoneGoodOrders])
 
   return (
     <Page>

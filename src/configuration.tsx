@@ -1,12 +1,12 @@
 import { Role } from "constant/roles"
 import { Auth } from "page/Auth"
 import Dashboard from "page/Dashboard"
+import DetailedReports from "page/DetailedReports"
 import Goods from "page/Goods"
 import { NoAccess } from "page/NoAccess"
 import OrderInfo from "page/OrderInfo"
 import Orders from "page/Orders"
 import Purchases from "page/Purchases"
-import Reports from "page/Reports"
 import Storage from "page/Storage"
 import StorageGoodDetails from "page/StorageGoodDetails"
 import Suppliers from "page/Suppliers"
@@ -59,8 +59,7 @@ export const configuration = {
       name: "Reports",
       path: "/reports",
       roles: [Role.MANAGER],
-      component: <Reports />,
-      isDisabled: true,
+      component: <DetailedReports />,
     },
     // Orders
     {
