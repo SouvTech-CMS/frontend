@@ -13,6 +13,9 @@ export const getPurchaseDeadlineByStatus = (status: string) => {
 
   switch (status) {
     // Purchase Statuses
+    case AllPurchcaseStatuses.Order:
+      statusDeadline = AllPurchaseDeadline.Order
+      break
     case AllPurchcaseStatuses.Payment:
       statusDeadline = AllPurchaseDeadline.Payment
       break
@@ -29,9 +32,6 @@ export const getPurchaseDeadlineByStatus = (status: string) => {
       break
     case AllPurchcaseStatuses.DutyTaxPaid:
       statusDeadline = AllPurchaseDeadline.DutyTaxPaid
-      break
-    case AllPurchcaseStatuses.Delivered:
-      statusDeadline = AllPurchaseDeadline.Delivered
       break
   }
 
