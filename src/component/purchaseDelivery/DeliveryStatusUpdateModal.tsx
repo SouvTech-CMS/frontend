@@ -99,7 +99,7 @@ export const DeliveryStatusUpdateModal: FC<DeliveryStatusUpdateModalProps> = (
             {/* New Status */}
             <Flex alignItems="center" gap={5}>
               {/* Prev Status */}
-              <Input value={titleCase(prevStatus)} type="text" isDisabled />
+              <Input value={titleCase(prevStatus)} type="text" isReadOnly />
 
               {/* Arrow Icon */}
               <Flex>

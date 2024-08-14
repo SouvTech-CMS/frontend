@@ -99,7 +99,7 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
           <Flex w="full" direction="column" gap={5}>
             {/* New Status */}
             <Flex alignItems="center" gap={5}>
-              <Input value={titleCase(prevStatus)} type="text" isDisabled />
+              <Input value={titleCase(prevStatus)} type="text" isReadOnly />
 
               {/* Arrow Icon */}
               <Flex>
