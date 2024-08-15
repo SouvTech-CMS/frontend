@@ -2,6 +2,7 @@ import { queryClient } from "api/queryClient"
 import { AppLayout } from "component/AppLayout"
 import { configuration } from "configuration"
 import { AuthContextProvider } from "context/auth"
+import { PaginationContextProvider } from "context/pagination"
 import { PurchaseTabsContextProvider } from "context/purchaseTabs"
 import { SearchContextProvider } from "context/search"
 import { UserContextProvider } from "context/user"
@@ -32,21 +33,29 @@ export const AppRouter = () => {
           <UserContextProvider>
             <SearchContextProvider>
               <PurchaseTabsContextProvider>
-                <Routes>
-                  <Route path="/" element={<AppLayout />}>
-                    {mainPages.map(
-                      ({ name, index = false, path, component, isDisabled }) =>
-                        !isDisabled && (
-                          <Route
-                            key={name}
-                            index={index}
-                            path={path}
-                            element={component}
-                          />
-                        ),
-                    )}
-                  </Route>
-                </Routes>
+                <PaginationContextProvider>
+                  <Routes>
+                    <Route path="/" element={<AppLayout />}>
+                      {mainPages.map(
+                        ({
+                          name,
+                          index = false,
+                          path,
+                          component,
+                          isDisabled,
+                        }) =>
+                          !isDisabled && (
+                            <Route
+                              key={name}
+                              index={index}
+                              path={path}
+                              element={component}
+                            />
+                          ),
+                      )}
+                    </Route>
+                  </Routes>
+                </PaginationContextProvider>
               </PurchaseTabsContextProvider>
             </SearchContextProvider>
           </UserContextProvider>

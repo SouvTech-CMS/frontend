@@ -1,14 +1,14 @@
 import { axiosClient } from "api/axiosClient"
-import { ROWS_PER_PAGE } from "constant/tables"
 import { GoodWithStorages, StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
 
 export const getAllStorageGoods = async (
+  limit: number,
   offset: number,
 ): Promise<GoodWithStorages[]> => {
   const { data: storageGoodsList } = await axiosClient.get("/storage_good/", {
     params: {
-      limit: ROWS_PER_PAGE,
+      limit,
       offset,
     },
   })

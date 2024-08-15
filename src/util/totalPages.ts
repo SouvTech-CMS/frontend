@@ -1,9 +1,10 @@
-import { ROWS_PER_PAGE } from "constant/tables"
-
-export const getPagesCount = (count?: number) => {
-  if (count === undefined) {
+export const getPagesCount = (
+  rowsPerPageCount: number,
+  objectsCount?: number,
+) => {
+  if (objectsCount === undefined) {
     return 0
   }
 
-  return Math.ceil(count / ROWS_PER_PAGE)
+  return Math.ceil(objectsCount / rowsPerPageCount)
 }

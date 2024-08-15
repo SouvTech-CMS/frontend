@@ -7,8 +7,9 @@ import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
+import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { Role } from "constant/roles"
-import { ROWS_PER_PAGE } from "constant/tables"
+import { usePaginationContext } from "context/pagination"
 import { useShopFilter } from "hook/useShopFilter"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
@@ -18,6 +19,7 @@ import { Good } from "type/good"
 import { WithId } from "type/withId"
 
 const Goods = () => {
+  const { rowsPerPageCount } = usePaginationContext()
   const { selectedShopId, handleShopSelect } = useShopFilter()
 
   const [currentPage, setCurrentPage] = useState<number>(0)
@@ -29,7 +31,8 @@ const Goods = () => {
     refetch,
     isRefetching,
   } = useQuery<ApiResponse<WithId<Good>[]>>("goodsResponse", () =>
-    getAllGoods(offset, selectedShopId),
+    //* "selectedShopId || undefined" needed to prevent selectedShopId == 0
+    getAllGoods(rowsPerPageCount, offset, selectedShopId || undefined),
   )
 
   const goodsCount = goodsResponse?.count
@@ -38,13 +41,13 @@ const Goods = () => {
   const isGoodsExist = goodsList !== undefined
 
   useEffect(() => {
-    const newOffset = currentPage * ROWS_PER_PAGE
+    const newOffset = currentPage * rowsPerPageCount
     setOffset(newOffset)
-  }, [currentPage, refetch])
+  }, [currentPage, rowsPerPageCount])
 
   useEffect(() => {
     refetch()
-  }, [refetch, offset, selectedShopId])
+  }, [refetch, offset, rowsPerPageCount, selectedShopId])
 
   return (
     <Page>
@@ -54,11 +57,13 @@ const Goods = () => {
 
       {isGoodsExist && (
         <Container>
-          <Flex w="full" direction="column" gap={2}>
+          <Flex w="full" justifyContent="space-between">
             <GoodsFilters handleShopSelect={handleShopSelect} />
 
-            <GoodsTable goodsList={goodsList} />
+            <RowsPerPageSelect isLoading={isLoading || isRefetching} />
           </Flex>
+
+          <GoodsTable goodsList={goodsList} />
 
           <Pagination
             totalItemsCount={goodsCount}

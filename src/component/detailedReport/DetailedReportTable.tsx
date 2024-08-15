@@ -1,7 +1,10 @@
 import { Button, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react"
 import { DetailedReportTableRow } from "component/detailedReport/DetailedReportTableRow"
 import { DetailedReportTableTotalsRow } from "component/detailedReport/DetailedReportTableTotalsRow"
-import { DETAILED_REPORT_TABLE_COLUMNS, ROWS_PER_PAGE } from "constant/tables"
+import {
+  DETAILED_REPORT_TABLE_COLUMNS,
+  INITIAL_ROWS_PER_PAGE,
+} from "constant/tables"
 import { FC, useState } from "react"
 import { GoodReport } from "type/detailedReport/detailedReport"
 
@@ -18,7 +21,7 @@ export const DetailedReportTable: FC<DetailedReportTableProps> = (props) => {
 
   const filteredGoodsReportsList = isShowFullTable
     ? goodsReports
-    : goodsReports.slice(0, ROWS_PER_PAGE)
+    : goodsReports.slice(0, INITIAL_ROWS_PER_PAGE)
 
   const handleShowFullTableChange = () => {
     setIsShowFullTable((prevShow) => !prevShow)

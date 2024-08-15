@@ -1,16 +1,16 @@
 import { axiosClient } from "api/axiosClient"
-import { ROWS_PER_PAGE } from "constant/tables"
 import { ApiResponse } from "type/apiResponse"
 import { Order, OrderWithGoods } from "type/order"
 import { WithId } from "type/withId"
 
 export const getAllOrders = async (
+  limit: number,
   offset: number,
   shopId?: number,
 ): Promise<ApiResponse<WithId<Order>[]>> => {
   const { data: ordersList } = await axiosClient.get("/order/", {
     params: {
-      limit: ROWS_PER_PAGE,
+      limit,
       offset,
       shop_id: shopId,
     },
@@ -19,6 +19,7 @@ export const getAllOrders = async (
 }
 
 export const getAllNoneGoodOrders = async (
+  limit: number,
   offset: number,
   shopId?: number,
 ): Promise<ApiResponse<WithId<Order>[]>> => {
@@ -26,7 +27,7 @@ export const getAllNoneGoodOrders = async (
     "/order/with_goods_where_uniquename_none/",
     {
       params: {
-        limit: ROWS_PER_PAGE,
+        limit,
         offset,
         shop_id: shopId,
       },
