@@ -47,3 +47,17 @@ export const GOODS_TABLE_COLUMNS = [
   "Price",
   "Shop",
 ]
+
+export const DETAILED_REPORT_TABLE_COLUMNS = [
+  "ID",
+  "Name",
+  "SKU",
+  "QTY Sold",
+  "Total Sales",
+  "Prime Cost",
+  "Item Price",
+  "Profit | Loss",
+  "Item Profit",
+  "Fees",
+  "Shipping",
+]

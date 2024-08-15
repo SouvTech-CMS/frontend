@@ -5,7 +5,7 @@ import { PurchaseManager } from "type/purchase/purchaseManager"
 import { WithId } from "type/withId"
 export type Purchase = {
   deadline: number
-  // Generated on frontend
+  // "amount" generated on frontend
   amount: number
   status: string
   updated_at?: number
@@ -19,6 +19,8 @@ export type FullPurchase = WithId<Purchase> & {
 }
 
 export type PurchaseCreate = Purchase & { supplier_manager_id: number }
+
+export type PurchaseUpdate = WithId<PurchaseCreate>
 
 export type PurchaseCreateWithGoods = {
   purchase: PurchaseCreate

@@ -11,4 +11,12 @@ export enum PurchaseDeliveryStatus {
   Delivered = "delivered",
 }
 
-export const PurchaseInStorageStatus = "storage"
+export const INITIAL_PURCHASE_STATUS = PurchaseStatus.Order
+export const INITIAL_DELIVERY_STATUS = PurchaseDeliveryStatus.Packing
+
+export const PURCHASE_IN_STORAGE_STATUS = "storage"
+
+export const AllPurchcaseStatuses = {
+  ...PurchaseStatus,
+  ...PurchaseDeliveryStatus,
+}

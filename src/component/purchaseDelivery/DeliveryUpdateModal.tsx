@@ -12,52 +12,46 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
-import { PurchaseDeliveryGoodsSelectList } from "component/purchaseDelivery/PurchaseDeliveryGoodsSelectList"
-import { INITIAL_DELIVERY_STATUS } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
-import { FC, useEffect, useState } from "react"
-import { usePurchaseDeliveryCreateMutation } from "service/purchaseDelivery/purchaseDelivery"
+import { FC, useState } from "react"
+import { usePurchaseDeliveryUpdateMutation } from "service/purchaseDelivery/purchaseDelivery"
 import { ModalProps } from "type/modalProps"
-import { PurchaseGood } from "type/purchase/purchaseGood"
-import { PurchaseDelivereryGoodCreate } from "type/purchaseDelivery/purchaseDelivereryGood"
 import {
-  PurchaseDelivery,
-  PurchaseDeliveryCreate,
+  FullPurchaseDelivery,
+  PurchaseDeliveryUpdate,
 } from "type/purchaseDelivery/purchaseDelivery"
-import { WithId } from "type/withId"
-import {
-  dateAsStringToTimestamp,
-  timestampToDateAsString,
-} from "util/formatting"
-import { getPurchaseDeadlineByStatus } from "util/purchaseDeadline"
 import { notify } from "util/toasts"
 
-interface NewDeliveryModalProps extends ModalProps {}
-
-const newDelivery: PurchaseDelivery = {
-  deadline: getPurchaseDeadlineByStatus(INITIAL_DELIVERY_STATUS),
-  status: INITIAL_DELIVERY_STATUS,
+interface DeliveryUpdateModalProps extends ModalProps {
+  prevDelivery: FullPurchaseDelivery
 }
 
-export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
-  const { isOpen, onClose } = props
+export const DeliveryUpdateModal: FC<DeliveryUpdateModalProps> = (props) => {
+  const { prevDelivery, isOpen, onClose } = props
 
-  const [delivery, setDelivery] = useState<PurchaseDelivery>(newDelivery)
-  const [goods, setGoods] = useState<WithId<PurchaseGood>[]>([])
-  const [deadline, setDeadline] = useState<string>(
-    timestampToDateAsString(newDelivery.deadline),
-  )
+  const deliveryId = prevDelivery.id
+
+  const [delivery, setDelivery] = useState<PurchaseDeliveryUpdate>({
+    id: deliveryId,
+    shipping: prevDelivery.shipping,
+    after_custom_shipping: prevDelivery.after_custom_shipping,
+    track_number: prevDelivery.track_number,
+    after_custom_track_number: prevDelivery.after_custom_track_number,
+    status: prevDelivery.status,
+    deadline: prevDelivery.deadline,
+  })
 
   const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
     useCommentInput({
       objectName: "purchase_delivery",
+      objectId: deliveryId,
     })
 
-  const purchaseDeliveryCreateMutation = usePurchaseDeliveryCreateMutation()
+  const purchaseDeliveryUpdateMutation = usePurchaseDeliveryUpdateMutation()
 
-  const isLoading = purchaseDeliveryCreateMutation.isLoading
+  const isLoading = purchaseDeliveryUpdateMutation.isLoading
 
-  const isSaveBtnDisabled = isLoading || goods.length === 0 || !deadline.trim()
+  const isSaveBtnDisabled = isLoading
 
   const handleDeliveryUpdate = (param: string, value: number | string) => {
     setDelivery((prevDelivery) => ({
@@ -66,50 +60,29 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
     }))
   }
 
-  const onPurchaseDeliveryCreate = async () => {
-    const formattedDeadline = dateAsStringToTimestamp(deadline)
-
-    const deliveryGoods: PurchaseDelivereryGoodCreate[] = goods.map((good) => ({
-      id: good.id,
-      quantity: good.quantity,
-    }))
-
-    const body: PurchaseDeliveryCreate = {
-      purchase_delivery: {
-        ...delivery,
-        deadline: formattedDeadline,
-      },
-      purchase_goods: deliveryGoods,
+  const onPurchaseDeliveryUpdate = async () => {
+    const body: PurchaseDeliveryUpdate = {
+      ...delivery,
     }
 
-    const { id: newDeliveryId } =
-      await purchaseDeliveryCreateMutation.mutateAsync(body)
+    await purchaseDeliveryUpdateMutation.mutateAsync(body)
 
-    await onCommentSubmit(newDeliveryId)
+    await onCommentSubmit()
 
-    notify("Delivery was created successfully", "success")
+    notify(`Delivery #${deliveryId} updated successfully`, "success")
     onClose()
   }
-
-  useEffect(() => {
-    setGoods([])
-  }, [isOpen])
 
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>New Delivery</ModalHeader>
+        <ModalHeader>Delivery #{deliveryId}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <Flex direction="column" gap={5}>
-            <PurchaseDeliveryGoodsSelectList
-              selectedGoods={goods}
-              setSelectedGoods={setGoods}
-            />
-
             {/* Shipping & Shipping after Custom */}
             <Flex w="full" gap={10}>
               {/* Shipping */}
@@ -176,21 +149,6 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
               </Flex>
             </Flex>
 
-            {/* Deadline */}
-            <Flex w="full" direction="column" gap={1}>
-              <Text fontWeight="bold">Deadline:</Text>
-
-              <Input
-                placeholder="Deadline"
-                value={deadline}
-                type="date"
-                onChange={(e) => {
-                  const value = e.target.value
-                  setDeadline(value)
-                }}
-              />
-            </Flex>
-
             {/* Comment */}
             <CommentInput
               comment={comment}
@@ -203,7 +161,7 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              onClick={onPurchaseDeliveryCreate}
+              onClick={onPurchaseDeliveryUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
             >

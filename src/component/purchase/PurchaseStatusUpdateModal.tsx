@@ -12,25 +12,30 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { PurchaseStatus } from "constant/purchaseStatus"
-import { ChangeEvent, FC, useState } from "react"
+import { ChangeEvent, FC, useEffect, useState } from "react"
 import { FiArrowRight } from "react-icons/fi"
 import { usePurchaseUpdateMutation } from "service/purchase/purchase"
 import { titleCase } from "title-case"
 import { ModalProps } from "type/modalProps"
-import { Purchase } from "type/purchase/purchase"
+import { Purchase, PurchaseUpdate } from "type/purchase/purchase"
 import { WithId } from "type/withId"
-import { timestampToDateAsString } from "util/formatting"
+import {
+  dateAsStringToTimestamp,
+  timestampToDateAsString,
+} from "util/formatting"
+import { getPurchaseDeadlineByStatus } from "util/purchaseDeadline"
 import { notify } from "util/toasts"
 
 interface PurchaseStatusUpdateModalProps extends ModalProps {
   purchase: WithId<Purchase>
+  managerId: number
   prevStatus: string
 }
 
 export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
   props,
 ) => {
-  const { purchase, prevStatus, isOpen, onClose } = props
+  const { purchase, managerId, prevStatus, isOpen, onClose } = props
 
   const [newStatus, setNewStatus] = useState<string>(prevStatus)
   const [newDeadline, setNewDeadline] = useState<string>(
@@ -49,6 +54,10 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
   const handleNewStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const status = e.target.value
     setNewStatus(status)
+
+    const statusDeadlineTimestamp = getPurchaseDeadlineByStatus(status)
+    const statusDeadline = timestampToDateAsString(statusDeadlineTimestamp)
+    setNewDeadline(statusDeadline)
   }
 
   const handleNewDeadlineChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,13 +66,14 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
   }
 
   const onPurchaseStatusUpdate = async () => {
-    const formattedDeadline = new Date(newDeadline).getTime() / 1000
+    const formattedDeadline = dateAsStringToTimestamp(newDeadline)
 
-    const body: WithId<Purchase> = {
+    const body: PurchaseUpdate = {
       id: purchase.id,
       amount: purchase.amount,
       status: newStatus,
       deadline: formattedDeadline,
+      supplier_manager_id: managerId,
     }
 
     await purchaseUpdateMutation.mutateAsync(body)
@@ -71,6 +81,11 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
     notify(`Purchase #${purchase.id} was updated successfully`, "success")
     onClose()
   }
+
+  useEffect(() => {
+    setNewStatus(prevStatus)
+    setNewDeadline(timestampToDateAsString(purchase.deadline))
+  }, [isOpen, prevStatus, purchase.deadline])
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
@@ -84,7 +99,7 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
           <Flex w="full" direction="column" gap={5}>
             {/* New Status */}
             <Flex alignItems="center" gap={5}>
-              <Input value={titleCase(prevStatus)} type="text" isDisabled />
+              <Input value={titleCase(prevStatus)} type="text" isReadOnly />
 
               {/* Arrow Icon */}
               <Flex>

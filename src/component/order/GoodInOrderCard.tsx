@@ -1,5 +1,4 @@
 import {
-  Badge,
   Card,
   CardBody,
   CardFooter,
@@ -8,6 +7,7 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react"
+import { SKUBadge } from "component/SKUBadge"
 import { FC } from "react"
 import { GoodInOrder } from "type/goodInOrder"
 import { WithId } from "type/withId"
@@ -39,9 +39,7 @@ export const GoodInOrderCard: FC<GoodInOrderCardProps> = (props) => {
               SKU:
             </Text>
 
-            <Badge fontSize="xs" colorScheme="blue">
-              {good.uniquename}
-            </Badge>
+            <SKUBadge size="xs" sku={good.uniquename} />
           </Flex>
 
           {/* Item Price */}

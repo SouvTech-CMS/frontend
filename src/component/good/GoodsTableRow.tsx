@@ -1,5 +1,6 @@
-import { Badge, Flex, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
+import { Flex, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
 import { getShopById } from "api/shop"
+import { SKUBadge } from "component/SKUBadge"
 import { GoodModal } from "component/good/GoodModal"
 import { GoodsTableRowMenu } from "component/good/GoodsTableRowMenu"
 import { MarketplaceAvatar } from "component/marketplace/MarketplaceAvatar"
@@ -38,9 +39,7 @@ export const GoodsTableRow: FC<GoodsTableRowProps> = (props) => {
 
         {/* SKU segment */}
         <Td>
-          <Badge fontSize="sm" colorScheme="blue">
-            {good.uniquename}
-          </Badge>
+          <SKUBadge sku={good.uniquename} />
         </Td>
 
         {/* Name */}

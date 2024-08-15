@@ -10,10 +10,11 @@ import {
 } from "@chakra-ui/react"
 import { DividerWithTitle } from "component/DividerWithTitle"
 import { CommentTooltip } from "component/comment/CommentTooltip"
-import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
+import { DeliveryDocumentsModal } from "component/document/DeliveryDocumentsModal"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { DeliveryCardGoodsList } from "component/purchaseDelivery/DeliveryCardGoodsList"
 import { DeliveryStatusUpdateModal } from "component/purchaseDelivery/DeliveryStatusUpdateModal"
+import { DeliveryUpdateModal } from "component/purchaseDelivery/DeliveryUpdateModal"
 import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/PurchaseDeliveryDeleteModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
 import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
@@ -34,8 +35,13 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   const { status, delivery } = props
 
   const deliveryId = delivery.id
-  const files = delivery.files
+
   const goods = delivery.goods
+  const deliveryDocuments = delivery.files
+  const purchasesDocuments = delivery.purchases.flatMap((purchase) =>
+    purchase.files.map((file) => ({ ...file, purchase_id: purchase.id })),
+  )
+  const allDocumentsList = [...deliveryDocuments, ...purchasesDocuments]
 
   const purchaseDeadline = timestampToDate(delivery.deadline)
 
@@ -79,6 +85,12 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
     onClose: onPurchaseDeliveryToStorageModalClose,
   } = useDisclosure()
 
+  const {
+    isOpen: isDeliveryUpdateModalOpen,
+    onOpen: onDeliveryUpdateModalOpen,
+    onClose: onDeliveryUpdateModalClose,
+  } = useDisclosure()
+
   return (
     <>
       <Flex
@@ -120,6 +132,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
               onDocuments={onDocumentsModalOpen}
               onGoods={onPurchaseDeliveryGoodsStatusModalOpen}
               onStatusUpdate={onDeliveryGoodsStatusModalOpen}
+              onEdit={onDeliveryUpdateModalOpen}
               onDelete={onPurchaseDeliveryDeleteModalOpen}
               isMoveGoodsToStorageBtnHidden={isMoveGoodsToStorageBtnHidden}
             />
@@ -150,12 +163,11 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
           onClose={onPurchaseDeliveryDeleteModalClose}
         />
 
-        <PurchaseDocumentsModal
-          purchaseId={deliveryId}
-          documents={files}
+        <DeliveryDocumentsModal
+          deliveryId={deliveryId}
+          documents={allDocumentsList}
           isOpen={isDocumentsModalOpen}
           onClose={onDocumentsModalClose}
-          isDelivery
         />
 
         <PurchaseDeliveryGoodsModal
@@ -177,6 +189,12 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
           goods={goods}
           isOpen={isPurchaseDeliveryToStorageModalOpen}
           onClose={onPurchaseDeliveryToStorageModalClose}
+        />
+
+        <DeliveryUpdateModal
+          prevDelivery={delivery}
+          isOpen={isDeliveryUpdateModalOpen}
+          onClose={onDeliveryUpdateModalClose}
         />
       </>
     </>

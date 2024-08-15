@@ -1,0 +1,59 @@
+import { Button, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react"
+import { DetailedReportTableRow } from "component/detailedReport/DetailedReportTableRow"
+import { DetailedReportTableTotalsRow } from "component/detailedReport/DetailedReportTableTotalsRow"
+import { DETAILED_REPORT_TABLE_COLUMNS, ROWS_PER_PAGE } from "constant/tables"
+import { FC, useState } from "react"
+import { GoodReport } from "type/detailedReport/detailedReport"
+
+interface DetailedReportTableProps {
+  goodsReports: GoodReport[]
+}
+
+export const DetailedReportTable: FC<DetailedReportTableProps> = (props) => {
+  const { goodsReports } = props
+
+  const [isShowFullTable, setIsShowFullTable] = useState<boolean>(false)
+
+  const showMoreRowsBtnText = isShowFullTable ? "Show less" : "Show more"
+
+  const filteredGoodsReportsList = isShowFullTable
+    ? goodsReports
+    : goodsReports.slice(0, ROWS_PER_PAGE)
+
+  const handleShowFullTableChange = () => {
+    setIsShowFullTable((prevShow) => !prevShow)
+  }
+
+  return (
+    <Table variant="striped">
+      <Thead>
+        <Tr>
+          {DETAILED_REPORT_TABLE_COLUMNS.map((columnName, index) => (
+            <Th key={index}>{columnName}</Th>
+          ))}
+        </Tr>
+      </Thead>
+      <Tbody>
+        {filteredGoodsReportsList.map((goodReport, index) => (
+          <DetailedReportTableRow key={index} goodReport={goodReport} />
+        ))}
+
+        {/* Show More Rows */}
+        <Tr>
+          <Td p={0} colSpan={DETAILED_REPORT_TABLE_COLUMNS.length}>
+            <Button
+              w="full"
+              variant="secondary"
+              onClick={handleShowFullTableChange}
+            >
+              <Text>{showMoreRowsBtnText}</Text>
+            </Button>
+          </Td>
+        </Tr>
+
+        {/* Total Counts */}
+        <DetailedReportTableTotalsRow goodsReports={goodsReports} />
+      </Tbody>
+    </Table>
+  )
+}

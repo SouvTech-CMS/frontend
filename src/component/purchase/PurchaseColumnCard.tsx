@@ -17,6 +17,7 @@ import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
 import { PurchaseStatusUpdateModal } from "component/purchase/PurchaseStatusUpdateModal"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
+import { PurchaseUpdateModal } from "component/purchase/PurchaseUpdateModal"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { FiFileText } from "react-icons/fi"
@@ -39,6 +40,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
   const purchaseId = purchase.id
   const goods = purchase.goods.filter((good) => !isGoodFullInDelivery(good))
   const manager = purchase.manager
+  const managerId = manager.id
   const supplier = manager.supplier
   const files = purchase.files
 
@@ -73,6 +75,12 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
     isOpen: isSupplierManagerModalOpen,
     onOpen: onSupplierManagerModalOpen,
     onClose: onSupplierManagerModalClose,
+  } = useDisclosure()
+
+  const {
+    isOpen: isPurchaseUpdateModalOpen,
+    onOpen: onPurchaseUpdateModalOpen,
+    onClose: onPurchaseUpdateModalClose,
   } = useDisclosure()
 
   return (
@@ -111,10 +119,12 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
               onClick={onDocumentsModalOpen}
             />
 
+            {/* Menu Btn */}
             <PurchaseRowMenu
               onDocuments={onDocumentsModalOpen}
               onSupplierManager={onSupplierManagerModalOpen}
               onStatusUpdate={onPurchaseGoodsStatusModalOpen}
+              onEdit={onPurchaseUpdateModalOpen}
               onDelete={onPurchaseDeleteModalOpen}
             />
           </Flex>
@@ -159,6 +169,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
 
         <PurchaseStatusUpdateModal
           purchase={purchase}
+          managerId={managerId}
           prevStatus={status}
           isOpen={isPurchaseGoodsStatusModalOpen}
           onClose={onPurchaseGoodsStatusModalClose}
@@ -170,6 +181,14 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
           manager={manager}
           isOpen={isSupplierManagerModalOpen}
           onClose={onSupplierManagerModalClose}
+        />
+
+        <PurchaseUpdateModal
+          prevPurchase={purchase}
+          prevSupplierId={supplier.id}
+          prevManagerId={managerId}
+          isOpen={isPurchaseUpdateModalOpen}
+          onClose={onPurchaseUpdateModalClose}
         />
       </>
     </>

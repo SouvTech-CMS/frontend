@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Card,
   CardFooter,
@@ -16,6 +17,7 @@ import { FiCalendar, FiTrash2 } from "react-icons/fi"
 import { Link } from "react-router-dom"
 import { PurchaseFile } from "type/purchase/purchaseFile"
 import { WithId } from "type/withId"
+import { timestampToDateAsString } from "util/formatting"
 import { getFileUrl } from "util/urls"
 
 interface PurchaseDocumentCardProps {
@@ -27,7 +29,8 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
 
   const { isUserAdmin } = useUserContext()
 
-  const documentDate = new Date(document.timestamp! * 1000).toDateString()
+  const isDeliveryPurchaseDocumnet = document.purchase_id !== undefined
+  const documentDate = timestampToDateAsString(document.timestamp!)
 
   const {
     isOpen: isPurchaseFileDeleteModalOpen,
@@ -42,14 +45,25 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
       <Card boxShadow="lg" borderRadius={10}>
         <CardHeader>
           <Flex w="full" direction="column" gap={2}>
-            {/* Name */}
-            <Heading size="sm">{document.front_name}</Heading>
+            <Flex alignItems="center" gap={2}>
+              {/* Name */}
+              <Heading size="sm">{document.front_name}</Heading>
+
+              {/* Purchase ID */}
+              {isDeliveryPurchaseDocumnet && (
+                <Flex>
+                  <Badge colorScheme="blue">
+                    Purchase #{document.purchase_id}
+                  </Badge>
+                </Flex>
+              )}
+            </Flex>
 
             {/* Uploading Date */}
             <Flex alignItems="center" gap={2}>
               <FiCalendar color="gray" />
 
-              <Text fontSize="xs" color="gray">
+              <Text fontSize="sm" color="gray">
                 {documentDate}
               </Text>
             </Flex>

@@ -45,7 +45,8 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
   const isLoading =
     storageGoodCreateMutation.isLoading || storageGoodUpdateMutation.isLoading
 
-  const isUniqueNameDisabled = !isNewGood || isLoading
+  const isUniqueNameDisabled = isLoading
+  const isUniqueNameReadOnly = !isNewGood
 
   const isUniqueNameInvalid = !isUniqueNameDisabled && !good.uniquename?.trim()
   const isNameInvalid = !good.name?.trim()
@@ -109,6 +110,7 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
                 }}
                 isInvalid={isUniqueNameInvalid}
                 isDisabled={isUniqueNameDisabled}
+                isReadOnly={isUniqueNameReadOnly}
               />
             </InputGroup>
 

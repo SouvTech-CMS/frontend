@@ -8,6 +8,7 @@ import {
 import { FC } from "react"
 import {
   FiCalendar,
+  FiEdit,
   FiFileText,
   FiMoreVertical,
   FiPackage,
@@ -20,6 +21,7 @@ interface PurchaseDeliveryRowMenuProps {
   onDocuments: () => void
   onGoods: () => void
   onStatusUpdate: () => void
+  onEdit: () => void
   onDelete: () => void
   isMoveGoodsToStorageBtnHidden: boolean
 }
@@ -32,6 +34,7 @@ export const PurchaseDeliveryRowMenu: FC<PurchaseDeliveryRowMenuProps> = (
     onDocuments,
     onGoods,
     onStatusUpdate,
+    onEdit,
     onDelete,
     isMoveGoodsToStorageBtnHidden,
   } = props
@@ -63,6 +66,10 @@ export const PurchaseDeliveryRowMenu: FC<PurchaseDeliveryRowMenuProps> = (
 
         <MenuItem icon={<FiCalendar />} onClick={onStatusUpdate}>
           Update Status & Deadline
+        </MenuItem>
+
+        <MenuItem icon={<FiEdit />} onClick={onEdit}>
+          Edit
         </MenuItem>
 
         <MenuItem icon={<FiTrash2 />} color="red" onClick={onDelete}>

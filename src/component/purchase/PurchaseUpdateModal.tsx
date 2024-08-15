@@ -1,7 +1,6 @@
 import {
   Button,
   Flex,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,43 +13,36 @@ import {
 import { getAllSuppliers } from "api/supplier/supplier"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
-import { PurchaseGoodsTable } from "component/purchaseGood/PurchaseGoodsTable"
-import { INITIAL_PURCHASE_STATUS } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
-import { ChangeEvent, FC, useEffect, useState } from "react"
+import { ChangeEvent, FC, useState } from "react"
 import { useQuery } from "react-query"
-import { usePurchaseCreateMutation } from "service/purchase/purchase"
+import { usePurchaseUpdateMutation } from "service/purchase/purchase"
 import { ModalProps } from "type/modalProps"
-import { PurchaseCreate, PurchaseCreateWithGoods } from "type/purchase/purchase"
-import { PurchaseGood } from "type/purchase/purchaseGood"
+import { FullPurchase, PurchaseUpdate } from "type/purchase/purchase"
 import { SupplierWithManagers } from "type/supplier/supplier"
-import {
-  dateAsStringToTimestamp,
-  timestampToDateAsString,
-} from "util/formatting"
-import { getPurchaseDeadlineByStatus } from "util/purchaseDeadline"
 import { notify } from "util/toasts"
 
-interface NewPurchaseModalProps extends ModalProps {}
-
-const newPurchase: PurchaseCreate = {
-  supplier_manager_id: NaN,
-  deadline: getPurchaseDeadlineByStatus(INITIAL_PURCHASE_STATUS),
-  amount: NaN,
-  status: INITIAL_PURCHASE_STATUS,
+interface PurchaseUpdateModalProps extends ModalProps {
+  prevPurchase: FullPurchase
+  prevSupplierId: number
+  prevManagerId: number
 }
 
-export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
-  const { isOpen, onClose } = props
+export const PurchaseUpdateModal: FC<PurchaseUpdateModalProps> = (props) => {
+  const { prevPurchase, prevSupplierId, prevManagerId, isOpen, onClose } = props
 
-  const [purchase, setPurchase] = useState<PurchaseCreate>(newPurchase)
-  const [supplierId, setSupplierId] = useState<number>(0)
-  const [goods, setGoods] = useState<PurchaseGood[]>([])
-  const [deadline, setDeadline] = useState<string>(
-    timestampToDateAsString(newPurchase.deadline),
-  )
+  const purchaseId = prevPurchase.id
 
-  const purchaseCreateMutation = usePurchaseCreateMutation()
+  const [purchase, setPurchase] = useState<PurchaseUpdate>({
+    id: purchaseId,
+    supplier_manager_id: prevManagerId,
+    deadline: prevPurchase.deadline,
+    amount: prevPurchase.amount,
+    status: prevPurchase.status,
+  })
+  const [supplierId, setSupplierId] = useState<number>(prevSupplierId)
+
+  const purchaseUpdateMutation = usePurchaseUpdateMutation()
 
   const { data: suppliersList, isLoading: isSuppliersLoading } = useQuery<
     SupplierWithManagers[]
@@ -64,17 +56,14 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
   const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
     useCommentInput({
       objectName: "purchase",
+      objectId: purchaseId,
     })
 
-  const isLoading = purchaseCreateMutation.isLoading
+  const isLoading = purchaseUpdateMutation.isLoading
 
   const isManagerSelectDisabled = supplierId === 0
   const isSaveBtnDisabled =
-    isLoading ||
-    isManagerSelectDisabled ||
-    !purchase.supplier_manager_id ||
-    goods.length === 0 ||
-    !deadline.trim()
+    isLoading || isManagerSelectDisabled || !purchase.supplier_manager_id
 
   const handleSupplierUpdate = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = Number(e.target.value)
@@ -88,49 +77,30 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
     }))
   }
 
-  const onPurchaseCreate = async () => {
-    // Count full purchase amount
-    const goodsAmountSum = goods.reduce(
-      (sum, good) => sum + (good.amount || 0),
-      0,
-    )
-
-    const formattedDeadline = dateAsStringToTimestamp(deadline)
-
-    const body: PurchaseCreateWithGoods = {
-      purchase: {
-        ...purchase,
-        amount: goodsAmountSum,
-        deadline: formattedDeadline,
-      },
-      goods,
+  const onPurchaseUpdate = async () => {
+    const body: PurchaseUpdate = {
+      ...purchase,
+      supplier_manager_id: purchase.supplier_manager_id,
     }
 
-    const { id: purchaseId } = await purchaseCreateMutation.mutateAsync(body)
+    await purchaseUpdateMutation.mutateAsync(body)
 
-    await onCommentSubmit(purchaseId)
+    await onCommentSubmit()
 
-    notify("Purchase created successfully", "success")
+    notify(`Purchase #${purchaseId} updated successfully`, "success")
     onClose()
   }
-
-  useEffect(() => {
-    setPurchase(newPurchase)
-    setGoods([])
-  }, [isOpen])
 
   return (
     <Modal size="4xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>New Purchase</ModalHeader>
+        <ModalHeader>Purchase #{purchaseId}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <Flex direction="column" gap={10}>
-            <PurchaseGoodsTable goods={goods} setGoods={setGoods} />
-
             {/* Supplier and Manager */}
             <Flex w="full" gap={10}>
               {/* Supplier Select */}
@@ -173,21 +143,6 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
               </Flex>
             </Flex>
 
-            {/* Deadline */}
-            <Flex w="full" direction="column" gap={1}>
-              <Text fontWeight="bold">Deadline:</Text>
-
-              <Input
-                placeholder="Deadline"
-                value={deadline}
-                type="date"
-                onChange={(e) => {
-                  const value = e.target.value
-                  setDeadline(value)
-                }}
-              />
-            </Flex>
-
             {/* Comment */}
             <CommentInput
               comment={comment}
@@ -200,7 +155,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              onClick={onPurchaseCreate}
+              onClick={onPurchaseUpdate}
               isLoading={isLoading}
               isDisabled={isSaveBtnDisabled}
             >

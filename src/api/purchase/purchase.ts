@@ -3,6 +3,7 @@ import {
   FullPurchase,
   Purchase,
   PurchaseCreateWithGoods,
+  PurchaseUpdate,
 } from "type/purchase/purchase"
 import { WithId } from "type/withId"
 
@@ -18,7 +19,7 @@ export const createPurchase = async (
   return newPurchase
 }
 
-export const updatePurchase = async (purchase: WithId<Purchase>) => {
+export const updatePurchase = async (purchase: PurchaseUpdate) => {
   await axiosClient.put("/purchase/", purchase)
 }
 
