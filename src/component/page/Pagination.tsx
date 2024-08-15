@@ -1,4 +1,5 @@
 import { Button, Flex } from "@chakra-ui/react"
+import { usePaginationContext } from "context/pagination"
 import { FC } from "react"
 import {
   FiChevronLeft,
@@ -20,7 +21,9 @@ const pageLimit = 5
 export const Pagination: FC<PaginationProps> = (props) => {
   const { totalItemsCount, currentPage, handlePageChange, isLoading } = props
 
-  const pagesCount = getPagesCount(totalItemsCount)
+  const { rowsPerPageCount } = usePaginationContext()
+
+  const pagesCount = getPagesCount(rowsPerPageCount, totalItemsCount)
 
   if (!pagesCount) {
     return <></>
@@ -35,7 +38,7 @@ export const Pagination: FC<PaginationProps> = (props) => {
 
     if (endPage > pagesCount) {
       endPage = pagesCount
-      startPage = Math.max(endPage - pageLimit, 1)
+      startPage = Math.max(endPage - pageLimit, 0)
     }
 
     return Array.from({ length: endPage - startPage }, (_, i) => startPage + i)

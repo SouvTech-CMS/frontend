@@ -33,7 +33,7 @@ const DetailedReports = () => {
     ["detailedReport", selectedShopId],
     () =>
       generateDetailedReport({
-        shop_id: selectedShopId!,
+        shop_id: selectedShopId,
         year: selectedYear,
         month: selectedMonth,
       }),

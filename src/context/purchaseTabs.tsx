@@ -20,7 +20,7 @@ export const PurchaseTabsContext = createContext<PurchaseTabsContextProps>({
 export const PurchaseTabsContextProvider: FCC = (props) => {
   const { children } = props
 
-  const [tabIndex, setTabIndex] = useState(0)
+  const [tabIndex, setTabIndex] = useState<number>(0)
 
   return (
     <PurchaseTabsContext.Provider
@@ -39,7 +39,7 @@ export const usePurchaseTabsContext = () => {
 
   if (!context) {
     throw new Error(
-      "usePurchaseTabsContext must be used in PurchaseTabsContextProvider"
+      "usePurchaseTabsContext must be used in PurchaseTabsContextProvider",
     )
   }
 
