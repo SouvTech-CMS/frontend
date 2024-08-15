@@ -81,7 +81,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
               <Flex alignItems="center" gap={1}>
                 <FiAtSign color="gray" />
 
-                <Text color="gray" fontSize="xs">
+                <Text color="gray" fontSize="sm">
                   {user.email}
                 </Text>
               </Flex>
@@ -92,7 +92,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
               <Flex alignItems="center" gap={1}>
                 <FiPhone color="gray" />
 
-                <Text color="gray" fontSize="xs">
+                <Text color="gray" fontSize="sm">
                   {user.phone}
                 </Text>
               </Flex>
@@ -102,7 +102,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
               <Flex alignItems="center" gap={1}>
                 <FiMessageSquare color="gray" />
 
-                <Text color="gray" fontSize="xs">
+                <Text color="gray" fontSize="sm">
                   {comment}
                 </Text>
               </Flex>
@@ -134,7 +134,9 @@ export const UserCard: FC<UserCardProps> = (props) => {
                 <Wrap spacing={2}>
                   {shops.map((shop, index) => (
                     <WrapItem key={index}>
-                      <Badge fontWeight="normal">{shop.name}</Badge>
+                      <Badge fontSize="sm" fontWeight="normal">
+                        {shop.name}
+                      </Badge>
                     </WrapItem>
                   ))}
                 </Wrap>
@@ -148,7 +150,9 @@ export const UserCard: FC<UserCardProps> = (props) => {
                 <Wrap spacing={2}>
                   {rolesList.map((role, index) => (
                     <WrapItem key={index}>
-                      <Badge fontWeight="normal">{role}</Badge>
+                      <Badge fontSize="sm" fontWeight="normal">
+                        {role}
+                      </Badge>
                     </WrapItem>
                   ))}
                 </Wrap>

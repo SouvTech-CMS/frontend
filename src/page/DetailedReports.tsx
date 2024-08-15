@@ -1,6 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react"
 import { generateDetailedReport } from "api/detailedReport/detailedReport"
 import { Container } from "component/Container"
+import { DetailedReportDownloadBtn } from "component/detailedReport/DetailedReportDownloadBtn"
 import { DetailedReportFilters } from "component/detailedReport/DetailedReportFilters"
 import { DetailedReportTable } from "component/detailedReport/DetailedReportTable"
 import { LoadingPage } from "component/page/LoadingPage"
@@ -30,7 +31,12 @@ const DetailedReports = () => {
     // isRefetching,
   } = useQuery<DetailedReport>(
     ["detailedReport", selectedShopId],
-    () => generateDetailedReport(selectedShopId!, selectedYear, selectedMonth),
+    () =>
+      generateDetailedReport({
+        shop_id: selectedShopId!,
+        year: selectedYear,
+        month: selectedMonth,
+      }),
     {
       enabled: isCanGenerateReport,
     },
@@ -64,7 +70,18 @@ const DetailedReports = () => {
           {!isDetailedReportExist && isLoading && <LoadingPage />}
 
           {isDetailedReportExist && !isLoading && (
-            <DetailedReportTable goodsReports={goodsReports} />
+            <>
+              <DetailedReportTable goodsReports={goodsReports} />
+
+              <Flex w="fulll" justifyContent="flex-end">
+                <DetailedReportDownloadBtn
+                  selectedShopId={selectedShopId}
+                  selectedYear={selectedYear}
+                  selectedMonth={selectedMonth}
+                  isReportLoading={isLoading}
+                />
+              </Flex>
+            </>
           )}
 
           {!isDetailedReportExist && !isLoading && (
