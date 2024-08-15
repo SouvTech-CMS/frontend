@@ -22,3 +22,9 @@ export type GoodReport = {
   fees: number
   shipping: number
 }
+
+export type DetailedReportGenerate = {
+  shop_id: number
+  year: number
+  month: number
+}

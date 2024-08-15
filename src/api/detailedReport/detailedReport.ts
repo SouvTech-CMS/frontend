@@ -1,20 +1,39 @@
 import { axiosClient } from "api/axiosClient"
-import { DetailedReport } from "type/detailedReport/detailedReport"
+import { AxiosResponse } from "axios"
+import {
+  DetailedReport,
+  DetailedReportGenerate,
+} from "type/detailedReport/detailedReport"
 
 export const generateDetailedReport = async (
-  shop_id: number,
-  year: number,
-  month: number,
+  body: DetailedReportGenerate,
 ): Promise<DetailedReport> => {
   const { data: detailedReport } = await axiosClient.post(
     "/detailed_report/generate/",
-    [shop_id],
+    [body.shop_id],
     {
       params: {
-        year,
-        month,
+        year: body.year,
+        month: body.month,
       },
     },
   )
   return detailedReport
+}
+
+export const downloadDetailedReport = async (
+  body: DetailedReportGenerate,
+): Promise<AxiosResponse> => {
+  const response = await axiosClient.post(
+    "/detailed_report/generate/file/",
+    [body.shop_id],
+    {
+      params: {
+        year: body.year,
+        month: body.month,
+      },
+      responseType: "blob",
+    },
+  )
+  return response
 }
