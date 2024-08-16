@@ -17,7 +17,7 @@ import { useMoveGoodsToStorageMutation } from "service/storage"
 import { ModalProps } from "type/modalProps"
 import { PurchaseDelivereryGood } from "type/purchaseDelivery/purchaseDelivereryGood"
 import { PurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
-import { DeliveryToStorage, DeliveryToStorageGood } from "type/storage"
+import { DeliveryToStorage } from "type/storage"
 import { StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
@@ -34,13 +34,14 @@ export const PurchaseDeliveryToStorageModal: FC<
 
   const deliveryId = delivery.id
 
-  const purchaseGoods = goods?.map((good) => good.purchase_good)
-  const initialGoodsPairList = purchaseGoods.map((good) => ({
-    purchase_good_id: good.id,
+  const initialGoodsPairList: DeliveryToStorage[] = goods.map((good) => ({
+    delivery_good_id: good.id,
+    storage_good_id: NaN,
+    shops: [],
   }))
 
   const [goodsPairs, setGoodsPairs] =
-    useState<DeliveryToStorageGood[]>(initialGoodsPairList)
+    useState<DeliveryToStorage[]>(initialGoodsPairList)
 
   const { data: storageGoodsList, isLoading: isLoadingStorageGoodsList } =
     useQuery<WithId<StorageGood>[]>(
@@ -58,10 +59,10 @@ export const PurchaseDeliveryToStorageModal: FC<
   const handleGoodsPairUpdate = (
     param: string,
     value: number | string,
-    purchaseGoodId: number,
+    deliveryGoodId: number,
   ) => {
     const goodsPair = goodsPairs.find(
-      (good) => good.purchase_good_id === purchaseGoodId,
+      (good) => good.delivery_good_id === deliveryGoodId,
     )
 
     setGoodsPairs((prevGoods) => [
@@ -74,11 +75,7 @@ export const PurchaseDeliveryToStorageModal: FC<
   }
 
   const onMoveToStorage = async () => {
-    const body: DeliveryToStorage = {
-      purchase_delivery_id: deliveryId,
-      goods: goodsPairs,
-    }
-    await moveGoodsToStorageMutation.mutateAsync(body)
+    await moveGoodsToStorageMutation.mutateAsync(goodsPairs)
 
     notify(
       `Goods from delivery #${deliveryId} was moved to Storage successfully`,
@@ -104,11 +101,11 @@ export const PurchaseDeliveryToStorageModal: FC<
         <ModalCloseButton />
 
         <ModalBody>
-          {goodsPairs.map((good, index) => (
+          {goodsPairs.map((goodsPair, index) => (
             <GoodToStorageCard
               key={index}
-              goodsPair={good}
-              purchaseGoods={purchaseGoods}
+              goodsPair={goodsPair}
+              deliveryGoods={goods}
               storageGoods={storageGoodsList}
               handleGoodsPairUpdate={handleGoodsPairUpdate}
             />

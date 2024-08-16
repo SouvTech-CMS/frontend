@@ -24,32 +24,32 @@ import {
   FiInbox,
   FiPackage,
 } from "react-icons/fi"
-import { PurchaseGood } from "type/purchase/purchaseGood"
+import { PurchaseDelivereryGood } from "type/purchaseDelivery/purchaseDelivereryGood"
 import { SelectOption } from "type/selectOption"
-import { DeliveryToStorageGood } from "type/storage"
+import { DeliveryToStorage } from "type/storage"
 import { StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
 
 interface GoodToStorageCardProps {
-  goodsPair: DeliveryToStorageGood
-  purchaseGoods?: WithId<PurchaseGood>[]
+  goodsPair: DeliveryToStorage
+  deliveryGoods?: WithId<PurchaseDelivereryGood>[]
   storageGoods?: WithId<StorageGood>[]
   handleGoodsPairUpdate: (
     param: string,
     value: number | string,
-    purchaseGoodId: number,
+    deliveryGoodId: number,
   ) => void
 }
 
 export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
-  const { goodsPair, purchaseGoods, storageGoods, handleGoodsPairUpdate } =
+  const { goodsPair, deliveryGoods, storageGoods, handleGoodsPairUpdate } =
     props
 
   const isStorageGoodsLoading = !storageGoods
 
-  const purchaseGood = purchaseGoods?.find(
-    (good) => good.id === goodsPair.purchase_good_id,
-  )
+  const purchaseGood = deliveryGoods?.find(
+    (good) => good.id === goodsPair.delivery_good_id,
+  )?.purchase_good
 
   const [shelf, setShelf] = useState<string>("")
   const [shelfsList, setShelfsList] = useState<string[]>([])
@@ -59,7 +59,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
   const isSelectedStorageGoodInvalid = !goodsPair.storage_good_id
 
   const handleGoodChange = (param: string, value: number | string) => {
-    handleGoodsPairUpdate(param, value, purchaseGood!.id)
+    handleGoodsPairUpdate(param, value, goodsPair.delivery_good_id)
   }
 
   const handleShelfChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -110,7 +110,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
           {/* Goods Pair */}
           <Flex alignItems="center" gap={5}>
             {/* Delivery Good */}
-            <Input defaultValue={purchaseGood?.name} isDisabled />
+            <Input defaultValue={purchaseGood?.name} isReadOnly />
 
             {/* Arrow Icon */}
             <Flex>
