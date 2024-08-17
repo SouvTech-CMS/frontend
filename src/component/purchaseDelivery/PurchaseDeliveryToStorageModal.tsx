@@ -56,26 +56,18 @@ export const PurchaseDeliveryToStorageModal: FC<
     isLoadingStorageGoodsList || moveGoodsToStorageMutation.isLoading
   const isSaveBtnDisabled = isLoading || isGoodsPairsInvalid
 
-  const handleGoodsPairUpdate = (
-    param: string,
-    value: number | string,
-    deliveryGoodId: number,
-  ) => {
-    const goodsPair = goodsPairs.find(
-      (good) => good.delivery_good_id === deliveryGoodId,
+  const handleGoodsPairUpdate = (newGoodsPair: DeliveryToStorage) => {
+    const prevGoodsPairs = goodsPairs.filter(
+      (goodsPair) =>
+        goodsPair.delivery_good_id !== newGoodsPair.delivery_good_id,
     )
 
-    setGoodsPairs((prevGoods) => [
-      ...prevGoods.filter((good) => good !== goodsPair),
-      {
-        ...goodsPair!,
-        [param]: value,
-      },
-    ])
+    setGoodsPairs([...prevGoodsPairs, newGoodsPair])
   }
 
   const onMoveToStorage = async () => {
-    await moveGoodsToStorageMutation.mutateAsync(goodsPairs)
+    const body: DeliveryToStorage[] = goodsPairs
+    await moveGoodsToStorageMutation.mutateAsync(body)
 
     notify(
       `Goods from delivery #${deliveryId} was moved to Storage successfully`,
@@ -104,7 +96,7 @@ export const PurchaseDeliveryToStorageModal: FC<
           {goodsPairs.map((goodsPair, index) => (
             <GoodToStorageCard
               key={index}
-              goodsPair={goodsPair}
+              prevGoodsPair={goodsPair}
               deliveryGoods={goods}
               storageGoods={storageGoodsList}
               handleGoodsPairUpdate={handleGoodsPairUpdate}
