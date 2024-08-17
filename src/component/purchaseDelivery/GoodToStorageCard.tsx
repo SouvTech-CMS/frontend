@@ -15,8 +15,9 @@ import {
   Select,
   SingleValue,
 } from "chakra-react-select"
+import { DeliveryToStorageShopsSelect } from "component/purchaseDelivery/DeliveryToStorageShopsSelect"
 import { ShelfBadge } from "component/storageGood/ShelfBadge"
-import { ChangeEvent, FC, KeyboardEvent, useState } from "react"
+import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react"
 import {
   FiArrowRight,
   FiCheck,
@@ -24,32 +25,31 @@ import {
   FiInbox,
   FiPackage,
 } from "react-icons/fi"
-import { PurchaseGood } from "type/purchase/purchaseGood"
+import { PurchaseDelivereryGood } from "type/purchaseDelivery/purchaseDelivereryGood"
 import { SelectOption } from "type/selectOption"
-import { DeliveryToStorageGood } from "type/storage"
+import { DeliveryToStorage } from "type/storage"
 import { StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
 
 interface GoodToStorageCardProps {
-  goodsPair: DeliveryToStorageGood
-  purchaseGoods?: WithId<PurchaseGood>[]
+  prevGoodsPair: DeliveryToStorage
+  deliveryGoods?: WithId<PurchaseDelivereryGood>[]
   storageGoods?: WithId<StorageGood>[]
-  handleGoodsPairUpdate: (
-    param: string,
-    value: number | string,
-    purchaseGoodId: number,
-  ) => void
+  handleGoodsPairUpdate: (goodsPair: DeliveryToStorage) => void
 }
 
 export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
-  const { goodsPair, purchaseGoods, storageGoods, handleGoodsPairUpdate } =
+  const { prevGoodsPair, deliveryGoods, storageGoods, handleGoodsPairUpdate } =
     props
+
+  const [goodsPair, setGoodsPair] = useState<DeliveryToStorage>(prevGoodsPair)
 
   const isStorageGoodsLoading = !storageGoods
 
-  const purchaseGood = purchaseGoods?.find(
-    (good) => good.id === goodsPair.purchase_good_id,
-  )
+  const deliveryGoodId = goodsPair.delivery_good_id
+  const purchaseGood = deliveryGoods?.find(
+    (good) => good.id === deliveryGoodId,
+  )?.purchase_good
 
   const [shelf, setShelf] = useState<string>("")
   const [shelfsList, setShelfsList] = useState<string[]>([])
@@ -58,29 +58,14 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
 
   const isSelectedStorageGoodInvalid = !goodsPair.storage_good_id
 
-  const handleGoodChange = (param: string, value: number | string) => {
-    handleGoodsPairUpdate(param, value, purchaseGood!.id)
-  }
-
-  const handleShelfChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toUpperCase().trim()
-    setShelf(value)
-  }
-
-  const handleShelfEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && isShelfExists) {
-      const newShelfsList = [...shelfsList, shelf.trim()]
-      setShelfsList(newShelfsList)
-      handleGoodChange("shelf", newShelfsList.join(";"))
-      setShelf("")
-    }
-  }
-
-  const handleShelfRemove = (shelfCode: string) => {
-    const newShelfsList = shelfsList.filter((shelf) => shelf !== shelfCode)
-    setShelfsList(newShelfsList)
-    handleGoodChange("shelf", newShelfsList.join(";"))
-    setShelf("")
+  const handleGoodChange = (
+    param: string,
+    value: number | string | number[],
+  ) => {
+    setGoodsPair((prevGood) => ({
+      ...prevGood,
+      [param]: value,
+    }))
   }
 
   const handleStorageGoodSelect = (
@@ -88,8 +73,31 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
     _: ActionMeta<SelectOption>,
   ) => {
     const selectedOption = newValue as SelectOption
-    const storageGoodId = Number(selectedOption.value as number)
+    const storageGoodId = Number(selectedOption.value)
     handleGoodChange("storage_good_id", storageGoodId)
+  }
+
+  const handleShelfsListChange = (newShelfsList: string[]) => {
+    setShelfsList(newShelfsList)
+    handleGoodChange("shelf", newShelfsList.join(";"))
+    setShelf("")
+  }
+
+  const handleShelfEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && isShelfExists) {
+      const newShelfsList = [...shelfsList, shelf.trim()]
+      handleShelfsListChange(newShelfsList)
+    }
+  }
+
+  const handleShelfRemove = (shelfCode: string) => {
+    const newShelfsList = shelfsList.filter((shelf) => shelf !== shelfCode)
+    handleShelfsListChange(newShelfsList)
+  }
+
+  const handleShelfChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toUpperCase().trim()
+    setShelf(value)
   }
 
   const storageGoodSelectStyles: ChakraStylesConfig<
@@ -103,6 +111,14 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
     }),
   }
 
+  useEffect(() => {
+    // Prevent infinite rerendering
+    if (prevGoodsPair !== goodsPair) {
+      // Update goods pair in list
+      handleGoodsPairUpdate(goodsPair)
+    }
+  }, [handleGoodsPairUpdate, prevGoodsPair, goodsPair])
+
   return (
     <Card boxShadow="md">
       <CardBody>
@@ -110,7 +126,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
           {/* Goods Pair */}
           <Flex alignItems="center" gap={5}>
             {/* Delivery Good */}
-            <Input defaultValue={purchaseGood?.name} isDisabled />
+            <Input defaultValue={purchaseGood?.name} isReadOnly />
 
             {/* Arrow Icon */}
             <Flex>
@@ -204,6 +220,10 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
                 ))}
               </Flex>
             </Flex>
+          </Flex>
+
+          <Flex w="full">
+            <DeliveryToStorageShopsSelect handleGoodChange={handleGoodChange} />
           </Flex>
         </Flex>
       </CardBody>
