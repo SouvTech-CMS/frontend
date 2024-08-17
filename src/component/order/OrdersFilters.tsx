@@ -1,5 +1,11 @@
 import { Checkbox, Flex } from "@chakra-ui/react"
-import { ActionMeta, GroupBase, Select, SingleValue } from "chakra-react-select"
+import {
+  ActionMeta,
+  ChakraStylesConfig,
+  GroupBase,
+  Select,
+  SingleValue,
+} from "chakra-react-select"
 import { useUserContext } from "context/user"
 import { Dispatch, FC, SetStateAction } from "react"
 import { SelectOption } from "type/selectOption"
@@ -24,6 +30,21 @@ export const OrdersFilters: FC<OrdersFiltersProps> = (props) => {
     )
   }
 
+  const selectStyles: ChakraStylesConfig<
+    SelectOption,
+    false,
+    GroupBase<SelectOption>
+  > = {
+    container: (provided) => ({
+      ...provided,
+      width: "fit-content",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      width: "fit-content",
+    }),
+  }
+
   return (
     <Flex justifyContent="flex-start" alignItems="center" gap={5}>
       {/* Shops Select */}
@@ -34,6 +55,7 @@ export const OrdersFilters: FC<OrdersFiltersProps> = (props) => {
           label: shop.name,
         }))}
         isClearable
+        chakraStyles={selectStyles}
         useBasicStyles
         onChange={handleShopSelect}
         isLoading={isLoadingCurrentUser}

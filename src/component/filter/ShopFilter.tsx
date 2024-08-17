@@ -1,4 +1,10 @@
-import { ActionMeta, GroupBase, Select, SingleValue } from "chakra-react-select"
+import {
+  ActionMeta,
+  ChakraStylesConfig,
+  GroupBase,
+  Select,
+  SingleValue,
+} from "chakra-react-select"
 import { useUserContext } from "context/user"
 import { FC } from "react"
 import { SelectOption } from "type/selectOption"
@@ -14,6 +20,21 @@ export const ShopFilter: FC<ShopFilterProps> = (props) => {
   const { handleShopSelect } = props
   const { userShops, isLoadingCurrentUser } = useUserContext()
 
+  const selectStyles: ChakraStylesConfig<
+    SelectOption,
+    false,
+    GroupBase<SelectOption>
+  > = {
+    container: (provided) => ({
+      ...provided,
+      width: "fit-content",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      width: "fit-content",
+    }),
+  }
+
   return (
     <Select<SelectOption, false, GroupBase<SelectOption>>
       placeholder="All shops"
@@ -22,6 +43,7 @@ export const ShopFilter: FC<ShopFilterProps> = (props) => {
         label: shop.name,
       }))}
       isClearable
+      chakraStyles={selectStyles}
       useBasicStyles
       onChange={handleShopSelect}
       isLoading={isLoadingCurrentUser}
