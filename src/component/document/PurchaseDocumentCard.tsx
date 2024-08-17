@@ -42,13 +42,10 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
 
   return (
     <>
-      <Card boxShadow="lg" borderRadius={10}>
+      <Card h="full" w="full" minH={150} variant="newCard" borderRadius={10}>
         <CardHeader>
           <Flex w="full" direction="column" gap={2}>
-            <Flex alignItems="center" gap={2}>
-              {/* Name */}
-              <Heading size="sm">{document.front_name}</Heading>
-
+            <Flex w="full" direction="column" gap={2}>
               {/* Purchase ID */}
               {isDeliveryPurchaseDocumnet && (
                 <Flex>
@@ -57,6 +54,9 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
                   </Badge>
                 </Flex>
               )}
+
+              {/* Name */}
+              <Heading size="sm">{document.front_name}</Heading>
             </Flex>
 
             {/* Uploading Date */}

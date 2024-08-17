@@ -2,8 +2,9 @@ import {
   Button,
   Flex,
   Input,
-  InputGroup,
-  InputLeftElement,
+  List,
+  ListIcon,
+  ListItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,7 +15,7 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react"
-import { FiEdit, FiUpload } from "react-icons/fi"
+import { FiFilePlus, FiUpload } from "react-icons/fi"
 import { usePurchaseFileCreateMutation } from "service/purchase/purchaseFile"
 import { ModalProps } from "type/modalProps"
 import { PurchaseFileCreate } from "type/purchase/purchaseFile"
@@ -31,51 +32,54 @@ export const NewPurchaseDocumentModal: FC<NewPurchaseDocumentModalProps> = (
   const { purchaseId, isDelivery = false, isOpen, onClose } = props
 
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [name, setName] = useState<string>("")
-  const [file, setFile] = useState<File>()
+  const [filesList, setFilesList] = useState<File[]>([])
 
   const purchaseFileCreateMutation = usePurchaseFileCreateMutation()
 
-  const isNameInvalid = !name.trim()
-  const isFileInvalid = !file
+  const isFilesListInvalid = filesList.length === 0
   const isLoading = purchaseFileCreateMutation.isLoading
-  const isSaveBtnDisabled = isNameInvalid || isFileInvalid
-
-  const handleFileNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.value
-    setName(name)
-  }
+  const isSaveBtnDisabled = isFilesListInvalid
 
   const handleUploadBtnClick = () => {
     fileInputRef.current?.click()
   }
 
-  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : undefined
-    setFile(file)
+  const handleFilesUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+
+    if (files !== null) {
+      const uploadedFilesList = Array.from(files)
+      setFilesList(uploadedFilesList)
+    }
   }
 
   const onSaveDocument = async () => {
-    if (isFileInvalid) {
+    if (isFilesListInvalid) {
       return
     }
 
-    const body: PurchaseFileCreate = {
-      front_name: name,
-      dependency_id: purchaseId,
-      dependency_on: isDelivery ? "delivery" : "purchase",
-      file,
-    }
+    filesList.forEach(async (file) => {
+      const body: PurchaseFileCreate = {
+        front_name: file.name,
+        dependency_id: purchaseId,
+        dependency_on: isDelivery ? "delivery" : "purchase",
+        file,
+      }
 
-    await purchaseFileCreateMutation.mutateAsync(body)
+      await purchaseFileCreateMutation.mutateAsync(body)
+    })
 
-    notify(`Document ${name} was uploaded successfully`, "success")
+    notify(
+      `Documents for ${
+        isDelivery ? "delivery" : "purchase"
+      } #${purchaseId} was uploaded successfully`,
+      "success",
+    )
     onClose()
   }
 
   useEffect(() => {
-    setName("")
-    setFile(undefined)
+    setFilesList([])
   }, [isOpen])
 
   return (
@@ -83,50 +87,38 @@ export const NewPurchaseDocumentModal: FC<NewPurchaseDocumentModalProps> = (
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Upload Document</ModalHeader>
+        <ModalHeader>Upload Documents</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <Flex direction="column" gap={5}>
-            {/* File Name Input */}
-            <InputGroup>
-              <InputLeftElement color="gray">
-                <FiEdit />
-              </InputLeftElement>
+            {/* Upload File Btn */}
+            <Button onClick={handleUploadBtnClick} leftIcon={<FiUpload />}>
+              Upload Documents
+            </Button>
 
-              <Input
-                placeholder="File name"
-                value={name}
-                type="text"
-                onChange={handleFileNameChange}
-                isInvalid={isNameInvalid}
-              />
-            </InputGroup>
-
-            {/* File Upload */}
-            <Flex alignItems="center" gap={2}>
-              {/* Upload Btn */}
-              <Button
-                variant="outline"
-                colorScheme="blue"
-                onClick={handleUploadBtnClick}
-                leftIcon={<FiUpload />}
-              >
-                Upload Document
-              </Button>
-
+            <Flex w="full" direction="column">
               {/* Uploaded file name */}
-              {file && (
-                <Text fontSize="sm" color="gray">
-                  {file.name}
-                </Text>
-              )}
+              <List spacing={2}>
+                {filesList?.map((file, index) => (
+                  <ListItem key={index} w="full">
+                    <Flex w="full" alignItems="center">
+                      <ListIcon as={FiFilePlus} color="gray" />
+
+                      <Text fontSize="sm" color="gray">
+                        {file.name}
+                      </Text>
+                    </Flex>
+                  </ListItem>
+                ))}
+              </List>
 
               {/* File input */}
               <Input
                 ref={fileInputRef}
                 type="file"
-                onChange={handleFileUpload}
+                multiple
+                onChange={handleFilesUpload}
                 hidden
               />
             </Flex>

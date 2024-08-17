@@ -27,7 +27,7 @@ export const NewPurchaseDocumentCard: FC<NewPurchaseDocumentCardProps> = (
         minH={150}
         variant="newCard"
         onClick={onPurchaseFileCreateModalOpen}
-        borderRadius={20}
+        borderRadius={10}
       >
         <Flex
           direction="column"
