@@ -19,17 +19,16 @@ export const StorageGoodDetails = () => {
   const { id } = useParams<StorageGoodDetailsParams>()
   const storageGoodId = Number(id)
 
-  const { data: goodWithStorages, isLoading } = useQuery<GoodWithStorages>(
+  const { data: storageGood, isLoading } = useQuery<GoodWithStorages>(
     ["goodWithStorages", storageGoodId],
     () => getGoodWithStoragesById(storageGoodId),
     {
       enabled: storageGoodId > 0,
     },
   )
-  const storageGood = goodWithStorages?.storage_good
-  const storagesList = goodWithStorages?.storage_list
+  const storagesList = storageGood?.storage
   const isGoodWithStoragesExists =
-    goodWithStorages !== undefined && storageGood !== undefined
+    storageGood !== undefined && storageGood !== undefined
 
   return (
     <Page>

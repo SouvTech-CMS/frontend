@@ -15,19 +15,18 @@ import { useUserContext } from "context/user"
 import { FC } from "react"
 import { FiExternalLink } from "react-icons/fi"
 import { Link } from "react-router-dom"
-import { Storage } from "type/storage"
-import { StorageGood } from "type/storageGood"
-import { WithId } from "type/withId"
+import { GoodWithStorages } from "type/storageGood"
 
 interface StorageGoodRowProps {
-  storageGood: WithId<StorageGood>
-  storagesList: WithId<Storage>[]
+  storageGood: GoodWithStorages
 }
 
 export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
-  const { storageGood, storagesList } = props
+  const { storageGood } = props
 
   const { isUserAdmin } = useUserContext()
+
+  const storagesList = storageGood.storage
 
   const goodTotalQuantity = storagesList.reduce(
     (acc, storage) => acc + storage.quantity,
@@ -52,6 +51,11 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   return (
     <>
       <Tr>
+        {/* ID  */}
+        <Td>
+          <Text>{storageGood.id}</Text>
+        </Td>
+
         {/* SKU Segment Badge  */}
         <Td>
           <SKUBadge sku={storageGood.uniquename} />

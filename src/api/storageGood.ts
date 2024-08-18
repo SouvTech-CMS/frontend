@@ -5,13 +5,16 @@ import { WithId } from "type/withId"
 export const getAllStorageGoods = async (
   limit: number,
   offset: number,
+  shopId: number,
 ): Promise<GoodWithStorages[]> => {
-  const { data: storageGoodsList } = await axiosClient.get("/storage_good/", {
-    params: {
+  const { data: storageGoodsList } = await axiosClient.post(
+    "/storage_good/all/",
+    {
       limit,
       offset,
+      shops: shopId > 0 ? [shopId] : undefined,
     },
-  })
+  )
   return storageGoodsList
 }
 

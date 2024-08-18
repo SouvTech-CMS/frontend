@@ -6,10 +6,11 @@ import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
-import { NewStorageGoodBtn } from "component/storageGood/NewStorageGoodBtn"
+import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
 import { Role } from "constant/roles"
 import { usePaginationContext } from "context/pagination"
+import { useShopFilter } from "hook/useShopFilter"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
@@ -17,6 +18,7 @@ import { GoodWithStorages } from "type/storageGood"
 
 const Storage = () => {
   const { rowsPerPageCount } = usePaginationContext()
+  const { selectedShopId, handleShopSelect } = useShopFilter()
 
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [offset, setOffset] = useState<number>(0)
@@ -27,7 +29,7 @@ const Storage = () => {
     refetch,
     isRefetching: isRefetchingStorageGoodsList,
   } = useQuery<GoodWithStorages[]>("storageGoodsList", () =>
-    getAllStorageGoods(rowsPerPageCount, offset),
+    getAllStorageGoods(rowsPerPageCount, offset, selectedShopId),
   )
 
   const { data: storageGoodsCount, isLoading: isLoadingStorageGoodsCount } =
@@ -46,32 +48,34 @@ const Storage = () => {
 
   useEffect(() => {
     refetch()
-  }, [refetch, offset, rowsPerPageCount])
+  }, [refetch, offset, rowsPerPageCount, selectedShopId])
 
   return (
     <Page>
       <PageHeading title="Storage" isSearchHidden />
 
-      {isLoading && <LoadingPage />}
+      <Container>
+        <Flex w="full" justifyContent="space-between">
+          <StorageGoodsFilters handleShopSelect={handleShopSelect} />
 
-      {isStorageGoodsExist && (
-        <Container>
-          <Flex w="full" justifyContent="space-between">
-            <NewStorageGoodBtn />
+          <RowsPerPageSelect isLoading={isLoading || isRefetching} />
+        </Flex>
 
-            <RowsPerPageSelect isLoading={isLoading || isRefetching} />
-          </Flex>
+        {!isStorageGoodsExist && isLoading && <LoadingPage />}
 
-          <StorageGoodsTable storageGoodsList={storageGoodsList} />
+        {isStorageGoodsExist && !isLoading && (
+          <>
+            <StorageGoodsTable storageGoodsList={storageGoodsList} />
 
-          <Pagination
-            totalItemsCount={storageGoodsCount}
-            currentPage={currentPage}
-            handlePageChange={setCurrentPage}
-            isLoading={isLoading || isRefetching}
-          />
-        </Container>
-      )}
+            <Pagination
+              totalItemsCount={storageGoodsCount}
+              currentPage={currentPage}
+              handlePageChange={setCurrentPage}
+              isLoading={isLoading || isRefetching}
+            />
+          </>
+        )}
+      </Container>
     </Page>
   )
 }
