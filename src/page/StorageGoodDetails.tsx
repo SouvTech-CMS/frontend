@@ -19,17 +19,16 @@ export const StorageGoodDetails = () => {
   const { id } = useParams<StorageGoodDetailsParams>()
   const storageGoodId = Number(id)
 
-  const { data: goodWithStorages, isLoading } = useQuery<GoodWithStorages>(
+  const { data: storageGood, isLoading } = useQuery<GoodWithStorages>(
     ["goodWithStorages", storageGoodId],
     () => getGoodWithStoragesById(storageGoodId),
     {
       enabled: storageGoodId > 0,
     },
   )
-  const storageGood = goodWithStorages?.storage_good
-  const storagesList = goodWithStorages?.storage_list
+  const storagesList = storageGood?.storage
   const isGoodWithStoragesExists =
-    goodWithStorages !== undefined && storageGood !== undefined
+    storageGood !== undefined && storageGood !== undefined
 
   return (
     <Page>
@@ -45,7 +44,7 @@ export const StorageGoodDetails = () => {
           <Divider borderWidth={1} />
 
           <Flex direction="column" gap={5}>
-            <Heading size="lg">Goods in StorageGood</Heading>
+            <Heading size="lg">Purchases of Good</Heading>
 
             <Grid templateColumns="repeat(3, 1fr)" gap={5}>
               {storagesList?.map((storage, index) => (

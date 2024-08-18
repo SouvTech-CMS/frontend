@@ -49,7 +49,7 @@ const Orders = () => {
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
     setOffset(newOffset)
-  }, [currentPage, rowsPerPageCount, refetch])
+  }, [currentPage, rowsPerPageCount])
 
   useEffect(() => {
     refetch()

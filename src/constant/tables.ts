@@ -23,6 +23,7 @@ export const PURCHASE_DELIVERIES_TABLE_COLUMNS = [
 ]
 
 export const STORAGE_GOODS_TABLE_COLUMNS = [
+  "ID",
   "SKU segment",
   "Name",
   "Total quantity",
