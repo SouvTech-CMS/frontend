@@ -44,7 +44,7 @@ export const StorageGoodDetails = () => {
           <Divider borderWidth={1} />
 
           <Flex direction="column" gap={5}>
-            <Heading size="lg">Goods in StorageGood</Heading>
+            <Heading size="lg">Purchases of Good</Heading>
 
             <Grid templateColumns="repeat(3, 1fr)" gap={5}>
               {storagesList?.map((storage, index) => (

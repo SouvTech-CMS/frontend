@@ -27,7 +27,7 @@ export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
     },
     // Description
     {
-      name: "Date",
+      name: "Description",
       value: storageGood.description,
     },
   ]

@@ -38,7 +38,7 @@ export const getGoodWithStoragesById = async (
   storageGoodId: number,
 ): Promise<GoodWithStorages> => {
   const { data: goodWithStorages } = await axiosClient.get(
-    `/storage_good/${storageGoodId}`,
+    `/storage_good/id/${storageGoodId}`,
   )
   return goodWithStorages
 }

@@ -1,3 +1,6 @@
+import { Shop } from "type/shop"
+import { WithId } from "type/withId"
+
 export type Storage = {
   storage_good_id: number
   quantity: number
@@ -8,6 +11,7 @@ export type Storage = {
   box_quantity?: number
   in_box_quantity: number
   shelf?: string
+  shops?: WithId<Shop>[]
 }
 
 export type DeliveryToStorage = {

@@ -10,7 +10,11 @@ import {
 import { FC } from "react"
 import { Storage } from "type/storage"
 import { WithId } from "type/withId"
-import { numberWithCurrency, roundNumber } from "util/formatting"
+import {
+  numberWithCurrency,
+  roundNumber,
+  timestampToDate,
+} from "util/formatting"
 
 interface GoodStorageCardProps {
   storage: WithId<Storage>
@@ -20,7 +24,7 @@ export const GoodStorageCard: FC<GoodStorageCardProps> = (props) => {
   const { storage } = props
 
   const isCreatedAtExists = storage.created_at !== undefined
-  const storageDate = new Date(storage.created_at || 0 * 1000)
+  const storageDate = timestampToDate(storage.created_at)
 
   const isPrimeCostExists = storage.prime_cost !== undefined
   const isItemPriceExists = storage.cost_per_item !== undefined
@@ -102,6 +106,17 @@ export const GoodStorageCard: FC<GoodStorageCardProps> = (props) => {
             </Text>
 
             <Text>{storage.box_quantity}</Text>
+          </Flex>
+
+          {/* Shops */}
+          <Flex alignItems="center" flexWrap="wrap" gap={2}>
+            <Text fontWeight="light" color="gray">
+              To Shops:
+            </Text>
+
+            {storage.shops?.map((shop, index) => (
+              <Badge key={index}>{shop.name}</Badge>
+            ))}
           </Flex>
         </Flex>
       </CardBody>
