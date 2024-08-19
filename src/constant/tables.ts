@@ -1,4 +1,6 @@
-export const ROWS_PER_PAGE = 10
+export const INITIAL_ROWS_PER_PAGE = 10
+
+export const ROWS_PER_PAGE_SELECT_VARIANTS = [10, 50, 100]
 
 export const PURCHASES_TABLE_COLUMNS = ["ID", "Amount", "Shipping", "Deadline"]
 
@@ -21,6 +23,7 @@ export const PURCHASE_DELIVERIES_TABLE_COLUMNS = [
 ]
 
 export const STORAGE_GOODS_TABLE_COLUMNS = [
+  "ID",
   "SKU segment",
   "Name",
   "Total quantity",

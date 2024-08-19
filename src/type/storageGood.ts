@@ -7,7 +7,6 @@ export type StorageGood = {
   description?: string
 }
 
-export type GoodWithStorages = {
-  storage_good: WithId<StorageGood>
-  storage_list: WithId<Storage>[]
+export type GoodWithStorages = WithId<StorageGood> & {
+  storage: WithId<Storage>[]
 }

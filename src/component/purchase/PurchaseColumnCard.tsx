@@ -14,6 +14,7 @@ import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModa
 import { PurchaseCardGoodsList } from "component/purchase/PurchaseCardGoodsList"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
+import { PurchaseGoodsModal } from "component/purchase/PurchaseGoodsModal"
 import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
 import { PurchaseStatusUpdateModal } from "component/purchase/PurchaseStatusUpdateModal"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
@@ -57,6 +58,12 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
     isOpen: isDocumentsModalOpen,
     onOpen: onDocumentsModalOpen,
     onClose: onDocumentsModalClose,
+  } = useDisclosure()
+
+  const {
+    isOpen: isPurchaseGoodsModalOpen,
+    onOpen: onPurchaseGoodsModalOpen,
+    onClose: onPurchaseGoodsModalClose,
   } = useDisclosure()
 
   const {
@@ -122,6 +129,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
             {/* Menu Btn */}
             <PurchaseRowMenu
               onDocuments={onDocumentsModalOpen}
+              onGoods={onPurchaseGoodsModalOpen}
               onSupplierManager={onSupplierManagerModalOpen}
               onStatusUpdate={onPurchaseGoodsStatusModalOpen}
               onEdit={onPurchaseUpdateModalOpen}
@@ -165,6 +173,13 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
           documents={files}
           isOpen={isDocumentsModalOpen}
           onClose={onDocumentsModalClose}
+        />
+
+        <PurchaseGoodsModal
+          purchaseId={purchaseId}
+          goods={goods}
+          isOpen={isPurchaseGoodsModalOpen}
+          onClose={onPurchaseGoodsModalClose}
         />
 
         <PurchaseStatusUpdateModal

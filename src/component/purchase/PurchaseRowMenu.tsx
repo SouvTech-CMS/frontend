@@ -11,12 +11,14 @@ import {
   FiEdit,
   FiFileText,
   FiMoreVertical,
+  FiPackage,
   FiTrash2,
   FiUsers,
 } from "react-icons/fi"
 
 interface PurchaseRowMenuProps {
   onDocuments: () => void
+  onGoods: () => void
   onSupplierManager: () => void
   onStatusUpdate: () => void
   onEdit: () => void
@@ -24,8 +26,14 @@ interface PurchaseRowMenuProps {
 }
 
 export const PurchaseRowMenu: FC<PurchaseRowMenuProps> = (props) => {
-  const { onDocuments, onSupplierManager, onStatusUpdate, onEdit, onDelete } =
-    props
+  const {
+    onDocuments,
+    onGoods,
+    onSupplierManager,
+    onStatusUpdate,
+    onEdit,
+    onDelete,
+  } = props
 
   return (
     <Menu>
@@ -40,6 +48,10 @@ export const PurchaseRowMenu: FC<PurchaseRowMenuProps> = (props) => {
       <MenuList>
         <MenuItem icon={<FiFileText />} onClick={onDocuments}>
           Documents
+        </MenuItem>
+
+        <MenuItem icon={<FiPackage />} onClick={onGoods}>
+          Goods
         </MenuItem>
 
         <MenuItem icon={<FiUsers />} onClick={onSupplierManager}>

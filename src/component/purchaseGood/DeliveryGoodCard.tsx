@@ -1,10 +1,10 @@
 import { GridItem, Text } from "@chakra-ui/react"
 import { FC } from "react"
-import { PurchaseDelivereryGood } from "type/purchaseDelivery/purchaseDelivereryGood"
+import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { WithId } from "type/withId"
 
 interface DeliveryGoodCardProps {
-  good: WithId<PurchaseDelivereryGood>
+  good: WithId<PurchaseDeliveryGood>
 }
 
 export const DeliveryGoodCard: FC<DeliveryGoodCardProps> = (props) => {

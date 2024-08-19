@@ -5,18 +5,22 @@ export const stringToDate = (dateString: string): Date => {
 }
 
 export const roundNumber = (
-  num: number,
+  num: number = 0,
   fractionDigits: number = 2,
 ): number => {
-  const roundedNum = parseFloat(num.toFixed(fractionDigits))
-  return roundedNum
+  if (num > 0) {
+    const roundedNum = parseFloat(num.toFixed(fractionDigits))
+    return roundedNum
+  }
+
+  return 0
 }
 
 export const numberWithCurrency = (num: number, currencyChar: string = "$") => {
   return `${currencyChar}${num}`
 }
 
-export const timestampToDate = (timestamp: number) => {
+export const timestampToDate = (timestamp: number = 0) => {
   const date = new Date(timestamp * 1000)
   return date
 }

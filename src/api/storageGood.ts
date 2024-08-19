@@ -1,17 +1,20 @@
 import { axiosClient } from "api/axiosClient"
-import { ROWS_PER_PAGE } from "constant/tables"
 import { GoodWithStorages, StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"
 
 export const getAllStorageGoods = async (
+  limit: number,
   offset: number,
+  shopId: number,
 ): Promise<GoodWithStorages[]> => {
-  const { data: storageGoodsList } = await axiosClient.get("/storage_good/", {
-    params: {
-      limit: ROWS_PER_PAGE,
+  const { data: storageGoodsList } = await axiosClient.post(
+    "/storage_good/all/",
+    {
+      limit,
       offset,
+      shops: shopId > 0 ? [shopId] : undefined,
     },
-  })
+  )
   return storageGoodsList
 }
 
@@ -35,7 +38,7 @@ export const getGoodWithStoragesById = async (
   storageGoodId: number,
 ): Promise<GoodWithStorages> => {
   const { data: goodWithStorages } = await axiosClient.get(
-    `/storage_good/${storageGoodId}`,
+    `/storage_good/id/${storageGoodId}`,
   )
   return goodWithStorages
 }

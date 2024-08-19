@@ -22,12 +22,8 @@ export const StorageGoodsTable: FC<StorageGoodsTableProps> = (props) => {
       </Thead>
 
       <Tbody>
-        {storageGoodsList?.map((goodWithStorage, index) => (
-          <StorageGoodRow
-            key={index}
-            storageGood={goodWithStorage.storage_good}
-            storagesList={goodWithStorage.storage_list}
-          />
+        {storageGoodsList?.map((goodWithStorages, index) => (
+          <StorageGoodRow key={index} storageGood={goodWithStorages} />
         ))}
       </Tbody>
     </Table>

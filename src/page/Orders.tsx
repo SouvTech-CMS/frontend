@@ -7,8 +7,9 @@ import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
+import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { Role } from "constant/roles"
-import { ROWS_PER_PAGE } from "constant/tables"
+import { usePaginationContext } from "context/pagination"
 import { useShopFilter } from "hook/useShopFilter"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
@@ -18,6 +19,7 @@ import { Order } from "type/order"
 import { WithId } from "type/withId"
 
 const Orders = () => {
+  const { rowsPerPageCount } = usePaginationContext()
   const { selectedShopId, handleShopSelect } = useShopFilter()
 
   const [currentPage, setCurrentPage] = useState<number>(0)
@@ -35,7 +37,8 @@ const Orders = () => {
     refetch,
     isRefetching,
   } = useQuery<ApiResponse<WithId<Order>[]>>("ordersResponse", () =>
-    ordersRequestFunc(offset, selectedShopId),
+    //* "selectedShopId || undefined" needed to prevent selectedShopId == 0
+    ordersRequestFunc(rowsPerPageCount, offset, selectedShopId || undefined),
   )
 
   const ordersCount = ordersResponse?.count
@@ -44,13 +47,13 @@ const Orders = () => {
   const isOrdersExist = ordersList !== undefined
 
   useEffect(() => {
-    const newOffset = currentPage * ROWS_PER_PAGE
+    const newOffset = currentPage * rowsPerPageCount
     setOffset(newOffset)
-  }, [currentPage, refetch])
+  }, [currentPage, rowsPerPageCount])
 
   useEffect(() => {
     refetch()
-  }, [refetch, offset, selectedShopId, isShowNoneGoodOrders])
+  }, [refetch, offset, rowsPerPageCount, selectedShopId, isShowNoneGoodOrders])
 
   return (
     <Page>
@@ -60,15 +63,17 @@ const Orders = () => {
 
       {isOrdersExist && (
         <Container>
-          <Flex w="full" direction="column" gap={2}>
+          <Flex w="full" justifyContent="space-between">
             <OrdersFilters
               handleShopSelect={handleShopSelect}
               isShowNoneGoodOrders={isShowNoneGoodOrders}
               setIsShowNoneGoodOrders={setIsShowNoneGoodOrders}
             />
 
-            <OrdersTable ordersList={ordersList} />
+            <RowsPerPageSelect isLoading={isLoading || isRefetching} />
           </Flex>
+
+          <OrdersTable ordersList={ordersList} />
 
           <Pagination
             totalItemsCount={ordersCount}

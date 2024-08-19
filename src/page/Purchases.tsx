@@ -22,7 +22,7 @@ const Purchases = () => {
 
   return (
     <Page>
-      <PageHeading title="Purchases" isSearchHidden />
+      <PageHeading title="Purchases" />
 
       <Tabs
         index={tabIndex}

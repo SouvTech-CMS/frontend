@@ -1,16 +1,16 @@
 import { axiosClient } from "api/axiosClient"
-import { ROWS_PER_PAGE } from "constant/tables"
 import { ApiResponse } from "type/apiResponse"
 import { Good } from "type/good"
 import { WithId } from "type/withId"
 
 export const getAllGoods = async (
+  limit: number,
   offset: number,
   shopId?: number,
 ): Promise<ApiResponse<WithId<Good>[]>> => {
   const { data: goodsList } = await axiosClient.get("/good/", {
     params: {
-      limit: ROWS_PER_PAGE,
+      limit,
       offset,
       shop_id: shopId,
     },
