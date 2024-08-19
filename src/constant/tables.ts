@@ -1,3 +1,5 @@
+import { TableColumn } from "type/tableColumn"
+
 export const INITIAL_ROWS_PER_PAGE = 10
 
 export const ROWS_PER_PAGE_SELECT_VARIANTS = [10, 50, 100]
@@ -25,12 +27,18 @@ export const ORDERS_TABLE_COLUMNS = [
   "Profit",
 ]
 
-export const GOODS_TABLE_COLUMNS = [
-  "ID",
-  "SKU segment",
-  "Name",
-  "Price",
-  "Shop",
+export const GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
+  { name: "ID", param: "id", isSearchable: true, isSortable: true },
+  {
+    name: "SKU segment",
+    param: "uniquename",
+    isSearchable: true,
+    isSortable: true,
+  },
+  { name: "Name", param: "name", isSearchable: true, isSortable: true },
+  { name: "Price", param: "price", isSearchable: true, isSortable: true },
+  { name: "Shop", param: "shop", isSearchable: true, isSortable: true },
+  null,
 ]
 
 export const DETAILED_REPORT_TABLE_COLUMNS = [
