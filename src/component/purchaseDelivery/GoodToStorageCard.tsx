@@ -25,7 +25,7 @@ import {
   FiInbox,
   FiPackage,
 } from "react-icons/fi"
-import { PurchaseDelivereryGood } from "type/purchaseDelivery/purchaseDelivereryGood"
+import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { SelectOption } from "type/selectOption"
 import { DeliveryToStorage } from "type/storage"
 import { StorageGood } from "type/storageGood"
@@ -33,7 +33,7 @@ import { WithId } from "type/withId"
 
 interface GoodToStorageCardProps {
   prevGoodsPair: DeliveryToStorage
-  deliveryGoods?: WithId<PurchaseDelivereryGood>[]
+  deliveryGoods?: WithId<PurchaseDeliveryGood>[]
   storageGoods?: WithId<StorageGood>[]
   handleGoodsPairUpdate: (goodsPair: DeliveryToStorage) => void
 }

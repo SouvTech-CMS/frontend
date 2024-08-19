@@ -1,22 +1,23 @@
 import { Badge, Card, CardHeader, Flex, Heading, Text } from "@chakra-ui/react"
 import { SKUBadge } from "component/SKUBadge"
 import { FC } from "react"
-import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
+import { PurchaseGood } from "type/purchase/purchaseGood"
 import { WithId } from "type/withId"
+import { isGoodPartiallyInDelivery } from "util/purchaseGood"
 
-interface PurchaseDeliveryGoodsModalCardProps {
-  good: WithId<PurchaseDeliveryGood>
+interface PurchaseGoodsModalCardProps {
+  good: WithId<PurchaseGood>
 }
 
-export const PurchaseDeliveryGoodsModalCard: FC<
-  PurchaseDeliveryGoodsModalCardProps
-> = (props) => {
+export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
+  props,
+) => {
   const { good } = props
 
-  const purchaseGood = good.purchase_good
-
-  const goodSKU = purchaseGood.sku
+  const goodSKU = good.sku
   const isSKUExists = goodSKU !== undefined
+
+  const isPartiallyInDelivery = isGoodPartiallyInDelivery(good)
 
   return (
     <Card boxShadow="md" borderRadius={10}>
@@ -25,23 +26,16 @@ export const PurchaseDeliveryGoodsModalCard: FC<
           {/* Good Info */}
           <Flex justifyContent="space-between">
             <Flex direction="column" gap={2}>
-              {/* Purchase ID Badge */}
-              <Flex>
-                <Badge colorScheme="blue">
-                  Purchase #{purchaseGood.purchase_id}
-                </Badge>
-              </Flex>
-
               {/* ID & Name */}
               <Flex alignItems="center" gap={5}>
                 <Heading size="md">
-                  #{good.id} {purchaseGood.name}
+                  #{good.id} {good.name}
                 </Heading>
               </Flex>
 
               {/* Description */}
               <Text fontSize="sm" fontStyle="italic" color="gray">
-                {purchaseGood.description}
+                {good.description}
               </Text>
 
               {/* SKU */}
@@ -53,6 +47,11 @@ export const PurchaseDeliveryGoodsModalCard: FC<
               <Badge fontSize="sm">Quantity: {good.quantity}</Badge>
               <Badge fontSize="sm">Unit Price: ${good.price_per_item}</Badge>
               <Badge fontSize="sm">Amount: ${good.amount}</Badge>
+              {isPartiallyInDelivery && (
+                <Badge fontSize="sm" colorScheme="purple">
+                  In Delivery: {good.in_delivery}
+                </Badge>
+              )}
             </Flex>
           </Flex>
 

@@ -9,34 +9,32 @@ import {
   ModalHeader,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { PurchaseDeliveryGoodsModalCard } from "component/purchaseDelivery/PurchaseDeliveryGoodsModalCard"
+import { PurchaseGoodsModalCard } from "component/purchase/PurchaseGoodsModalCard"
 import { FC } from "react"
 import { ModalProps } from "type/modalProps"
-import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
+import { PurchaseGood } from "type/purchase/purchaseGood"
 import { WithId } from "type/withId"
 
-interface PurchaseDeliveryGoodsModalProps extends ModalProps {
-  deliveryId: number
-  goods: WithId<PurchaseDeliveryGood>[]
+interface PurchaseGoodsModalProps extends ModalProps {
+  purchaseId: number
+  goods: WithId<PurchaseGood>[]
 }
 
-export const PurchaseDeliveryGoodsModal: FC<PurchaseDeliveryGoodsModalProps> = (
-  props,
-) => {
-  const { deliveryId, goods, isOpen, onClose } = props
+export const PurchaseGoodsModal: FC<PurchaseGoodsModalProps> = (props) => {
+  const { purchaseId, goods, isOpen, onClose } = props
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Delivery #{deliveryId} Goods</ModalHeader>
+        <ModalHeader>Purchase #{purchaseId} Goods</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <Flex direction="column" gap={2}>
             {goods.map((good, index) => (
-              <PurchaseDeliveryGoodsModalCard key={index} good={good} />
+              <PurchaseGoodsModalCard key={index} good={good} />
             ))}
           </Flex>
         </ModalBody>

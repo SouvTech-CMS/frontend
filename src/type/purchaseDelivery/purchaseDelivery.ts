@@ -1,9 +1,9 @@
 import { FullPurchase } from "type/purchase/purchase"
 import { PurchaseFile } from "type/purchase/purchaseFile"
 import {
-  PurchaseDelivereryGood,
-  PurchaseDelivereryGoodCreate,
-} from "type/purchaseDelivery/purchaseDelivereryGood"
+  PurchaseDeliveryGood,
+  PurchaseDeliveryGoodCreate,
+} from "type/purchaseDelivery/purchaseDeliveryGood"
 
 import { WithId } from "type/withId"
 
@@ -19,14 +19,14 @@ export type PurchaseDelivery = {
 }
 
 export type FullPurchaseDelivery = WithId<PurchaseDelivery> & {
-  goods: WithId<PurchaseDelivereryGood>[]
+  goods: WithId<PurchaseDeliveryGood>[]
   files: WithId<PurchaseFile>[]
   purchases: Omit<FullPurchase, "goods">[]
 }
 
 export type PurchaseDeliveryCreate = {
   purchase_delivery: PurchaseDelivery
-  purchase_goods: PurchaseDelivereryGoodCreate[]
+  purchase_goods: PurchaseDeliveryGoodCreate[]
 }
 
 export type PurchaseDeliveryUpdate = WithId<PurchaseDelivery>
