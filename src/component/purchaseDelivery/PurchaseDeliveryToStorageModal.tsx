@@ -15,7 +15,7 @@ import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { useMoveGoodsToStorageMutation } from "service/storage"
 import { ModalProps } from "type/modalProps"
-import { PurchaseDelivereryGood } from "type/purchaseDelivery/purchaseDelivereryGood"
+import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { PurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
 import { DeliveryToStorage } from "type/storage"
 import { StorageGood } from "type/storageGood"
@@ -24,7 +24,7 @@ import { notify } from "util/toasts"
 
 interface PurchaseDeliveryToStorageModalProps extends ModalProps {
   delivery: WithId<PurchaseDelivery>
-  goods: WithId<PurchaseDelivereryGood>[]
+  goods: WithId<PurchaseDeliveryGood>[]
 }
 
 export const PurchaseDeliveryToStorageModal: FC<

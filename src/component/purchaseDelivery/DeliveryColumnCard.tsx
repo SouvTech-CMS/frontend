@@ -62,9 +62,9 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   } = useDisclosure()
 
   const {
-    isOpen: isPurchaseDeliveryGoodsStatusModalOpen,
-    onOpen: onPurchaseDeliveryGoodsStatusModalOpen,
-    onClose: onPurchaseDeliveryGoodsStatusModalClose,
+    isOpen: isDeliveryGoodsModalOpen,
+    onOpen: onDeliveryGoodsModalOpen,
+    onClose: onDeliveryGoodsModalClose,
   } = useDisclosure()
 
   const {
@@ -130,7 +130,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
             <PurchaseDeliveryRowMenu
               onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
               onDocuments={onDocumentsModalOpen}
-              onGoods={onPurchaseDeliveryGoodsStatusModalOpen}
+              onGoods={onDeliveryGoodsModalOpen}
               onStatusUpdate={onDeliveryGoodsStatusModalOpen}
               onEdit={onDeliveryUpdateModalOpen}
               onDelete={onPurchaseDeliveryDeleteModalOpen}
@@ -173,8 +173,8 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
         <PurchaseDeliveryGoodsModal
           deliveryId={deliveryId}
           goods={goods}
-          isOpen={isPurchaseDeliveryGoodsStatusModalOpen}
-          onClose={onPurchaseDeliveryGoodsStatusModalClose}
+          isOpen={isDeliveryGoodsModalOpen}
+          onClose={onDeliveryGoodsModalClose}
         />
 
         <DeliveryStatusUpdateModal
