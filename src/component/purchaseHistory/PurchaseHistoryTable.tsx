@@ -14,7 +14,7 @@ export const PurchasesHistoryTable: FC<PurchasesHistoryTableProps> = (
   const { purchaseHistory } = props
 
   return (
-    <Table variant="striped" colorScheme="gray">
+    <Table variant="simple" bgColor="gray.200" borderRadius={10}>
       <Thead>
         <Tr>
           {PURCHASES_HISTORY_TABLE.map((column, index) => (

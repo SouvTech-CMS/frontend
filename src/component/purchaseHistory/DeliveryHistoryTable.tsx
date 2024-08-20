@@ -14,7 +14,7 @@ export const DeliveriesHistoryTable: FC<DeliveriesHistoryTableProps> = (
   const { deliveryHistory } = props
 
   return (
-    <Table variant="striped" colorScheme="whiteAlpha">
+    <Table variant="simple" bgColor="white">
       <Thead>
         <Tr>
           {DELIVERIES_HISTORY_TABLE.map((column, index) => (
