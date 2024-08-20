@@ -15,7 +15,7 @@ type StorageGoodDetailsParams = {
   id: string
 }
 
-export const StorageGoodDetails = () => {
+const StorageGoodDetails = () => {
   const { id } = useParams<StorageGoodDetailsParams>()
   const storageGoodId = Number(id)
 

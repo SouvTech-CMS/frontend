@@ -15,7 +15,7 @@ type OrderInfoParams = {
   id: string
 }
 
-export const OrderInfo = () => {
+const OrderInfo = () => {
   const { id } = useParams<OrderInfoParams>()
   const orderId = Number(id)
 
