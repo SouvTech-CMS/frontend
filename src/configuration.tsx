@@ -7,6 +7,7 @@ import { NoAccess } from "page/NoAccess"
 import OrderInfo from "page/OrderInfo"
 import Orders from "page/Orders"
 import Purchases from "page/Purchases"
+import PurchasesHistory from "page/PurchasesHistory"
 import Storage from "page/Storage"
 import StorageGoodDetails from "page/StorageGoodDetails"
 import Suppliers from "page/Suppliers"
@@ -95,6 +96,14 @@ export const configuration = {
       path: "/purchases",
       roles: [Role.STORAGER],
       component: <Purchases />,
+    },
+    // Purchases History
+    {
+      type: "child",
+      name: "Purchases",
+      path: "/purchases/history",
+      roles: [Role.STORAGER],
+      component: <PurchasesHistory />,
     },
     // Suppliers
     {

@@ -4,24 +4,6 @@ export const ROWS_PER_PAGE_SELECT_VARIANTS = [10, 50, 100]
 
 export const PURCHASES_TABLE_COLUMNS = ["ID", "Amount", "Shipping", "Deadline"]
 
-export const PURCHASE_GOODS_TABLE_COLUMNS = [
-  "ID",
-  "Name",
-  "Quantity",
-  "Amount",
-  "Unit Price",
-  "Status",
-]
-
-export const PURCHASE_DELIVERIES_TABLE_COLUMNS = [
-  "ID",
-  "Shipping after Custom",
-  "Track Number",
-  "Track Number after Custom",
-  "Status",
-  "Deadline",
-]
-
 export const STORAGE_GOODS_TABLE_COLUMNS = [
   "ID",
   "SKU segment",
@@ -63,4 +45,23 @@ export const DETAILED_REPORT_TABLE_COLUMNS = [
   "Item Profit",
   "Fees",
   "Shipping",
+]
+
+export const PURCHASES_HISTORY_TABLE = [
+  "Name",
+  "Amount",
+  "Status",
+  "Created At",
+  "",
+]
+
+export const DELIVERIES_HISTORY_TABLE = [
+  "Name",
+  "Shipping",
+  "Shipping After Customs",
+  "Track Number",
+  "Track Number After Customs",
+  "Status",
+  "Created At",
+  "",
 ]
