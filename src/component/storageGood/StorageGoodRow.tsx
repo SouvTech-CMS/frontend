@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react"
 import { getStorageActualInfoByGoodId } from "api/storage/storage"
 import { SKUBadge } from "component/SKUBadge"
+import { TableTdSkeleton } from "component/TableTdSkeleton"
 import { ShelfBadge } from "component/storageGood/ShelfBadge"
 import { StorageGoodModal } from "component/storageGood/StorageGoodModal"
 import { StorageGoodRowMenu } from "component/storageGood/StorageGoodRowMenu"
@@ -39,9 +40,11 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
     isLoading,
     refetch,
     isRefetching,
-  } = useQuery<StorageActualInfo>("storageGoodsList", () =>
+  } = useQuery<StorageActualInfo>(["storageActualInfo", goodId], () =>
     getStorageActualInfoByGoodId(goodId, selectedShopId),
   )
+
+  const isLoadingActualInfo = isLoading || isRefetching
 
   const goodTotalQuantity = storageActualInfo?.quantity
   const goodBoxesQuantity = storageActualInfo?.box_quantity
@@ -93,21 +96,27 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
         {/* Good Total Quantity */}
         <Td>
-          <Text>{goodTotalQuantity}</Text>
+          <TableTdSkeleton isLoading={isLoadingActualInfo}>
+            <Text>{goodTotalQuantity}</Text>
+          </TableTdSkeleton>
         </Td>
 
         {/* Good Boxes Quantity */}
         <Td>
-          <Text>{goodBoxesQuantity}</Text>
+          <TableTdSkeleton isLoading={isLoadingActualInfo}>
+            <Text>{goodBoxesQuantity}</Text>
+          </TableTdSkeleton>
         </Td>
 
         {/* Shelfs Badges */}
         <Td>
-          <Flex gap={2}>
-            {goodsShelfsList?.map((shelf, index) => (
-              <ShelfBadge key={index} shelf={shelf} />
-            ))}
-          </Flex>
+          <TableTdSkeleton isLoading={isLoadingActualInfo}>
+            <Flex gap={2}>
+              {goodsShelfsList?.map((shelf, index) => (
+                <ShelfBadge key={index} shelf={shelf} />
+              ))}
+            </Flex>
+          </TableTdSkeleton>
         </Td>
 
         {/* Storage Good Btns */}
