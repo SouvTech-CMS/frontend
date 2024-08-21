@@ -1,18 +1,29 @@
 import { axiosClient } from "api/axiosClient"
-import { GoodWithStorages, StorageGood } from "type/storageGood"
+import { SortDirection } from "type/sortDirection"
+import {
+  GoodWithStorages,
+  StorageGood,
+  StorageGoodSearchFilter,
+} from "type/storageGood"
 import { WithId } from "type/withId"
 
 export const getAllStorageGoods = async (
   limit: number,
   offset: number,
   shopId: number,
+  sort_field?: string,
+  sort_direction?: SortDirection,
+  search_filter?: StorageGoodSearchFilter,
 ): Promise<GoodWithStorages[]> => {
   const { data: storageGoodsList } = await axiosClient.post(
     "/storage_good/all/",
     {
       limit,
       offset,
+      sort_field,
+      sort_direction,
       shops: shopId > 0 ? [shopId] : undefined,
+      search_filter,
     },
   )
   return storageGoodsList

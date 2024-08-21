@@ -1,6 +1,6 @@
 import { axiosClient } from "api/axiosClient"
 import { ApiResponse } from "type/apiResponse"
-import { Good } from "type/good"
+import { Good } from "type/order/good"
 import { WithId } from "type/withId"
 
 export const getAllGoods = async (

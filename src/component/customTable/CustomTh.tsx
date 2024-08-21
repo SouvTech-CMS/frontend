@@ -7,9 +7,9 @@ import {
   Text,
   Th,
 } from "@chakra-ui/react"
-import { SearchPopoverContent } from "component/sortableTable/SearchPopoverContent"
+import { SearchPopoverContent } from "component/customTable/SearchPopoverContent"
 import { useTableContext } from "context/table"
-import { FC, useRef } from "react"
+import { FC, useRef, useState } from "react"
 import { FiArrowDown, FiArrowUp, FiSearch } from "react-icons/fi"
 import { LuArrowUpDown } from "react-icons/lu"
 import { TableColumn } from "type/tableColumn"
@@ -28,12 +28,11 @@ export const CustomTh: FC<CustomThProps> = (props) => {
     setSortDirection,
     sortField,
     setSortField,
-
-    // searchFilter,
-    // getSearchFilterValue,
   } = useTableContext()
 
   const initialRef = useRef<HTMLInputElement>(null)
+
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false)
 
   // If column just for btns
   if (column === null) {
@@ -41,6 +40,10 @@ export const CustomTh: FC<CustomThProps> = (props) => {
   }
 
   const { name, param, isSortable = false, isSearchable = false } = column
+
+  const handlePopoverClose = () => {
+    setIsPopoverOpen(false)
+  }
 
   const handleSortDirectionChange = () => {
     // no-sort -> asc
@@ -83,16 +86,19 @@ export const CustomTh: FC<CustomThProps> = (props) => {
       initialRef.current?.focus()
       initialRef.current?.click()
     }, 100)
-  }
 
-  // TODO: update search field only on click save btn
-  // TODO: close popover on click save btn
+    setIsPopoverOpen(true)
+  }
 
   return (
     <Th>
       <Flex justifyContent="space-between" alignItems="center">
         {/* Column Name with Search */}
-        <Popover placement="bottom-start">
+        <Popover
+          placement="bottom-start"
+          isOpen={isPopoverOpen}
+          onClose={handlePopoverClose}
+        >
           <Flex alignItems="center" gap={1}>
             <PopoverAnchor>
               <Text>{name}</Text>
@@ -112,7 +118,11 @@ export const CustomTh: FC<CustomThProps> = (props) => {
             )}
           </Flex>
 
-          <SearchPopoverContent initialRef={initialRef} param={param} />
+          <SearchPopoverContent
+            initialRef={initialRef}
+            param={param}
+            onClose={handlePopoverClose}
+          />
         </Popover>
 
         {/* Sort Btn */}
@@ -126,10 +136,6 @@ export const CustomTh: FC<CustomThProps> = (props) => {
           />
         )}
       </Flex>
-
-      {/* <Text color="gray" fontSize="xs" fontWeight="normal" fontStyle="italic">
-        {getSearchFilterValue(param)}
-      </Text> */}
     </Th>
   )
 }

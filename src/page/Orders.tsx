@@ -15,7 +15,7 @@ import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/apiResponse"
-import { Order } from "type/order"
+import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 
 const Orders = () => {

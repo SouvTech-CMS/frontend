@@ -6,13 +6,29 @@ export const ROWS_PER_PAGE_SELECT_VARIANTS = [10, 50, 100]
 
 export const PURCHASES_TABLE_COLUMNS = ["ID", "Amount", "Shipping", "Deadline"]
 
-export const STORAGE_GOODS_TABLE_COLUMNS = [
-  "ID",
-  "SKU segment",
-  "Name",
-  "Total quantity",
-  "Boxes quantity",
-  "Shelf",
+export const STORAGE_GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
+  { name: "ID", param: "id", isSearchable: true, isSortable: true },
+  {
+    name: "SKU segment",
+    param: "uniquename",
+    isSearchable: true,
+    isSortable: true,
+  },
+  { name: "Name", param: "name", isSearchable: true, isSortable: true },
+  {
+    name: "Total quantity",
+    param: "quantity",
+    isSearchable: true,
+    isSortable: true,
+  },
+  {
+    name: "Boxes quantity",
+    param: "box_quantity",
+    isSearchable: true,
+    isSortable: true,
+  },
+  { name: "Shelf", param: "shelf", isSearchable: true, isSortable: true },
+  null,
 ]
 
 export const ORDERS_TABLE_COLUMNS = [

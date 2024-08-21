@@ -1,14 +1,14 @@
 import {
   Dispatch,
+  PropsWithChildren,
   SetStateAction,
   createContext,
   useContext,
   useState,
 } from "react"
-import { FCC } from "type/fcc"
 import { SortDirection } from "type/sortDirection"
 
-interface TableContextProps {
+interface TableContextProps<SearchFilterType> {
   sortDirection?: SortDirection
   isAscSort?: boolean
   isDescSort?: boolean
@@ -17,37 +17,42 @@ interface TableContextProps {
   sortField?: string
   setSortField: Dispatch<SetStateAction<string | undefined>>
 
-  searchFilter?: object
-  setSearchFilter: Dispatch<SetStateAction<object | undefined>>
-  getSearchFilterValue: (param: string) => any | undefined
+  searchFilter?: SearchFilterType
+  setSearchFilter: Dispatch<SetStateAction<SearchFilterType | undefined>>
+  getSearchFilterValue: <K extends keyof SearchFilterType>(param: K) => string
 }
 
-export const TableContext = createContext<TableContextProps>({
-  setSortDirection: () => {},
-  setSortField: () => {},
+export const TableContext = createContext<TableContextProps<any> | undefined>(
+  undefined,
+)
 
-  setSearchFilter: () => {},
-  getSearchFilterValue: () => {},
-})
-
-export const TableContextProvider: FCC = (props) => {
+//* <SearchFilterType,> - is a providable type
+export const TableContextProvider = <SearchFilterType,>(
+  props: PropsWithChildren<{}>,
+) => {
   const { children } = props
 
   const [sortDirection, setSortDirection] = useState<SortDirection>()
   const [sortField, setSortField] = useState<string>()
 
-  const [searchFilter, setSearchFilter] = useState<object>()
+  const [searchFilter, setSearchFilter] = useState<SearchFilterType>()
 
   const isAscSort = sortDirection === "asc"
   const isDescSort = sortDirection === "desc"
   const isNoSort = sortDirection === undefined
 
-  const getSearchFilterValue = (param: string) => {
-    if (searchFilter) {
-      return (searchFilter as any)[param]
+  const getSearchFilterValue = (param: any) => {
+    if (
+      searchFilter &&
+      Object.prototype.hasOwnProperty.call(searchFilter, param)
+    ) {
+      const value = searchFilter[param as keyof SearchFilterType]
+      if (value) {
+        return String(value)
+      }
     }
 
-    return undefined
+    return ""
   }
 
   return (
@@ -71,12 +76,14 @@ export const TableContextProvider: FCC = (props) => {
   )
 }
 
-export const useTableContext = () => {
+export const useTableContext = <
+  SearchFilterType,
+>(): TableContextProps<SearchFilterType> => {
   const context = useContext(TableContext)
 
   if (!context) {
     throw new Error("useTableContext must be used in TableContextProvider")
   }
 
-  return context
+  return context as TableContextProps<SearchFilterType>
 }
