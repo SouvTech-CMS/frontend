@@ -1,5 +1,5 @@
 import { queryClient } from "api/queryClient"
-import { moveGoodsToStorage } from "api/storage"
+import { moveGoodsToStorage } from "api/storage/storage"
 import { useMutation } from "react-query"
 
 export const useMoveGoodsToStorageMutation = () => {

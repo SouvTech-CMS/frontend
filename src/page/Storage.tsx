@@ -1,5 +1,8 @@
 import { Flex } from "@chakra-ui/react"
-import { getAllStorageGoods, getStorageGoodsCount } from "api/storageGood"
+import {
+  getAllStorageGoods,
+  getStorageGoodsCount,
+} from "api/storage/storageGood"
 import { Container } from "component/Container"
 import { SearchFiltersClearBtn } from "component/customTable/SearchFiltersClearBtn"
 import { LoadingPage } from "component/page/LoadingPage"
@@ -16,7 +19,8 @@ import { useShopFilter } from "hook/useShopFilter"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { GoodWithStorages, StorageGoodSearchFilter } from "type/storageGood"
+import { StorageGood, StorageGoodSearchFilter } from "type/storageGood"
+import { WithId } from "type/withId"
 
 const Storage = () => {
   const { rowsPerPageCount } = usePaginationContext()
@@ -32,7 +36,7 @@ const Storage = () => {
     isLoading: isLoadingStorageGoodsList,
     refetch,
     isRefetching: isRefetchingStorageGoodsList,
-  } = useQuery<GoodWithStorages[]>("storageGoodsList", () =>
+  } = useQuery<WithId<StorageGood>[]>("storageGoodsList", () =>
     getAllStorageGoods(
       rowsPerPageCount,
       offset,
