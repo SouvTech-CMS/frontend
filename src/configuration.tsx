@@ -1,4 +1,5 @@
 import { Role } from "constant/roles"
+import { TableContextProvider } from "context/table"
 import { Auth } from "page/Auth"
 import Dashboard from "page/Dashboard"
 import DetailedReports from "page/DetailedReports"
@@ -24,6 +25,7 @@ import {
   FiTruck,
   FiUsers,
 } from "react-icons/fi"
+import { StorageGoodSearchFilter } from "type/storageGood"
 import { getApiBaseUrl } from "util/urls"
 
 type Route = {
@@ -121,7 +123,11 @@ export const configuration = {
       name: "Storage",
       path: "/storage",
       roles: [Role.STORAGER],
-      component: <Storage />,
+      component: (
+        <TableContextProvider<StorageGoodSearchFilter>>
+          <Storage />,
+        </TableContextProvider>
+      ),
     },
     // Storage Good Details
     {

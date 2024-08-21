@@ -10,3 +10,5 @@ export type StorageGood = {
 export type GoodWithStorages = WithId<StorageGood> & {
   storage: WithId<Storage>[]
 }
+
+export type StorageGoodSearchFilter = WithId<StorageGood>

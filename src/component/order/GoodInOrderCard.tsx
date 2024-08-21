@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react"
 import { SKUBadge } from "component/SKUBadge"
 import { FC } from "react"
-import { GoodInOrder } from "type/goodInOrder"
+import { GoodInOrder } from "type/order/goodInOrder"
 import { WithId } from "type/withId"
 import { numberWithCurrency, roundNumber } from "util/formatting"
 
