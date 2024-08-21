@@ -1,5 +1,5 @@
 import { Divider, Flex, Grid, GridItem, Heading } from "@chakra-ui/react"
-import { getGoodWithStoragesById } from "api/storageGood"
+import { getGoodWithStoragesById } from "api/storage/storageGood"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"

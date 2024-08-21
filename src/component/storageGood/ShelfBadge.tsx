@@ -21,7 +21,7 @@ export const ShelfBadge: FC<ShelfBadgeProps> = (props) => {
 
   return (
     <Badge fontSize="sm" colorScheme="purple">
-      {shelf}
+      {shelf.trim()}
     </Badge>
   )
 }

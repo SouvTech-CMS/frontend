@@ -8,15 +8,15 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react"
-import { getFullStorageGoodsList } from "api/storageGood"
+import { getFullStorageGoodsList } from "api/storage/storageGood"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { GoodToStorageCard } from "component/purchaseDelivery/GoodToStorageCard"
 import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { useMoveGoodsToStorageMutation } from "service/storage"
 import { ModalProps } from "type/modalProps"
-import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { PurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
+import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { DeliveryToStorage } from "type/storage"
 import { StorageGood } from "type/storageGood"
 import { WithId } from "type/withId"

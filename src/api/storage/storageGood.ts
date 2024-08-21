@@ -14,7 +14,7 @@ export const getAllStorageGoods = async (
   sort_field?: string,
   sort_direction?: SortDirection,
   search_filter?: StorageGoodSearchFilter,
-): Promise<GoodWithStorages[]> => {
+): Promise<WithId<StorageGood>[]> => {
   const { data: storageGoodsList } = await axiosClient.post(
     "/storage_good/all/",
     {

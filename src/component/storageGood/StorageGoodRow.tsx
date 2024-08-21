@@ -7,40 +7,61 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react"
+import { getStorageActualInfoByGoodId } from "api/storage/storage"
 import { SKUBadge } from "component/SKUBadge"
 import { ShelfBadge } from "component/storageGood/ShelfBadge"
 import { StorageGoodModal } from "component/storageGood/StorageGoodModal"
 import { StorageGoodRowMenu } from "component/storageGood/StorageGoodRowMenu"
 import { useUserContext } from "context/user"
-import { FC } from "react"
+import { useShopFilter } from "hook/useShopFilter"
+import { FC, useEffect } from "react"
 import { FiExternalLink } from "react-icons/fi"
+import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
-import { GoodWithStorages } from "type/storageGood"
+import { StorageActualInfo } from "type/storage"
+import { StorageGood } from "type/storageGood"
+import { WithId } from "type/withId"
 
 interface StorageGoodRowProps {
-  storageGood: GoodWithStorages
+  storageGood: WithId<StorageGood>
 }
 
 export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   const { storageGood } = props
 
   const { isUserAdmin } = useUserContext()
+  const { selectedShopId } = useShopFilter()
 
-  const storagesList = storageGood.storage
+  const goodId = storageGood.id
 
-  const goodTotalQuantity = storagesList.reduce(
-    (acc, storage) => acc + storage.quantity,
-    0,
+  const {
+    data: storageActualInfo,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useQuery<StorageActualInfo>("storageGoodsList", () =>
+    getStorageActualInfoByGoodId(goodId, selectedShopId),
   )
 
-  const goodBoxesQuantity = storagesList.reduce(
-    (acc, storage) => acc + (storage.box_quantity || 0),
-    0,
-  )
+  const goodTotalQuantity = storageActualInfo?.quantity
+  const goodBoxesQuantity = storageActualInfo?.box_quantity
+  const goodsShelfsList = storageActualInfo?.shelf
 
-  const goodsShelfsList = storagesList
-    .flatMap(({ shelf }) => shelf?.split(";") || "")
-    .filter((shelf) => !!shelf?.trim())
+  // const storagesList = storageGood.storage
+
+  // const goodTotalQuantity = storagesList.reduce(
+  //   (acc, storage) => acc + storage.quantity,
+  //   0,
+  // )
+
+  // const goodBoxesQuantity = storagesList.reduce(
+  //   (acc, storage) => acc + (storage.box_quantity || 0),
+  //   0,
+  // )
+
+  // const goodsShelfsList = storagesList
+  //   .flatMap(({ shelf }) => shelf?.split(";") || "")
+  //   .filter((shelf) => !!shelf?.trim())
 
   const {
     isOpen: isStorageGoodModalOpen,
@@ -48,12 +69,16 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
     onClose: onStorageGoodModalClose,
   } = useDisclosure()
 
+  useEffect(() => {
+    refetch()
+  }, [refetch, selectedShopId])
+
   return (
     <>
       <Tr>
         {/* ID  */}
         <Td>
-          <Text>{storageGood.id}</Text>
+          <Text>{goodId}</Text>
         </Td>
 
         {/* SKU Segment Badge  */}
@@ -79,7 +104,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
         {/* Shelfs Badges */}
         <Td>
           <Flex gap={2}>
-            {goodsShelfsList.map((shelf, index) => (
+            {goodsShelfsList?.map((shelf, index) => (
               <ShelfBadge key={index} shelf={shelf} />
             ))}
           </Flex>
@@ -90,7 +115,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
           <Flex alignItems="center">
             {/* Details Page Btn */}
             <Tooltip label="Open Storage Good Details">
-              <Link to={`/storage-good/${storageGood.id}`} target="_blank">
+              <Link to={`/storage-good/${goodId}`} target="_blank">
                 <IconButton
                   aria-label="open-storage-good"
                   variant="ghost"
