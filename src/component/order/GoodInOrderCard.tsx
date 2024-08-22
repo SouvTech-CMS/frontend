@@ -33,6 +33,15 @@ export const GoodInOrderCard: FC<GoodInOrderCardProps> = (props) => {
 
       <CardBody>
         <Flex direction="column" gap={2}>
+          {/* ID */}
+          <Flex alignItems="center" gap={2}>
+            <Text fontWeight="light" color="gray">
+              ID:
+            </Text>
+
+            <Text>{good.id}</Text>
+          </Flex>
+
           {/* SKU */}
           <Flex alignItems="center" gap={2}>
             <Text fontWeight="light" color="gray">
