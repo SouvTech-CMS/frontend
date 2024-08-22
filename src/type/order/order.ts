@@ -1,4 +1,4 @@
-import { GoodInOrder } from "type/goodInOrder"
+import { GoodInOrder } from "type/order/goodInOrder"
 import { WithId } from "type/withId"
 
 export type Order = {

@@ -1,4 +1,5 @@
 import { Role } from "constant/roles"
+import { TableContextProvider } from "context/table"
 import { Auth } from "page/Auth"
 import Dashboard from "page/Dashboard"
 import DetailedReports from "page/DetailedReports"
@@ -6,13 +7,16 @@ import Goods from "page/Goods"
 import { NoAccess } from "page/NoAccess"
 import OrderInfo from "page/OrderInfo"
 import Orders from "page/Orders"
+import ProductionInfo from "page/ProductionInfo"
 import Purchases from "page/Purchases"
+import PurchasesHistory from "page/PurchasesHistory"
 import Storage from "page/Storage"
 import StorageGoodDetails from "page/StorageGoodDetails"
 import Suppliers from "page/Suppliers"
 import Users from "page/Users"
 import { IconType } from "react-icons"
 import {
+  FiFeather,
   FiFileText,
   FiGlobe,
   FiHome,
@@ -23,6 +27,7 @@ import {
   FiTruck,
   FiUsers,
 } from "react-icons/fi"
+import { StorageGoodSearchFilter } from "type/storage/storageGood"
 import { getApiBaseUrl } from "util/urls"
 
 type Route = {
@@ -96,6 +101,14 @@ export const configuration = {
       roles: [Role.STORAGER],
       component: <Purchases />,
     },
+    // Purchases History
+    {
+      type: "child",
+      name: "Purchases",
+      path: "/purchases/history",
+      roles: [Role.STORAGER],
+      component: <PurchasesHistory />,
+    },
     // Suppliers
     {
       type: "main",
@@ -112,7 +125,11 @@ export const configuration = {
       name: "Storage",
       path: "/storage",
       roles: [Role.STORAGER],
-      component: <Storage />,
+      component: (
+        <TableContextProvider<StorageGoodSearchFilter>>
+          <Storage />,
+        </TableContextProvider>
+      ),
     },
     // Storage Good Details
     {
@@ -121,6 +138,15 @@ export const configuration = {
       path: "/storage-good/:id",
       roles: [Role.STORAGER],
       component: <StorageGoodDetails />,
+    },
+    // Production Info
+    {
+      type: "main",
+      icon: FiFeather,
+      name: "Production Info",
+      path: "/production-info",
+      roles: [Role.STORAGER],
+      component: <ProductionInfo />,
     },
     // Employees
     {

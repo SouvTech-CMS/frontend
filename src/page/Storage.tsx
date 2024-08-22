@@ -1,6 +1,10 @@
 import { Flex } from "@chakra-ui/react"
-import { getAllStorageGoods, getStorageGoodsCount } from "api/storageGood"
+import {
+  getAllStorageGoods,
+  getStorageGoodsCount,
+} from "api/storage/storageGood"
 import { Container } from "component/Container"
+import { SearchFiltersClearBtn } from "component/customTable/SearchFiltersClearBtn"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
@@ -10,15 +14,19 @@ import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
 import { Role } from "constant/roles"
 import { usePaginationContext } from "context/pagination"
+import { useTableContext } from "context/table"
 import { useShopFilter } from "hook/useShopFilter"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { GoodWithStorages } from "type/storageGood"
+import { StorageGood, StorageGoodSearchFilter } from "type/storage/storageGood"
+import { WithId } from "type/withId"
 
 const Storage = () => {
   const { rowsPerPageCount } = usePaginationContext()
   const { selectedShopId, handleShopSelect } = useShopFilter()
+  const { sortDirection, sortField, searchFilter } =
+    useTableContext<StorageGoodSearchFilter>()
 
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [offset, setOffset] = useState<number>(0)
@@ -28,8 +36,15 @@ const Storage = () => {
     isLoading: isLoadingStorageGoodsList,
     refetch,
     isRefetching: isRefetchingStorageGoodsList,
-  } = useQuery<GoodWithStorages[]>("storageGoodsList", () =>
-    getAllStorageGoods(rowsPerPageCount, offset, selectedShopId),
+  } = useQuery<WithId<StorageGood>[]>("storageGoodsList", () =>
+    getAllStorageGoods(
+      rowsPerPageCount,
+      offset,
+      selectedShopId,
+      sortField,
+      sortDirection,
+      searchFilter,
+    ),
   )
 
   const { data: storageGoodsCount, isLoading: isLoadingStorageGoodsCount } =
@@ -48,7 +63,15 @@ const Storage = () => {
 
   useEffect(() => {
     refetch()
-  }, [refetch, offset, rowsPerPageCount, selectedShopId])
+  }, [
+    refetch,
+    offset,
+    rowsPerPageCount,
+    selectedShopId,
+    sortDirection,
+    sortField,
+    searchFilter,
+  ])
 
   return (
     <Page>
@@ -58,7 +81,11 @@ const Storage = () => {
         <Flex w="full" justifyContent="space-between">
           <StorageGoodsFilters handleShopSelect={handleShopSelect} />
 
-          <RowsPerPageSelect isLoading={isLoading || isRefetching} />
+          <Flex alignItems="center" gap={2}>
+            <SearchFiltersClearBtn isLoading={isLoading || isRefetching} />
+
+            <RowsPerPageSelect isLoading={isLoading || isRefetching} />
+          </Flex>
         </Flex>
 
         {!isStorageGoodsExist && isLoading && <LoadingPage />}

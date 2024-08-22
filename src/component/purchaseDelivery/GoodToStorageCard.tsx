@@ -27,8 +27,8 @@ import {
 } from "react-icons/fi"
 import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { SelectOption } from "type/selectOption"
-import { DeliveryToStorage } from "type/storage"
-import { StorageGood } from "type/storageGood"
+import { DeliveryToStorage } from "type/storage/storage"
+import { StorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
 interface GoodToStorageCardProps {

@@ -9,13 +9,13 @@ import { Role } from "constant/roles"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
-import { OrderWithGoods } from "type/order"
+import { OrderWithGoods } from "type/order/order"
 
 type OrderInfoParams = {
   id: string
 }
 
-export const OrderInfo = () => {
+const OrderInfo = () => {
   const { id } = useParams<OrderInfoParams>()
   const orderId = Number(id)
 

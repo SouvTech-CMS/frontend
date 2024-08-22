@@ -1,34 +1,34 @@
+import { TableColumn } from "type/tableColumn"
+
 export const INITIAL_ROWS_PER_PAGE = 10
 
 export const ROWS_PER_PAGE_SELECT_VARIANTS = [10, 50, 100]
 
 export const PURCHASES_TABLE_COLUMNS = ["ID", "Amount", "Shipping", "Deadline"]
 
-export const PURCHASE_GOODS_TABLE_COLUMNS = [
-  "ID",
-  "Name",
-  "Quantity",
-  "Amount",
-  "Unit Price",
-  "Status",
-]
-
-export const PURCHASE_DELIVERIES_TABLE_COLUMNS = [
-  "ID",
-  "Shipping after Custom",
-  "Track Number",
-  "Track Number after Custom",
-  "Status",
-  "Deadline",
-]
-
-export const STORAGE_GOODS_TABLE_COLUMNS = [
-  "ID",
-  "SKU segment",
-  "Name",
-  "Total quantity",
-  "Boxes quantity",
-  "Shelf",
+export const STORAGE_GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
+  { name: "ID", param: "id", isSearchable: true, isSortable: true },
+  {
+    name: "SKU segment",
+    param: "uniquename",
+    isSearchable: true,
+    isSortable: true,
+  },
+  { name: "Name", param: "name", isSearchable: true, isSortable: true },
+  {
+    name: "Total quantity",
+    param: "quantity",
+    isSearchable: true,
+    isSortable: true,
+  },
+  {
+    name: "Boxes quantity",
+    param: "box_quantity",
+    isSearchable: true,
+    isSortable: true,
+  },
+  { name: "Shelf", param: "shelf", isSearchable: true, isSortable: true },
+  null,
 ]
 
 export const ORDERS_TABLE_COLUMNS = [
@@ -43,12 +43,18 @@ export const ORDERS_TABLE_COLUMNS = [
   "Profit",
 ]
 
-export const GOODS_TABLE_COLUMNS = [
-  "ID",
-  "SKU segment",
-  "Name",
-  "Price",
-  "Shop",
+export const GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
+  { name: "ID", param: "id", isSearchable: true, isSortable: true },
+  {
+    name: "SKU segment",
+    param: "uniquename",
+    isSearchable: true,
+    isSortable: true,
+  },
+  { name: "Name", param: "name", isSearchable: true, isSortable: true },
+  { name: "Price", param: "price", isSearchable: true, isSortable: true },
+  { name: "Shop", param: "shop", isSearchable: true, isSortable: true },
+  null,
 ]
 
 export const DETAILED_REPORT_TABLE_COLUMNS = [
@@ -63,4 +69,42 @@ export const DETAILED_REPORT_TABLE_COLUMNS = [
   "Item Profit",
   "Fees",
   "Shipping",
+]
+
+export const PURCHASES_HISTORY_TABLE = [
+  "Name",
+  "Amount",
+  "Status",
+  "Created At",
+  "",
+]
+
+export const DELIVERIES_HISTORY_TABLE = [
+  "Name",
+  "Shipping",
+  "Shipping After Customs",
+  "Track Number",
+  "Track Number After Customs",
+  "Status",
+  "Created At",
+  "",
+]
+
+export const GOODS_WITH_PRODUCTION_INFO_TABLE = [
+  "ID",
+  "SKU",
+  "Name",
+  "Power",
+  "Speed",
+  "Penetration Step",
+  "Engraving Width Max",
+  "Engraving Height Max",
+  "Length Inch",
+  "Width Inch",
+  "Thickness Inch",
+  "Package Size Max",
+  "Weight Oz",
+  "Production Time",
+  "Cost Of Good",
+  "Competitive Price",
 ]

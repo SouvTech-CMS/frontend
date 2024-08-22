@@ -2,7 +2,7 @@ import { Table, Tbody, Text, Th, Thead, Tr } from "@chakra-ui/react"
 import { OrdersTableRow } from "component/order/OrdersTableRow"
 import { ORDERS_TABLE_COLUMNS } from "constant/tables"
 import { FC } from "react"
-import { Order } from "type/order"
+import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 
 interface OrdersTableProps {

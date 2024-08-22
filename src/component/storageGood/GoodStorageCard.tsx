@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react"
 import { FC } from "react"
-import { Storage } from "type/storage"
+import { Storage } from "type/storage/storage"
 import { WithId } from "type/withId"
 import {
   numberWithCurrency,

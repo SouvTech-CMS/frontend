@@ -1,5 +1,5 @@
 import { Divider, Flex, Grid, GridItem, Heading } from "@chakra-ui/react"
-import { getGoodWithStoragesById } from "api/storageGood"
+import { getGoodWithStoragesById } from "api/storage/storageGood"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
@@ -9,13 +9,13 @@ import { Role } from "constant/roles"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
-import { GoodWithStorages } from "type/storageGood"
+import { GoodWithStorages } from "type/storage/storageGood"
 
 type StorageGoodDetailsParams = {
   id: string
 }
 
-export const StorageGoodDetails = () => {
+const StorageGoodDetails = () => {
   const { id } = useParams<StorageGoodDetailsParams>()
   const storageGoodId = Number(id)
 

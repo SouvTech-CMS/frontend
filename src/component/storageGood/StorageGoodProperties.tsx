@@ -2,7 +2,7 @@ import { Grid } from "@chakra-ui/react"
 import { SKUBadge } from "component/SKUBadge"
 import { StorageGoodPropertyRow } from "component/storageGood/StorageGoodPropertyRow"
 import { FC } from "react"
-import { StorageGood } from "type/storageGood"
+import { StorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
 interface StorageGoodPropertiesProps {

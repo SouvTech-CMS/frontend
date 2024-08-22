@@ -20,7 +20,7 @@ import {
   useStorageGoodUpdateMutation,
 } from "service/storageGood"
 import { ModalProps } from "type/modalProps"
-import { StorageGood } from "type/storageGood"
+import { StorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 interface StorageGoodModalProps extends ModalProps {
