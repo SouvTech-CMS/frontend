@@ -3,7 +3,7 @@ import { CustomTh } from "component/customTable/CustomTh"
 import { StorageGoodRow } from "component/storageGood/StorageGoodRow"
 import { STORAGE_GOODS_TABLE_COLUMNS } from "constant/tables"
 import { FC } from "react"
-import { StorageGood } from "type/storageGood"
+import { StorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
 interface StorageGoodsTableProps {

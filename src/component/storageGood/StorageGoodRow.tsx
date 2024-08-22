@@ -19,8 +19,8 @@ import { FC, useEffect } from "react"
 import { FiExternalLink } from "react-icons/fi"
 import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
-import { StorageActualInfo } from "type/storage"
-import { StorageGood } from "type/storageGood"
+import { StorageActualInfo } from "type/storage/storage"
+import { StorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
 interface StorageGoodRowProps {

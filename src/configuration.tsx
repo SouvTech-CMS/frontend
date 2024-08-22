@@ -7,6 +7,7 @@ import Goods from "page/Goods"
 import { NoAccess } from "page/NoAccess"
 import OrderInfo from "page/OrderInfo"
 import Orders from "page/Orders"
+import ProductionInfo from "page/ProductionInfo"
 import Purchases from "page/Purchases"
 import PurchasesHistory from "page/PurchasesHistory"
 import Storage from "page/Storage"
@@ -15,6 +16,7 @@ import Suppliers from "page/Suppliers"
 import Users from "page/Users"
 import { IconType } from "react-icons"
 import {
+  FiFeather,
   FiFileText,
   FiGlobe,
   FiHome,
@@ -25,7 +27,7 @@ import {
   FiTruck,
   FiUsers,
 } from "react-icons/fi"
-import { StorageGoodSearchFilter } from "type/storageGood"
+import { StorageGoodSearchFilter } from "type/storage/storageGood"
 import { getApiBaseUrl } from "util/urls"
 
 type Route = {
@@ -136,6 +138,15 @@ export const configuration = {
       path: "/storage-good/:id",
       roles: [Role.STORAGER],
       component: <StorageGoodDetails />,
+    },
+    // Production Info
+    {
+      type: "main",
+      icon: FiFeather,
+      name: "Production Info",
+      path: "/production-info",
+      roles: [Role.STORAGER],
+      component: <ProductionInfo />,
     },
     // Employees
     {

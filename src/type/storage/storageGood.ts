@@ -1,4 +1,5 @@
-import { Storage } from "type/storage"
+import { ProductionInfo } from "type/productionInfo/productionInfo"
+import { Storage } from "type/storage/storage"
 import { WithId } from "type/withId"
 
 export type StorageGood = {
@@ -12,3 +13,7 @@ export type GoodWithStorages = WithId<StorageGood> & {
 }
 
 export type StorageGoodSearchFilter = WithId<StorageGood>
+
+export type StorageGoodWithProductionInfo = WithId<StorageGood> & {
+  production_info?: ProductionInfo
+}
