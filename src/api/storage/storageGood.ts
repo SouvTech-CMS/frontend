@@ -4,7 +4,7 @@ import {
   GoodWithStorages,
   StorageGood,
   StorageGoodSearchFilter,
-} from "type/storageGood"
+} from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
 export const getAllStorageGoods = async (

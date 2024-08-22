@@ -89,3 +89,22 @@ export const DELIVERIES_HISTORY_TABLE = [
   "Created At",
   "",
 ]
+
+export const GOODS_WITH_PRODUCTION_INFO_TABLE = [
+  "ID",
+  "SKU",
+  "Name",
+  "Power",
+  "Speed",
+  "Penetration Step",
+  "Engraving Width Max",
+  "Engraving Height Max",
+  "Length Inch",
+  "Width Inch",
+  "Thickness Inch",
+  "Package Size Max",
+  "Weight Oz",
+  "Production Time",
+  "Cost Of Good",
+  "Competitive Price",
+]

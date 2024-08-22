@@ -1,5 +1,5 @@
 import { axiosClient } from "api/axiosClient"
-import { DeliveryToStorage, StorageActualInfo } from "type/storage"
+import { DeliveryToStorage, StorageActualInfo } from "type/storage/storage"
 
 export const moveGoodsToStorage = async (body: DeliveryToStorage[]) => {
   await axiosClient.post("/storage/move_goods_from_delivery/", body)

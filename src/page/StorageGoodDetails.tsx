@@ -9,7 +9,7 @@ import { Role } from "constant/roles"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
-import { GoodWithStorages } from "type/storageGood"
+import { GoodWithStorages } from "type/storage/storageGood"
 
 type StorageGoodDetailsParams = {
   id: string

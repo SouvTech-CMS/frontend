@@ -19,7 +19,7 @@ import { useShopFilter } from "hook/useShopFilter"
 import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { StorageGood, StorageGoodSearchFilter } from "type/storageGood"
+import { StorageGood, StorageGoodSearchFilter } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
 const Storage = () => {

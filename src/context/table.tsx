@@ -32,8 +32,10 @@ export const TableContextProvider = <SearchFilterType,>(
 ) => {
   const { children } = props
 
-  const [sortDirection, setSortDirection] = useState<SortDirection>()
-  const [sortField, setSortField] = useState<string>()
+  const [sortDirection, setSortDirection] = useState<SortDirection | undefined>(
+    "asc",
+  )
+  const [sortField, setSortField] = useState<string | undefined>("id")
 
   const [searchFilter, setSearchFilter] = useState<SearchFilterType>()
 
