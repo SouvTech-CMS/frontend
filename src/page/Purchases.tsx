@@ -6,6 +6,7 @@ import { NewPurchaseBtn } from "component/purchase/NewPurchaseBtn"
 import { PurchasesTable } from "component/purchase/PurchasesTable"
 import { NewPurchaseDeliveryBtn } from "component/purchaseDelivery/NewPurchaseDeliveryBtn"
 import { PurchaseDeliveriesTable } from "component/purchaseDelivery/PurchaseDeliveriesTable"
+import { PurchaseHistoryOpenBtn } from "component/purchaseHistory/PurchaseHistoryOpenBtn"
 import { Role } from "constant/roles"
 import { usePurchaseTabsContext } from "context/purchaseTabs"
 import { useSearchContext } from "context/search"
@@ -46,7 +47,11 @@ const Purchases = () => {
           {/* Purchases */}
           <TabPanel>
             <Flex w="full" direction="column" gap={5}>
-              <NewPurchaseBtn />
+              <Flex alignItems="center" gap={5}>
+                <NewPurchaseBtn />
+
+                <PurchaseHistoryOpenBtn />
+              </Flex>
 
               <Container>
                 <PurchasesTable />
@@ -57,7 +62,11 @@ const Purchases = () => {
           {/* Purchases in Delivery */}
           <TabPanel>
             <Flex w="full" direction="column" gap={5}>
-              <NewPurchaseDeliveryBtn />
+              <Flex alignItems="center" gap={5}>
+                <NewPurchaseDeliveryBtn />
+
+                <PurchaseHistoryOpenBtn />
+              </Flex>
 
               <Container>
                 <PurchaseDeliveriesTable />
