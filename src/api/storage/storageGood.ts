@@ -32,8 +32,12 @@ export const getAllStorageGoods = async (
 export const getFullStorageGoodsList = async (): Promise<
   WithId<StorageGood>[]
 > => {
-  const { data: storageGoodsList } = await axiosClient.get(
-    "/storage_good/full_list/",
+  const { data: storageGoodsList } = await axiosClient.post(
+    "/storage_good/all/",
+    {
+      limit: undefined,
+      offset: 0,
+    },
   )
   return storageGoodsList
 }
