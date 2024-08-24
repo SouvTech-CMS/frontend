@@ -1,7 +1,6 @@
 import { Flex } from "@chakra-ui/react"
 import { ActionMeta, SingleValue } from "chakra-react-select"
 import { ShopFilter } from "component/filter/ShopFilter"
-import { NewGoodBtn } from "component/good/NewGoodBtn"
 import { FC } from "react"
 import { SelectOption } from "type/selectOption"
 
@@ -17,7 +16,7 @@ export const GoodsFilters: FC<GoodsFiltersProps> = (props) => {
 
   return (
     <Flex justifyContent="flex-start" alignItems="center" gap={5}>
-      <NewGoodBtn />
+      {/* <NewGoodBtn /> */}
 
       {/* Shops Select */}
       <ShopFilter handleShopSelect={handleShopSelect} />
