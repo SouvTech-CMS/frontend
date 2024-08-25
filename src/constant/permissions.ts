@@ -16,7 +16,17 @@ export enum Permission {
   SUPPLIER_READ = "supplier_read",
   SUPPLIER_WRITE = "supplier_write",
 
-  //* Pruchase
+  //* Purchase
   PURCHASE_READ = "purchase_read",
   PURCHASE_WRITE = "purchase_write",
+
+  //* Orders
+  ORDER_READ = "order_read",
+
+  //* Goods
+  GOOD_READ = "good_read",
+
+  //* Production Info
+  PRODUCTION_INFO_READ = "production_info_read",
+  PRODUCTION_INFO_WRITE = "production_info_write",
 }

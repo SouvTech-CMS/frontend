@@ -7,12 +7,10 @@ import { PurchasesTable } from "component/purchase/PurchasesTable"
 import { NewPurchaseDeliveryBtn } from "component/purchaseDelivery/NewPurchaseDeliveryBtn"
 import { PurchaseDeliveriesTable } from "component/purchaseDelivery/PurchaseDeliveriesTable"
 import { PurchaseHistoryOpenBtn } from "component/purchaseHistory/PurchaseHistoryOpenBtn"
-import { Role } from "constant/roles"
 import { usePurchaseTabsContext } from "context/purchaseTabs"
 import { useSearchContext } from "context/search"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 
-const Purchases = () => {
+export const Purchases = () => {
   const { setQuery } = useSearchContext()
   const { tabIndex, setTabIndex } = usePurchaseTabsContext()
 
@@ -78,5 +76,3 @@ const Purchases = () => {
     </Page>
   )
 }
-
-export default withAuthAndRoles([Role.STORAGER])(Purchases)

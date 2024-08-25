@@ -1,19 +1,19 @@
-import { Role } from "constant/roles"
+import { Permission } from "constant/permissions"
 import { TableContextProvider } from "context/table"
 import { Auth } from "page/Auth"
-import Dashboard from "page/Dashboard"
-import DetailedReports from "page/DetailedReports"
-import Goods from "page/Goods"
+import { Dashboard } from "page/Dashboard"
+import { DetailedReports } from "page/DetailedReports"
+import { Goods } from "page/Goods"
 import { NoAccess } from "page/NoAccess"
-import OrderInfo from "page/OrderInfo"
-import Orders from "page/Orders"
-import ProductionInfo from "page/ProductionInfo"
-import Purchases from "page/Purchases"
-import PurchasesHistory from "page/PurchasesHistory"
-import Storage from "page/Storage"
-import StorageGoodDetails from "page/StorageGoodDetails"
-import Suppliers from "page/Suppliers"
-import Users from "page/Users"
+import { OrderInfo } from "page/OrderInfo"
+import { Orders } from "page/Orders"
+import { ProductionInfo } from "page/ProductionInfo"
+import { Purchases } from "page/Purchases"
+import { PurchasesHistory } from "page/PurchasesHistory"
+import { Storage } from "page/Storage"
+import { StorageGoodDetails } from "page/StorageGoodDetails"
+import { Suppliers } from "page/Suppliers"
+import { Users } from "page/Users"
 import { IconType } from "react-icons"
 import {
   FiFeather,
@@ -37,7 +37,7 @@ type Route = {
   name: string
   path: string
   component?: JSX.Element
-  roles?: Role[]
+  permissions?: Permission[]
   isDisabled?: boolean
 }
 
@@ -53,8 +53,8 @@ export const configuration = {
       icon: FiHome,
       name: "Dashboard",
       path: "/",
-      roles: [Role.ADMIN],
-      component: <Dashboard />,
+      permissions: [],
+      component: Dashboard,
       isDisabled: true,
     },
     // Reports
@@ -63,7 +63,7 @@ export const configuration = {
       icon: FiFileText,
       name: "Reports",
       path: "/reports",
-      roles: [Role.MANAGER],
+      permissions: [Permission.REPORT_DETAILED],
       component: <DetailedReports />,
     },
     // Orders
@@ -72,7 +72,7 @@ export const configuration = {
       icon: FiShoppingCart,
       name: "Orders",
       path: "/orders",
-      roles: [Role.MANAGER],
+      permissions: [Permission.ORDER_READ],
       component: <Orders />,
     },
     // Order Info
@@ -80,7 +80,7 @@ export const configuration = {
       type: "child",
       name: "Order :id",
       path: "/order/:id",
-      roles: [Role.MANAGER],
+      permissions: [Permission.ORDER_READ],
       component: <OrderInfo />,
     },
     // Goods
@@ -89,7 +89,7 @@ export const configuration = {
       icon: FiShoppingBag,
       name: "Goods",
       path: "/goods",
-      roles: [Role.MANAGER],
+      permissions: [Permission.GOOD_READ],
       component: <Goods />,
     },
     // Purchases
@@ -98,7 +98,7 @@ export const configuration = {
       icon: FiTruck,
       name: "Purchases",
       path: "/purchases",
-      roles: [Role.STORAGER],
+      permissions: [Permission.PURCHASE_READ],
       component: <Purchases />,
     },
     // Purchases History
@@ -106,7 +106,7 @@ export const configuration = {
       type: "child",
       name: "Purchases",
       path: "/purchases/history",
-      roles: [Role.STORAGER],
+      permissions: [Permission.PURCHASE_READ],
       component: <PurchasesHistory />,
     },
     // Suppliers
@@ -115,7 +115,7 @@ export const configuration = {
       icon: FiGlobe,
       name: "Suppliers",
       path: "/suppliers",
-      roles: [Role.STORAGER],
+      permissions: [Permission.SUPPLIER_READ],
       component: <Suppliers />,
     },
     // Storage
@@ -124,7 +124,7 @@ export const configuration = {
       icon: FiPackage,
       name: "Storage",
       path: "/storage",
-      roles: [Role.STORAGER],
+      permissions: [Permission.STORAGE_READ],
       component: (
         <TableContextProvider<StorageGoodSearchFilter>>
           <Storage />,
@@ -136,7 +136,7 @@ export const configuration = {
       type: "child",
       name: "Storage Good :id",
       path: "/storage-good/:id",
-      roles: [Role.STORAGER],
+      permissions: [Permission.STORAGE_READ],
       component: <StorageGoodDetails />,
     },
     // Production Info
@@ -145,7 +145,7 @@ export const configuration = {
       icon: FiFeather,
       name: "Production Info",
       path: "/production-info",
-      roles: [Role.STORAGER],
+      permissions: [Permission.PRODUCTION_INFO_READ],
       component: <ProductionInfo />,
     },
     // Employees
@@ -154,7 +154,7 @@ export const configuration = {
       icon: FiUsers,
       name: "Employees",
       path: "/users",
-      roles: [Role.ADMIN],
+      permissions: [],
       component: <Users />,
     },
     // Logs
@@ -163,7 +163,7 @@ export const configuration = {
       icon: FiMap,
       name: "Logs",
       path: "/logs",
-      roles: [Role.ADMIN],
+      permissions: [],
     },
     //* Side pages
     // Auth
