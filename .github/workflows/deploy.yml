@@ -26,7 +26,7 @@ jobs:
             git pull
 
             echo "Stop all containers"
-            docker-compose stop
+            docker compose stop
 
             echo "Run updated container"
-            docker-compose up -d --build
+            docker compose up -d --build
