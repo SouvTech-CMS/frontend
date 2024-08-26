@@ -1,29 +1,74 @@
 import { Permission } from "constant/permissions"
 import { useUserContext } from "context/user"
+import { isUserHasPermission } from "util/permission"
 
 export const useUserPermissions = () => {
-  const { userPermissions } = useUserContext()
+  const { userPermissions, isUserAdmin } = useUserContext()
 
   //* Reports
-  const canReadReports = userPermissions?.includes(Permission.STORAGE_READ)
-  const canEditReports = userPermissions?.includes(Permission.STORAGE_WRITE)
+  const canReadReports = isUserHasPermission(
+    Permission.STORAGE_READ,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canEditReports = isUserHasPermission(
+    Permission.STORAGE_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
 
   //* Documents
-  const canReadDocuments = userPermissions?.includes(Permission.STORAGE_READ)
-  const canEditDocuments = userPermissions?.includes(Permission.STORAGE_WRITE)
-  const canDeleteDocuments = userPermissions?.includes(Permission.STORAGE_WRITE)
+  const canReadDocuments = isUserHasPermission(
+    Permission.STORAGE_READ,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canEditDocuments = isUserHasPermission(
+    Permission.STORAGE_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canDeleteDocuments = isUserHasPermission(
+    Permission.STORAGE_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
 
   //* Storage
-  const canReadStorage = userPermissions?.includes(Permission.STORAGE_READ)
-  const canEditStorage = userPermissions?.includes(Permission.STORAGE_WRITE)
+  const canReadStorage = isUserHasPermission(
+    Permission.STORAGE_READ,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canEditStorage = isUserHasPermission(
+    Permission.STORAGE_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
 
   //* Suppliers
-  const canReadSuppliers = userPermissions?.includes(Permission.STORAGE_READ)
-  const canEditSuppliers = userPermissions?.includes(Permission.STORAGE_WRITE)
+  const canReadSuppliers = isUserHasPermission(
+    Permission.STORAGE_READ,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canEditSuppliers = isUserHasPermission(
+    Permission.STORAGE_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
 
   //* Purchases
-  const canReadPurchases = userPermissions?.includes(Permission.STORAGE_READ)
-  const canEditPurchases = userPermissions?.includes(Permission.STORAGE_WRITE)
+  const canReadPurchases = isUserHasPermission(
+    Permission.STORAGE_READ,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canEditPurchases = isUserHasPermission(
+    Permission.STORAGE_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
 
   return {
     //* Reports

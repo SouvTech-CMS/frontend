@@ -14,7 +14,6 @@ import { ShelfBadge } from "component/storageGood/ShelfBadge"
 import { StorageGoodModal } from "component/storageGood/StorageGoodModal"
 import { StorageGoodRowMenu } from "component/storageGood/StorageGoodRowMenu"
 import { useUserContext } from "context/user"
-import { useShopFilter } from "hook/useShopFilter"
 import { FC, useEffect } from "react"
 import { FiExternalLink } from "react-icons/fi"
 import { useQuery } from "react-query"
@@ -25,13 +24,13 @@ import { WithId } from "type/withId"
 
 interface StorageGoodRowProps {
   storageGood: WithId<StorageGood>
+  selectedShopId: number
 }
 
 export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
-  const { storageGood } = props
+  const { storageGood, selectedShopId } = props
 
   const { isUserAdmin } = useUserContext()
-  const { selectedShopId } = useShopFilter()
 
   const goodId = storageGood.id
 
