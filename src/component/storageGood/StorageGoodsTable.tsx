@@ -8,10 +8,11 @@ import { WithId } from "type/withId"
 
 interface StorageGoodsTableProps {
   storageGoodsList: WithId<StorageGood>[]
+  selectedShopId: number
 }
 
 export const StorageGoodsTable: FC<StorageGoodsTableProps> = (props) => {
-  const { storageGoodsList } = props
+  const { storageGoodsList, selectedShopId } = props
 
   return (
     <Table size="md" variant="striped">
@@ -25,7 +26,11 @@ export const StorageGoodsTable: FC<StorageGoodsTableProps> = (props) => {
 
       <Tbody>
         {storageGoodsList?.map((goodWithStorages, index) => (
-          <StorageGoodRow key={index} storageGood={goodWithStorages} />
+          <StorageGoodRow
+            key={index}
+            storageGood={goodWithStorages}
+            selectedShopId={selectedShopId}
+          />
         ))}
       </Tbody>
     </Table>

@@ -93,7 +93,10 @@ export const Storage = (props: PageProps) => {
 
         {isStorageGoodsExist && !isLoading && (
           <>
-            <StorageGoodsTable storageGoodsList={storageGoodsList} />
+            <StorageGoodsTable
+              storageGoodsList={storageGoodsList}
+              selectedShopId={selectedShopId}
+            />
 
             <Pagination
               totalItemsCount={storageGoodsCount}
