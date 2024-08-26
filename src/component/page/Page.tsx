@@ -1,8 +1,15 @@
 import { Flex } from "@chakra-ui/react"
+import { GuideOpenBtn } from "component/guide/GuideOpenBtn"
 import { FCC } from "type/fcc"
 
-export const Page: FCC = (props) => {
-  const { children } = props
+interface PageProps {
+  guideNotionPageId?: string
+}
+
+export const Page: FCC<PageProps> = (props) => {
+  const { children, guideNotionPageId } = props
+
+  const isGuideExists = guideNotionPageId?.trim() !== undefined
 
   return (
     <Flex
@@ -16,6 +23,12 @@ export const Page: FCC = (props) => {
       overflowY="auto"
     >
       {children}
+
+      {isGuideExists && (
+        <Flex position="absolute" right={20} bottom={10}>
+          <GuideOpenBtn guideNotionPageId={guideNotionPageId} />
+        </Flex>
+      )}
     </Flex>
   )
 }

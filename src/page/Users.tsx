@@ -7,9 +7,12 @@ import { NewUserCard } from "component/users/NewUserCard"
 import { UserCard } from "component/users/UserCard"
 import { useSearchContext } from "context/search"
 import { useQuery } from "react-query"
+import { PageProps } from "type/page/page"
 import { UserWithRolesAndShops } from "type/user"
 
-export const Users = () => {
+export const Users = (props: PageProps) => {
+  const { guideNotionPageId } = props
+
   const { query, isQueryExists } = useSearchContext()
 
   const { data: usersList, isLoading } = useQuery<UserWithRolesAndShops[]>(
@@ -27,7 +30,7 @@ export const Users = () => {
   )
 
   return (
-    <Page>
+    <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Employees" isSearchDisabled={isLoading} />
 
       {!isLoading ? (

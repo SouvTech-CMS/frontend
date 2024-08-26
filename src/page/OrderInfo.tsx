@@ -8,12 +8,15 @@ import { PageHeading } from "component/page/PageHeading"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
 import { OrderWithGoods } from "type/order/order"
+import { PageProps } from "type/page/page"
 
 type OrderInfoParams = {
   id: string
 }
 
-export const OrderInfo = () => {
+export const OrderInfo = (props: PageProps) => {
+  const { guideNotionPageId } = props
+
   const { id } = useParams<OrderInfoParams>()
   const orderId = Number(id)
 
@@ -28,7 +31,7 @@ export const OrderInfo = () => {
   const orderGoods = orderData?.order_goods
 
   return (
-    <Page>
+    <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title={`Order ${orderId}`} isSearchHidden />
 
       {isLoading && <LoadingPage />}

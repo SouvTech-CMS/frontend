@@ -11,9 +11,12 @@ import { StorageGoodsWithProductionInfoTable } from "component/productionInfo/St
 import { usePaginationContext } from "context/pagination"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
+import { PageProps } from "type/page/page"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 
-export const ProductionInfo = () => {
+export const ProductionInfo = (props: PageProps) => {
+  const { guideNotionPageId } = props
+
   const { rowsPerPageCount } = usePaginationContext()
 
   const [currentPage, setCurrentPage] = useState<number>(0)
@@ -45,7 +48,7 @@ export const ProductionInfo = () => {
   }, [refetch, offset, rowsPerPageCount])
 
   return (
-    <Page>
+    <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Production Info" isSearchHidden />
 
       {isLoading && <LoadingPage />}

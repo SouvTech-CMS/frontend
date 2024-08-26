@@ -14,9 +14,12 @@ import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/apiResponse"
 import { Good } from "type/order/good"
+import { PageProps } from "type/page/page"
 import { WithId } from "type/withId"
 
-export const Goods = () => {
+export const Goods = (props: PageProps) => {
+  const { guideNotionPageId } = props
+
   const { rowsPerPageCount } = usePaginationContext()
   const { selectedShopId, handleShopSelect } = useShopFilter()
 
@@ -48,7 +51,7 @@ export const Goods = () => {
   }, [refetch, offset, rowsPerPageCount, selectedShopId])
 
   return (
-    <Page>
+    <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Goods" isSearchHidden />
 
       {isLoading && <LoadingPage />}
