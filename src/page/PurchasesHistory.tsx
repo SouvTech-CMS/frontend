@@ -11,9 +11,12 @@ import { usePaginationContext } from "context/pagination"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/apiResponse"
+import { PageProps } from "type/page/page"
 import { PurchaseHistory } from "type/purchase/purchaseHistory"
 
-export const PurchasesHistory = () => {
+export const PurchasesHistory = (props: PageProps) => {
+  const { guideNotionPageId } = props
+
   const { rowsPerPageCount } = usePaginationContext()
 
   const [currentPage, setCurrentPage] = useState<number>(0)
@@ -42,7 +45,7 @@ export const PurchasesHistory = () => {
   }, [refetch, offset, rowsPerPageCount])
 
   return (
-    <Page>
+    <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Purchases History" isSearchHidden />
 
       <Container>

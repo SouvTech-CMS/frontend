@@ -7,13 +7,16 @@ import { GoodStorageCard } from "component/storageGood/GoodStorageCard"
 import { StorageGoodProperties } from "component/storageGood/StorageGoodProperties"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
+import { PageProps } from "type/page/page"
 import { GoodWithStorages } from "type/storage/storageGood"
 
 type StorageGoodDetailsParams = {
   id: string
 }
 
-export const StorageGoodDetails = () => {
+export const StorageGoodDetails = (props: PageProps) => {
+  const { guideNotionPageId } = props
+
   const { id } = useParams<StorageGoodDetailsParams>()
   const storageGoodId = Number(id)
 
@@ -29,7 +32,7 @@ export const StorageGoodDetails = () => {
     storageGood !== undefined && storageGood !== undefined
 
   return (
-    <Page>
+    <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title={`Storage Good #${storageGoodId}`} isSearchHidden />
 
       {isLoading && <LoadingPage />}

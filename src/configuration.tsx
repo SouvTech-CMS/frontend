@@ -4,6 +4,7 @@ import { Auth } from "page/Auth"
 import { Dashboard } from "page/Dashboard"
 import { DetailedReports } from "page/DetailedReports"
 import { Goods } from "page/Goods"
+import { Guides } from "page/Guides"
 import { NoAccess } from "page/NoAccess"
 import { OrderInfo } from "page/OrderInfo"
 import { Orders } from "page/Orders"
@@ -54,7 +55,7 @@ export const configuration = {
       name: "Dashboard",
       path: "/",
       permissions: [],
-      component: Dashboard,
+      component: <Dashboard />,
       isDisabled: true,
     },
     // Reports
@@ -64,7 +65,9 @@ export const configuration = {
       name: "Reports",
       path: "/reports",
       permissions: [Permission.REPORT_DETAILED],
-      component: <DetailedReports />,
+      component: (
+        <DetailedReports guideNotionPageId="6e72f5362da84a639413014b70ee9f72" />
+      ),
     },
     // Orders
     {
@@ -73,7 +76,9 @@ export const configuration = {
       name: "Orders",
       path: "/orders",
       permissions: [Permission.ORDER_READ],
-      component: <Orders />,
+      component: (
+        <Orders guideNotionPageId="212db0fd239248e199af5852cdc2a577" />
+      ),
     },
     // Order Info
     {
@@ -90,7 +95,7 @@ export const configuration = {
       name: "Goods",
       path: "/goods",
       permissions: [Permission.GOOD_READ],
-      component: <Goods />,
+      component: <Goods guideNotionPageId="439359fa5d974bd8a28d613099f95af1" />,
     },
     // Purchases
     {
@@ -99,7 +104,9 @@ export const configuration = {
       name: "Purchases",
       path: "/purchases",
       permissions: [Permission.PURCHASE_READ],
-      component: <Purchases />,
+      component: (
+        <Purchases guideNotionPageId="b3f24fd720134abdb5e58ebd3531db36" />
+      ),
     },
     // Purchases History
     {
@@ -116,7 +123,9 @@ export const configuration = {
       name: "Suppliers",
       path: "/suppliers",
       permissions: [Permission.SUPPLIER_READ],
-      component: <Suppliers />,
+      component: (
+        <Suppliers guideNotionPageId="ec6080ea1f374005a5e5c1ba1cfdb58a" />
+      ),
     },
     // Storage
     {
@@ -127,7 +136,7 @@ export const configuration = {
       permissions: [Permission.STORAGE_READ],
       component: (
         <TableContextProvider<StorageGoodSearchFilter>>
-          <Storage />,
+          <Storage guideNotionPageId="3ff859e583d645ea85f630d3f4697cde" />,
         </TableContextProvider>
       ),
     },
@@ -146,7 +155,9 @@ export const configuration = {
       name: "Production Info",
       path: "/production-info",
       permissions: [Permission.PRODUCTION_INFO_READ],
-      component: <ProductionInfo />,
+      component: (
+        <ProductionInfo guideNotionPageId="3120cc3e2bee43e894b2ab32553e3b5e" />
+      ),
     },
     // Employees
     {
@@ -155,7 +166,7 @@ export const configuration = {
       name: "Employees",
       path: "/users",
       permissions: [],
-      component: <Users />,
+      component: <Users guideNotionPageId="57b7bd55eab24fd89a2692f2296560c8" />,
     },
     // Logs
     {
@@ -179,6 +190,13 @@ export const configuration = {
       name: "NoAccess",
       path: "/noaccess",
       component: <NoAccess />,
+    },
+    // Guide
+    {
+      type: "child",
+      name: "Guide",
+      path: "/guide/:id",
+      component: <Guides />,
     },
   ] as Route[],
   api: {
