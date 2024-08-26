@@ -6,6 +6,7 @@ import { PaginationContextProvider } from "context/pagination"
 import { PurchaseTabsContextProvider } from "context/purchaseTabs"
 import { SearchContextProvider } from "context/search"
 import { UserContextProvider } from "context/user"
+import { withAuthAndPermission } from "hook/withAuthAndPermission"
 import { QueryClientProvider } from "react-query"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
@@ -41,6 +42,7 @@ export const AppRouter = () => {
                           name,
                           index = false,
                           path,
+                          permissions,
                           component,
                           isDisabled,
                         }) =>
@@ -49,7 +51,9 @@ export const AppRouter = () => {
                               key={name}
                               index={index}
                               path={path}
-                              element={component}
+                              element={withAuthAndPermission(permissions)(
+                                component!,
+                              )}
                             />
                           ),
                       )}

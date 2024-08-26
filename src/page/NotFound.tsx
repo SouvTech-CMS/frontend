@@ -10,7 +10,6 @@ export const NotFound = () => {
         textAlign="center"
         gap={5}
       >
-        {/* TODO: add logo here */}
         <Heading as="h5">Oops, page not found (404)</Heading>
         <Text w="md">
           It seems that the page you were trying to find does not exist.. Try

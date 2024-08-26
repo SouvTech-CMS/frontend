@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.DEPLOY_USER_PASSWORD }}
           script_stop: true
           script: |
-            cd ~/SouvTechCMS-frontend/
+            cd ~/${{ github.event.repository.name }}/
             git checkout main
             git pull
 

@@ -7,13 +7,17 @@ import { useUserContext } from "context/user"
 import { FC } from "react"
 
 export const Sidebar: FC = () => {
-  const { userRoles, isUserAdmin, isLoadingCurrentUser } = useUserContext()
+  const { userPermissions, isUserAdmin, isLoadingCurrentUser } =
+    useUserContext()
 
   const sideBarRoutes = configuration.sidebarItems.filter(
-    ({ type, component, roles }) =>
+    ({ type, component, permissions }) =>
       type === "main" &&
       component &&
-      (isUserAdmin || roles?.some((role) => userRoles?.includes(role))),
+      (isUserAdmin ||
+        permissions?.some((permission) =>
+          userPermissions?.includes(permission),
+        )),
   )
 
   return (

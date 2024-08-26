@@ -2,11 +2,9 @@ import { Flex, Grid, Heading } from "@chakra-ui/react"
 import { ChartCard } from "component/dashboard/ChartCard"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
-import { Role } from "constant/roles"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { FiBarChart2, FiDollarSign } from "react-icons/fi"
 
-const Dashboard = () => {
+export const Dashboard = () => {
   return (
     <Page>
       <PageHeading title="Dashboard" isSearchHidden />
@@ -41,5 +39,3 @@ const Dashboard = () => {
     </Page>
   )
 }
-
-export default withAuthAndRoles([Role.ADMIN])(Dashboard)
