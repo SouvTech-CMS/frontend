@@ -5,8 +5,6 @@ import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { GoodStorageCard } from "component/storageGood/GoodStorageCard"
 import { StorageGoodProperties } from "component/storageGood/StorageGoodProperties"
-import { Role } from "constant/roles"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
 import { GoodWithStorages } from "type/storage/storageGood"
@@ -15,7 +13,7 @@ type StorageGoodDetailsParams = {
   id: string
 }
 
-const StorageGoodDetails = () => {
+export const StorageGoodDetails = () => {
   const { id } = useParams<StorageGoodDetailsParams>()
   const storageGoodId = Number(id)
 
@@ -59,5 +57,3 @@ const StorageGoodDetails = () => {
     </Page>
   )
 }
-
-export default withAuthAndRoles([Role.MANAGER])(StorageGoodDetails)

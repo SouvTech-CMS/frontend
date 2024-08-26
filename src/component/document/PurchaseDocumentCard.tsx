@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react"
 import { PurchaseDocumentDeleteModal } from "component/document/PurchaseDocumentDeleteModal"
-import { useUserContext } from "context/user"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiCalendar, FiTrash2 } from "react-icons/fi"
 import { Link } from "react-router-dom"
@@ -27,7 +27,7 @@ interface PurchaseDocumentCardProps {
 export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
   const { document } = props
 
-  const { isUserAdmin } = useUserContext()
+  const { canDeleteDocuments } = useUserPermissions()
 
   const isDeliveryPurchaseDocumnet = document.purchase_id !== undefined
   const documentDate = timestampToDateAsString(document.timestamp!)
@@ -69,19 +69,18 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
             </Flex>
 
             {/* Delete btn */}
-            {isUserAdmin && (
-              <IconButton
-                position="absolute"
-                top={0}
-                right={0}
-                size="sm"
-                aria-label="delete-manager"
-                variant="ghost"
-                colorScheme="red"
-                icon={<FiTrash2 />}
-                onClick={onPurchaseFileDeleteModalOpen}
-              />
-            )}
+            <IconButton
+              position="absolute"
+              top={0}
+              right={0}
+              size="sm"
+              aria-label="delete-manager"
+              variant="ghost"
+              colorScheme="red"
+              icon={<FiTrash2 />}
+              onClick={onPurchaseFileDeleteModalOpen}
+              isDisabled={!canDeleteDocuments}
+            />
           </Flex>
         </CardHeader>
 

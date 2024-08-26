@@ -12,17 +12,15 @@ import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
-import { Role } from "constant/roles"
 import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
 import { useShopFilter } from "hook/useShopFilter"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { StorageGood, StorageGoodSearchFilter } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
-const Storage = () => {
+export const Storage = () => {
   const { rowsPerPageCount } = usePaginationContext()
   const { selectedShopId, handleShopSelect } = useShopFilter()
   const { sortDirection, sortField, searchFilter } =
@@ -106,5 +104,3 @@ const Storage = () => {
     </Page>
   )
 }
-
-export default withAuthAndRoles([Role.STORAGER])(Storage)

@@ -5,8 +5,6 @@ import { OrderProperties } from "component/order/OrderProperties"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
-import { Role } from "constant/roles"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
 import { OrderWithGoods } from "type/order/order"
@@ -15,7 +13,7 @@ type OrderInfoParams = {
   id: string
 }
 
-const OrderInfo = () => {
+export const OrderInfo = () => {
   const { id } = useParams<OrderInfoParams>()
   const orderId = Number(id)
 
@@ -58,5 +56,3 @@ const OrderInfo = () => {
     </Page>
   )
 }
-
-export default withAuthAndRoles([Role.MANAGER])(OrderInfo)

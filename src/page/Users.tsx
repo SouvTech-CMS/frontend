@@ -5,13 +5,11 @@ import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { NewUserCard } from "component/users/NewUserCard"
 import { UserCard } from "component/users/UserCard"
-import { Role } from "constant/roles"
 import { useSearchContext } from "context/search"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useQuery } from "react-query"
 import { UserWithRolesAndShops } from "type/user"
 
-const Users = () => {
+export const Users = () => {
   const { query, isQueryExists } = useSearchContext()
 
   const { data: usersList, isLoading } = useQuery<UserWithRolesAndShops[]>(
@@ -53,5 +51,3 @@ const Users = () => {
     </Page>
   )
 }
-
-export default withAuthAndRoles([Role.ADMIN])(Users)

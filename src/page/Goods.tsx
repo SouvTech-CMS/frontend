@@ -8,17 +8,15 @@ import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
-import { Role } from "constant/roles"
 import { usePaginationContext } from "context/pagination"
 import { useShopFilter } from "hook/useShopFilter"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/apiResponse"
 import { Good } from "type/order/good"
 import { WithId } from "type/withId"
 
-const Goods = () => {
+export const Goods = () => {
   const { rowsPerPageCount } = usePaginationContext()
   const { selectedShopId, handleShopSelect } = useShopFilter()
 
@@ -76,5 +74,3 @@ const Goods = () => {
     </Page>
   )
 }
-
-export default withAuthAndRoles([Role.MANAGER])(Goods)

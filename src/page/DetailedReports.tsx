@@ -7,15 +7,13 @@ import { DetailedReportTable } from "component/detailedReport/DetailedReportTabl
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
-import { Role } from "constant/roles"
 import { useShopFilter } from "hook/useShopFilter"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { DetailedReport } from "type/detailedReport/detailedReport"
 import { getCurrentMonth, getCurrentYear } from "util/formatting"
 
-const DetailedReports = () => {
+export const DetailedReports = () => {
   const { selectedShopId, handleShopSelect } = useShopFilter()
 
   const [selectedYear, setSelectedYear] = useState<number>(getCurrentYear())
@@ -104,5 +102,3 @@ const DetailedReports = () => {
     </Page>
   )
 }
-
-export default withAuthAndRoles([Role.MANAGER])(DetailedReports)

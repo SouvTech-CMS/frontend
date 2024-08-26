@@ -7,15 +7,13 @@ import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { PurchasesHistoryTable } from "component/purchaseHistory/PurchaseHistoryTable"
-import { Role } from "constant/roles"
 import { usePaginationContext } from "context/pagination"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/apiResponse"
 import { PurchaseHistory } from "type/purchase/purchaseHistory"
 
-const PurchasesHistory = () => {
+export const PurchasesHistory = () => {
   const { rowsPerPageCount } = usePaginationContext()
 
   const [currentPage, setCurrentPage] = useState<number>(0)
@@ -70,5 +68,3 @@ const PurchasesHistory = () => {
     </Page>
   )
 }
-
-export default withAuthAndRoles([Role.STORAGER])(PurchasesHistory)

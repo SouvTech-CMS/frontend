@@ -11,7 +11,6 @@ export const NoAccess = () => {
         textAlign="center"
         gap={5}
       >
-        {/* TODO: add logo here */}
         <Heading as="h5">
           Oops, you do not have access to this page (403)
         </Heading>

@@ -5,6 +5,7 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiEdit, FiMoreVertical } from "react-icons/fi"
 
@@ -14,6 +15,8 @@ interface StorageGoodRowMenuProps {
 
 export const StorageGoodRowMenu: FC<StorageGoodRowMenuProps> = (props) => {
   const { onEdit } = props
+
+  const { canEditStorage } = useUserPermissions()
 
   return (
     <Menu>
@@ -25,7 +28,11 @@ export const StorageGoodRowMenu: FC<StorageGoodRowMenuProps> = (props) => {
       />
 
       <MenuList>
-        <MenuItem icon={<FiEdit />} onClick={onEdit}>
+        <MenuItem
+          icon={<FiEdit />}
+          onClick={onEdit}
+          isDisabled={!canEditStorage}
+        >
           Edit
         </MenuItem>
       </MenuList>

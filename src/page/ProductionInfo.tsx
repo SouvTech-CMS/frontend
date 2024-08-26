@@ -8,14 +8,12 @@ import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { StorageGoodsWithProductionInfoTable } from "component/productionInfo/StorageGoodsWithProductionInfoTable"
-import { Role } from "constant/roles"
 import { usePaginationContext } from "context/pagination"
-import { withAuthAndRoles } from "hook/withAuthAndRoles"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 
-const ProductionInfo = () => {
+export const ProductionInfo = () => {
   const { rowsPerPageCount } = usePaginationContext()
 
   const [currentPage, setCurrentPage] = useState<number>(0)
@@ -73,5 +71,3 @@ const ProductionInfo = () => {
     </Page>
   )
 }
-
-export default withAuthAndRoles([Role.STORAGER])(ProductionInfo)
