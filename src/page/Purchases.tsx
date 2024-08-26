@@ -9,8 +9,11 @@ import { PurchaseDeliveriesTable } from "component/purchaseDelivery/PurchaseDeli
 import { PurchaseHistoryOpenBtn } from "component/purchaseHistory/PurchaseHistoryOpenBtn"
 import { usePurchaseTabsContext } from "context/purchaseTabs"
 import { useSearchContext } from "context/search"
+import { PageProps } from "type/page/page"
 
-export const Purchases = () => {
+export const Purchases = (props: PageProps) => {
+  const { guideNotionPageId } = props
+
   const { setQuery } = useSearchContext()
   const { tabIndex, setTabIndex } = usePurchaseTabsContext()
 
@@ -20,7 +23,7 @@ export const Purchases = () => {
   }
 
   return (
-    <Page>
+    <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Purchases" />
 
       <Tabs

@@ -11,9 +11,12 @@ import { useShopFilter } from "hook/useShopFilter"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { DetailedReport } from "type/detailedReport/detailedReport"
+import { PageProps } from "type/page/page"
 import { getCurrentMonth, getCurrentYear } from "util/formatting"
 
-export const DetailedReports = () => {
+export const DetailedReports = (props: PageProps) => {
+  const { guideNotionPageId } = props
+
   const { selectedShopId, handleShopSelect } = useShopFilter()
 
   const [selectedYear, setSelectedYear] = useState<number>(getCurrentYear())
@@ -52,7 +55,7 @@ export const DetailedReports = () => {
   }, [refetch, selectedShopId, isCanGenerateReport])
 
   return (
-    <Page>
+    <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Reports" isSearchHidden />
 
       <Container>

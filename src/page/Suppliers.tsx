@@ -7,9 +7,12 @@ import { NewSupplierCard } from "component/supplier/NewSupplierCard"
 import { SupplierCard } from "component/supplier/SupplierCard"
 import { useSearchContext } from "context/search"
 import { useQuery } from "react-query"
+import { PageProps } from "type/page/page"
 import { SupplierWithManagers } from "type/supplier/supplier"
 
-export const Suppliers = () => {
+export const Suppliers = (props: PageProps) => {
+  const { guideNotionPageId } = props
+
   const { query, isQueryExists } = useSearchContext()
 
   const { data: suppliersList, isLoading } = useQuery<SupplierWithManagers[]>(
@@ -25,7 +28,7 @@ export const Suppliers = () => {
   )
 
   return (
-    <Page>
+    <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Suppliers" isSearchDisabled={isLoading} />
 
       {!isLoading ? (

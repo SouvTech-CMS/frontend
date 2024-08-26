@@ -17,10 +17,13 @@ import { useTableContext } from "context/table"
 import { useShopFilter } from "hook/useShopFilter"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
+import { PageProps } from "type/page/page"
 import { StorageGood, StorageGoodSearchFilter } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
-export const Storage = () => {
+export const Storage = (props: PageProps) => {
+  const { guideNotionPageId } = props
+
   const { rowsPerPageCount } = usePaginationContext()
   const { selectedShopId, handleShopSelect } = useShopFilter()
   const { sortDirection, sortField, searchFilter } =
@@ -72,7 +75,7 @@ export const Storage = () => {
   ])
 
   return (
-    <Page>
+    <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Storage" isSearchHidden />
 
       <Container>
