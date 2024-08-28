@@ -13,9 +13,14 @@ export const withAuthAndPermission =
         return <LoadingPage />
       }
 
-      const isUserHasPermission = allowedPermissions?.some((permission) =>
-        userPermissions?.includes(permission),
-      )
+      const isAllowedPermissionsExist = allowedPermissions !== undefined
+
+      const isUserHasPermission = isAllowedPermissionsExist
+        ? allowedPermissions?.some((permission) =>
+            userPermissions?.includes(permission),
+          )
+        : true
+
       const isUserHasAccess = isUserAdmin || isUserHasPermission
 
       if (!isUserHasAccess) {
