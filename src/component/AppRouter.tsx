@@ -6,6 +6,7 @@ import { PaginationContextProvider } from "context/pagination"
 import { PurchaseTabsContextProvider } from "context/purchaseTabs"
 import { SearchContextProvider } from "context/search"
 import { UserContextProvider } from "context/user"
+import { WebSocketContextProvider } from "context/websocket"
 import { withAuthAndPermission } from "hook/withAuthAndPermission"
 import { QueryClientProvider } from "react-query"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
@@ -24,46 +25,48 @@ export const AppRouter = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <AuthContextProvider>
-          <Routes>
-            {sidePages.map(({ name, path, component }) => (
-              <Route key={name} path={path} element={component} />
-            ))}
-          </Routes>
+        <WebSocketContextProvider>
+          <AuthContextProvider>
+            <Routes>
+              {sidePages.map(({ name, path, component }) => (
+                <Route key={name} path={path} element={component} />
+              ))}
+            </Routes>
 
-          <UserContextProvider>
-            <SearchContextProvider>
-              <PurchaseTabsContextProvider>
-                <PaginationContextProvider>
-                  <Routes>
-                    <Route path="/" element={<AppLayout />}>
-                      {mainPages.map(
-                        ({
-                          name,
-                          index = false,
-                          path,
-                          permissions,
-                          component,
-                          isDisabled,
-                        }) =>
-                          !isDisabled && (
-                            <Route
-                              key={name}
-                              index={index}
-                              path={path}
-                              element={withAuthAndPermission(permissions)(
-                                component!,
-                              )}
-                            />
-                          ),
-                      )}
-                    </Route>
-                  </Routes>
-                </PaginationContextProvider>
-              </PurchaseTabsContextProvider>
-            </SearchContextProvider>
-          </UserContextProvider>
-        </AuthContextProvider>
+            <UserContextProvider>
+              <SearchContextProvider>
+                <PurchaseTabsContextProvider>
+                  <PaginationContextProvider>
+                    <Routes>
+                      <Route path="/" element={<AppLayout />}>
+                        {mainPages.map(
+                          ({
+                            name,
+                            index = false,
+                            path,
+                            permissions,
+                            component,
+                            isDisabled,
+                          }) =>
+                            !isDisabled && (
+                              <Route
+                                key={name}
+                                index={index}
+                                path={path}
+                                element={withAuthAndPermission(permissions)(
+                                  component!,
+                                )}
+                              />
+                            ),
+                        )}
+                      </Route>
+                    </Routes>
+                  </PaginationContextProvider>
+                </PurchaseTabsContextProvider>
+              </SearchContextProvider>
+            </UserContextProvider>
+          </AuthContextProvider>
+        </WebSocketContextProvider>
       </QueryClientProvider>
       <ToastContainer />
     </BrowserRouter>
