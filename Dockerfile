@@ -27,6 +27,6 @@ COPY ngnix.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=build /app/build /usr/share/nginx/html
 
-EXPOSE 3003
+EXPOSE 80 443
 
 CMD ["nginx", "-g", "daemon off;"]
