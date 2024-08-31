@@ -5,10 +5,6 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    command: yarn start
     ports:
-      - "3003:3003"
-      - "3043:3043"
-    volumes:
-      - ./ngnix.conf:/etc/nginx/conf.d/default.conf
-      - /etc/letsencrypt:/etc/letsencrypt
-      - /var/www/html:/var/www/html
+      - "3003:3000"

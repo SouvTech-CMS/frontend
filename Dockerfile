@@ -1,5 +1,5 @@
 # Stage 1: Сборка фронта
-FROM node:18-alpine as build
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -17,16 +17,14 @@ RUN apk del build-dependencies
 
 COPY . /app/
 
-RUN yarn run build
-
 
 # Stage 2: Запуск Nginx
-FROM nginx:stable-alpine
+# FROM nginx:stable-alpine
 
-COPY ngnix.conf /etc/nginx/conf.d/default.conf
+# COPY ngnix.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=build /app/build /usr/share/nginx/html
+# COPY --from=build /app/build /usr/share/nginx/html
 
-EXPOSE 3003 3043
+# EXPOSE 3003 3043
 
-CMD ["nginx", "-g", "daemon off;"]
+# CMD ["nginx", "-g", "daemon off;"]
