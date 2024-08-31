@@ -5,6 +5,7 @@ import { Dashboard } from "page/Dashboard"
 import { DetailedReports } from "page/DetailedReports"
 import { Goods } from "page/Goods"
 import { Guides } from "page/Guides"
+import { Maintenance } from "page/Maintenance"
 import { NoAccess } from "page/NoAccess"
 import { OrderInfo } from "page/OrderInfo"
 import { Orders } from "page/Orders"
@@ -29,7 +30,7 @@ import {
   FiUsers,
 } from "react-icons/fi"
 import { StorageGoodSearchFilter } from "type/storage/storageGood"
-import { getApiBaseUrl } from "util/urls"
+import { getApiBaseUrl, getWebSocketBaseUrl } from "util/urls"
 
 type Route = {
   index?: boolean
@@ -198,8 +199,16 @@ export const configuration = {
       path: "/guide/:id",
       component: <Guides />,
     },
+    // Maintenance
+    {
+      type: "side",
+      name: "Maintenance",
+      path: "/maintenance",
+      component: <Maintenance />,
+    },
   ] as Route[],
-  api: {
-    baseUrl: getApiBaseUrl(),
+  urls: {
+    apiBaseUrl: getApiBaseUrl(),
+    webSocketBaseUrl: getWebSocketBaseUrl(),
   },
 }
