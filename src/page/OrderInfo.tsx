@@ -1,5 +1,5 @@
 import { Divider, Flex, Grid, GridItem, Heading } from "@chakra-ui/react"
-import { getOrderById } from "api/order"
+import { getOrderById } from "api/order/order"
 import { GoodInOrderCard } from "component/order/GoodInOrderCard"
 import { OrderProperties } from "component/order/OrderProperties"
 import { LoadingPage } from "component/page/LoadingPage"

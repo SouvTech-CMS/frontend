@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react"
-import { getAllNoneGoodOrders, getAllOrders } from "api/order"
+import { getAllNoneGoodOrders, getAllOrders } from "api/order/order"
 import { Container } from "component/Container"
 import { OrdersFilters } from "component/order/OrdersFilters"
 import { OrdersTable } from "component/order/OrdersTable"
