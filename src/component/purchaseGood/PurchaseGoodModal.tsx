@@ -23,8 +23,9 @@ import {
 import { ModalProps } from "type/modalProps"
 import { PurchaseGood } from "type/purchase/purchaseGood"
 
-interface NewPurchaseGoodModalProps extends ModalProps {
-  handleAddGood: (good: PurchaseGood) => void
+interface PurchaseGoodModalProps extends ModalProps {
+  prevGood?: PurchaseGood
+  onAddGood: (good: PurchaseGood) => void
 }
 
 const newGood: PurchaseGood = {
@@ -34,10 +35,12 @@ const newGood: PurchaseGood = {
   in_delivery: 0,
 }
 
-export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
-  const { handleAddGood, isOpen, onClose } = props
+export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
+  const { prevGood = newGood, onAddGood, isOpen, onClose } = props
 
-  const [good, setGood] = useState<PurchaseGood>(newGood)
+  const isEditing = !!prevGood.name.trim()
+
+  const [good, setGood] = useState<PurchaseGood>(prevGood)
 
   const isNameInvalid = !good?.name.trim()
   const isPriceInvalid = !good.price_per_item
@@ -51,9 +54,15 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
     }))
   }
 
+  const handleAdd = () => {
+    onAddGood(good)
+  }
+
   useEffect(() => {
-    setGood(newGood)
-  }, [isOpen])
+    if (!isEditing) {
+      setGood(newGood)
+    }
+  }, [isOpen, isEditing])
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
@@ -154,10 +163,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
 
         <ModalFooter>
           <Flex gap={5}>
-            <Button
-              onClick={() => handleAddGood(good)}
-              isDisabled={isSaveBtnDisabled}
-            >
+            <Button onClick={handleAdd} isDisabled={isSaveBtnDisabled}>
               Save
             </Button>
 

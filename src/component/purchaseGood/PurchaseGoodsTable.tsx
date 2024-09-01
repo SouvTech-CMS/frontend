@@ -8,8 +8,8 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react"
-import { NewPurchaseGoodModal } from "component/purchaseGood/NewPurchaseGoodModal"
 import { NewPurchaseGoodRow } from "component/purchaseGood/NewPurchaseGoodRow"
+import { PurchaseGoodModal } from "component/purchaseGood/PurchaseGoodModal"
 import { Dispatch, FC, SetStateAction } from "react"
 import { PurchaseGood } from "type/purchase/purchaseGood"
 
@@ -35,6 +35,17 @@ export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
     onNewGoodModalClose()
   }
 
+  const handleUpdateGood = (good: PurchaseGood) => {
+    good.amount = good.price_per_item * good.quantity
+    setGoods((prevGoods) => [
+      ...prevGoods.filter(
+        (prevGood) => prevGood.name.toLowerCase() !== good.name.toLowerCase(),
+      ),
+      good,
+    ])
+    onNewGoodModalClose()
+  }
+
   const handleRemoveGood = (good: PurchaseGood) => {
     setGoods((prevGoods) => prevGoods.filter((prevGood) => prevGood !== good))
   }
@@ -55,7 +66,8 @@ export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
             <NewPurchaseGoodRow
               key={index}
               good={good}
-              handleRemoveGood={handleRemoveGood}
+              onEdit={handleUpdateGood}
+              onRemove={handleRemoveGood}
             />
           ))}
 
@@ -74,8 +86,8 @@ export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
         </Tbody>
       </Table>
 
-      <NewPurchaseGoodModal
-        handleAddGood={handleAddGood}
+      <PurchaseGoodModal
+        onAddGood={handleAddGood}
         isOpen={isNewGoodModalOpen}
         onClose={onNewGoodModalClose}
       />
