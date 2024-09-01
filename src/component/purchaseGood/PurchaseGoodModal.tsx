@@ -31,7 +31,7 @@ interface PurchaseGoodModalProps extends ModalProps {
 const newGood: PurchaseGood = {
   name: "",
   quantity: NaN,
-  price_per_item: NaN,
+  amount: NaN,
   in_delivery: 0,
 }
 
@@ -43,9 +43,10 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
   const [good, setGood] = useState<PurchaseGood>(prevGood)
 
   const isNameInvalid = !good?.name.trim()
-  const isPriceInvalid = !good.price_per_item
+  const isAmountInvalid = !good.amount
   const isQuantityInvalid = !good.quantity
-  const isSaveBtnDisabled = isNameInvalid || isPriceInvalid || isQuantityInvalid
+  const isSaveBtnDisabled =
+    isNameInvalid || isAmountInvalid || isQuantityInvalid
 
   const handleGoodUpdate = (param: string, value: number | string) => {
     setGood((prevGood) => ({
@@ -148,14 +149,14 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
               </InputLeftElement>
 
               <Input
-                placeholder="Unit Price"
-                value={good.price_per_item}
+                placeholder="Total Amount"
+                value={good.amount}
                 type="number"
                 onChange={(e) => {
                   const value = e.target.valueAsNumber
-                  handleGoodUpdate("price_per_item", value)
+                  handleGoodUpdate("amount", value)
                 }}
-                isInvalid={isPriceInvalid}
+                isInvalid={isAmountInvalid}
               />
             </InputGroup>
           </Flex>
