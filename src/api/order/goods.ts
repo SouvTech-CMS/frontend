@@ -1,20 +1,17 @@
 import { axiosClient } from "api/axiosClient"
-import { ApiResponse } from "type/apiResponse"
-import { Good } from "type/order/good"
+import { ApiRequest } from "type/api/apiRequest"
+import { ApiResponse } from "type/api/apiResponse"
+import { Good, GoodSearchFilter } from "type/order/good"
 import { WithId } from "type/withId"
+import { beautifyBody } from "util/apiRequestBody"
 
 export const getAllGoods = async (
-  limit: number,
-  offset: number,
-  shopId?: number,
+  body: ApiRequest<GoodSearchFilter>,
 ): Promise<ApiResponse<WithId<Good>[]>> => {
-  const { data: goodsList } = await axiosClient.get("/good/", {
-    params: {
-      limit,
-      offset,
-      shop_id: shopId,
-    },
-  })
+  const { data: goodsList } = await axiosClient.post(
+    "/good/all/",
+    beautifyBody(body),
+  )
   return goodsList
 }
 

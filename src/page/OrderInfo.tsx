@@ -32,7 +32,7 @@ export const OrderInfo = (props: PageProps) => {
 
   return (
     <Page guideNotionPageId={guideNotionPageId}>
-      <PageHeading title={`Order ${orderId}`} isSearchHidden />
+      <PageHeading title={`Order #${orderId}`} isSearchHidden />
 
       {isLoading && <LoadingPage />}
 

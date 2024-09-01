@@ -13,7 +13,7 @@ import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { ApiResponse } from "type/apiResponse"
+import { ApiResponse } from "type/api/apiResponse"
 import { Order } from "type/order/order"
 import { PageProps } from "type/page/page"
 import { WithId } from "type/withId"
@@ -38,14 +38,20 @@ export const Orders = (props: PageProps) => {
     refetch,
     isRefetching,
   } = useQuery<ApiResponse<WithId<Order>[]>>("ordersResponse", () =>
-    //* "selectedShopId || undefined" needed to prevent selectedShopId == 0
-    ordersRequestFunc(rowsPerPageCount, offset, selectedShopId || undefined),
+    ordersRequestFunc({
+      limit: rowsPerPageCount,
+      offset,
+      shopId: selectedShopId,
+      // sortField,
+      // sortDirection,
+      // searchFilter,
+    }),
   )
-
   const ordersCount = ordersResponse?.count
   const ordersList = ordersResponse?.result
 
   const isOrdersExist = ordersList !== undefined
+  const isShopSelected = selectedShopId > 0
 
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
@@ -74,7 +80,7 @@ export const Orders = (props: PageProps) => {
             <RowsPerPageSelect isLoading={isLoading || isRefetching} />
           </Flex>
 
-          <OrdersTable ordersList={ordersList} />
+          <OrdersTable ordersList={ordersList} isShowShop={!isShopSelected} />
 
           <Pagination
             totalItemsCount={ordersCount}

@@ -7,10 +7,11 @@ import { WithId } from "type/withId"
 
 interface OrdersTableProps {
   ordersList: WithId<Order>[]
+  isShowShop?: boolean
 }
 
 export const OrdersTable: FC<OrdersTableProps> = (props) => {
-  const { ordersList } = props
+  const { ordersList, isShowShop } = props
 
   return (
     <Table variant="striped">
@@ -27,7 +28,7 @@ export const OrdersTable: FC<OrdersTableProps> = (props) => {
 
       <Tbody>
         {ordersList.map((order) => (
-          <OrdersTableRow order={order} />
+          <OrdersTableRow order={order} isShowShop={isShowShop} />
         ))}
       </Tbody>
     </Table>

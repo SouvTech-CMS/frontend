@@ -11,7 +11,7 @@ import { usePaginationContext } from "context/pagination"
 import { usePagination } from "hook/usePagination"
 import { useEffect } from "react"
 import { useQuery } from "react-query"
-import { ApiResponse } from "type/apiResponse"
+import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
 import { PurchaseHistory } from "type/purchase/purchaseHistory"
 
@@ -29,7 +29,6 @@ export const PurchasesHistory = (props: PageProps) => {
   } = useQuery<ApiResponse<PurchaseHistory[]>>("ordersResponse", () =>
     getPurchasesHistory(rowsPerPageCount, offset),
   )
-
   const purchasesHistoryCount = purchasesHistoryResponse?.count
   const purchasesHistory = purchasesHistoryResponse?.result
   const isHistoryExists = purchasesHistory !== undefined

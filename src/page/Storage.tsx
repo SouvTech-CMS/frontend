@@ -1,8 +1,5 @@
 import { Flex } from "@chakra-ui/react"
-import {
-  getAllStorageGoods,
-  getStorageGoodsCount,
-} from "api/storage/storageGood"
+import { getAllStorageGoods } from "api/storage/storageGood"
 import { Container } from "component/Container"
 import { SearchFiltersClearBtn } from "component/customTable/SearchFiltersClearBtn"
 import { LoadingPage } from "component/page/LoadingPage"
@@ -18,6 +15,7 @@ import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
 import { useEffect } from "react"
 import { useQuery } from "react-query"
+import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
 import { StorageGood, StorageGoodSearchFilter } from "type/storage/storageGood"
 import { WithId } from "type/withId"
@@ -33,25 +31,24 @@ export const Storage = (props: PageProps) => {
     useTableContext<StorageGoodSearchFilter>()
 
   const {
-    data: storageGoodsList,
+    data: storageGoodsResponse,
     isLoading: isLoadingStorageGoodsList,
     refetch,
     isRefetching: isRefetchingStorageGoodsList,
-  } = useQuery<WithId<StorageGood>[]>("storageGoodsList", () =>
-    getAllStorageGoods(
-      rowsPerPageCount,
+  } = useQuery<ApiResponse<WithId<StorageGood>[]>>("storageGoodsList", () =>
+    getAllStorageGoods({
+      limit: rowsPerPageCount,
       offset,
-      selectedShopId,
+      shopId: selectedShopId,
       sortField,
       sortDirection,
       searchFilter,
-    ),
+    }),
   )
+  const storageGoodsCount = storageGoodsResponse?.count
+  const storageGoodsList = storageGoodsResponse?.result
 
-  const { data: storageGoodsCount, isLoading: isLoadingStorageGoodsCount } =
-    useQuery<number>("storageGoodsCount", getStorageGoodsCount)
-
-  const isLoading = isLoadingStorageGoodsList || isLoadingStorageGoodsCount
+  const isLoading = isLoadingStorageGoodsList
 
   const isRefetching = isRefetchingStorageGoodsList
 

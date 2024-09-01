@@ -1,12 +1,9 @@
 import { Flex, IconButton, Td, Text, Tooltip, Tr } from "@chakra-ui/react"
-import { getShopById } from "api/shop"
 import { MarketplaceAvatar } from "component/marketplace/MarketplaceAvatar"
 import { FC } from "react"
 import { FiExternalLink } from "react-icons/fi"
-import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import { Order } from "type/order/order"
-import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 import { numberWithCurrency, roundNumber, stringToDate } from "util/formatting"
 import { getEtsyOrderUrl } from "util/urls"
@@ -19,13 +16,7 @@ interface OrdersTableRowProps {
 export const OrdersTableRow: FC<OrdersTableRowProps> = (props) => {
   const { order, isShowShop = true } = props
 
-  const { data: shop, isLoading } = useQuery<WithId<Shop>>(
-    ["shop", order.shop_id],
-    () => getShopById(order.shop_id),
-    {
-      enabled: isShowShop,
-    },
-  )
+  const shop = order.shop
 
   const orderUrl = getEtsyOrderUrl(order.order_id)
   const orderDate = stringToDate(order.date).toDateString()
@@ -47,10 +38,7 @@ export const OrdersTableRow: FC<OrdersTableRowProps> = (props) => {
       {isShowShop && (
         <Td>
           <Flex alignItems="center" gap={2}>
-            <MarketplaceAvatar
-              marketplace={shop?.marketplace}
-              isLoading={isLoading}
-            />
+            <MarketplaceAvatar marketplace={shop?.marketplace} />
             <Text>{shop?.name}</Text>
           </Flex>
         </Td>

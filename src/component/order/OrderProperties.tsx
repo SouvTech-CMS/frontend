@@ -18,9 +18,13 @@ interface OrderPropertiesProps {
 export const OrderProperties: FC<OrderPropertiesProps> = (props) => {
   const { order } = props
 
+  const shopId = order.shop_id
   const { data: shop, isLoading } = useQuery<WithId<Shop>>(
     ["shop", order.shop_id],
-    () => getShopById(order.shop_id),
+    () => getShopById(shopId!),
+    {
+      enabled: !!shopId,
+    },
   )
 
   const orderUrl = getEtsyOrderUrl(order.order_id)

@@ -1,6 +1,5 @@
 import { Flex } from "@chakra-ui/react"
 import { getStorageGoodsWithProductionInfo } from "api/storage/productionInfo"
-import { getStorageGoodsCount } from "api/storage/storageGood"
 import { Container } from "component/Container"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
@@ -12,6 +11,7 @@ import { usePaginationContext } from "context/pagination"
 import { usePagination } from "hook/usePagination"
 import { useEffect } from "react"
 import { useQuery } from "react-query"
+import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 
@@ -22,20 +22,19 @@ export const ProductionInfo = (props: PageProps) => {
   const { rowsPerPageCount } = usePaginationContext()
 
   const {
-    data: goodsWithProductionInfoList,
+    data: goodsWithProductionInfoResponse,
     isLoading: isLoadingProductionInfo,
     refetch,
     isRefetching,
-  } = useQuery<StorageGoodWithProductionInfo[]>(
+  } = useQuery<ApiResponse<StorageGoodWithProductionInfo[]>>(
     "goodsWithProductionInfoList",
     () => getStorageGoodsWithProductionInfo(rowsPerPageCount, offset),
   )
+  const goodsCount = goodsWithProductionInfoResponse?.count
+  const goodsWithProductionInfoList = goodsWithProductionInfoResponse?.result
   const isGoodsExist = goodsWithProductionInfoList !== undefined
 
-  const { data: goodsCount, isLoading: isLoadingStorageGoodsCount } =
-    useQuery<number>("storageGoodsCount", getStorageGoodsCount)
-
-  const isLoading = isLoadingProductionInfo || isLoadingStorageGoodsCount
+  const isLoading = isLoadingProductionInfo
 
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
