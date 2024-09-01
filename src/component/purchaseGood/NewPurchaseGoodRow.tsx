@@ -1,54 +1,71 @@
-import { Flex, IconButton, Td, Text, Tr } from "@chakra-ui/react"
+import { Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
+import { NewPurchaseGoodRowMenu } from "component/purchaseGood/NewPurchaseGoodRowMenu"
+import { PurchaseGoodModal } from "component/purchaseGood/PurchaseGoodModal"
 import { FC } from "react"
-import { FiTrash2 } from "react-icons/fi"
 import { PurchaseGood } from "type/purchase/purchaseGood"
 
 interface NewPurchaseGoodRowProps {
   good: PurchaseGood
-  handleRemoveGood: (good: PurchaseGood) => void
+  onEdit: (good: PurchaseGood) => void
+  onRemove: (good: PurchaseGood) => void
 }
 
 export const NewPurchaseGoodRow: FC<NewPurchaseGoodRowProps> = (props) => {
-  const { good, handleRemoveGood } = props
+  const { good, onEdit, onRemove } = props
+
+  const {
+    isOpen: isNewGoodEditModalOpen,
+    onOpen: onNewGoodEditModalOpen,
+    onClose: onNewGoodEditModalClose,
+  } = useDisclosure()
+
+  const handleUpdate = (good: PurchaseGood) => {
+    onEdit(good)
+    onNewGoodEditModalClose()
+  }
 
   const handleRemove = () => {
-    handleRemoveGood(good)
+    onRemove(good)
   }
 
   return (
-    <Tr position="relative" fontWeight="semibold">
-      {/* Name */}
-      <Td>
-        <Text>{good.name}</Text>
-      </Td>
+    <>
+      <Tr position="relative" fontWeight="semibold">
+        {/* Name */}
+        <Td>
+          <Text>{good.name}</Text>
+        </Td>
 
-      {/* Unit Price */}
-      <Td>
-        <Text>${good.price_per_item}</Text>
-      </Td>
+        {/* Unit Price */}
+        <Td>
+          <Text>${good.price_per_item}</Text>
+        </Td>
 
-      {/* Quantity */}
-      <Td>
-        <Text>{good.quantity}</Text>
-      </Td>
+        {/* Quantity */}
+        <Td>
+          <Text>{good.quantity}</Text>
+        </Td>
 
-      {/* Total Amount */}
-      <Td>
-        <Text>${good.amount}</Text>
-      </Td>
+        {/* Total Amount */}
+        <Td>
+          <Text>${good.amount}</Text>
+        </Td>
 
-      {/* Remove Good Btn */}
-      <Td>
-        <Flex justifyContent="center" alignItems="center">
-          <IconButton
-            aria-label="remove-good"
-            variant="ghost"
-            colorScheme="red"
-            icon={<FiTrash2 />}
-            onClick={handleRemove}
+        {/* Remove Good Btn */}
+        <Td>
+          <NewPurchaseGoodRowMenu
+            onEdit={onNewGoodEditModalOpen}
+            onRemove={handleRemove}
           />
-        </Flex>
-      </Td>
-    </Tr>
+        </Td>
+      </Tr>
+
+      <PurchaseGoodModal
+        prevGood={good}
+        onAddGood={handleUpdate}
+        isOpen={isNewGoodEditModalOpen}
+        onClose={onNewGoodEditModalClose}
+      />
+    </>
   )
 }
