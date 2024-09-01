@@ -9,17 +9,22 @@ import { WithId } from "type/withId"
 interface StorageGoodsTableProps {
   storageGoodsList: WithId<StorageGood>[]
   selectedShopId: number
+  resetCurrentPage?: () => void
 }
 
 export const StorageGoodsTable: FC<StorageGoodsTableProps> = (props) => {
-  const { storageGoodsList, selectedShopId } = props
+  const { storageGoodsList, selectedShopId, resetCurrentPage } = props
 
   return (
     <Table size="md" variant="striped">
       <Thead>
         <Tr>
           {STORAGE_GOODS_TABLE_COLUMNS.map((column, index) => (
-            <CustomTh key={index} column={column} />
+            <CustomTh
+              key={index}
+              column={column}
+              resetCurrentPage={resetCurrentPage}
+            />
           ))}
         </Tr>
       </Thead>

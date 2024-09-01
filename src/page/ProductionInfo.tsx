@@ -9,7 +9,8 @@ import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { StorageGoodsWithProductionInfoTable } from "component/productionInfo/StorageGoodsWithProductionInfoTable"
 import { usePaginationContext } from "context/pagination"
-import { useEffect, useState } from "react"
+import { usePagination } from "hook/usePagination"
+import { useEffect } from "react"
 import { useQuery } from "react-query"
 import { PageProps } from "type/page/page"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
@@ -17,10 +18,8 @@ import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 export const ProductionInfo = (props: PageProps) => {
   const { guideNotionPageId } = props
 
+  const { currentPage, setCurrentPage, offset, setOffset } = usePagination()
   const { rowsPerPageCount } = usePaginationContext()
-
-  const [currentPage, setCurrentPage] = useState<number>(0)
-  const [offset, setOffset] = useState<number>(0)
 
   const {
     data: goodsWithProductionInfoList,
@@ -41,7 +40,7 @@ export const ProductionInfo = (props: PageProps) => {
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
     setOffset(newOffset)
-  }, [currentPage, rowsPerPageCount])
+  }, [setOffset, currentPage, rowsPerPageCount])
 
   useEffect(() => {
     refetch()

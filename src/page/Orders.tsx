@@ -9,6 +9,7 @@ import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { usePaginationContext } from "context/pagination"
+import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
@@ -20,11 +21,10 @@ import { WithId } from "type/withId"
 export const Orders = (props: PageProps) => {
   const { guideNotionPageId } = props
 
+  const { currentPage, setCurrentPage, offset, setOffset } = usePagination()
   const { rowsPerPageCount } = usePaginationContext()
   const { selectedShopId, handleShopSelect } = useShopFilter()
 
-  const [currentPage, setCurrentPage] = useState<number>(0)
-  const [offset, setOffset] = useState<number>(0)
   const [isShowNoneGoodOrders, setIsShowNoneGoodOrders] =
     useState<boolean>(false)
 
@@ -50,7 +50,7 @@ export const Orders = (props: PageProps) => {
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
     setOffset(newOffset)
-  }, [currentPage, rowsPerPageCount])
+  }, [setOffset, currentPage, rowsPerPageCount])
 
   useEffect(() => {
     refetch()
