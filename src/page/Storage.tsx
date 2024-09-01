@@ -14,8 +14,9 @@ import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
 import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
+import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useQuery } from "react-query"
 import { PageProps } from "type/page/page"
 import { StorageGood, StorageGoodSearchFilter } from "type/storage/storageGood"
@@ -24,13 +25,12 @@ import { WithId } from "type/withId"
 export const Storage = (props: PageProps) => {
   const { guideNotionPageId } = props
 
+  const { currentPage, setCurrentPage, resetCurrentPage, offset, setOffset } =
+    usePagination()
   const { rowsPerPageCount } = usePaginationContext()
   const { selectedShopId, handleShopSelect } = useShopFilter()
   const { sortDirection, sortField, searchFilter } =
     useTableContext<StorageGoodSearchFilter>()
-
-  const [currentPage, setCurrentPage] = useState<number>(0)
-  const [offset, setOffset] = useState<number>(0)
 
   const {
     data: storageGoodsList,
@@ -60,7 +60,7 @@ export const Storage = (props: PageProps) => {
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
     setOffset(newOffset)
-  }, [currentPage, rowsPerPageCount])
+  }, [setOffset, currentPage, rowsPerPageCount])
 
   useEffect(() => {
     refetch()
@@ -96,6 +96,7 @@ export const Storage = (props: PageProps) => {
             <StorageGoodsTable
               storageGoodsList={storageGoodsList}
               selectedShopId={selectedShopId}
+              resetCurrentPage={resetCurrentPage}
             />
 
             <Pagination
