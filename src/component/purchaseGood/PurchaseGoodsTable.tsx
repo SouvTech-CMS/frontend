@@ -30,13 +30,13 @@ export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
   } = useDisclosure()
 
   const handleAddGood = (good: PurchaseGood) => {
-    good.amount = good.price_per_item * good.quantity
+    good.price_per_item = good.amount / good.quantity
     setGoods((prevGoods) => [...prevGoods, good])
     onNewGoodModalClose()
   }
 
   const handleUpdateGood = (good: PurchaseGood) => {
-    good.amount = good.price_per_item * good.quantity
+    good.price_per_item = good.amount / good.quantity
     setGoods((prevGoods) => [
       ...prevGoods.filter(
         (prevGood) => prevGood.name.toLowerCase() !== good.name.toLowerCase(),

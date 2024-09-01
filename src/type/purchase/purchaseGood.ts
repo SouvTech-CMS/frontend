@@ -4,7 +4,7 @@ export type PurchaseGood = {
   description?: string
   sku?: string
   quantity: number
-  price_per_item: number
-  amount?: number
+  price_per_item?: number
+  amount: number
   in_delivery: number
 }
