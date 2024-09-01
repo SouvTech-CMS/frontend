@@ -12,22 +12,22 @@ export const STORAGE_GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
     name: "SKU segment",
     param: "uniquename",
     isSearchable: true,
-    isSortable: true,
+    isSortable: false,
   },
-  { name: "Name", param: "name", isSearchable: true, isSortable: true },
+  { name: "Name", param: "name", isSearchable: true, isSortable: false },
   {
     name: "Total quantity",
     param: "quantity",
-    isSearchable: true,
+    isSearchable: false,
     isSortable: true,
   },
   {
     name: "Boxes quantity",
     param: "box_quantity",
-    isSearchable: true,
-    isSortable: true,
+    isSearchable: false,
+    isSortable: false,
   },
-  { name: "Shelf", param: "shelf", isSearchable: true, isSortable: true },
+  { name: "Shelf", param: "shelf", isSearchable: false, isSortable: false },
   null,
 ]
 
