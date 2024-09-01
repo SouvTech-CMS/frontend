@@ -1,0 +1,22 @@
+name: PROD label to production PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  add-prod-label:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check if PR is targeting main branch
+      if: github.event.pull_request.base.ref == 'main'
+      run: echo "PR is targeting the main branch."
+
+    - name: Add PROD label if it exists
+      if: github.event.pull_request.base.ref == 'main'
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        labels: |
+          PROD
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
