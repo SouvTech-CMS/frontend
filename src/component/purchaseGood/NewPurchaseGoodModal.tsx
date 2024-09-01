@@ -20,22 +20,27 @@ import {
   FiLayers,
   FiType,
 } from "react-icons/fi"
-import { usePurchaseGoodUpdateMutation } from "service/purchase/purchaseGood"
 import { ModalProps } from "type/modalProps"
 import { PurchaseGood } from "type/purchase/purchaseGood"
-import { WithId } from "type/withId"
-import { notify } from "util/toasts"
 
-interface PurchaseGoodModalProps extends ModalProps {
-  prevGood: WithId<PurchaseGood>
+interface NewPurchaseGoodModalProps extends ModalProps {
+  prevGood?: PurchaseGood
+  onAddGood: (good: PurchaseGood) => void
 }
 
-export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
-  const { prevGood, isOpen, onClose } = props
+const newGood: PurchaseGood = {
+  name: "",
+  quantity: NaN,
+  amount: NaN,
+  in_delivery: 0,
+}
 
-  const [good, setGood] = useState<WithId<PurchaseGood>>(prevGood)
+export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
+  const { prevGood = newGood, onAddGood, isOpen, onClose } = props
 
-  const purchaseGoodUpdateMutation = usePurchaseGoodUpdateMutation()
+  const isEditing = !!prevGood.name.trim()
+
+  const [good, setGood] = useState<PurchaseGood>(prevGood)
 
   const isNameInvalid = !good?.name.trim()
   const isAmountInvalid = !good.amount
@@ -43,23 +48,22 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
   const isSaveBtnDisabled =
     isNameInvalid || isAmountInvalid || isQuantityInvalid
 
-  const handleGoodChange = (param: string, value: number | string) => {
+  const handleGoodUpdate = (param: string, value: number | string) => {
     setGood((prevGood) => ({
       ...prevGood,
       [param]: value,
     }))
   }
 
-  const onGoodChange = async () => {
-    await purchaseGoodUpdateMutation.mutateAsync(good)
-
-    notify(`Purchase Good #${good.id} updated successfully`, "success")
-    onClose()
+  const handleAdd = () => {
+    onAddGood(good)
   }
 
   useEffect(() => {
-    setGood(prevGood)
-  }, [isOpen, prevGood])
+    if (!isEditing) {
+      setGood(newGood)
+    }
+  }, [isOpen, isEditing])
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
@@ -82,7 +86,7 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
                 value={good.sku}
                 onChange={(e) => {
                   const value = e.target.value
-                  handleGoodChange("sku", value)
+                  handleGoodUpdate("sku", value)
                 }}
               />
             </InputGroup>
@@ -98,7 +102,7 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
                 value={good.name}
                 onChange={(e) => {
                   const value = e.target.value
-                  handleGoodChange("name", value)
+                  handleGoodUpdate("name", value)
                 }}
                 isInvalid={isNameInvalid}
               />
@@ -115,7 +119,7 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
                 value={good.description}
                 onChange={(e) => {
                   const value = e.target.value
-                  handleGoodChange("description", value)
+                  handleGoodUpdate("description", value)
                 }}
               />
             </InputGroup>
@@ -132,7 +136,7 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
                 type="number"
                 onChange={(e) => {
                   const value = e.target.valueAsNumber
-                  handleGoodChange("quantity", value)
+                  handleGoodUpdate("quantity", value)
                 }}
                 isInvalid={isQuantityInvalid}
               />
@@ -150,7 +154,7 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
                 type="number"
                 onChange={(e) => {
                   const value = e.target.valueAsNumber
-                  handleGoodChange("amount", value)
+                  handleGoodUpdate("amount", value)
                 }}
                 isInvalid={isAmountInvalid}
               />
@@ -160,7 +164,7 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
 
         <ModalFooter>
           <Flex gap={5}>
-            <Button onClick={onGoodChange} isDisabled={isSaveBtnDisabled}>
+            <Button onClick={handleAdd} isDisabled={isSaveBtnDisabled}>
               Save
             </Button>
 
