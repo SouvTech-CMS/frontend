@@ -1,30 +1,20 @@
 import { axiosClient } from "api/axiosClient"
-import { SortDirection } from "type/sortDirection"
+import { ApiRequest } from "type/api/apiRequest"
+import { ApiResponse } from "type/api/apiResponse"
 import {
   GoodWithStorages,
   StorageGood,
   StorageGoodSearchFilter,
 } from "type/storage/storageGood"
 import { WithId } from "type/withId"
+import { beautifyBody } from "util/apiRequestBody"
 
 export const getAllStorageGoods = async (
-  limit: number,
-  offset: number,
-  shopId: number,
-  sort_field?: string,
-  sort_direction?: SortDirection,
-  search_filter?: StorageGoodSearchFilter,
-): Promise<WithId<StorageGood>[]> => {
+  body: ApiRequest<StorageGoodSearchFilter>,
+): Promise<ApiResponse<WithId<StorageGood>[]>> => {
   const { data: storageGoodsList } = await axiosClient.post(
-    "/storage_good/all/",
-    {
-      limit,
-      offset,
-      sort_field,
-      sort_direction,
-      shops: shopId > 0 ? [shopId] : undefined,
-      search_filter,
-    },
+    "/storage/good/all/",
+    beautifyBody(body),
   )
   return storageGoodsList
 }
@@ -33,7 +23,7 @@ export const getFullStorageGoodsList = async (): Promise<
   WithId<StorageGood>[]
 > => {
   const { data: storageGoodsList } = await axiosClient.post(
-    "/storage_good/all/",
+    "/storage/good/all/",
     {
       limit: undefined,
       offset: 0,
@@ -42,30 +32,19 @@ export const getFullStorageGoodsList = async (): Promise<
   return storageGoodsList
 }
 
-export const getStorageGoodsCount = async (): Promise<number> => {
-  const { data: storageGoodsCount } = await axiosClient.get(
-    "/storage_good/count/",
-  )
-  return storageGoodsCount
-}
-
 export const getGoodWithStoragesById = async (
   storageGoodId: number,
 ): Promise<GoodWithStorages> => {
   const { data: goodWithStorages } = await axiosClient.get(
-    `/storage_good/id/${storageGoodId}`,
+    `/storage/good/id/${storageGoodId}`,
   )
   return goodWithStorages
 }
 
 export const createStorageGood = async (storageGood: StorageGood) => {
-  await axiosClient.post("/storage_good/", storageGood)
+  await axiosClient.post("/storage/good/", storageGood)
 }
 
 export const updateStorageGood = async (storageGood: WithId<StorageGood>) => {
-  await axiosClient.put("/storage_good/", storageGood)
-}
-
-export const deleteStorageGood = async (storageGoodId: number) => {
-  await axiosClient.delete(`/storage_good/${storageGoodId}`)
+  await axiosClient.put("/storage/good/", storageGood)
 }

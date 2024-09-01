@@ -1,3 +1,5 @@
+import { WithId } from "type/withId"
+
 export type Good = {
   shop_id: number
   uniquename: string
@@ -5,3 +7,10 @@ export type Good = {
   name: string
   description?: string
 }
+
+export type GoodInOrder = Good & {
+  quantity: number
+  amount: number
+}
+
+export type GoodSearchFilter = WithId<Good>

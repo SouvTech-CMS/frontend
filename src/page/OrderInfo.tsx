@@ -1,5 +1,5 @@
 import { Divider, Flex, Grid, GridItem, Heading } from "@chakra-ui/react"
-import { getOrderById } from "api/order"
+import { getOrderById } from "api/order/order"
 import { GoodInOrderCard } from "component/order/GoodInOrderCard"
 import { OrderProperties } from "component/order/OrderProperties"
 import { LoadingPage } from "component/page/LoadingPage"
@@ -32,7 +32,7 @@ export const OrderInfo = (props: PageProps) => {
 
   return (
     <Page guideNotionPageId={guideNotionPageId}>
-      <PageHeading title={`Order ${orderId}`} isSearchHidden />
+      <PageHeading title={`Order #${orderId}`} isSearchHidden />
 
       {isLoading && <LoadingPage />}
 

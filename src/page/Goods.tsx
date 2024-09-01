@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react"
-import { getAllGoods } from "api/goods"
+import { getAllGoods } from "api/order/goods"
 import { Container } from "component/Container"
 import { GoodsFilters } from "component/good/GoodsFilters"
 import { GoodsTable } from "component/good/GoodsTable"
@@ -13,7 +13,7 @@ import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
 import { useEffect } from "react"
 import { useQuery } from "react-query"
-import { ApiResponse } from "type/apiResponse"
+import { ApiResponse } from "type/api/apiResponse"
 import { Good } from "type/order/good"
 import { PageProps } from "type/page/page"
 import { WithId } from "type/withId"
@@ -31,14 +31,20 @@ export const Goods = (props: PageProps) => {
     refetch,
     isRefetching,
   } = useQuery<ApiResponse<WithId<Good>[]>>("goodsResponse", () =>
-    //* "selectedShopId || undefined" needed to prevent selectedShopId == 0
-    getAllGoods(rowsPerPageCount, offset, selectedShopId || undefined),
+    getAllGoods({
+      limit: rowsPerPageCount,
+      offset,
+      shopId: selectedShopId,
+      // sortField,
+      // sortDirection,
+      // searchFilter,
+    }),
   )
-
   const goodsCount = goodsResponse?.count
   const goodsList = goodsResponse?.result
 
   const isGoodsExist = goodsList !== undefined
+  const isShopSelected = selectedShopId > 0
 
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
@@ -63,7 +69,7 @@ export const Goods = (props: PageProps) => {
             <RowsPerPageSelect isLoading={isLoading || isRefetching} />
           </Flex>
 
-          <GoodsTable goodsList={goodsList} />
+          <GoodsTable goodsList={goodsList} isShowShop={!isShopSelected} />
 
           <Pagination
             totalItemsCount={goodsCount}

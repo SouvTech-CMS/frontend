@@ -1,4 +1,5 @@
 import { axiosClient } from "api/axiosClient"
+import { ApiResponse } from "type/api/apiResponse"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 
 export const getStorageGoodsWithProductionInfo = async (
@@ -8,9 +9,9 @@ export const getStorageGoodsWithProductionInfo = async (
   // sort_field?: string,
   // sort_direction?: SortDirection,
   // search_filter?: StorageGoodSearchFilter,
-): Promise<StorageGoodWithProductionInfo[]> => {
+): Promise<ApiResponse<StorageGoodWithProductionInfo[]>> => {
   const { data: goodsWithProductionInfoList } = await axiosClient.post(
-    "/storage_good/all/production_info/",
+    "/storage/good/all/production_info/",
     {
       limit,
       offset,

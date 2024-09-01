@@ -7,10 +7,11 @@ import { WithId } from "type/withId"
 
 interface GoodsTableProps {
   goodsList: WithId<Good>[]
+  isShowShop?: boolean
 }
 
 export const GoodsTable: FC<GoodsTableProps> = (props) => {
-  const { goodsList } = props
+  const { goodsList, isShowShop } = props
 
   return (
     <Table variant="striped">
@@ -24,7 +25,7 @@ export const GoodsTable: FC<GoodsTableProps> = (props) => {
 
       <Tbody>
         {goodsList.map((good, index) => (
-          <GoodsTableRow key={index} good={good} />
+          <GoodsTableRow key={index} good={good} isShowShop={isShowShop} />
         ))}
       </Tbody>
     </Table>

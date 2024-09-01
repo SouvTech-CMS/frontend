@@ -1,5 +1,5 @@
 import { axiosClient } from "api/axiosClient"
-import { ApiResponse } from "type/apiResponse"
+import { ApiResponse } from "type/api/apiResponse"
 import { PurchaseHistory } from "type/purchase/purchaseHistory"
 
 export const getPurchasesHistory = async (
