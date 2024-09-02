@@ -10,3 +10,7 @@ export const getReadyToDeliveryPurchaseGoods = async (): Promise<
   )
   return goodsList
 }
+
+export const updatePurchaseGood = async (good: WithId<PurchaseGood>) => {
+  await axiosClient.put("/purchase/good/", good)
+}
