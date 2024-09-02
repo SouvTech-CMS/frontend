@@ -8,8 +8,8 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react"
+import { NewPurchaseGoodModal } from "component/purchaseGood/NewPurchaseGoodModal"
 import { NewPurchaseGoodRow } from "component/purchaseGood/NewPurchaseGoodRow"
-import { PurchaseGoodModal } from "component/purchaseGood/PurchaseGoodModal"
 import { Dispatch, FC, SetStateAction } from "react"
 import { PurchaseGood } from "type/purchase/purchaseGood"
 
@@ -86,7 +86,7 @@ export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
         </Tbody>
       </Table>
 
-      <PurchaseGoodModal
+      <NewPurchaseGoodModal
         onAddGood={handleAddGood}
         isOpen={isNewGoodModalOpen}
         onClose={onNewGoodModalClose}

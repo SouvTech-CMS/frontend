@@ -1,6 +1,6 @@
 import { Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
+import { NewPurchaseGoodModal } from "component/purchaseGood/NewPurchaseGoodModal"
 import { NewPurchaseGoodRowMenu } from "component/purchaseGood/NewPurchaseGoodRowMenu"
-import { PurchaseGoodModal } from "component/purchaseGood/PurchaseGoodModal"
 import { FC } from "react"
 import { PurchaseGood } from "type/purchase/purchaseGood"
 
@@ -60,7 +60,7 @@ export const NewPurchaseGoodRow: FC<NewPurchaseGoodRowProps> = (props) => {
         </Td>
       </Tr>
 
-      <PurchaseGoodModal
+      <NewPurchaseGoodModal
         prevGood={good}
         onAddGood={handleUpdate}
         isOpen={isNewGoodEditModalOpen}
