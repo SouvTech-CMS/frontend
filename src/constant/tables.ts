@@ -70,11 +70,11 @@ export const GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
     name: "SKU segment",
     param: "uniquename",
     isSearchable: true,
-    isSortable: true,
+    isSortable: false,
   },
-  { name: "Name", param: "name", isSearchable: true, isSortable: true },
-  { name: "Price", param: "price", isSearchable: true, isSortable: true },
-  { name: "Shop", param: "shop", isSearchable: true, isSortable: true },
+  { name: "Name", param: "name", isSearchable: true, isSortable: false },
+  { name: "Price", param: "price", isSearchable: false, isSortable: true },
+  { name: "Shop", param: "shop", isSearchable: false, isSortable: false },
   null,
 ]
 
