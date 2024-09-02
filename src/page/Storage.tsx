@@ -40,8 +40,8 @@ export const Storage = (props: PageProps) => {
       limit: rowsPerPageCount,
       offset,
       shopId: selectedShopId,
-      sortField,
       sortDirection,
+      sortField,
       searchFilter,
     }),
   )

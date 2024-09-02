@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react"
 import { getAllGoods } from "api/order/goods"
 import { Container } from "component/Container"
+import { SearchFiltersClearBtn } from "component/customTable/SearchFiltersClearBtn"
 import { GoodsFilters } from "component/good/GoodsFilters"
 import { GoodsTable } from "component/good/GoodsTable"
 import { LoadingPage } from "component/page/LoadingPage"
@@ -9,21 +10,25 @@ import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { usePaginationContext } from "context/pagination"
+import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
 import { useEffect } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
-import { Good } from "type/order/good"
+import { Good, GoodSearchFilter } from "type/order/good"
 import { PageProps } from "type/page/page"
 import { WithId } from "type/withId"
 
 export const Goods = (props: PageProps) => {
   const { guideNotionPageId } = props
 
-  const { currentPage, setCurrentPage, offset, setOffset } = usePagination()
+  const { currentPage, setCurrentPage, resetCurrentPage, offset, setOffset } =
+    usePagination()
   const { rowsPerPageCount } = usePaginationContext()
   const { selectedShopId, handleShopSelect } = useShopFilter()
+  const { sortDirection, sortField, searchFilter } =
+    useTableContext<GoodSearchFilter>()
 
   const {
     data: goodsResponse,
@@ -35,9 +40,9 @@ export const Goods = (props: PageProps) => {
       limit: rowsPerPageCount,
       offset,
       shopId: selectedShopId,
-      // sortField,
-      // sortDirection,
-      // searchFilter,
+      sortDirection,
+      sortField,
+      searchFilter,
     }),
   )
   const goodsCount = goodsResponse?.count
@@ -53,7 +58,15 @@ export const Goods = (props: PageProps) => {
 
   useEffect(() => {
     refetch()
-  }, [refetch, offset, rowsPerPageCount, selectedShopId])
+  }, [
+    refetch,
+    offset,
+    rowsPerPageCount,
+    selectedShopId,
+    sortDirection,
+    sortField,
+    searchFilter,
+  ])
 
   return (
     <Page guideNotionPageId={guideNotionPageId}>
@@ -66,10 +79,18 @@ export const Goods = (props: PageProps) => {
           <Flex w="full" justifyContent="space-between">
             <GoodsFilters handleShopSelect={handleShopSelect} />
 
-            <RowsPerPageSelect isLoading={isLoading || isRefetching} />
+            <Flex alignItems="center" gap={2}>
+              <SearchFiltersClearBtn isLoading={isLoading || isRefetching} />
+
+              <RowsPerPageSelect isLoading={isLoading || isRefetching} />
+            </Flex>
           </Flex>
 
-          <GoodsTable goodsList={goodsList} isShowShop={!isShopSelected} />
+          <GoodsTable
+            goodsList={goodsList}
+            isShowShop={!isShopSelected}
+            resetCurrentPage={resetCurrentPage}
+          />
 
           <Pagination
             totalItemsCount={goodsCount}
