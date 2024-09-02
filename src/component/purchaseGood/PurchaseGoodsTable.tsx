@@ -30,8 +30,19 @@ export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
   } = useDisclosure()
 
   const handleAddGood = (good: PurchaseGood) => {
-    good.amount = good.price_per_item * good.quantity
+    good.price_per_item = good.amount / good.quantity
     setGoods((prevGoods) => [...prevGoods, good])
+    onNewGoodModalClose()
+  }
+
+  const handleUpdateGood = (good: PurchaseGood) => {
+    good.price_per_item = good.amount / good.quantity
+    setGoods((prevGoods) => [
+      ...prevGoods.filter(
+        (prevGood) => prevGood.name.toLowerCase() !== good.name.toLowerCase(),
+      ),
+      good,
+    ])
     onNewGoodModalClose()
   }
 
@@ -55,7 +66,8 @@ export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
             <NewPurchaseGoodRow
               key={index}
               good={good}
-              handleRemoveGood={handleRemoveGood}
+              onEdit={handleUpdateGood}
+              onRemove={handleRemoveGood}
             />
           ))}
 
@@ -75,7 +87,7 @@ export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
       </Table>
 
       <NewPurchaseGoodModal
-        handleAddGood={handleAddGood}
+        onAddGood={handleAddGood}
         isOpen={isNewGoodModalOpen}
         onClose={onNewGoodModalClose}
       />

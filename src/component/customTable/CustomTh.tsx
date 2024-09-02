@@ -16,10 +16,11 @@ import { TableColumn } from "type/tableColumn"
 
 interface CustomThProps {
   column: TableColumn | null
+  resetCurrentPage?: () => void
 }
 
 export const CustomTh: FC<CustomThProps> = (props) => {
-  const { column } = props
+  const { column, resetCurrentPage = () => {} } = props
 
   const {
     isAscSort,
@@ -43,6 +44,7 @@ export const CustomTh: FC<CustomThProps> = (props) => {
 
   const handlePopoverClose = () => {
     setIsPopoverOpen(false)
+    resetCurrentPage()
   }
 
   const handleSortDirectionChange = () => {
@@ -110,6 +112,7 @@ export const CustomTh: FC<CustomThProps> = (props) => {
                 <IconButton
                   aria-label="search-column-btn"
                   size="sm"
+                  fontSize={16}
                   variant="ghost"
                   icon={<FiSearch />}
                   onClick={handleSearchBtnClick}
@@ -130,6 +133,7 @@ export const CustomTh: FC<CustomThProps> = (props) => {
           <IconButton
             aria-label="sort-column-btn"
             size="sm"
+            fontSize={16}
             variant="ghost"
             icon={getSortBtnIcon()}
             onClick={handleSortDirectionChange}

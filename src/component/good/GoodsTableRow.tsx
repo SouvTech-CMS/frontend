@@ -13,10 +13,11 @@ import { numberWithCurrency, roundNumber } from "util/formatting"
 
 interface GoodsTableRowProps {
   good: WithId<Good>
+  isShowShop?: boolean
 }
 
 export const GoodsTableRow: FC<GoodsTableRowProps> = (props) => {
-  const { good } = props
+  const { good, isShowShop } = props
 
   const {
     isOpen: isGoodModalOpen,
@@ -24,9 +25,13 @@ export const GoodsTableRow: FC<GoodsTableRowProps> = (props) => {
     onClose: onGoodModalClose,
   } = useDisclosure()
 
+  const shopId = good.shop_id
   const { data: shop, isLoading } = useQuery<WithId<Shop>>(
-    ["shop", good.shop_id],
-    () => getShopById(good.shop_id),
+    ["shop", shopId],
+    () => getShopById(shopId),
+    {
+      enabled: !!shopId && isShowShop,
+    },
   )
 
   return (
@@ -53,15 +58,17 @@ export const GoodsTableRow: FC<GoodsTableRowProps> = (props) => {
         </Td>
 
         {/* Shop */}
-        <Td>
-          <Flex alignItems="center" gap={2}>
-            <MarketplaceAvatar
-              marketplace={shop?.marketplace}
-              isLoading={isLoading}
-            />
-            <Text>{shop?.name}</Text>
-          </Flex>
-        </Td>
+        {isShowShop && (
+          <Td>
+            <Flex alignItems="center" gap={2}>
+              <MarketplaceAvatar
+                marketplace={shop?.marketplace}
+                isLoading={isLoading}
+              />
+              <Text>{shop?.name}</Text>
+            </Flex>
+          </Td>
+        )}
 
         {/* Good Menu Btn */}
         <Td p={0}>

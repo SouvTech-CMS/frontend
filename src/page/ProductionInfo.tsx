@@ -1,6 +1,5 @@
 import { Flex } from "@chakra-ui/react"
 import { getStorageGoodsWithProductionInfo } from "api/storage/productionInfo"
-import { getStorageGoodsCount } from "api/storage/storageGood"
 import { Container } from "component/Container"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
@@ -9,39 +8,38 @@ import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { StorageGoodsWithProductionInfoTable } from "component/productionInfo/StorageGoodsWithProductionInfoTable"
 import { usePaginationContext } from "context/pagination"
-import { useEffect, useState } from "react"
+import { usePagination } from "hook/usePagination"
+import { useEffect } from "react"
 import { useQuery } from "react-query"
+import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 
 export const ProductionInfo = (props: PageProps) => {
   const { guideNotionPageId } = props
 
+  const { currentPage, setCurrentPage, offset, setOffset } = usePagination()
   const { rowsPerPageCount } = usePaginationContext()
 
-  const [currentPage, setCurrentPage] = useState<number>(0)
-  const [offset, setOffset] = useState<number>(0)
-
   const {
-    data: goodsWithProductionInfoList,
+    data: goodsWithProductionInfoResponse,
     isLoading: isLoadingProductionInfo,
     refetch,
     isRefetching,
-  } = useQuery<StorageGoodWithProductionInfo[]>(
+  } = useQuery<ApiResponse<StorageGoodWithProductionInfo[]>>(
     "goodsWithProductionInfoList",
     () => getStorageGoodsWithProductionInfo(rowsPerPageCount, offset),
   )
+  const goodsCount = goodsWithProductionInfoResponse?.count
+  const goodsWithProductionInfoList = goodsWithProductionInfoResponse?.result
   const isGoodsExist = goodsWithProductionInfoList !== undefined
 
-  const { data: goodsCount, isLoading: isLoadingStorageGoodsCount } =
-    useQuery<number>("storageGoodsCount", getStorageGoodsCount)
-
-  const isLoading = isLoadingProductionInfo || isLoadingStorageGoodsCount
+  const isLoading = isLoadingProductionInfo
 
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
     setOffset(newOffset)
-  }, [currentPage, rowsPerPageCount])
+  }, [setOffset, currentPage, rowsPerPageCount])
 
   useEffect(() => {
     refetch()

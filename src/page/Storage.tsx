@@ -1,8 +1,5 @@
 import { Flex } from "@chakra-ui/react"
-import {
-  getAllStorageGoods,
-  getStorageGoodsCount,
-} from "api/storage/storageGood"
+import { getAllStorageGoods } from "api/storage/storageGood"
 import { Container } from "component/Container"
 import { SearchFiltersClearBtn } from "component/customTable/SearchFiltersClearBtn"
 import { LoadingPage } from "component/page/LoadingPage"
@@ -14,9 +11,11 @@ import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
 import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
+import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useQuery } from "react-query"
+import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
 import { StorageGood, StorageGoodSearchFilter } from "type/storage/storageGood"
 import { WithId } from "type/withId"
@@ -24,34 +23,32 @@ import { WithId } from "type/withId"
 export const Storage = (props: PageProps) => {
   const { guideNotionPageId } = props
 
+  const { currentPage, setCurrentPage, resetCurrentPage, offset, setOffset } =
+    usePagination()
   const { rowsPerPageCount } = usePaginationContext()
   const { selectedShopId, handleShopSelect } = useShopFilter()
   const { sortDirection, sortField, searchFilter } =
     useTableContext<StorageGoodSearchFilter>()
 
-  const [currentPage, setCurrentPage] = useState<number>(0)
-  const [offset, setOffset] = useState<number>(0)
-
   const {
-    data: storageGoodsList,
+    data: storageGoodsResponse,
     isLoading: isLoadingStorageGoodsList,
     refetch,
     isRefetching: isRefetchingStorageGoodsList,
-  } = useQuery<WithId<StorageGood>[]>("storageGoodsList", () =>
-    getAllStorageGoods(
-      rowsPerPageCount,
+  } = useQuery<ApiResponse<WithId<StorageGood>[]>>("storageGoodsList", () =>
+    getAllStorageGoods({
+      limit: rowsPerPageCount,
       offset,
-      selectedShopId,
+      shopId: selectedShopId,
       sortField,
       sortDirection,
       searchFilter,
-    ),
+    }),
   )
+  const storageGoodsCount = storageGoodsResponse?.count
+  const storageGoodsList = storageGoodsResponse?.result
 
-  const { data: storageGoodsCount, isLoading: isLoadingStorageGoodsCount } =
-    useQuery<number>("storageGoodsCount", getStorageGoodsCount)
-
-  const isLoading = isLoadingStorageGoodsList || isLoadingStorageGoodsCount
+  const isLoading = isLoadingStorageGoodsList
 
   const isRefetching = isRefetchingStorageGoodsList
 
@@ -60,7 +57,7 @@ export const Storage = (props: PageProps) => {
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
     setOffset(newOffset)
-  }, [currentPage, rowsPerPageCount])
+  }, [setOffset, currentPage, rowsPerPageCount])
 
   useEffect(() => {
     refetch()
@@ -96,6 +93,7 @@ export const Storage = (props: PageProps) => {
             <StorageGoodsTable
               storageGoodsList={storageGoodsList}
               selectedShopId={selectedShopId}
+              resetCurrentPage={resetCurrentPage}
             />
 
             <Pagination

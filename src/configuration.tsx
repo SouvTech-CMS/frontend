@@ -29,6 +29,7 @@ import {
   FiTruck,
   FiUsers,
 } from "react-icons/fi"
+import { OrderSearchFilter } from "type/order/order"
 import { StorageGoodSearchFilter } from "type/storage/storageGood"
 import { getApiBaseUrl, getWebSocketBaseUrl } from "util/urls"
 
@@ -78,7 +79,9 @@ export const configuration = {
       path: "/orders",
       permissions: [Permission.ORDER_READ],
       component: (
-        <Orders guideNotionPageId="212db0fd239248e199af5852cdc2a577" />
+        <TableContextProvider<OrderSearchFilter>>
+          <Orders guideNotionPageId="212db0fd239248e199af5852cdc2a577" />
+        </TableContextProvider>
       ),
     },
     // Order Info
