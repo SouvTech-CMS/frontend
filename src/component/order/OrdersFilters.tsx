@@ -1,5 +1,6 @@
 import { Checkbox, Flex } from "@chakra-ui/react"
 import { ActionMeta, SingleValue } from "chakra-react-select"
+import { DatesFilter } from "component/filter/DatesFilter"
 import { ShopFilter } from "component/filter/ShopFilter"
 import { Dispatch, FC, SetStateAction } from "react"
 import { SelectOption } from "type/selectOption"
@@ -27,6 +28,9 @@ export const OrdersFilters: FC<OrdersFiltersProps> = (props) => {
     <Flex justifyContent="flex-start" alignItems="center" gap={5}>
       {/* Shops Select */}
       <ShopFilter handleShopSelect={handleShopSelect} />
+
+      {/* Date Range Select */}
+      <DatesFilter />
 
       {/* Show None Good Order Checkbox */}
       <Checkbox

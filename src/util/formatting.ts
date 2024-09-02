@@ -36,6 +36,16 @@ export const timestampToDateAsString = (timestamp: number) => {
   return dateAsString
 }
 
+export const dateToDateAsString = (date: Date) => {
+  const day = date.getDate()
+  const month = date.getMonth() + 1
+  const year = date.getFullYear()
+
+  const dateAsString = `${day}.${month}.${year}`
+
+  return dateAsString
+}
+
 export const getCurrentYear = () => {
   const year = new Date().getFullYear()
   return year
