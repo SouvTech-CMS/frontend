@@ -22,4 +22,7 @@ export type OrderWithGoods = {
   order_goods: WithId<GoodInOrder>[]
 }
 
-export type OrderSearchFilter = WithId<Order>
+export type OrderSearchFilter = WithId<Order> & {
+  start_date?: string
+  end_date?: string
+}

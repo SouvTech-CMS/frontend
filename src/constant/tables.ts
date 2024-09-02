@@ -31,16 +31,37 @@ export const STORAGE_GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
   null,
 ]
 
-export const ORDERS_TABLE_COLUMNS = [
-  "Order ID",
-  "Shop",
-  "Date",
-  "Qty",
-  "Buyer Paid",
-  "Tax",
-  "Shipping",
-  "Full Fee",
-  "Profit",
+export const ORDERS_TABLE_COLUMNS: (TableColumn | null)[] = [
+  {
+    name: "Order ID",
+    param: "order_id",
+    isSearchable: true,
+    isSortable: false,
+  },
+  { name: "Shop", param: "shop", isSearchable: false, isSortable: false },
+  { name: "Date", param: "date", isSearchable: false, isSortable: true },
+  { name: "Qty", param: "quantity", isSearchable: false, isSortable: true },
+  {
+    name: "Buyer Paid",
+    param: "buyer_paid",
+    isSearchable: false,
+    isSortable: true,
+  },
+  { name: "Tax", param: "tax", isSearchable: false, isSortable: true },
+  {
+    name: "Shipping",
+    param: "shipping",
+    isSearchable: false,
+    isSortable: true,
+  },
+  {
+    name: "Full Fee",
+    param: "full_fee",
+    isSearchable: false,
+    isSortable: true,
+  },
+  { name: "Profit", param: "profit", isSearchable: false, isSortable: true },
+  null,
 ]
 
 export const GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [

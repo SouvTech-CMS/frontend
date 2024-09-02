@@ -1,4 +1,5 @@
-import { Table, Tbody, Text, Th, Thead, Tr } from "@chakra-ui/react"
+import { Table, Tbody, Thead, Tr } from "@chakra-ui/react"
+import { CustomTh } from "component/customTable/CustomTh"
 import { OrdersTableRow } from "component/order/OrdersTableRow"
 import { ORDERS_TABLE_COLUMNS } from "constant/tables"
 import { FC } from "react"
@@ -8,6 +9,7 @@ import { WithId } from "type/withId"
 interface OrdersTableProps {
   ordersList: WithId<Order>[]
   isShowShop?: boolean
+  resetCurrentPage?: () => void
 }
 
 export const OrdersTable: FC<OrdersTableProps> = (props) => {
@@ -17,12 +19,9 @@ export const OrdersTable: FC<OrdersTableProps> = (props) => {
     <Table variant="striped">
       <Thead>
         <Tr>
-          {ORDERS_TABLE_COLUMNS.map((columnName) => (
-            <Th>
-              <Text>{columnName}</Text>
-            </Th>
+          {ORDERS_TABLE_COLUMNS.map((column, index) => (
+            <CustomTh key={index} column={column} />
           ))}
-          <Th></Th>
         </Tr>
       </Thead>
 
