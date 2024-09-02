@@ -10,7 +10,9 @@ import {
 } from "@chakra-ui/react"
 import { ShelfBadge } from "component/ShelfBadge"
 import { StorageCardMenu } from "component/storage/StorageCardMenu"
+import { StorageDeleteModal } from "component/storage/StorageDeleteModal"
 import { StorageModal } from "component/storage/StorageModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { Storage } from "type/storage/storage"
 import { WithId } from "type/withId"
@@ -28,6 +30,9 @@ interface StorageCardProps {
 export const StorageCard: FC<StorageCardProps> = (props) => {
   const { storage } = props
 
+  const { canEditStorage } = useUserPermissions()
+
+  const storageId = storage.id
   const storageGoodId = storage.storage_good_id
 
   const isCreatedAtExists = storage.created_at !== undefined
@@ -44,6 +49,12 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
     onClose: onStorageUpdateModalClose,
   } = useDisclosure()
 
+  const {
+    isOpen: isStorageDeleteModalOpen,
+    onOpen: onStorageDeleteModalOpen,
+    onClose: onStorageDeleteModalClose,
+  } = useDisclosure()
+
   return (
     <>
       <Card h="full" w="full" minH={300} size="sm">
@@ -57,7 +68,12 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
             )}
           </Flex>
 
-          <StorageCardMenu onEdit={onStorageUpdateModalOpen} />
+          {canEditStorage && (
+            <StorageCardMenu
+              onEdit={onStorageUpdateModalOpen}
+              onDelete={onStorageDeleteModalOpen}
+            />
+          )}
         </CardHeader>
 
         <CardBody>
@@ -140,12 +156,21 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
         </CardBody>
       </Card>
 
-      <StorageModal
-        storageGoodId={storageGoodId}
-        prevStorage={storage}
-        isOpen={isStorageUpdateModalOpen}
-        onClose={onStorageUpdateModalClose}
-      />
+      {/* Modals */}
+      <>
+        <StorageModal
+          storageGoodId={storageGoodId}
+          prevStorage={storage}
+          isOpen={isStorageUpdateModalOpen}
+          onClose={onStorageUpdateModalClose}
+        />
+
+        <StorageDeleteModal
+          storageId={storageId}
+          isOpen={isStorageDeleteModalOpen}
+          onClose={onStorageDeleteModalClose}
+        />
+      </>
     </>
   )
 }

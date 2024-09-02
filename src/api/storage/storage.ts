@@ -38,3 +38,7 @@ export const updateStorage = async (
   const { data: storage } = await axiosClient.put("/storage/", body)
   return storage
 }
+
+export const deleteStorage = async (storageId: number) => {
+  await axiosClient.delete(`/storage/${storageId}`)
+}

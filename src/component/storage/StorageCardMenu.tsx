@@ -7,18 +7,15 @@ import {
   MenuList,
 } from "@chakra-ui/react"
 import { FC } from "react"
-import { FiEdit, FiMoreVertical } from "react-icons/fi"
+import { FiEdit, FiMoreVertical, FiTrash2 } from "react-icons/fi"
 
 interface StorageCardMenuProps {
   onEdit: () => void
-  // onDelete: () => void
+  onDelete: () => void
 }
 
 export const StorageCardMenu: FC<StorageCardMenuProps> = (props) => {
-  const {
-    onEdit,
-    //  onDelete,
-  } = props
+  const { onEdit, onDelete } = props
 
   return (
     <Flex position="absolute" top={0} right={0}>
@@ -35,9 +32,9 @@ export const StorageCardMenu: FC<StorageCardMenuProps> = (props) => {
             Edit
           </MenuItem>
 
-          {/* <MenuItem icon={<FiTrash2 />} color="red" onClick={onDelete}>
+          <MenuItem icon={<FiTrash2 />} color="red" onClick={onDelete}>
             Delete
-          </MenuItem> */}
+          </MenuItem>
         </MenuList>
       </Menu>
     </Flex>

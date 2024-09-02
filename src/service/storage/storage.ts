@@ -1,6 +1,7 @@
 import { queryClient } from "api/queryClient"
 import {
   createStorage,
+  deleteStorage,
   moveGoodsToStorage,
   updateStorage,
 } from "api/storage/storage"
@@ -28,6 +29,14 @@ export const useStorageUpdateMutation = () => {
   return useMutation(updateStorage, {
     onSuccess: ({ storage_good_id }) => {
       queryClient.invalidateQueries(["goodWithStorages", storage_good_id])
+    },
+  })
+}
+
+export const useStorageDeleteMutation = () => {
+  return useMutation(deleteStorage, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("goodWithStorages")
     },
   })
 }
