@@ -18,7 +18,7 @@ import { FiAlignLeft, FiHash, FiType } from "react-icons/fi"
 import {
   useStorageGoodCreateMutation,
   useStorageGoodUpdateMutation,
-} from "service/storageGood"
+} from "service/storage/storageGood"
 import { ModalProps } from "type/modalProps"
 import { StorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"

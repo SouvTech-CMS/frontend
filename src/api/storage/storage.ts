@@ -1,5 +1,10 @@
 import { axiosClient } from "api/axiosClient"
-import { DeliveryToStorage, StorageActualInfo } from "type/storage/storage"
+import {
+  DeliveryToStorage,
+  Storage,
+  StorageActualInfo,
+} from "type/storage/storage"
+import { WithId } from "type/withId"
 
 export const moveGoodsToStorage = async (body: DeliveryToStorage[]) => {
   await axiosClient.post("/storage/move_goods_from_delivery/", body)
@@ -18,4 +23,18 @@ export const getStorageActualInfoByGoodId = async (
     },
   )
   return storageActualInfo
+}
+
+export const createStorage = async (
+  body: Storage,
+): Promise<WithId<Storage>> => {
+  const { data: storage } = await axiosClient.post("/storage/", body)
+  return storage
+}
+
+export const updateStorage = async (
+  body: WithId<Storage>,
+): Promise<WithId<Storage>> => {
+  const { data: storage } = await axiosClient.put("/storage/", body)
+  return storage
 }

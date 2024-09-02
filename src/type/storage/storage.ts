@@ -9,7 +9,7 @@ export type Storage = {
   prime_cost?: number
   cost_per_item?: number
   box_quantity?: number
-  in_box_quantity: number
+  in_box_quantity?: number
   shelf?: string
   shops?: WithId<Shop>[]
 }

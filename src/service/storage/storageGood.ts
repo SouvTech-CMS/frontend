@@ -5,7 +5,6 @@ import { useMutation } from "react-query"
 export const useStorageGoodCreateMutation = () => {
   return useMutation(createStorageGood, {
     onSuccess: () => {
-      queryClient.invalidateQueries("storageGoodsCount")
       queryClient.invalidateQueries("storageGoodsList")
     },
   })
