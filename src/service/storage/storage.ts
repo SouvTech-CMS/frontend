@@ -1,5 +1,10 @@
 import { queryClient } from "api/queryClient"
-import { moveGoodsToStorage } from "api/storage/storage"
+import {
+  createStorage,
+  deleteStorage,
+  moveGoodsToStorage,
+  updateStorage,
+} from "api/storage/storage"
 import { useMutation } from "react-query"
 
 export const useMoveGoodsToStorageMutation = () => {
@@ -8,6 +13,30 @@ export const useMoveGoodsToStorageMutation = () => {
       queryClient.invalidateQueries("purchaseDeliveriesList")
       queryClient.invalidateQueries("storageGoodsList")
       queryClient.invalidateQueries("storageGoodsCount")
+    },
+  })
+}
+
+export const useStorageCreateMutation = () => {
+  return useMutation(createStorage, {
+    onSuccess: ({ storage_good_id }) => {
+      queryClient.invalidateQueries(["goodWithStorages", storage_good_id])
+    },
+  })
+}
+
+export const useStorageUpdateMutation = () => {
+  return useMutation(updateStorage, {
+    onSuccess: ({ storage_good_id }) => {
+      queryClient.invalidateQueries(["goodWithStorages", storage_good_id])
+    },
+  })
+}
+
+export const useStorageDeleteMutation = () => {
+  return useMutation(deleteStorage, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("goodWithStorages")
     },
   })
 }

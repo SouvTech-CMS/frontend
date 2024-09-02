@@ -52,7 +52,13 @@ export const DetailedReports = (props: PageProps) => {
     if (isCanGenerateReport) {
       refetch()
     }
-  }, [refetch, selectedShopId, isCanGenerateReport])
+  }, [
+    refetch,
+    selectedShopId,
+    isCanGenerateReport,
+    selectedYear,
+    selectedMonth,
+  ])
 
   return (
     <Page guideNotionPageId={guideNotionPageId}>

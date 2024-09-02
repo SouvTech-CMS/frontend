@@ -23,6 +23,7 @@ import { ModalProps } from "type/modalProps"
 import { StorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
+
 interface StorageGoodModalProps extends ModalProps {
   prevGood?: WithId<StorageGood>
 }

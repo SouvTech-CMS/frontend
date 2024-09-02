@@ -3,7 +3,7 @@ import { FC } from "react"
 
 interface ShelfBadgeProps {
   shelf: string
-  onRemove?: () => void
+  onRemove?: (shelfCode: string) => void
   isCanRemove?: boolean
 }
 
@@ -11,10 +11,14 @@ export const ShelfBadge: FC<ShelfBadgeProps> = (props) => {
   const { shelf, onRemove, isCanRemove } = props
 
   if (isCanRemove && onRemove) {
+    const handleRemove = () => {
+      onRemove(shelf)
+    }
+
     return (
       <Tag size="md" fontWeight="bold" colorScheme="purple">
         <TagLabel>{shelf}</TagLabel>
-        <TagCloseButton onClick={onRemove} />
+        <TagCloseButton onClick={handleRemove} />
       </Tag>
     )
   }

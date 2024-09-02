@@ -14,6 +14,7 @@ import { GoodToStorageCard } from "component/purchaseDelivery/GoodToStorageCard"
 import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { useMoveGoodsToStorageMutation } from "service/storage/storage"
+import { ApiResponse } from "type/api/apiResponse"
 import { ModalProps } from "type/modalProps"
 import { PurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
 import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
@@ -43,11 +44,12 @@ export const PurchaseDeliveryToStorageModal: FC<
   const [goodsPairs, setGoodsPairs] =
     useState<DeliveryToStorage[]>(initialGoodsPairList)
 
-  const { data: storageGoodsList, isLoading: isLoadingStorageGoodsList } =
-    useQuery<WithId<StorageGood>[]>(
+  const { data: storageGoodsResponse, isLoading: isLoadingStorageGoodsList } =
+    useQuery<ApiResponse<WithId<StorageGood>[]>>(
       "storageGoodsFullList",
       getFullStorageGoodsList,
     )
+  const storageGoodsList = storageGoodsResponse?.result
 
   const moveGoodsToStorageMutation = useMoveGoodsToStorageMutation()
 

@@ -3,7 +3,8 @@ import { getGoodWithStoragesById } from "api/storage/storageGood"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
-import { GoodStorageCard } from "component/storageGood/GoodStorageCard"
+import { NewStorageCard } from "component/storage/NewStorageCard"
+import { StorageCard } from "component/storage/StorageCard"
 import { StorageGoodProperties } from "component/storageGood/StorageGoodProperties"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
@@ -45,14 +46,18 @@ export const StorageGoodDetails = (props: PageProps) => {
           <Divider borderWidth={1} />
 
           <Flex direction="column" gap={5}>
-            <Heading size="lg">Purchases of Good</Heading>
+            <Heading size="lg">Storage Records</Heading>
 
-            <Grid templateColumns="repeat(3, 1fr)" gap={5}>
+            <Grid templateColumns="repeat(4, 1fr)" gap={5}>
               {storagesList?.map((storage, index) => (
                 <GridItem key={index}>
-                  <GoodStorageCard storage={storage} />
+                  <StorageCard storage={storage} />
                 </GridItem>
               ))}
+
+              <GridItem>
+                <NewStorageCard storageGoodId={storageGoodId} />
+              </GridItem>
             </Grid>
           </Flex>
         </Flex>
