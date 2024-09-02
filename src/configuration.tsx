@@ -29,6 +29,7 @@ import {
   FiTruck,
   FiUsers,
 } from "react-icons/fi"
+import { GoodSearchFilter } from "type/order/good"
 import { OrderSearchFilter } from "type/order/order"
 import { StorageGoodSearchFilter } from "type/storage/storageGood"
 import { getApiBaseUrl, getWebSocketBaseUrl } from "util/urls"
@@ -99,7 +100,11 @@ export const configuration = {
       name: "Goods",
       path: "/goods",
       permissions: [Permission.GOOD_READ],
-      component: <Goods guideNotionPageId="439359fa5d974bd8a28d613099f95af1" />,
+      component: (
+        <TableContextProvider<GoodSearchFilter>>
+          <Goods guideNotionPageId="439359fa5d974bd8a28d613099f95af1" />
+        </TableContextProvider>
+      ),
     },
     // Purchases
     {
