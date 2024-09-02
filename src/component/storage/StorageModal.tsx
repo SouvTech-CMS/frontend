@@ -12,6 +12,7 @@ import {
   ModalHeader,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
+import { ShelfInput } from "component/ShelfInput"
 import { FC, useEffect, useMemo, useState } from "react"
 import { FiType } from "react-icons/fi"
 import {
@@ -46,6 +47,8 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
   const storageCreateMutation = useStorageCreateMutation()
   const storageUpdateMutation = useStorageUpdateMutation()
 
+  const isQuantityInvalid = !storage.quantity
+
   const isLoading =
     storageCreateMutation.isLoading || storageUpdateMutation.isLoading
 
@@ -59,6 +62,9 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
   }
 
   const onStorageUpdate = async () => {
+    //* Remove storage shops param, to not change them
+    delete storage["shops"]
+
     if (isNewStorage) {
       await storageCreateMutation.mutateAsync(storage)
 
@@ -86,8 +92,10 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
   useEffect(() => {
     if (isNewStorage) {
       setStorage(newStorage)
+    } else {
+      setStorage(prevStorage)
     }
-  }, [isOpen, isNewStorage, newStorage])
+  }, [isOpen, isNewStorage, newStorage, prevStorage])
 
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
@@ -117,6 +125,7 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
                   const value = e.target.value
                   handleStorageChange("quantity", value)
                 }}
+                isInvalid={isQuantityInvalid}
                 isDisabled={isLoading}
               />
             </InputGroup>
@@ -192,6 +201,12 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
                 isDisabled={isLoading}
               />
             </InputGroup>
+
+            {/* Shelf Input */}
+            <ShelfInput
+              prevShelf={storage.shelf}
+              onChange={handleStorageChange}
+            />
           </Flex>
         </ModalBody>
 

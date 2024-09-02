@@ -26,14 +26,14 @@ export const getStorageActualInfoByGoodId = async (
 }
 
 export const createStorage = async (
-  body: Storage,
+  body: Omit<Storage, "shops">,
 ): Promise<WithId<Storage>> => {
   const { data: storage } = await axiosClient.post("/storage/", body)
   return storage
 }
 
 export const updateStorage = async (
-  body: WithId<Storage>,
+  body: Omit<WithId<Storage>, "shops">,
 ): Promise<WithId<Storage>> => {
   const { data: storage } = await axiosClient.put("/storage/", body)
   return storage
