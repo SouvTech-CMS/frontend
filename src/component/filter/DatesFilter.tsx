@@ -27,16 +27,16 @@ export const DatesFilter: FC<DatesFilterProps> = (props) => {
       )
     }
     // Single Date
-    else if (selectedDates.length === 1) {
-      setSearchFilter(
-        (prevFilters) =>
-          ({
-            ...prevFilters,
-            start_date: dateToDateAsString(selectedDates[0]),
-            end_date: undefined,
-          } as OrderSearchFilter),
-      )
-    }
+    // else if (selectedDates.length === 1) {
+    //   setSearchFilter(
+    //     (prevFilters) =>
+    //       ({
+    //         ...prevFilters,
+    //         start_date: dateToDateAsString(selectedDates[0]),
+    //         end_date: undefined,
+    //       } as OrderSearchFilter),
+    //   )
+    // }
     // Date Range
     else if (selectedDates.length === 2) {
       const startDate = dateToDateAsString(selectedDates[0])
