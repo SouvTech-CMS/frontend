@@ -20,7 +20,7 @@ export const getAllStorageGoods = async (
 }
 
 export const getFullStorageGoodsList = async (): Promise<
-  WithId<StorageGood>[]
+  ApiResponse<WithId<StorageGood>[]>
 > => {
   const { data: storageGoodsList } = await axiosClient.post(
     "/storage/good/all/",

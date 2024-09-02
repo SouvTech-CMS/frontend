@@ -5,8 +5,6 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  InputRightElement,
-  Tooltip,
 } from "@chakra-ui/react"
 import {
   ActionMeta,
@@ -16,15 +14,9 @@ import {
   SingleValue,
 } from "chakra-react-select"
 import { DeliveryToStorageShopsSelect } from "component/purchaseDelivery/DeliveryToStorageShopsSelect"
-import { ShelfBadge } from "component/storageGood/ShelfBadge"
-import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react"
-import {
-  FiArrowRight,
-  FiCheck,
-  FiHash,
-  FiInbox,
-  FiPackage,
-} from "react-icons/fi"
+import { ShelfInput } from "component/ShelfInput"
+import { ChangeEvent, FC, useEffect, useState } from "react"
+import { FiArrowRight, FiInbox, FiPackage } from "react-icons/fi"
 import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { SelectOption } from "type/selectOption"
 import { DeliveryToStorage } from "type/storage/storage"
@@ -51,11 +43,6 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
     (good) => good.id === deliveryGoodId,
   )?.purchase_good
 
-  const [shelf, setShelf] = useState<string>("")
-  const [shelfsList, setShelfsList] = useState<string[]>([])
-
-  const isShelfExists = !!shelf.trim() && shelf.trim().length >= 2
-
   const isSelectedStorageGoodInvalid = !goodsPair.storage_good_id
 
   const handleGoodChange = (
@@ -75,29 +62,6 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
     const selectedOption = newValue as SelectOption
     const storageGoodId = Number(selectedOption.value)
     handleGoodChange("storage_good_id", storageGoodId)
-  }
-
-  const handleShelfsListChange = (newShelfsList: string[]) => {
-    setShelfsList(newShelfsList)
-    handleGoodChange("shelf", newShelfsList.join(";"))
-    setShelf("")
-  }
-
-  const handleShelfEnterPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && isShelfExists) {
-      const newShelfsList = [...shelfsList, shelf.trim()]
-      handleShelfsListChange(newShelfsList)
-    }
-  }
-
-  const handleShelfRemove = (shelfCode: string) => {
-    const newShelfsList = shelfsList.filter((shelf) => shelf !== shelfCode)
-    handleShelfsListChange(newShelfsList)
-  }
-
-  const handleShelfChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toUpperCase().trim()
-    setShelf(value)
   }
 
   const storageGoodSelectStyles: ChakraStylesConfig<
@@ -185,41 +149,10 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
             </InputGroup>
 
             {/* Shelf Input */}
-            <Flex w="full" direction="column" gap={2}>
-              <Tooltip label="Press Enter to add shelf">
-                <InputGroup>
-                  <InputLeftElement color="gray">
-                    <FiHash />
-                  </InputLeftElement>
-
-                  <Input
-                    placeholder="Shelf"
-                    type="text"
-                    value={shelf}
-                    onChange={handleShelfChange}
-                    onKeyDown={handleShelfEnterPress}
-                  />
-
-                  {isShelfExists && (
-                    <InputRightElement color="green">
-                      <FiCheck />
-                    </InputRightElement>
-                  )}
-                </InputGroup>
-              </Tooltip>
-
-              {/* Shelfs List */}
-              <Flex alignItems="center" flexWrap="wrap" gap={2}>
-                {shelfsList.map((shelfCode, index) => (
-                  <ShelfBadge
-                    key={index}
-                    shelf={shelfCode}
-                    onRemove={() => handleShelfRemove(shelfCode)}
-                    isCanRemove
-                  />
-                ))}
-              </Flex>
-            </Flex>
+            <ShelfInput
+              prevShelf={goodsPair.shelf}
+              onChange={handleGoodChange}
+            />
           </Flex>
 
           <Flex w="full">
