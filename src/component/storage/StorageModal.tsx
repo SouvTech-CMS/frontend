@@ -14,7 +14,7 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ShelfInput } from "component/ShelfInput"
 import { FC, useEffect, useMemo, useState } from "react"
-import { FiType } from "react-icons/fi"
+import { FiDollarSign, FiInbox, FiLayers, FiPackage } from "react-icons/fi"
 import {
   useStorageCreateMutation,
   useStorageUpdateMutation,
@@ -114,7 +114,7 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
             {/* Quantity Input */}
             <InputGroup>
               <InputLeftElement color="gray">
-                <FiType />
+                <FiLayers />
               </InputLeftElement>
 
               <Input
@@ -133,7 +133,7 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
             {/* Prime Cost Input */}
             <InputGroup>
               <InputLeftElement color="gray">
-                <FiType />
+                <FiDollarSign />
               </InputLeftElement>
 
               <Input
@@ -151,7 +151,7 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
             {/* Item Price Input */}
             <InputGroup>
               <InputLeftElement color="gray">
-                <FiType />
+                <FiDollarSign />
               </InputLeftElement>
 
               <Input
@@ -169,7 +169,7 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
             {/* Boxes Quantity Input */}
             <InputGroup>
               <InputLeftElement color="gray">
-                <FiType />
+                <FiPackage />
               </InputLeftElement>
 
               <Input
@@ -187,7 +187,7 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
             {/* In Box Quantity Input */}
             <InputGroup>
               <InputLeftElement color="gray">
-                <FiType />
+                <FiInbox />
               </InputLeftElement>
 
               <Input
