@@ -3,25 +3,18 @@ import {
   CardHeader,
   Flex,
   Heading,
-  IconButton,
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
+import { ManagerCardMenu } from "component/supplierManager/ManagerCardMenu"
+import { ManagerModal } from "component/supplierManager/ManagerModal"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
-import {
-  FiAtSign,
-  FiEdit2,
-  FiMessageSquare,
-  FiPhone,
-  FiTrash2,
-} from "react-icons/fi"
+import { FiAtSign, FiMessageSquare, FiPhone } from "react-icons/fi"
 import { useSupplierManagerDeleteMutation } from "service/supplier/supplierManager"
 import { SupplierManager } from "type/supplier/supplierManager"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
-import { ManagerModal } from "./ManagerModal"
-import { ManagerCardMenu } from "./ManagerCardMenu"
 
 interface ManagerCardProps {
   manager: WithId<SupplierManager>
@@ -30,28 +23,30 @@ interface ManagerCardProps {
 export const ManagerCard: FC<ManagerCardProps> = (props) => {
   const { manager } = props
 
-  const { comment } = useCommentInput({
-    objectName: "supplier_manager",
-    objectId: manager.id,
-  })
-
-  const isEmailExists = !!manager.email?.trim()
-  const isPhoneExists = !!manager.phone_number?.trim()
-  const isCommentExists = !!comment.trim()
+  const supplierId = manager.supplier_id
+  const managerId = manager.id
+  const isEmailExists = !!manager.email.trim()
+  const isPhoneExists = !!manager.phone_number.trim()
 
   const managerDeleteMutation = useSupplierManagerDeleteMutation()
 
-  const onDeleteManager = async () => {
-    await managerDeleteMutation.mutateAsync(manager.id)
-
-    notify(`Manager ${manager.name} deleted successfully`, "success")
-  }
+  const { comment } = useCommentInput({
+    objectName: "supplier_manager",
+    objectId: managerId,
+  })
+  const isCommentExists = !!comment.trim()
 
   const {
     isOpen: isManagerUpdateModalOpen,
     onOpen: onManagerUpdateModalOpen,
     onClose: onManagerUpdateModalClose,
   } = useDisclosure()
+
+  const onDeleteManager = async () => {
+    await managerDeleteMutation.mutateAsync(managerId)
+
+    notify(`Manager ${manager.name} deleted successfully`, "success")
+  }
 
   return (
     <>
@@ -87,7 +82,7 @@ export const ManagerCard: FC<ManagerCardProps> = (props) => {
                 <Text color="gray">{comment}</Text>
               </Flex>
             )}
-            {/* Actions Menu Button */}
+
             <ManagerCardMenu
               onEdit={onManagerUpdateModalOpen}
               onDelete={onDeleteManager}
@@ -97,9 +92,9 @@ export const ManagerCard: FC<ManagerCardProps> = (props) => {
       </Card>
 
       <ManagerModal
-        managerId={manager.id}
+        supplierId={supplierId}
+        managerId={managerId}
         prevManager={manager}
-        supplierId={manager.supplier_id}
         isOpen={isManagerUpdateModalOpen}
         onClose={onManagerUpdateModalClose}
       />

@@ -13,9 +13,8 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
-import { previousDay } from "date-fns"
 import { useCommentInput } from "hook/useCommentInput"
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useMemo, useState } from "react"
 import { FiAtSign, FiPhone, FiUser } from "react-icons/fi"
 import {
   useSupplierManagerCreateMutation,
@@ -28,8 +27,8 @@ import { notify } from "util/toasts"
 
 interface ManagerModalProps extends ModalProps {
   supplierId: number
-  prevManager?: SupplierManager
   managerId?: number
+  prevManager?: SupplierManager
 }
 
 export const ManagerModal: FC<ManagerModalProps> = (props) => {
@@ -37,12 +36,15 @@ export const ManagerModal: FC<ManagerModalProps> = (props) => {
 
   const isManagerExists = managerId !== undefined && prevManager !== undefined
 
-  const newManager: SupplierManager = {
-    supplier_id: supplierId,
-    name: "",
-    email: "",
-    phone_number: "",
-  }
+  const newManager = useMemo(
+    () => ({
+      supplier_id: supplierId,
+      name: "",
+      email: "",
+      phone_number: "",
+    }),
+    [supplierId],
+  )
 
   const [manager, setManager] = useState<SupplierManager>(
     prevManager || newManager,
@@ -94,7 +96,7 @@ export const ManagerModal: FC<ManagerModalProps> = (props) => {
     } else {
       setManager(newManager)
     }
-  }, [supplierId, isOpen])
+  }, [supplierId, isOpen, isManagerExists, newManager, prevManager])
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>

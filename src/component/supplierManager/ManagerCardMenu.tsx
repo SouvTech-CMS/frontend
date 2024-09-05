@@ -7,7 +7,7 @@ import {
   MenuList,
 } from "@chakra-ui/react"
 import { FC } from "react"
-import { FiEdit, FiMoreVertical, FiTrash2} from "react-icons/fi"
+import { FiEdit, FiMoreVertical, FiTrash2 } from "react-icons/fi"
 
 interface ManagerCardMenuProps {
   onEdit: () => void
