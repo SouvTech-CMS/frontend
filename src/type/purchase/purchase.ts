@@ -7,6 +7,7 @@ export type Purchase = {
   deadline: number
   // "amount" generated on frontend
   amount: number
+  deposit?: number
   status: string
   updated_at?: number
   created_at?: number

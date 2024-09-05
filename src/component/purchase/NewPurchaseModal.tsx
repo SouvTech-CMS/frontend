@@ -128,7 +128,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
         <ModalCloseButton />
 
         <ModalBody>
-          <Flex direction="column" gap={10}>
+          <Flex direction="column" gap={5}>
             <PurchaseGoodsTable goods={goods} setGoods={setGoods} />
 
             {/* Supplier and Manager */}
@@ -171,6 +171,21 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
                   ))}
                 </Select>
               </Flex>
+            </Flex>
+
+            {/* Deposit */}
+            <Flex w="full" direction="column" gap={1}>
+              <Text fontWeight="bold">Deposit:</Text>
+
+              <Input
+                placeholder="Deposit"
+                value={purchase.deposit}
+                type="number"
+                onChange={(e) => {
+                  const value = e.target.valueAsNumber
+                  handlePurchaseUpdate("deposit", value)
+                }}
+              />
             </Flex>
 
             {/* Deadline */}
