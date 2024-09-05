@@ -5,12 +5,15 @@ import {
   CardHeader,
   Flex,
   Heading,
+  IconButton,
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
 import { SKUBadge } from "component/SKUBadge"
+import { PurchaseGoodDeleteModal } from "component/purchaseGood/PurchaseGoodDeleteModal"
 import { PurchaseGoodModal } from "component/purchaseGood/PurchaseGoodModal"
 import { FC } from "react"
+import { FiTrash2 } from "react-icons/fi"
 import { PurchaseGood } from "type/purchase/purchaseGood"
 import { WithId } from "type/withId"
 import { isGoodPartiallyInDelivery } from "util/purchaseGood"
@@ -30,10 +33,17 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
     onClose: onGoodEditModalClose,
   } = useDisclosure()
 
+  const goodId = good.id
   const goodSKU = good.sku
   const isSKUExists = goodSKU !== undefined
 
   const isPartiallyInDelivery = isGoodPartiallyInDelivery(good)
+
+  const {
+    isOpen: isGoodDeleteModalOpen,
+    onOpen: onGoodDeleteModalOpen,
+    onClose: onGoodDeleteModalClose,
+  } = useDisclosure()
 
   return (
     <>
@@ -46,7 +56,7 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
                 {/* ID & Name */}
                 <Flex alignItems="center" gap={5}>
                   <Heading size="md">
-                    #{good.id} {good.name}
+                    #{goodId} {good.name}
                   </Heading>
                 </Flex>
 
@@ -81,8 +91,8 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
             Find this good in purchases
           </Button> */}
 
-            {/* Edit Btn */}
-            <Flex w="full">
+            <Flex w="full" gap={2}>
+              {/* Edit Btn */}
               <Button
                 w="full"
                 variant="ghost"
@@ -91,16 +101,34 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
               >
                 Edit
               </Button>
+
+              {/* Delete */}
+              <IconButton
+                aria-label="delete-good"
+                variant="ghost"
+                colorScheme="red"
+                icon={<FiTrash2 />}
+                onClick={onGoodDeleteModalOpen}
+              />
             </Flex>
           </Flex>
         </CardHeader>
       </Card>
 
-      <PurchaseGoodModal
-        prevGood={good}
-        isOpen={isGoodEditModalOpen}
-        onClose={onGoodEditModalClose}
-      />
+      {/* Modals */}
+      <>
+        <PurchaseGoodModal
+          prevGood={good}
+          isOpen={isGoodEditModalOpen}
+          onClose={onGoodEditModalClose}
+        />
+
+        <PurchaseGoodDeleteModal
+          goodId={goodId}
+          isOpen={isGoodDeleteModalOpen}
+          onClose={onGoodDeleteModalClose}
+        />
+      </>
     </>
   )
 }
