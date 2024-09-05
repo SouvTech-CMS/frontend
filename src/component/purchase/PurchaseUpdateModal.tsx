@@ -1,6 +1,7 @@
 import {
   Button,
   Flex,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,7 +15,7 @@ import { getAllSuppliers } from "api/supplier/supplier"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { useCommentInput } from "hook/useCommentInput"
-import { ChangeEvent, FC, useState } from "react"
+import { ChangeEvent, FC, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 import { usePurchaseUpdateMutation } from "service/purchase/purchase"
 import { ModalProps } from "type/modalProps"
@@ -33,13 +34,19 @@ export const PurchaseUpdateModal: FC<PurchaseUpdateModalProps> = (props) => {
 
   const purchaseId = prevPurchase.id
 
-  const [purchase, setPurchase] = useState<PurchaseUpdate>({
-    id: purchaseId,
-    supplier_manager_id: prevManagerId,
-    deadline: prevPurchase.deadline,
-    amount: prevPurchase.amount,
-    status: prevPurchase.status,
-  })
+  const prevPurchaseData = useMemo(
+    () => ({
+      id: purchaseId,
+      supplier_manager_id: prevManagerId,
+      deadline: prevPurchase.deadline,
+      amount: prevPurchase.amount,
+      deposit: prevPurchase.deposit,
+      status: prevPurchase.status,
+    }),
+    [purchaseId, prevManagerId, prevPurchase],
+  )
+
+  const [purchase, setPurchase] = useState<PurchaseUpdate>(prevPurchaseData)
   const [supplierId, setSupplierId] = useState<number>(prevSupplierId)
 
   const purchaseUpdateMutation = usePurchaseUpdateMutation()
@@ -91,6 +98,10 @@ export const PurchaseUpdateModal: FC<PurchaseUpdateModalProps> = (props) => {
     onClose()
   }
 
+  useEffect(() => {
+    setPurchase(prevPurchaseData)
+  }, [prevPurchaseData])
+
   return (
     <Modal size="4xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalBackgroundBlur />
@@ -100,7 +111,7 @@ export const PurchaseUpdateModal: FC<PurchaseUpdateModalProps> = (props) => {
         <ModalCloseButton />
 
         <ModalBody>
-          <Flex direction="column" gap={10}>
+          <Flex direction="column" gap={5}>
             {/* Supplier and Manager */}
             <Flex w="full" gap={10}>
               {/* Supplier Select */}
@@ -141,6 +152,21 @@ export const PurchaseUpdateModal: FC<PurchaseUpdateModalProps> = (props) => {
                   ))}
                 </Select>
               </Flex>
+            </Flex>
+
+            {/* Deposit */}
+            <Flex w="full" direction="column" gap={1}>
+              <Text fontWeight="bold">Deposit:</Text>
+
+              <Input
+                placeholder="Deposit"
+                value={purchase.deposit}
+                type="number"
+                onChange={(e) => {
+                  const value = e.target.valueAsNumber
+                  handlePurchaseUpdate("deposit", value)
+                }}
+              />
             </Flex>
 
             {/* Comment */}

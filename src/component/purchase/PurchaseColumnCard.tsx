@@ -47,6 +47,8 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
 
   const purchaseDeadline = timestampToDate(purchase.deadline)
 
+  const isDepositExists = purchase.deposit !== undefined
+
   const { comment } = useCommentInput({
     objectName: "purchase",
     objectId: purchaseId,
@@ -141,6 +143,14 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
         {/* Card Content with Goods */}
         <AccordionPanel>
           <Flex direction="column" gap={5}>
+            {/* Deposit */}
+            {isDepositExists && (
+              <Flex alignItems="center" gap={2} fontWeight="semibold">
+                <Text>Deposit:</Text>
+                <Text>{numberWithCurrency(roundNumber(purchase.deposit))}</Text>
+              </Flex>
+            )}
+
             <DividerWithTitle title="Goods" />
 
             <Flex direction="column" gap={2}>
