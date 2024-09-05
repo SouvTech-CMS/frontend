@@ -3,6 +3,7 @@ import { NewPurchaseGoodModal } from "component/purchaseGood/NewPurchaseGoodModa
 import { NewPurchaseGoodRowMenu } from "component/purchaseGood/NewPurchaseGoodRowMenu"
 import { FC } from "react"
 import { PurchaseGood } from "type/purchase/purchaseGood"
+import { numberWithCurrency } from "util/formatting"
 
 interface NewPurchaseGoodRowProps {
   good: PurchaseGood
@@ -12,6 +13,10 @@ interface NewPurchaseGoodRowProps {
 
 export const NewPurchaseGoodRow: FC<NewPurchaseGoodRowProps> = (props) => {
   const { good, onEdit, onRemove } = props
+
+  const discountAsNumber = parseFloat(good.discount || "") || undefined
+  const isDiscountExists = discountAsNumber !== undefined
+  const isDiscountPercentage = good.discount?.includes("%")
 
   const {
     isOpen: isNewGoodEditModalOpen,
@@ -38,7 +43,7 @@ export const NewPurchaseGoodRow: FC<NewPurchaseGoodRowProps> = (props) => {
 
         {/* Unit Price */}
         <Td>
-          <Text>${good.price_per_item}</Text>
+          <Text>{numberWithCurrency(good.price_per_item)}</Text>
         </Td>
 
         {/* Quantity */}
@@ -48,7 +53,18 @@ export const NewPurchaseGoodRow: FC<NewPurchaseGoodRowProps> = (props) => {
 
         {/* Total Amount */}
         <Td>
-          <Text>${good.amount}</Text>
+          <Text>{numberWithCurrency(good.total_amount)}</Text>
+        </Td>
+
+        {/* Discount */}
+        <Td>
+          {isDiscountExists && (
+            <Text>
+              {isDiscountPercentage
+                ? good.discount
+                : numberWithCurrency(discountAsNumber)}
+            </Text>
+          )}
         </Td>
 
         {/* Remove Good Btn */}

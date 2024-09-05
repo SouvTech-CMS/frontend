@@ -18,7 +18,14 @@ interface PurchaseGoodsTableProps {
   setGoods: Dispatch<SetStateAction<PurchaseGood[]>>
 }
 
-const TABLE_COLUMNS = ["Name", "Unit Price", "Quantity", "Total", ""]
+const TABLE_COLUMNS = [
+  "Name",
+  "Unit Price",
+  "Quantity",
+  "Total",
+  "Discount",
+  "",
+]
 
 export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
   const { goods, setGoods } = props
@@ -30,13 +37,11 @@ export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
   } = useDisclosure()
 
   const handleAddGood = (good: PurchaseGood) => {
-    good.price_per_item = good.amount / good.quantity
     setGoods((prevGoods) => [...prevGoods, good])
     onNewGoodModalClose()
   }
 
   const handleUpdateGood = (good: PurchaseGood) => {
-    good.price_per_item = good.amount / good.quantity
     setGoods((prevGoods) => [
       ...prevGoods.filter(
         (prevGood) => prevGood.name.toLowerCase() !== good.name.toLowerCase(),
