@@ -13,7 +13,7 @@ export const createSupplierManager = async (
 }
 
 export const updateSupplierManager = async (
-  supplierManager: SupplierManager,
+  supplierManager: WithId<SupplierManager>,
 ) => {
   await axiosClient.put("/supplier/manager/", supplierManager)
 }
