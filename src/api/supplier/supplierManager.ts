@@ -6,7 +6,7 @@ export const createSupplierManager = async (
   supplierManager: SupplierManager,
 ): Promise<WithId<SupplierManager>> => {
   const { data: newSupplierManager } = await axiosClient.post(
-    "/supplier_manager/",
+    "/supplier/manager/",
     supplierManager,
   )
   return newSupplierManager
@@ -15,9 +15,9 @@ export const createSupplierManager = async (
 export const updateSupplierManager = async (
   supplierManager: SupplierManager,
 ) => {
-  await axiosClient.put("/supplier_manager/", supplierManager)
+  await axiosClient.put("/supplier/manager/", supplierManager)
 }
 
 export const deleteSupplierManager = async (supplierManagerId: number) => {
-  await axiosClient.delete(`/supplier_manager/${supplierManagerId}`)
+  await axiosClient.delete(`/supplier/manager/${supplierManagerId}`)
 }
