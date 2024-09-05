@@ -45,6 +45,13 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
   const supplier = manager.supplier
   const files = purchase.files
 
+  const goodsAmount = purchase.goods.reduce(
+    (total, good) => total + good.amount,
+    0,
+  )
+
+  const totalAmount = goodsAmount
+
   const purchaseDeadline = timestampToDate(purchase.deadline)
 
   const isDepositExists = purchase.deposit !== undefined
@@ -157,7 +164,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
               <PurchaseCardGoodsList goods={goods} />
 
               <Text fontWeight="semibold">
-                Total amount: {numberWithCurrency(roundNumber(purchase.amount))}
+                Total amount: {numberWithCurrency(roundNumber(totalAmount))}
               </Text>
             </Flex>
 
