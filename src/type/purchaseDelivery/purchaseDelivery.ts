@@ -26,7 +26,7 @@ export type FullPurchaseDelivery = WithId<PurchaseDelivery> & {
 
 export type PurchaseDeliveryCreate = {
   purchase_delivery: PurchaseDelivery
-  purchase_goods: PurchaseDeliveryGoodCreate[]
+  goods: PurchaseDeliveryGoodCreate[]
 }
 
 export type PurchaseDeliveryUpdate = WithId<PurchaseDelivery>
