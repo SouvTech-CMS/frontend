@@ -16,6 +16,7 @@ import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseGoodsModal } from "component/purchase/PurchaseGoodsModal"
 import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
+import { PurchaseServicesModal } from "component/purchase/PurchaseServicesModal"
 import { PurchaseStatusUpdateModal } from "component/purchase/PurchaseStatusUpdateModal"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
 import { PurchaseUpdateModal } from "component/purchase/PurchaseUpdateModal"
@@ -63,40 +64,53 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
 
   const isCommentExists = !!comment.trim()
 
+  // Documents
   const {
     isOpen: isDocumentsModalOpen,
     onOpen: onDocumentsModalOpen,
     onClose: onDocumentsModalClose,
   } = useDisclosure()
 
+  // Goods
   const {
-    isOpen: isPurchaseGoodsModalOpen,
-    onOpen: onPurchaseGoodsModalOpen,
-    onClose: onPurchaseGoodsModalClose,
+    isOpen: isGoodsModalOpen,
+    onOpen: onGoodsModalOpen,
+    onClose: onGoodsModalClose,
   } = useDisclosure()
 
+  // Services
   const {
-    isOpen: isPurchaseDeleteModalOpen,
-    onOpen: onPurchaseDeleteModalOpen,
-    onClose: onPurchaseDeleteModalClose,
+    isOpen: isServicesModalOpen,
+    onOpen: onServicesModalOpen,
+    onClose: onServicesModalClose,
   } = useDisclosure()
 
+  // Status & Deadline
   const {
     isOpen: isPurchaseGoodsStatusModalOpen,
     onOpen: onPurchaseGoodsStatusModalOpen,
     onClose: onPurchaseGoodsStatusModalClose,
   } = useDisclosure()
 
+  // Manager
   const {
     isOpen: isSupplierManagerModalOpen,
     onOpen: onSupplierManagerModalOpen,
     onClose: onSupplierManagerModalClose,
   } = useDisclosure()
 
+  // Edit
   const {
     isOpen: isPurchaseUpdateModalOpen,
     onOpen: onPurchaseUpdateModalOpen,
     onClose: onPurchaseUpdateModalClose,
+  } = useDisclosure()
+
+  // Delete
+  const {
+    isOpen: isPurchaseDeleteModalOpen,
+    onOpen: onPurchaseDeleteModalOpen,
+    onClose: onPurchaseDeleteModalClose,
   } = useDisclosure()
 
   return (
@@ -122,6 +136,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
             </Text>
           </Flex>
 
+          {/* Menu Btns */}
           <Flex alignItems="center" gap={1}>
             {/* Comment */}
             {isCommentExists && <CommentTooltip comment={comment} />}
@@ -138,7 +153,8 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
             {/* Menu Btn */}
             <PurchaseRowMenu
               onDocuments={onDocumentsModalOpen}
-              onGoods={onPurchaseGoodsModalOpen}
+              onGoods={onGoodsModalOpen}
+              onServices={onServicesModalOpen}
               onSupplierManager={onSupplierManagerModalOpen}
               onStatusUpdate={onPurchaseGoodsStatusModalOpen}
               onEdit={onPurchaseUpdateModalOpen}
@@ -195,8 +211,14 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
         <PurchaseGoodsModal
           purchaseId={purchaseId}
           goods={goods}
-          isOpen={isPurchaseGoodsModalOpen}
-          onClose={onPurchaseGoodsModalClose}
+          isOpen={isGoodsModalOpen}
+          onClose={onGoodsModalClose}
+        />
+
+        <PurchaseServicesModal
+          purchaseId={purchaseId}
+          isOpen={isServicesModalOpen}
+          onClose={onServicesModalClose}
         />
 
         <PurchaseStatusUpdateModal

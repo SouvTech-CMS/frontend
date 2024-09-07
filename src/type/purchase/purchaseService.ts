@@ -3,6 +3,6 @@ export type PurchaseService = {
   purchase_delivery_id?: number
   name: string
   amount: number
-  discount?: string
+  discount?: string | null
   total_amount: number
 }
