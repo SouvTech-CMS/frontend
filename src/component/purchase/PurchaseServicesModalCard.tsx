@@ -26,6 +26,8 @@ export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
 ) => {
   const { service } = props
 
+  const serviceId = service.id
+
   const discountAsNumber = parseFloat(service.discount || "") || undefined
   const isDiscountExists = discountAsNumber !== undefined
   const isDiscountPercentage = service.discount?.includes("%")
@@ -35,8 +37,6 @@ export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
     onOpen: onServiceEditModalOpen,
     onClose: onServiceEditModalClose,
   } = useDisclosure()
-
-  const serviceId = service.id
 
   const {
     isOpen: isServiceDeleteModalOpen,
