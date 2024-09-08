@@ -3,7 +3,7 @@ import { Supplier, SupplierWithManagers } from "type/supplier/supplier"
 import { WithId } from "type/withId"
 
 export const getAllSuppliers = async (): Promise<SupplierWithManagers[]> => {
-  const { data: suppliersList } = await axiosClient.get("/supplier/")
+  const { data: suppliersList } = await axiosClient.get("/supplier/all/")
   return suppliersList
 }
 

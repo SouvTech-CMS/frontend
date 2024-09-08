@@ -19,11 +19,11 @@ import { FC, useEffect, useState } from "react"
 import { usePurchaseDeliveryCreateMutation } from "service/purchaseDelivery/purchaseDelivery"
 import { ModalProps } from "type/modalProps"
 import { PurchaseGood } from "type/purchase/purchaseGood"
-import { PurchaseDeliveryGoodCreate } from "type/purchaseDelivery/purchaseDeliveryGood"
 import {
   PurchaseDelivery,
   PurchaseDeliveryCreate,
 } from "type/purchaseDelivery/purchaseDelivery"
+import { PurchaseDeliveryGoodCreate } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { WithId } from "type/withId"
 import {
   dateAsStringToTimestamp,
@@ -79,7 +79,7 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
         ...delivery,
         deadline: formattedDeadline,
       },
-      purchase_goods: deliveryGoods,
+      goods: deliveryGoods,
     }
 
     const { id: newDeliveryId } =

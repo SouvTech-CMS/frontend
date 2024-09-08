@@ -168,6 +168,8 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
       } else {
         good.discount = `${discount}`
       }
+    } else {
+      good.discount = null
     }
 
     await purchaseGoodUpdateMutation.mutateAsync(good)
@@ -196,7 +198,9 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>New Good</ModalHeader>
+        <ModalHeader>
+          Purchase #{good.purchase_id} Good #{good.id}
+        </ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>

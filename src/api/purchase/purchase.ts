@@ -2,7 +2,7 @@ import { axiosClient } from "api/axiosClient"
 import {
   FullPurchase,
   Purchase,
-  PurchaseCreateWithGoods,
+  PurchaseCreate,
   PurchaseUpdate,
 } from "type/purchase/purchase"
 import { WithId } from "type/withId"
@@ -13,7 +13,7 @@ export const getAllPurchases = async (): Promise<FullPurchase[]> => {
 }
 
 export const createPurchase = async (
-  purchase: PurchaseCreateWithGoods,
+  purchase: PurchaseCreate,
 ): Promise<WithId<Purchase>> => {
   const { data: newPurchase } = await axiosClient.post("/purchase/", purchase)
   return newPurchase
