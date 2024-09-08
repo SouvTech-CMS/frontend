@@ -19,6 +19,7 @@ import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/Purchase
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
 import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
 import { PurchaseDeliveryToStorageModal } from "component/purchaseDelivery/PurchaseDeliveryToStorageModal"
+import { DeliveryServicesModal } from "component/purchaseDeliveryService/DeliveryServicesModal"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
@@ -55,40 +56,53 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   const isMoveGoodsToStorageBtnHidden =
     status !== PurchaseDeliveryStatus.Delivered
 
-  const {
-    isOpen: isDocumentsModalOpen,
-    onOpen: onDocumentsModalOpen,
-    onClose: onDocumentsModalClose,
-  } = useDisclosure()
-
-  const {
-    isOpen: isDeliveryGoodsModalOpen,
-    onOpen: onDeliveryGoodsModalOpen,
-    onClose: onDeliveryGoodsModalClose,
-  } = useDisclosure()
-
-  const {
-    isOpen: isDeliveryGoodsStatusModalOpen,
-    onOpen: onDeliveryGoodsStatusModalOpen,
-    onClose: onDeliveryGoodsStatusModalClose,
-  } = useDisclosure()
-
-  const {
-    isOpen: isPurchaseDeliveryDeleteModalOpen,
-    onOpen: onPurchaseDeliveryDeleteModalOpen,
-    onClose: onPurchaseDeliveryDeleteModalClose,
-  } = useDisclosure()
-
+  // Move to Storage
   const {
     isOpen: isPurchaseDeliveryToStorageModalOpen,
     onOpen: onPurchaseDeliveryToStorageModalOpen,
     onClose: onPurchaseDeliveryToStorageModalClose,
   } = useDisclosure()
 
+  // Documents
+  const {
+    isOpen: isDocumentsModalOpen,
+    onOpen: onDocumentsModalOpen,
+    onClose: onDocumentsModalClose,
+  } = useDisclosure()
+
+  // Goods
+  const {
+    isOpen: isDeliveryGoodsModalOpen,
+    onOpen: onDeliveryGoodsModalOpen,
+    onClose: onDeliveryGoodsModalClose,
+  } = useDisclosure()
+
+  // Services
+  const {
+    isOpen: isDeliveryServicesModalOpen,
+    onOpen: onDeliveryServicesModalOpen,
+    onClose: onDeliveryServicesModalClose,
+  } = useDisclosure()
+
+  // Status & Deadline
+  const {
+    isOpen: isDeliveryGoodsStatusModalOpen,
+    onOpen: onDeliveryGoodsStatusModalOpen,
+    onClose: onDeliveryGoodsStatusModalClose,
+  } = useDisclosure()
+
+  // Edit
   const {
     isOpen: isDeliveryUpdateModalOpen,
     onOpen: onDeliveryUpdateModalOpen,
     onClose: onDeliveryUpdateModalClose,
+  } = useDisclosure()
+
+  // Delete
+  const {
+    isOpen: isPurchaseDeliveryDeleteModalOpen,
+    onOpen: onPurchaseDeliveryDeleteModalOpen,
+    onClose: onPurchaseDeliveryDeleteModalClose,
   } = useDisclosure()
 
   return (
@@ -131,6 +145,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
               onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
               onDocuments={onDocumentsModalOpen}
               onGoods={onDeliveryGoodsModalOpen}
+              onServices={onDeliveryServicesModalOpen}
               onStatusUpdate={onDeliveryGoodsStatusModalOpen}
               onEdit={onDeliveryUpdateModalOpen}
               onDelete={onPurchaseDeliveryDeleteModalOpen}
@@ -157,10 +172,11 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
 
       {/* Purchase Modals */}
       <>
-        <PurchaseDeliveryDeleteModal
-          deliveryId={deliveryId}
-          isOpen={isPurchaseDeliveryDeleteModalOpen}
-          onClose={onPurchaseDeliveryDeleteModalClose}
+        <PurchaseDeliveryToStorageModal
+          delivery={delivery}
+          goods={goods}
+          isOpen={isPurchaseDeliveryToStorageModalOpen}
+          onClose={onPurchaseDeliveryToStorageModalClose}
         />
 
         <DeliveryDocumentsModal
@@ -177,6 +193,12 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
           onClose={onDeliveryGoodsModalClose}
         />
 
+        <DeliveryServicesModal
+          deliveryId={deliveryId}
+          isOpen={isDeliveryServicesModalOpen}
+          onClose={onDeliveryServicesModalClose}
+        />
+
         <DeliveryStatusUpdateModal
           delivery={delivery}
           prevStatus={status}
@@ -184,17 +206,16 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
           onClose={onDeliveryGoodsStatusModalClose}
         />
 
-        <PurchaseDeliveryToStorageModal
-          delivery={delivery}
-          goods={goods}
-          isOpen={isPurchaseDeliveryToStorageModalOpen}
-          onClose={onPurchaseDeliveryToStorageModalClose}
-        />
-
         <DeliveryUpdateModal
           prevDelivery={delivery}
           isOpen={isDeliveryUpdateModalOpen}
           onClose={onDeliveryUpdateModalClose}
+        />
+
+        <PurchaseDeliveryDeleteModal
+          deliveryId={deliveryId}
+          isOpen={isPurchaseDeliveryDeleteModalOpen}
+          onClose={onPurchaseDeliveryDeleteModalClose}
         />
       </>
     </>
