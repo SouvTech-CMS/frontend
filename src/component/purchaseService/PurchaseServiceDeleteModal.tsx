@@ -12,26 +12,42 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { FC } from "react"
 import { usePurchaseServiceDeleteMutation } from "service/purchase/purchaseService"
+import { useDeliveryServiceDeleteMutation } from "service/purchaseDelivery/purchaseDeliveryService"
 import { ModalProps } from "type/modalProps"
 import { notify } from "util/toasts"
 
 interface PurchaseServiceDeleteModalProps extends ModalProps {
   serviceId: number
+  isDelivery?: boolean
 }
 
 export const PurchaseServiceDeleteModal: FC<PurchaseServiceDeleteModalProps> = (
   props,
 ) => {
-  const { serviceId, isOpen, onClose } = props
+  const { serviceId, isDelivery = false, isOpen, onClose } = props
 
   const purchaseServiceDeleteMutation = usePurchaseServiceDeleteMutation()
+  const deliveryServiceDeleteMutation = useDeliveryServiceDeleteMutation()
 
   const isLoading = purchaseServiceDeleteMutation.isLoading
 
   const onDeleteConfirm = async () => {
-    await purchaseServiceDeleteMutation.mutateAsync(serviceId)
+    if (isDelivery) {
+      await deliveryServiceDeleteMutation.mutateAsync(serviceId)
 
-    notify(`Purchase Service ${serviceId} was successfully deleted`, "success")
+      notify(
+        `Delivery Service ${serviceId} was successfully deleted`,
+        "success",
+      )
+    } else {
+      await purchaseServiceDeleteMutation.mutateAsync(serviceId)
+
+      notify(
+        `Purchase Service ${serviceId} was successfully deleted`,
+        "success",
+      )
+    }
+
     onClose()
   }
 
@@ -40,11 +56,16 @@ export const PurchaseServiceDeleteModal: FC<PurchaseServiceDeleteModalProps> = (
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Delete Purchase Service</ModalHeader>
+        <ModalHeader>
+          Delete {isDelivery ? "Delivery" : "Purchase"} Service
+        </ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <Text>Are you sure you want to delete the purchase service</Text>
+          <Text>
+            Are you sure you want to delete the
+            {isDelivery ? " delivery" : " purchase"} service
+          </Text>
           <Text fontWeight="bold">#{serviceId}</Text>
         </ModalBody>
 

@@ -9,7 +9,6 @@ import { useMutation } from "react-query"
 export const usePurchaseCreateMutation = () => {
   return useMutation(createPurchase, {
     onSuccess: () => {
-      queryClient.cancelQueries("purchasesList")
       queryClient.invalidateQueries("purchasesList")
     },
   })
@@ -18,7 +17,6 @@ export const usePurchaseCreateMutation = () => {
 export const usePurchaseUpdateMutation = () => {
   return useMutation(updatePurchase, {
     onSuccess: () => {
-      queryClient.cancelQueries("purchasesList")
       queryClient.invalidateQueries("purchasesList")
     },
   })
@@ -27,7 +25,6 @@ export const usePurchaseUpdateMutation = () => {
 export const usePurchaseDeleteMutation = () => {
   return useMutation(deletePurchase, {
     onSuccess: () => {
-      queryClient.cancelQueries("purchasesList")
       queryClient.invalidateQueries("purchasesList")
     },
   })

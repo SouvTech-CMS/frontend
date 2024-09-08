@@ -96,7 +96,9 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
   }
 
   useEffect(() => {
+    setDelivery(newDelivery)
     setGoods([])
+    setServices([])
   }, [isOpen])
 
   return (

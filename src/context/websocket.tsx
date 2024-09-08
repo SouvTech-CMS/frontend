@@ -25,38 +25,56 @@ export const WebSocketContextProvider: FCC = (props) => {
 
         switch (message) {
           case "purchase":
-          case "purchase_delivery":
             queryClient.invalidateQueries("purchasesList")
+            break
+
+          case "purchase_delivery":
             queryClient.invalidateQueries("purchaseDeliveriesList")
             break
+
+          case "purchase_service":
+            queryClient.invalidateQueries("purchaseServicesList")
+            break
+
+          case "purchase_delivery_service":
+            queryClient.invalidateQueries("deliveryServicesList")
+            break
+
           case "supplier":
           case "supplier_manager":
             queryClient.invalidateQueries("suppliersWithManagersList")
             break
+
           case "file":
             queryClient.invalidateQueries("purchasesList")
             queryClient.invalidateQueries("purchaseDeliveriesList")
             break
+
           case "comment":
             queryClient.invalidateQueries()
             break
+
           case "order":
             queryClient.invalidateQueries("ordersResponse")
             break
+
           case "good":
             queryClient.invalidateQueries("goodsResponse")
             break
+
           case "user":
           case "role":
             queryClient.invalidateQueries("currentUser")
             queryClient.invalidateQueries("usersList")
             break
+
           case "storage":
           case "storage_good":
             queryClient.invalidateQueries("purchaseDeliveriesList")
             queryClient.invalidateQueries("storageGoodsList")
             queryClient.invalidateQueries("storageActualInfo")
             break
+
           case "production_info":
             queryClient.invalidateQueries("goodsWithProductionInfoList")
             break
