@@ -27,7 +27,7 @@ export const PurchaseServicesModal: FC<PurchaseServicesModalProps> = (
   const { purchaseId, isOpen, onClose } = props
 
   const { data: servicesList } = useQuery<WithId<PurchaseService>[]>(
-    ["servicesList", purchaseId],
+    ["purchaseServicesList", purchaseId],
     () => getPurchaseServices(purchaseId),
   )
 
