@@ -25,6 +25,8 @@ interface NewPurchaseServiceModalProps extends ModalProps {
 }
 
 const newService: PurchaseService = {
+  purchase_id: NaN,
+  purchase_delivery_id: NaN,
   name: "",
   amount: NaN,
   total_amount: NaN,
