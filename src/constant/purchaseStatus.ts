@@ -1,4 +1,5 @@
 export enum PurchaseStatus {
+  Request = "request",
   Order = "order",
   Payment = "payment",
   Processing = "processing",
