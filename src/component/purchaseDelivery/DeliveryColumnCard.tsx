@@ -39,10 +39,13 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
 
   const goods = delivery.goods
   const deliveryDocuments = delivery.files
-  const purchasesDocuments = delivery.purchases.flatMap((purchase) =>
+  const purchases = delivery.purchases
+  const purchasesDocuments = purchases.flatMap((purchase) =>
     purchase.files.map((file) => ({ ...file, purchase_id: purchase.id })),
   )
   const allDocumentsList = [...deliveryDocuments, ...purchasesDocuments]
+
+  const purchasesIds = [...new Set(purchases.map((purchase) => purchase.id))]
 
   const purchaseDeadline = timestampToDate(delivery.deadline)
 
@@ -195,6 +198,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
 
         <DeliveryServicesModal
           deliveryId={deliveryId}
+          purchasesIds={purchasesIds}
           isOpen={isDeliveryServicesModalOpen}
           onClose={onDeliveryServicesModalClose}
         />

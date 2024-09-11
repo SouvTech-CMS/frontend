@@ -8,6 +8,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react"
+import { getPurchaseServicesByPurchaseIds } from "api/purchase/purchaseService"
 import { getDeliveryServices } from "api/purchaseDelivery/purchaseDeliveryService"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { DeliveryServicesModalCard } from "component/purchaseDeliveryService/DeliveryServicesModalCard"
@@ -19,17 +20,39 @@ import { WithId } from "type/withId"
 
 interface DeliveryServicesModalProps extends ModalProps {
   deliveryId: number
+  purchasesIds: number[]
 }
 
 export const DeliveryServicesModal: FC<DeliveryServicesModalProps> = (
   props,
 ) => {
-  const { deliveryId, isOpen, onClose } = props
+  const { deliveryId, purchasesIds, isOpen, onClose } = props
 
-  const { data: servicesList } = useQuery<WithId<PurchaseService>[]>(
+  const {
+    data: deliveryServicesList,
+    // isLoading: isDeliveryServicesLoading
+  } = useQuery<WithId<PurchaseService>[]>(
     ["deliveryServicesList", deliveryId],
     () => getDeliveryServices(deliveryId),
   )
+  const isDeliveryServicesExist = deliveryServicesList !== undefined
+
+  const {
+    data: purchasesListServices,
+    // isLoading: isPurchasesListServicesLoading,
+  } = useQuery<WithId<PurchaseService>[]>(
+    ["purchasesListServices", purchasesIds],
+    () => getPurchaseServicesByPurchaseIds(purchasesIds),
+  )
+  const isPurchasesServicesExist = purchasesListServices !== undefined
+
+  // const isLoading = isDeliveryServicesLoading || isPurchasesListServicesLoading
+
+  // Combine services to one list
+  const servicesList = [
+    ...(isDeliveryServicesExist ? deliveryServicesList ?? [] : []),
+    ...(isPurchasesServicesExist ? purchasesListServices ?? [] : []),
+  ]
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>

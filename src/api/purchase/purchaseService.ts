@@ -11,6 +11,16 @@ export const getPurchaseServices = async (
   return servicesList
 }
 
+export const getPurchaseServicesByPurchaseIds = async (
+  purchaseIds: number[],
+): Promise<WithId<PurchaseService>[]> => {
+  const { data: servicesList } = await axiosClient.post(
+    "/purchase/service/list/",
+    purchaseIds,
+  )
+  return servicesList
+}
+
 export const updatePurchaseService = async (
   service: WithId<PurchaseService>,
 ): Promise<WithId<PurchaseService>> => {

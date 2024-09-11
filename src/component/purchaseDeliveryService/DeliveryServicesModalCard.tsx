@@ -26,6 +26,7 @@ export const DeliveryServicesModalCard: FC<DeliveryServicesModalCardProps> = (
 ) => {
   const { service } = props
 
+  const isPurchaseService = service.purchase_id !== undefined
   const serviceId = service.id
 
   const discountAsNumber = parseFloat(service.discount || "") || undefined
@@ -49,14 +50,21 @@ export const DeliveryServicesModalCard: FC<DeliveryServicesModalCardProps> = (
       <Card boxShadow="md" borderRadius={10}>
         <CardHeader>
           <Flex direction="column" gap={2}>
+            {/* Purchase ID */}
+            {isPurchaseService && (
+              <Flex>
+                <Badge colorScheme="blue">
+                  Purchase #{service.purchase_id}
+                </Badge>
+              </Flex>
+            )}
+
             {/* Service Info */}
             <Flex justifyContent="space-between">
               <Flex direction="column" gap={2}>
                 {/* ID & Name */}
                 <Flex alignItems="center" gap={5}>
-                  <Heading size="md">
-                    #{serviceId} {service.name}
-                  </Heading>
+                  <Heading size="md">{service.name}</Heading>
                 </Flex>
               </Flex>
 
@@ -86,26 +94,29 @@ export const DeliveryServicesModalCard: FC<DeliveryServicesModalCardProps> = (
               </Flex>
             </Flex>
 
-            <Flex w="full" gap={2}>
-              {/* Edit Btn */}
-              <Button
-                w="full"
-                variant="ghost"
-                colorScheme="blue"
-                onClick={onServiceEditModalOpen}
-              >
-                Edit
-              </Button>
+            {/* Edit & Delete Btns */}
+            {!isPurchaseService && (
+              <Flex w="full" gap={2}>
+                {/* Edit Btn */}
+                <Button
+                  w="full"
+                  variant="ghost"
+                  colorScheme="blue"
+                  onClick={onServiceEditModalOpen}
+                >
+                  Edit
+                </Button>
 
-              {/* Delete */}
-              <IconButton
-                aria-label="delete-service"
-                variant="ghost"
-                colorScheme="red"
-                icon={<FiTrash2 />}
-                onClick={onServiceDeleteModalOpen}
-              />
-            </Flex>
+                {/* Delete */}
+                <IconButton
+                  aria-label="delete-service"
+                  variant="ghost"
+                  colorScheme="red"
+                  icon={<FiTrash2 />}
+                  onClick={onServiceDeleteModalOpen}
+                />
+              </Flex>
+            )}
           </Flex>
         </CardHeader>
       </Card>
