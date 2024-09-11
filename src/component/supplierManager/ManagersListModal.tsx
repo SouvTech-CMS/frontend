@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ManagerCard } from "component/supplierManager/ManagerCard"
-import { NewManagerModal } from "component/supplierManager/NewManagerModal"
+import { ManagerModal } from "component/supplierManager/ManagerModal"
 import { FC } from "react"
 import { ModalProps } from "type/modalProps"
 import { SupplierManager } from "type/supplier/supplierManager"
@@ -58,7 +58,7 @@ export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
         </ModalContent>
       </Modal>
 
-      <NewManagerModal
+      <ManagerModal
         supplierId={supplierId}
         isOpen={isNewManagerModalOpen}
         onClose={onNewManagerModalClose}

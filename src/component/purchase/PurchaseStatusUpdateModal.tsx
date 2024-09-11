@@ -71,6 +71,7 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
     const body: PurchaseUpdate = {
       id: purchase.id,
       amount: purchase.amount,
+      deposit: purchase.deposit,
       status: newStatus,
       deadline: formattedDeadline,
       supplier_manager_id: managerId,

@@ -9,7 +9,6 @@ import { useMutation } from "react-query"
 export const useCommentCreateMutation = () => {
   return useMutation(createComment, {
     onSuccess: () => {
-      queryClient.cancelQueries("comment")
       queryClient.invalidateQueries("comment")
     },
   })
@@ -18,7 +17,6 @@ export const useCommentCreateMutation = () => {
 export const useCommentUpdateMutation = () => {
   return useMutation(updateComment, {
     onSuccess: () => {
-      queryClient.cancelQueries("comment")
       queryClient.invalidateQueries("comment")
     },
   })
@@ -27,7 +25,6 @@ export const useCommentUpdateMutation = () => {
 export const useCommentDeleteMutation = () => {
   return useMutation(deleteComment, {
     onSuccess: () => {
-      queryClient.cancelQueries("comment")
       queryClient.invalidateQueries("comment")
     },
   })

@@ -16,7 +16,10 @@ export const roundNumber = (
   return 0
 }
 
-export const numberWithCurrency = (num: number, currencyChar: string = "$") => {
+export const numberWithCurrency = (
+  num: number = 0,
+  currencyChar: string = "$",
+) => {
   return `${currencyChar}${num}`
 }
 

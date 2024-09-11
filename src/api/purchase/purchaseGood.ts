@@ -14,3 +14,7 @@ export const getReadyToDeliveryPurchaseGoods = async (): Promise<
 export const updatePurchaseGood = async (good: WithId<PurchaseGood>) => {
   await axiosClient.put("/purchase/good/", good)
 }
+
+export const deletePurchaseGood = async (goodId: number) => {
+  await axiosClient.delete(`/purchase/good/${goodId}`)
+}

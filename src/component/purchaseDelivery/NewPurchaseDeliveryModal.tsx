@@ -13,17 +13,19 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { PurchaseDeliveryGoodsSelectList } from "component/purchaseDelivery/PurchaseDeliveryGoodsSelectList"
+import { PurchaseServicesTable } from "component/purchaseService/PurchaseServicesTable"
 import { INITIAL_DELIVERY_STATUS } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { usePurchaseDeliveryCreateMutation } from "service/purchaseDelivery/purchaseDelivery"
 import { ModalProps } from "type/modalProps"
 import { PurchaseGood } from "type/purchase/purchaseGood"
-import { PurchaseDeliveryGoodCreate } from "type/purchaseDelivery/purchaseDeliveryGood"
+import { PurchaseService } from "type/purchase/purchaseService"
 import {
   PurchaseDelivery,
   PurchaseDeliveryCreate,
 } from "type/purchaseDelivery/purchaseDelivery"
+import { PurchaseDeliveryGoodCreate } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { WithId } from "type/withId"
 import {
   dateAsStringToTimestamp,
@@ -44,6 +46,7 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
 
   const [delivery, setDelivery] = useState<PurchaseDelivery>(newDelivery)
   const [goods, setGoods] = useState<WithId<PurchaseGood>[]>([])
+  const [services, setServices] = useState<PurchaseService[]>([])
   const [deadline, setDeadline] = useState<string>(
     timestampToDateAsString(newDelivery.deadline),
   )
@@ -79,7 +82,8 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
         ...delivery,
         deadline: formattedDeadline,
       },
-      purchase_goods: deliveryGoods,
+      goods: deliveryGoods,
+      services,
     }
 
     const { id: newDeliveryId } =
@@ -92,7 +96,9 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
   }
 
   useEffect(() => {
+    setDelivery(newDelivery)
     setGoods([])
+    setServices([])
   }, [isOpen])
 
   return (
@@ -109,6 +115,18 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
               selectedGoods={goods}
               setSelectedGoods={setGoods}
             />
+
+            {/* Services Table */}
+            <Flex w="full" direction="column" gap={2}>
+              <Text fontSize="xl" fontWeight="semibold">
+                Services
+              </Text>
+
+              <PurchaseServicesTable
+                services={services}
+                setServices={setServices}
+              />
+            </Flex>
 
             {/* Shipping & Shipping after Custom */}
             <Flex w="full" gap={10}>

@@ -14,40 +14,54 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { useCommentInput } from "hook/useCommentInput"
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useMemo, useState } from "react"
 import { FiAtSign, FiPhone, FiUser } from "react-icons/fi"
-import { useSupplierManagerCreateMutation } from "service/supplier/supplierManager"
+import {
+  useSupplierManagerCreateMutation,
+  useSupplierManagerUpdateMutation,
+} from "service/supplier/supplierManager"
 import { ModalProps } from "type/modalProps"
 import { SupplierManager } from "type/supplier/supplierManager"
+import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
-interface NewManagerModalProps extends ModalProps {
+interface ManagerModalProps extends ModalProps {
   supplierId: number
+  managerId?: number
+  prevManager?: SupplierManager
 }
 
-const newManager: SupplierManager = {
-  name: "",
-  email: "",
-  phone_number: "",
-}
+export const ManagerModal: FC<ManagerModalProps> = (props) => {
+  const { supplierId, isOpen, onClose, prevManager, managerId } = props
 
-export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
-  const { supplierId, isOpen, onClose } = props
+  const isManagerExists = managerId !== undefined && prevManager !== undefined
 
-  const [manager, setManager] = useState<SupplierManager>({
-    ...newManager,
-    supplier_id: supplierId,
-  })
+  const newManager = useMemo(
+    () => ({
+      supplier_id: supplierId,
+      name: "",
+      email: "",
+      phone_number: "",
+    }),
+    [supplierId],
+  )
+
+  const [manager, setManager] = useState<SupplierManager>(
+    prevManager || newManager,
+  )
 
   const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
     useCommentInput({
       objectName: "supplier_manager",
+      objectId: managerId,
     })
 
-  const supplierManagerCreateMutation = useSupplierManagerCreateMutation()
+  const managerCreateMutation = useSupplierManagerCreateMutation()
+  const managerUpdateMutation = useSupplierManagerUpdateMutation()
 
-  const isLoading = supplierManagerCreateMutation.isLoading
-  const isManagerNameInvalid = !manager.name.trim()
+  const isLoading =
+    managerCreateMutation.isLoading || managerUpdateMutation.isLoading
+  const isManagerNameInvalid = !manager.name?.trim()
 
   const handleManagerUpdate = (param: string, value: number | string) => {
     setManager((prevManager) => ({
@@ -56,23 +70,33 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
     }))
   }
 
-  const onManagerCreate = async () => {
-    const { id: managerId } = await supplierManagerCreateMutation.mutateAsync(
-      manager,
-    )
+  const onManagerUpdate = async () => {
+    if (isManagerExists) {
+      const body: WithId<SupplierManager> = {
+        ...manager,
+        id: managerId,
+      }
+      await managerUpdateMutation.mutateAsync(body)
 
-    await onCommentSubmit(managerId)
+      await onCommentSubmit()
 
-    notify(`Manager ${manager.name} created successfully`, "success")
+      notify(`Manager ${manager.name} updated successfully`, "success")
+    } else {
+      const { id: managerId } = await managerCreateMutation.mutateAsync(manager)
+      await onCommentSubmit(managerId)
+
+      notify(`Manager ${manager.name} created successfully`, "success")
+    }
     onClose()
   }
 
   useEffect(() => {
-    setManager({
-      ...newManager,
-      supplier_id: supplierId,
-    })
-  }, [supplierId, isOpen])
+    if (isManagerExists) {
+      setManager(prevManager)
+    } else {
+      setManager(newManager)
+    }
+  }, [supplierId, isOpen, isManagerExists, newManager, prevManager])
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
@@ -141,7 +165,7 @@ export const NewManagerModal: FC<NewManagerModalProps> = (props) => {
         <ModalFooter>
           <Flex gap={5}>
             <Button
-              onClick={onManagerCreate}
+              onClick={onManagerUpdate}
               isLoading={isLoading}
               isDisabled={isManagerNameInvalid}
             >

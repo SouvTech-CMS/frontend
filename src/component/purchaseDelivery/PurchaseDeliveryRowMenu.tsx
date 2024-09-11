@@ -14,12 +14,14 @@ import {
   FiPackage,
   FiPlusSquare,
   FiTrash2,
+  FiTruck,
 } from "react-icons/fi"
 
 interface PurchaseDeliveryRowMenuProps {
   onMoveGoodsToStorage: () => void
   onDocuments: () => void
   onGoods: () => void
+  onServices: () => void
   onStatusUpdate: () => void
   onEdit: () => void
   onDelete: () => void
@@ -33,6 +35,7 @@ export const PurchaseDeliveryRowMenu: FC<PurchaseDeliveryRowMenuProps> = (
     onMoveGoodsToStorage,
     onDocuments,
     onGoods,
+    onServices,
     onStatusUpdate,
     onEdit,
     onDelete,
@@ -62,6 +65,10 @@ export const PurchaseDeliveryRowMenu: FC<PurchaseDeliveryRowMenuProps> = (
 
         <MenuItem icon={<FiPackage />} onClick={onGoods}>
           Goods
+        </MenuItem>
+
+        <MenuItem icon={<FiTruck />} onClick={onServices}>
+          Services
         </MenuItem>
 
         <MenuItem icon={<FiCalendar />} onClick={onStatusUpdate}>

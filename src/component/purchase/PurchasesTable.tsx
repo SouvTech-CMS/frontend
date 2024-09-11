@@ -7,6 +7,10 @@ import { FC } from "react"
 import { useQuery } from "react-query"
 import { FullPurchase } from "type/purchase/purchase"
 
+const PURCHASE_STATUS_COLUMNS = Object.values(PurchaseStatus).filter(
+  (status) => status !== PurchaseStatus.Canceled,
+)
+
 export const PurchasesTable: FC = () => {
   const { data: purchasesList, isLoading } = useQuery<FullPurchase[]>(
     "purchasesList",
@@ -29,7 +33,7 @@ export const PurchasesTable: FC = () => {
 
   return (
     <Flex w="full" direction="row" gap={10}>
-      {Object.values(PurchaseStatus).map((status, index) => (
+      {PURCHASE_STATUS_COLUMNS.map((status, index) => (
         <PurchasesTableStatusColumn
           key={index}
           status={status}

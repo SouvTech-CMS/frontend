@@ -1,5 +1,6 @@
 import { FullPurchase } from "type/purchase/purchase"
 import { PurchaseFile } from "type/purchase/purchaseFile"
+import { PurchaseService } from "type/purchase/purchaseService"
 import {
   PurchaseDeliveryGood,
   PurchaseDeliveryGoodCreate,
@@ -26,7 +27,8 @@ export type FullPurchaseDelivery = WithId<PurchaseDelivery> & {
 
 export type PurchaseDeliveryCreate = {
   purchase_delivery: PurchaseDelivery
-  purchase_goods: PurchaseDeliveryGoodCreate[]
+  goods: PurchaseDeliveryGoodCreate[]
+  services: PurchaseService[]
 }
 
 export type PurchaseDeliveryUpdate = WithId<PurchaseDelivery>

@@ -2,6 +2,7 @@ export enum PurchaseStatus {
   Order = "order",
   Payment = "payment",
   Processing = "processing",
+  Canceled = "canceled",
 }
 
 export enum PurchaseDeliveryStatus {

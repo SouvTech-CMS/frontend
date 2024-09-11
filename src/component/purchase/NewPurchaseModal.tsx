@@ -15,14 +15,16 @@ import { getAllSuppliers } from "api/supplier/supplier"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { PurchaseGoodsTable } from "component/purchaseGood/PurchaseGoodsTable"
+import { PurchaseServicesTable } from "component/purchaseService/PurchaseServicesTable"
 import { INITIAL_PURCHASE_STATUS } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { ChangeEvent, FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { usePurchaseCreateMutation } from "service/purchase/purchase"
 import { ModalProps } from "type/modalProps"
-import { PurchaseCreate, PurchaseCreateWithGoods } from "type/purchase/purchase"
+import { PurchaseCreate, PurchaseWithManager } from "type/purchase/purchase"
 import { PurchaseGood } from "type/purchase/purchaseGood"
+import { PurchaseService } from "type/purchase/purchaseService"
 import { SupplierWithManagers } from "type/supplier/supplier"
 import {
   dateAsStringToTimestamp,
@@ -33,7 +35,7 @@ import { notify } from "util/toasts"
 
 interface NewPurchaseModalProps extends ModalProps {}
 
-const newPurchase: PurchaseCreate = {
+const newPurchase: PurchaseWithManager = {
   supplier_manager_id: NaN,
   deadline: getPurchaseDeadlineByStatus(INITIAL_PURCHASE_STATUS),
   amount: NaN,
@@ -43,9 +45,10 @@ const newPurchase: PurchaseCreate = {
 export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
   const { isOpen, onClose } = props
 
-  const [purchase, setPurchase] = useState<PurchaseCreate>(newPurchase)
+  const [purchase, setPurchase] = useState<PurchaseWithManager>(newPurchase)
   const [supplierId, setSupplierId] = useState<number>(0)
   const [goods, setGoods] = useState<PurchaseGood[]>([])
+  const [services, setServices] = useState<PurchaseService[]>([])
   const [deadline, setDeadline] = useState<string>(
     timestampToDateAsString(newPurchase.deadline),
   )
@@ -97,13 +100,14 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
 
     const formattedDeadline = dateAsStringToTimestamp(deadline)
 
-    const body: PurchaseCreateWithGoods = {
+    const body: PurchaseCreate = {
       purchase: {
         ...purchase,
         amount: goodsAmountSum,
         deadline: formattedDeadline,
       },
       goods,
+      services,
     }
 
     const { id: purchaseId } = await purchaseCreateMutation.mutateAsync(body)
@@ -117,6 +121,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
   useEffect(() => {
     setPurchase(newPurchase)
     setGoods([])
+    setServices([])
   }, [isOpen])
 
   return (
@@ -128,8 +133,27 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
         <ModalCloseButton />
 
         <ModalBody>
-          <Flex direction="column" gap={10}>
-            <PurchaseGoodsTable goods={goods} setGoods={setGoods} />
+          <Flex direction="column" gap={5}>
+            {/* Goods Table */}
+            <Flex w="full" direction="column" gap={2}>
+              <Text fontSize="xl" fontWeight="semibold">
+                Goods
+              </Text>
+
+              <PurchaseGoodsTable goods={goods} setGoods={setGoods} />
+            </Flex>
+
+            {/* Services Table */}
+            <Flex w="full" direction="column" gap={2}>
+              <Text fontSize="xl" fontWeight="semibold">
+                Services
+              </Text>
+
+              <PurchaseServicesTable
+                services={services}
+                setServices={setServices}
+              />
+            </Flex>
 
             {/* Supplier and Manager */}
             <Flex w="full" gap={10}>
@@ -171,6 +195,21 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
                   ))}
                 </Select>
               </Flex>
+            </Flex>
+
+            {/* Deposit */}
+            <Flex w="full" direction="column" gap={1}>
+              <Text fontWeight="bold">Deposit:</Text>
+
+              <Input
+                placeholder="Deposit"
+                value={purchase.deposit}
+                type="number"
+                onChange={(e) => {
+                  const value = e.target.valueAsNumber
+                  handlePurchaseUpdate("deposit", value)
+                }}
+              />
             </Flex>
 
             {/* Deadline */}
