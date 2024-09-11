@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react"
 import { getPurchaseServices } from "api/purchase/purchaseService"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { PurchaseServicesModalCard } from "component/purchase/PurchaseServicesModalCard"
+import { PurchaseServicesModalCard } from "component/purchaseService/PurchaseServicesModalCard"
 import { FC } from "react"
 import { useQuery } from "react-query"
 import { ModalProps } from "type/modalProps"
@@ -27,7 +27,7 @@ export const PurchaseServicesModal: FC<PurchaseServicesModalProps> = (
   const { purchaseId, isOpen, onClose } = props
 
   const { data: servicesList } = useQuery<WithId<PurchaseService>[]>(
-    ["servicesList", purchaseId],
+    ["purchaseServicesList", purchaseId],
     () => getPurchaseServices(purchaseId),
   )
 

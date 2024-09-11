@@ -17,14 +17,17 @@ import { PurchaseService } from "type/purchase/purchaseService"
 import { WithId } from "type/withId"
 import { numberWithCurrency } from "util/formatting"
 
-interface PurchaseServicesModalCardProps {
+interface DeliveryServicesModalCardProps {
   service: WithId<PurchaseService>
 }
 
-export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
+export const DeliveryServicesModalCard: FC<DeliveryServicesModalCardProps> = (
   props,
 ) => {
   const { service } = props
+
+  const isPurchaseService = service.purchase_id !== undefined
+  const serviceId = service.id
 
   const discountAsNumber = parseFloat(service.discount || "") || undefined
   const isDiscountExists = discountAsNumber !== undefined
@@ -35,8 +38,6 @@ export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
     onOpen: onServiceEditModalOpen,
     onClose: onServiceEditModalClose,
   } = useDisclosure()
-
-  const serviceId = service.id
 
   const {
     isOpen: isServiceDeleteModalOpen,
@@ -49,14 +50,21 @@ export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
       <Card boxShadow="md" borderRadius={10}>
         <CardHeader>
           <Flex direction="column" gap={2}>
+            {/* Purchase ID */}
+            {isPurchaseService && (
+              <Flex>
+                <Badge colorScheme="blue">
+                  Purchase #{service.purchase_id}
+                </Badge>
+              </Flex>
+            )}
+
             {/* Service Info */}
             <Flex justifyContent="space-between">
               <Flex direction="column" gap={2}>
                 {/* ID & Name */}
                 <Flex alignItems="center" gap={5}>
-                  <Heading size="md">
-                    #{serviceId} {service.name}
-                  </Heading>
+                  <Heading size="md">{service.name}</Heading>
                 </Flex>
               </Flex>
 
@@ -86,26 +94,29 @@ export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
               </Flex>
             </Flex>
 
-            <Flex w="full" gap={2}>
-              {/* Edit Btn */}
-              <Button
-                w="full"
-                variant="ghost"
-                colorScheme="blue"
-                onClick={onServiceEditModalOpen}
-              >
-                Edit
-              </Button>
+            {/* Edit & Delete Btns */}
+            {!isPurchaseService && (
+              <Flex w="full" gap={2}>
+                {/* Edit Btn */}
+                <Button
+                  w="full"
+                  variant="ghost"
+                  colorScheme="blue"
+                  onClick={onServiceEditModalOpen}
+                >
+                  Edit
+                </Button>
 
-              {/* Delete */}
-              <IconButton
-                aria-label="delete-service"
-                variant="ghost"
-                colorScheme="red"
-                icon={<FiTrash2 />}
-                onClick={onServiceDeleteModalOpen}
-              />
-            </Flex>
+                {/* Delete */}
+                <IconButton
+                  aria-label="delete-service"
+                  variant="ghost"
+                  colorScheme="red"
+                  icon={<FiTrash2 />}
+                  onClick={onServiceDeleteModalOpen}
+                />
+              </Flex>
+            )}
           </Flex>
         </CardHeader>
       </Card>
@@ -116,12 +127,14 @@ export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
           prevService={service}
           isOpen={isServiceEditModalOpen}
           onClose={onServiceEditModalClose}
+          isDelivery
         />
 
         <PurchaseServiceDeleteModal
           serviceId={serviceId}
           isOpen={isServiceDeleteModalOpen}
           onClose={onServiceDeleteModalClose}
+          isDelivery
         />
       </>
     </>

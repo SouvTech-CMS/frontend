@@ -21,7 +21,7 @@ export const useCommentInput = (props: useCommentInputProps) => {
   const { currentUser } = useUserContext()
   const userId = currentUser?.id
 
-  const { data: prevComment } = useQuery<WithId<Comment>>(
+  const { data: prevComment } = useQuery<WithId<Comment> | undefined>(
     ["comment", objectId, objectName],
     () => getCommentByObjNameAndId(objectId!, objectName),
     {

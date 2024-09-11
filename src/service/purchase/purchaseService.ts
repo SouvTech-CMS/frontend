@@ -8,7 +8,7 @@ import { useMutation } from "react-query"
 export const usePurchaseServiceUpdateMutation = () => {
   return useMutation(updatePurchaseService, {
     onSuccess: ({ purchase_id }) => {
-      queryClient.invalidateQueries(["servicesList", purchase_id])
+      queryClient.invalidateQueries(["purchaseServicesList", purchase_id])
     },
   })
 }
@@ -16,7 +16,7 @@ export const usePurchaseServiceUpdateMutation = () => {
 export const usePurchaseServiceDeleteMutation = () => {
   return useMutation(deletePurchaseService, {
     onSuccess: () => {
-      queryClient.invalidateQueries("servicesList")
+      queryClient.invalidateQueries("purchaseServicesList")
     },
   })
 }

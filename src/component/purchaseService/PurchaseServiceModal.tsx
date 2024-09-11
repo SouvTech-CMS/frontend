@@ -16,6 +16,7 @@ import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ChangeEvent, FC, useEffect, useState } from "react"
 import { FiDollarSign, FiPercent, FiType } from "react-icons/fi"
 import { usePurchaseServiceUpdateMutation } from "service/purchase/purchaseService"
+import { useDeliveryServiceUpdateMutation } from "service/purchaseDelivery/purchaseDeliveryService"
 import { ModalProps } from "type/modalProps"
 import { PurchaseService } from "type/purchase/purchaseService"
 import { WithId } from "type/withId"
@@ -24,10 +25,11 @@ import { notify } from "util/toasts"
 
 interface PurchaseServiceModalProps extends ModalProps {
   prevService: WithId<PurchaseService>
+  isDelivery?: boolean
 }
 
 export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
-  const { prevService, isOpen, onClose } = props
+  const { prevService, isDelivery = false, isOpen, onClose } = props
 
   const prevIsDiscountPercentage = prevService.discount
     ? prevService.discount.includes("%")
@@ -41,6 +43,7 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
   const [discount, setDiscount] = useState<number>(prevDiscount)
 
   const purchaseServiceUpdateMutation = usePurchaseServiceUpdateMutation()
+  const deliveryServiceUpdateMutation = useDeliveryServiceUpdateMutation()
 
   const isNameInvalid = !service?.name.trim()
   const isAmountInvalid = !service.amount
@@ -109,9 +112,16 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
       service.discount = null
     }
 
-    await purchaseServiceUpdateMutation.mutateAsync(service)
+    if (isDelivery) {
+      await deliveryServiceUpdateMutation.mutateAsync(service)
 
-    notify(`Purchase Service #${service.id} updated successfully`, "success")
+      notify(`Delivery Service #${service.id} updated successfully`, "success")
+    } else {
+      await purchaseServiceUpdateMutation.mutateAsync(service)
+
+      notify(`Purchase Service #${service.id} updated successfully`, "success")
+    }
+
     onClose()
   }
 
@@ -127,7 +137,10 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
 
       <ModalContent>
         <ModalHeader>
-          Purchase #{service.purchase_id} Service #{service.id}
+          {isDelivery
+            ? `Delivery #${service.purchase_delivery_id} `
+            : `Purchase #${service.purchase_id} `}
+          Service #{service.id}
         </ModalHeader>
         <ModalCloseButton />
 

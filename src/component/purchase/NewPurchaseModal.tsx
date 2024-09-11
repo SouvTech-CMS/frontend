@@ -121,6 +121,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
   useEffect(() => {
     setPurchase(newPurchase)
     setGoods([])
+    setServices([])
   }, [isOpen])
 
   return (
