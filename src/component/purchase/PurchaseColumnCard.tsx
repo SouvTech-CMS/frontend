@@ -8,6 +8,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
+import { getPurchaseServices } from "api/purchase/purchaseService"
 import { DividerWithTitle } from "component/DividerWithTitle"
 import { CommentTooltip } from "component/comment/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
@@ -16,14 +17,17 @@ import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseGoodsModal } from "component/purchase/PurchaseGoodsModal"
 import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
-import { PurchaseServicesModal } from "component/purchaseService/PurchaseServicesModal"
 import { PurchaseStatusUpdateModal } from "component/purchase/PurchaseStatusUpdateModal"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
 import { PurchaseUpdateModal } from "component/purchase/PurchaseUpdateModal"
+import { PurchaseServicesModal } from "component/purchaseService/PurchaseServicesModal"
 import { useCommentInput } from "hook/useCommentInput"
 import { FC } from "react"
 import { FiFileText } from "react-icons/fi"
+import { useQuery } from "react-query"
 import { FullPurchase } from "type/purchase/purchase"
+import { PurchaseService } from "type/purchase/purchaseService"
+import { WithId } from "type/withId"
 import {
   numberWithCurrency,
   roundNumber,
@@ -46,12 +50,22 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
   const supplier = manager.supplier
   const files = purchase.files
 
+  const { data: servicesList } = useQuery<WithId<PurchaseService>[]>(
+    ["purchaseServicesList", purchaseId],
+    () => getPurchaseServices(purchaseId),
+  )
+  const isServicesExist = servicesList !== undefined
+
   const goodsAmount = purchase.goods.reduce(
-    (total, good) => total + good.amount,
+    (total, good) => total + good.total_amount,
     0,
   )
 
-  const totalAmount = goodsAmount
+  const servicesAmount = isServicesExist
+    ? servicesList?.reduce((total, service) => total + service.total_amount, 0)
+    : 0
+
+  const totalAmount = goodsAmount + servicesAmount
 
   const purchaseDeadline = timestampToDate(purchase.deadline)
 
