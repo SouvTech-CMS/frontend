@@ -13,7 +13,10 @@ interface OrdersTableProps {
 }
 
 export const OrdersTable: FC<OrdersTableProps> = (props) => {
-  const { ordersList, isShowShop } = props
+  const {
+    ordersList,
+    // isShowShop
+  } = props
 
   return (
     <Table variant="striped">
@@ -27,7 +30,10 @@ export const OrdersTable: FC<OrdersTableProps> = (props) => {
 
       <Tbody>
         {ordersList.map((order) => (
-          <OrdersTableRow order={order} isShowShop={isShowShop} />
+          <OrdersTableRow
+            order={order}
+            // isShowShop={isShowShop}
+          />
         ))}
       </Tbody>
     </Table>
