@@ -7,9 +7,11 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  useDisclosure,
 } from "@chakra-ui/react"
 import { getPurchaseServices } from "api/purchase/purchaseService"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
+import { PurchaseServiceModal } from "component/purchaseService/PurchaseServiceModal"
 import { PurchaseServicesModalCard } from "component/purchaseService/PurchaseServicesModalCard"
 import { FC } from "react"
 import { useQuery } from "react-query"
@@ -26,33 +28,61 @@ export const PurchaseServicesModal: FC<PurchaseServicesModalProps> = (
 ) => {
   const { purchaseId, isOpen, onClose } = props
 
-  const { data: servicesList } = useQuery<WithId<PurchaseService>[]>(
+  const { data: servicesList, isLoading } = useQuery<WithId<PurchaseService>[]>(
     ["purchaseServicesList", purchaseId],
     () => getPurchaseServices(purchaseId),
   )
 
+  const {
+    isOpen: isServiceCreateModalOpen,
+    onOpen: onServiceCreateModalOpen,
+    onClose: onServiceCreateModalClose,
+  } = useDisclosure()
+
   return (
-    <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalBackgroundBlur />
+    <>
+      <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalBackgroundBlur />
 
-      <ModalContent>
-        <ModalHeader>Purchase #{purchaseId} Services</ModalHeader>
-        <ModalCloseButton />
+        <ModalContent>
+          <ModalHeader>Purchase #{purchaseId} Services</ModalHeader>
+          <ModalCloseButton />
 
-        <ModalBody>
-          <Flex direction="column" gap={2}>
-            {servicesList?.map((service, index) => (
-              <PurchaseServicesModalCard key={index} service={service} />
-            ))}
-          </Flex>
-        </ModalBody>
+          <ModalBody>
+            <Flex direction="column" gap={2}>
+              {servicesList?.map((service, index) => (
+                <PurchaseServicesModalCard key={index} service={service} />
+              ))}
+            </Flex>
+          </ModalBody>
 
-        <ModalFooter>
-          <Button variant="secondary" onClick={onClose}>
-            Close
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+          <ModalFooter>
+            <Flex w="full" gap={2}>
+              <Button
+                w="full"
+                onClick={onServiceCreateModalOpen}
+                isLoading={isLoading}
+              >
+                Add service
+              </Button>
+
+              <Button
+                variant="secondary"
+                onClick={onClose}
+                isLoading={isLoading}
+              >
+                Close
+              </Button>
+            </Flex>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <PurchaseServiceModal
+        purchaseId={purchaseId}
+        isOpen={isServiceCreateModalOpen}
+        onClose={onServiceCreateModalClose}
+      />
+    </>
   )
 }

@@ -20,7 +20,13 @@ export const NoAccess = () => {
           {/* Ну ты заходи если что)) */}
         </Text>
 
-        <Button as={Link} variant="outline" colorScheme="blue" to="/" replace>
+        <Button
+          as={Link}
+          variant="outline"
+          colorScheme="blue"
+          to="/"
+          reloadDocument
+        >
           <Text>Go back</Text>
         </Button>
       </Flex>

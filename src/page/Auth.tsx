@@ -66,7 +66,7 @@ export const Auth = () => {
       try {
         await signIn(username, password)
 
-        navigate(fromPage, { replace: true })
+        navigate(fromPage)
       } catch (e) {
         if (e instanceof AxiosError) {
           if (e.response?.status === 401) {

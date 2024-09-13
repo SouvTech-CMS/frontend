@@ -1,5 +1,7 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react"
+import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
+
+import logoPath from "asset/logo/redbread-logo-sad.svg"
 
 export const Maintenance = () => {
   return (
@@ -9,19 +11,38 @@ export const Maintenance = () => {
         justifyContent="center"
         alignItems="center"
         textAlign="center"
-        gap={5}
+        gap={10}
       >
+        <Image w="logo.sm" src={logoPath} alt="Sad Logo" />
+
         <Heading as="h5">Sorry, website is not available now..</Heading>
 
-        <Text w="md">
-          We are updating our functionality to make your experience even better.
-          The site is temporarily unavailable, but it will be back soon. Thank
-          you for understanding!
-        </Text>
+        <Flex
+          w="md"
+          direction="column"
+          alignItems="center"
+          fontSize="lg"
+          gap={5}
+        >
+          <Text>
+            We are updating our functionality to make your experience even
+            better. The site is temporarily unavailable, but it will be back
+            soon.
+          </Text>
 
-        <Button as={Link} variant="outline" colorScheme="blue" to="/" replace>
-          <Text>Try again</Text>
-        </Button>
+          <Text fontWeight="semibold">Thank you for understanding!</Text>
+
+          <Button
+            w="fit-content"
+            as={Link}
+            variant="outline"
+            colorScheme="blue"
+            to="/"
+            reloadDocument
+          >
+            <Text>Try again</Text>
+          </Button>
+        </Flex>
       </Flex>
     </Flex>
   )

@@ -27,7 +27,6 @@ export const GuideOpenBtn: FC<GuideOpenBtnProps> = (props) => {
         fontSize={GUIDE_ICON_SIZE}
         icon={<IoHelp />}
         to={`/guide/${guideNotionPageId}`}
-        replace
       />
     </Tooltip>
   )
