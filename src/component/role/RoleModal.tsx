@@ -18,12 +18,17 @@ import { FiAlignLeft, FiUser } from "react-icons/fi"
 import { useRoleCreateMutation, useRoleUpdateMutation } from "service/role/role"
 import { ModalProps } from "type/modalProps"
 import { Permission } from "type/role/permission"
-import { Role, RoleCreate, RoleUpdate } from "type/role/role"
+import {
+  Role,
+  RoleCreate,
+  RoleUpdate,
+  RoleWithPermissions,
+} from "type/role/role"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
 interface RoleModalProps extends ModalProps {
-  prevRole?: WithId<Role>
+  prevRole?: RoleWithPermissions
   prevPermissions?: WithId<Permission>[]
 }
 
@@ -51,13 +56,15 @@ export const RoleModal: FC<RoleModalProps> = (props) => {
 
   const isLoading = roleCreateMutation.isLoading || roleUpdateMutation.isLoading
 
+  const isNameInvalid = !role.name.trim()
+  const isPermissionsInvalid = permissions.length === 0
+  const isSaveBtnDisabled = isNameInvalid || isPermissionsInvalid
+
   // const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
   //   useCommentInput({
   //     objectName: "role",
   //     objectId: roleId,
   //   })
-
-  const isNameInvalid = !role.name.trim()
 
   const handleRoleUpdate = (param: string, value: number | string) => {
     setRole((prevRole) => ({
@@ -116,7 +123,9 @@ export const RoleModal: FC<RoleModalProps> = (props) => {
       setRole(newRole)
       setPermissions([])
     } else {
-      setRole(prevRole!)
+      //* Remove permissions from role data, to not sending it in update request
+      const { permissions, ...roleData } = prevRole!
+      setRole(roleData)
       setPermissions(prevPermissionsIds)
     }
   }, [isOpen, isNewRole, prevRole, prevPermissionsIds])
@@ -188,7 +197,7 @@ export const RoleModal: FC<RoleModalProps> = (props) => {
             <Button
               onClick={onRoleUpdate}
               isLoading={isLoading}
-              isDisabled={isNameInvalid}
+              isDisabled={isSaveBtnDisabled}
             >
               Save
             </Button>

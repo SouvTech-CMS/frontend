@@ -14,6 +14,7 @@ export const PermissionsGridItem: FC<PermissionsGridItemProps> = (props) => {
 
   const permissionId = permission.id
   const isChecked = checkedPermissionsIds.includes(permissionId)
+  const isInvalid = checkedPermissionsIds.length === 0
 
   const handlePermissionChange = () => {
     handlePermissionsUpdate(permissionId)
@@ -27,7 +28,7 @@ export const PermissionsGridItem: FC<PermissionsGridItemProps> = (props) => {
         cursor="pointer"
         gap={3}
       >
-        <Checkbox isChecked={isChecked} />
+        <Checkbox isChecked={isChecked} isInvalid={isInvalid} />
 
         <Text>{permission.description}</Text>
       </Flex>
