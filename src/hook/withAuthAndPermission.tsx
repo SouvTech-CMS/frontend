@@ -24,7 +24,7 @@ export const withAuthAndPermission =
       const isUserHasAccess = isUserAdmin || isUserHasPermission
 
       if (!isUserHasAccess) {
-        return <Navigate to="/noaccess" replace />
+        return <Navigate to="/noaccess" />
       }
 
       return WrappedComponent
