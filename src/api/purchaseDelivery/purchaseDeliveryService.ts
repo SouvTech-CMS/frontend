@@ -11,6 +11,16 @@ export const getDeliveryServices = async (
   return servicesList
 }
 
+export const createDeliveryService = async (
+  service: PurchaseService,
+): Promise<WithId<PurchaseService>> => {
+  const { data: newService } = await axiosClient.post(
+    "/purchase/delivery/service/",
+    service,
+  )
+  return newService
+}
+
 export const updateDeliveryService = async (
   service: WithId<PurchaseService>,
 ): Promise<WithId<PurchaseService>> => {

@@ -1,9 +1,21 @@
 import {
+  createDeliveryService,
   deleteDeliveryService,
   updateDeliveryService,
 } from "api/purchaseDelivery/purchaseDeliveryService"
 import { queryClient } from "api/queryClient"
 import { useMutation } from "react-query"
+
+export const useDeliveryServiceCreateMutation = () => {
+  return useMutation(createDeliveryService, {
+    onSuccess: ({ purchase_delivery_id }) => {
+      queryClient.invalidateQueries([
+        "deliveryServicesList",
+        purchase_delivery_id,
+      ])
+    },
+  })
+}
 
 export const useDeliveryServiceUpdateMutation = () => {
   return useMutation(updateDeliveryService, {
