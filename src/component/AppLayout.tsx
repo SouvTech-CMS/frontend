@@ -15,14 +15,11 @@ export const AppLayout: FC = () => {
     const checkServer = async () => {
       try {
         await axiosClient.get("/healthcheck")
-      } catch (e) {
-        if (e instanceof AxiosError) {
-          if (e.code === "ERR_NETWORK") {
-            navigate("/maintenance", {
-              state: { from: location },
-              replace: true,
-            })
-          }
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          navigate("/maintenance", {
+            state: { from: location },
+          })
         }
       }
     }
@@ -40,5 +37,5 @@ export const AppLayout: FC = () => {
     )
   }
 
-  return <Navigate to="/auth" state={{ from: location }} replace />
+  return <Navigate to="/auth" state={{ from: location }} />
 }

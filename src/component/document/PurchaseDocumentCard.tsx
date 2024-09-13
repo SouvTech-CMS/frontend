@@ -92,7 +92,6 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
               as={Link}
               to={fileUrl}
               target="_blank"
-              replace
             >
               Open
             </Button>

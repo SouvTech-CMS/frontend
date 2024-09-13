@@ -13,10 +13,16 @@ import {
   Tooltip,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { ChangeEvent, FC, useEffect, useState } from "react"
+import { ChangeEvent, FC, useEffect, useMemo, useState } from "react"
 import { FiDollarSign, FiPercent, FiType } from "react-icons/fi"
-import { usePurchaseServiceUpdateMutation } from "service/purchase/purchaseService"
-import { useDeliveryServiceUpdateMutation } from "service/purchaseDelivery/purchaseDeliveryService"
+import {
+  usePurchaseServiceCreateMutation,
+  usePurchaseServiceUpdateMutation,
+} from "service/purchase/purchaseService"
+import {
+  useDeliveryServiceCreateMutation,
+  useDeliveryServiceUpdateMutation,
+} from "service/purchaseDelivery/purchaseDeliveryService"
 import { ModalProps } from "type/modalProps"
 import { PurchaseService } from "type/purchase/purchaseService"
 import { WithId } from "type/withId"
@@ -24,26 +30,59 @@ import { roundNumber } from "util/formatting"
 import { notify } from "util/toasts"
 
 interface PurchaseServiceModalProps extends ModalProps {
-  prevService: WithId<PurchaseService>
+  prevService?: WithId<PurchaseService>
+  purchaseId?: number
+  deliveryId?: number
   isDelivery?: boolean
 }
 
 export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
-  const { prevService, isDelivery = false, isOpen, onClose } = props
+  const {
+    prevService,
+    purchaseId = NaN,
+    deliveryId = NaN,
+    isDelivery = false,
+    isOpen,
+    onClose,
+  } = props
 
-  const prevIsDiscountPercentage = prevService.discount
-    ? prevService.discount.includes("%")
+  const serviceId = prevService?.id
+  const isNewService = prevService === undefined && serviceId === undefined
+
+  const newService = useMemo(
+    () => ({
+      purchase_id: purchaseId,
+      purchase_delivery_id: deliveryId,
+      name: "",
+      amount: NaN,
+      total_amount: NaN,
+    }),
+    [purchaseId, deliveryId],
+  )
+
+  const prevIsDiscountPercentage = prevService?.discount
+    ? prevService?.discount.includes("%")
     : true
-  const prevDiscount = parseFloat(prevService.discount || "")
+  const prevDiscount = parseFloat(prevService?.discount || "")
 
-  const [service, setService] = useState<WithId<PurchaseService>>(prevService)
+  const [service, setService] = useState<PurchaseService>(
+    prevService || newService,
+  )
   const [isDiscountPercentage, setIsDiscountPercentage] = useState<boolean>(
     prevIsDiscountPercentage,
   )
   const [discount, setDiscount] = useState<number>(prevDiscount)
 
+  const purchaseServiceCreateMutation = usePurchaseServiceCreateMutation()
+  const deliveryServiceCreateMutation = useDeliveryServiceCreateMutation()
   const purchaseServiceUpdateMutation = usePurchaseServiceUpdateMutation()
   const deliveryServiceUpdateMutation = useDeliveryServiceUpdateMutation()
+
+  const isLoading =
+    purchaseServiceCreateMutation.isLoading ||
+    deliveryServiceCreateMutation.isLoading ||
+    purchaseServiceUpdateMutation.isLoading ||
+    deliveryServiceUpdateMutation.isLoading
 
   const isNameInvalid = !service?.name.trim()
   const isAmountInvalid = !service.amount
@@ -112,24 +151,54 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
       service.discount = null
     }
 
-    if (isDelivery) {
-      await deliveryServiceUpdateMutation.mutateAsync(service)
+    if (isNewService) {
+      if (isDelivery) {
+        await deliveryServiceCreateMutation.mutateAsync(service)
 
-      notify(`Delivery Service #${service.id} updated successfully`, "success")
+        notify(`Delivery Service #${serviceId} created successfully`, "success")
+      } else {
+        await purchaseServiceCreateMutation.mutateAsync(service)
+
+        notify(`Purchase Service #${serviceId} created successfully`, "success")
+      }
     } else {
-      await purchaseServiceUpdateMutation.mutateAsync(service)
+      const body: WithId<PurchaseService> = {
+        ...service,
+        id: serviceId!,
+      }
 
-      notify(`Purchase Service #${service.id} updated successfully`, "success")
+      if (isDelivery) {
+        await deliveryServiceUpdateMutation.mutateAsync(body)
+
+        notify(`Delivery Service #${serviceId} updated successfully`, "success")
+      } else {
+        await purchaseServiceUpdateMutation.mutateAsync(body)
+
+        notify(`Purchase Service #${serviceId} updated successfully`, "success")
+      }
     }
 
     onClose()
   }
 
   useEffect(() => {
-    setService(prevService)
-    setDiscount(prevDiscount)
-    setIsDiscountPercentage(prevIsDiscountPercentage)
-  }, [isOpen, prevService, prevDiscount, prevIsDiscountPercentage])
+    if (isNewService) {
+      setService(newService)
+      setDiscount(NaN)
+      setIsDiscountPercentage(true)
+    } else {
+      setService({ ...prevService! })
+      setDiscount(prevDiscount)
+      setIsDiscountPercentage(prevIsDiscountPercentage)
+    }
+  }, [
+    isOpen,
+    prevService,
+    prevDiscount,
+    prevIsDiscountPercentage,
+    isNewService,
+    newService,
+  ])
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
@@ -140,7 +209,8 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
           {isDelivery
             ? `Delivery #${service.purchase_delivery_id} `
             : `Purchase #${service.purchase_id} `}
-          Service #{service.id}
+
+          {isNewService ? "New Service" : "Service #{serviceId}"}
         </ModalHeader>
         <ModalCloseButton />
 
@@ -160,6 +230,7 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
                   handleServiceChange("name", value)
                 }}
                 isInvalid={isNameInvalid}
+                isDisabled={isLoading}
               />
             </InputGroup>
 
@@ -179,6 +250,8 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
                     const value = e.target.valueAsNumber
                     handleServiceChange("amount", value)
                   }}
+                  isInvalid={isAmountInvalid}
+                  isDisabled={isLoading}
                 />
               </InputGroup>
 
@@ -201,6 +274,7 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
                     value={discount}
                     type="number"
                     onChange={handleDiscountChange}
+                    isDisabled={isLoading}
                   />
                 </InputGroup>
               </Tooltip>
@@ -224,11 +298,15 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
 
         <ModalFooter>
           <Flex gap={5}>
-            <Button onClick={onServiceChange} isDisabled={isSaveBtnDisabled}>
+            <Button
+              onClick={onServiceChange}
+              isLoading={isLoading}
+              isDisabled={isSaveBtnDisabled}
+            >
               Save
             </Button>
 
-            <Button variant="secondary" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose} isLoading={isLoading}>
               Cancel
             </Button>
           </Flex>
