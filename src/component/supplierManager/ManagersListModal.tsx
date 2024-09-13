@@ -51,7 +51,7 @@ export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
           </ModalBody>
 
           <ModalFooter>
-            <Button w="full" colorScheme="blue" onClick={onNewManagerModalOpen}>
+            <Button w="full" onClick={onNewManagerModalOpen}>
               Add manager
             </Button>
           </ModalFooter>
