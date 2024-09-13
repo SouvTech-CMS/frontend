@@ -14,7 +14,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react"
-import { getAllRoles } from "api/role"
+import { getAllRoles } from "api/role/role"
 import { getAllShops } from "api/shop"
 import { AxiosError } from "axios"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
@@ -34,9 +34,9 @@ import {
 import { useQuery } from "react-query"
 import { useUserCreateMutation, useUserUpdateMutation } from "service/user"
 import { ModalProps } from "type/modalProps"
-import { Role } from "type/role"
+import { Role, RoleWithPermissions } from "type/role/role"
 import { Shop } from "type/shop"
-import { RoleWithPermissions, User, UserCreate, UserUpdate } from "type/user"
+import { User, UserCreate, UserUpdate } from "type/user"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 import { isPasswordValid, isUsernameValid } from "util/validation"
@@ -158,9 +158,9 @@ export const UserModal: FC<UserModalProps> = (props) => {
           shops_list: selectedShops,
         }
 
-        const { user: newUser } = await userCreateMutation.mutateAsync(body)
+        const { id: newUserId } = await userCreateMutation.mutateAsync(body)
 
-        await onCommentSubmit(newUser.id)
+        await onCommentSubmit(newUserId)
 
         notify(`Employee ${user.fio} successfully added`, "success")
       } else {
@@ -207,7 +207,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
     }
 
     if (rolesList) {
-      const rolesIds = roles?.map((role) => role.role.id)
+      const rolesIds = roles?.map((role) => role.id)
       setSelectedRoles(rolesIds || [])
     }
   }, [prevUser, shopsList, rolesList, shops, roles, isOpen])

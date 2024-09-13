@@ -21,8 +21,9 @@ import {
   FiMessageSquare,
   FiPhone,
 } from "react-icons/fi"
+import { RoleWithPermissions } from "type/role/role"
 import { Shop } from "type/shop"
-import { RoleWithPermissions, User } from "type/user"
+import { User } from "type/user"
 import { WithId } from "type/withId"
 
 interface UserCardProps {
@@ -57,9 +58,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
   const isShopsExists = shops.length > 0
   const isCommentExists = !!comment.trim()
 
-  const rolesList = roles.map(
-    (roleWithPermissions) => roleWithPermissions.role.name,
-  )
+  const rolesList = roles.map((role) => role.name)
   const isRolesExists = roles.length > 0
 
   // If user fully filled

@@ -12,6 +12,7 @@ import { Orders } from "page/Orders"
 import { ProductionInfo } from "page/ProductionInfo"
 import { Purchases } from "page/Purchases"
 import { PurchasesHistory } from "page/PurchasesHistory"
+import { Roles } from "page/Roles"
 import { Storage } from "page/Storage"
 import { StorageGoodDetails } from "page/StorageGoodDetails"
 import { Suppliers } from "page/Suppliers"
@@ -24,6 +25,7 @@ import {
   FiHome,
   FiMap,
   FiPackage,
+  FiPocket,
   FiShoppingBag,
   FiShoppingCart,
   FiTruck,
@@ -176,6 +178,15 @@ export const configuration = {
       path: "/users",
       permissions: [],
       component: <Users guideNotionPageId="57b7bd55eab24fd89a2692f2296560c8" />,
+    },
+    // Roles
+    {
+      type: "main",
+      icon: FiPocket,
+      name: "Roles",
+      path: "/roles",
+      permissions: [],
+      component: <Roles />,
     },
     // Logs
     {

@@ -76,6 +76,7 @@ export const appTheme = extendTheme({
             color: baseTheme.colors.white,
           },
         },
+        // TODO: update new card styles
         newCard: {
           bgColor: baseTheme.colors.white,
           _hover: {
