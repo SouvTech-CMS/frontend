@@ -1,6 +1,4 @@
 import { Flex, Text } from "@chakra-ui/react"
-import { ColumnsTagsSelect } from "component/tableAccess/ColumnsTagsSelect"
-import { GOODS_PRODUCTION_INFO_TABLE } from "constant/tables"
 import { FC, useState } from "react"
 import { titleCase } from "title-case"
 import { TableWithAccessList } from "type/tableAccess/tableAccess"
@@ -44,11 +42,11 @@ export const TableAccessCard: FC<TableAccessCardProps> = (props) => {
         </Text>
       </Flex>
 
-      <ColumnsTagsSelect
+      {/* <ColumnsTagsSelect
         tableColumns={GOODS_PRODUCTION_INFO_TABLE}
         onChange={handleColumnsChange}
         // isLoading={isLoading}
-      />
+      /> */}
     </Flex>
   )
 }

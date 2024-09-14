@@ -1,4 +1,5 @@
-import { Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
+import { Table, TableContainer, Tbody, Thead, Tr } from "@chakra-ui/react"
+import { CustomTh } from "component/customTable/CustomTh"
 import { StorageGoodsWithProductionInfoTableRow } from "component/productionInfo/StorageGoodsWithProductionInfoTableRow"
 import { GOODS_PRODUCTION_INFO_TABLE } from "constant/tables"
 import { FC } from "react"
@@ -19,7 +20,7 @@ export const StorageGoodsWithProductionInfoTable: FC<
         <Thead>
           <Tr>
             {GOODS_PRODUCTION_INFO_TABLE.map((column, index) => (
-              <Th key={index}>{column}</Th>
+              <CustomTh key={index} column={column} />
             ))}
           </Tr>
         </Thead>

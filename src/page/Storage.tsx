@@ -32,9 +32,9 @@ export const Storage = (props: PageProps) => {
 
   const {
     data: storageGoodsResponse,
-    isLoading: isLoadingStorageGoodsList,
+    isLoading,
     refetch,
-    isRefetching: isRefetchingStorageGoodsList,
+    isRefetching,
   } = useQuery<ApiResponse<WithId<StorageGood>[]>>("storageGoodsList", () =>
     getAllStorageGoods({
       limit: rowsPerPageCount,
@@ -47,10 +47,6 @@ export const Storage = (props: PageProps) => {
   )
   const storageGoodsCount = storageGoodsResponse?.count
   const storageGoodsList = storageGoodsResponse?.result
-
-  const isLoading = isLoadingStorageGoodsList
-
-  const isRefetching = isRefetchingStorageGoodsList
 
   const isStorageGoodsExist = storageGoodsList !== undefined
 
