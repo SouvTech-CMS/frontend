@@ -183,10 +183,11 @@ export const configuration = {
     {
       type: "main",
       icon: FiPocket,
-      name: "Roles",
+      name: "Role Access",
       path: "/roles",
       permissions: [],
       component: <Roles />,
+      isDisabled: true,
     },
     // Logs
     {
