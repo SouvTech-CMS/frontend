@@ -48,7 +48,7 @@ type Route = {
 }
 
 export const configuration = {
-  version: "v0.1.3",
+  version: "v0.2.5",
   isDevEnv: process.env.NODE_ENV === "development",
   sidebarItems: [
     //* Main pages
