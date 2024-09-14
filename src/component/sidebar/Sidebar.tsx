@@ -54,9 +54,13 @@ export const Sidebar: FC = () => {
       )}
 
       {/* Site Version */}
-      <Flex w="full" justifyContent="center" mt="auto">
+      <Flex w="full" direction="column" alignItems="center" mt="auto" gap={2}>
         <Text fontWeight="light" color="gray">
           {`Site Version: ${configuration.version}`}
+        </Text>
+
+        <Text fontWeight="light" color="gray">
+          © RedBread
         </Text>
       </Flex>
     </Flex>

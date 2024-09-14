@@ -13,7 +13,7 @@ import {
   Textarea,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { FiAlignLeft, FiHash, FiType } from "react-icons/fi"
 import {
   useStorageGoodCreateMutation,
@@ -82,6 +82,14 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
 
     onClose()
   }
+
+  useEffect(() => {
+    if (isNewGood) {
+      setGood(newGood)
+    } else {
+      setGood(prevGood)
+    }
+  }, [isOpen, isNewGood, prevGood])
 
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose}>

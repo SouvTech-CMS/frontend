@@ -1,5 +1,7 @@
 import {
+  Button,
   Card,
+  CardFooter,
   CardHeader,
   Flex,
   Heading,
@@ -11,6 +13,7 @@ import {
 import { RoleCardMenu } from "component/role/RoleCardMenu"
 import { RoleDeleteModal } from "component/role/RoleDeleteModal"
 import { RoleModal } from "component/role/RoleModal"
+import { TablesAccessModal } from "component/tableAccess/TablesAccessModal"
 import { ADMIN_ROLE } from "constant/roles"
 import { FC } from "react"
 import { RoleWithPermissions } from "type/role/role"
@@ -26,6 +29,13 @@ export const RoleCard: FC<RoleCardProps> = (props) => {
 
   const permissions = role.permissions
 
+  // Edit
+  const {
+    isOpen: isRoleEditModalOpen,
+    onOpen: onRoleEditModalOpen,
+    onClose: onRoleEditModalClose,
+  } = useDisclosure()
+
   // Delete
   const {
     isOpen: isRoleDeleteModalOpen,
@@ -33,11 +43,11 @@ export const RoleCard: FC<RoleCardProps> = (props) => {
     onClose: onRoleDeleteModalClose,
   } = useDisclosure()
 
-  // Edit
+  // Accesses
   const {
-    isOpen: isRoleEditModalOpen,
-    onOpen: onRoleEditModalOpen,
-    onClose: onRoleEditModalClose,
+    isOpen: isTablesAccessModalOpen,
+    onOpen: onTablesAccessModalOpen,
+    onClose: onTablesAccessModalClose,
   } = useDisclosure()
 
   // const { comment } = useCommentInput({
@@ -81,6 +91,19 @@ export const RoleCard: FC<RoleCardProps> = (props) => {
             onDelete={onRoleDeleteModalOpen}
           />
         </CardHeader>
+
+        <CardFooter mt="auto">
+          <Flex w="full">
+            <Button
+              w="full"
+              variant="ghost"
+              colorScheme="blue"
+              onClick={onTablesAccessModalOpen}
+            >
+              Edit access to tables data
+            </Button>
+          </Flex>
+        </CardFooter>
       </Card>
 
       {/* Modals */}
@@ -96,6 +119,12 @@ export const RoleCard: FC<RoleCardProps> = (props) => {
           role={role}
           isOpen={isRoleDeleteModalOpen}
           onClose={onRoleDeleteModalClose}
+        />
+
+        <TablesAccessModal
+          role={role}
+          isOpen={isTablesAccessModalOpen}
+          onClose={onTablesAccessModalClose}
         />
       </>
     </>
