@@ -8,7 +8,7 @@ import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
-import { StorageGoodsWithProductionInfoTable } from "component/productionInfo/StorageGoodsWithProductionInfoTable"
+import { ProductionInfoTable } from "component/productionInfo/ProductionInfoTable"
 import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
@@ -85,7 +85,7 @@ export const ProductionInfo = (props: PageProps) => {
             </Flex>
           </Flex>
 
-          <StorageGoodsWithProductionInfoTable
+          <ProductionInfoTable
             goodsWithProductionInfoList={goodsWithProductionInfoList}
           />
 

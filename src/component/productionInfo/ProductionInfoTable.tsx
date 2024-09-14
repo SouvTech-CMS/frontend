@@ -1,17 +1,15 @@
 import { Table, TableContainer, Tbody, Thead, Tr } from "@chakra-ui/react"
 import { CustomTh } from "component/customTable/CustomTh"
-import { StorageGoodsWithProductionInfoTableRow } from "component/productionInfo/StorageGoodsWithProductionInfoTableRow"
+import { ProductionInfoTableRow } from "component/productionInfo/ProductionInfoTableRow"
 import { GOODS_PRODUCTION_INFO_TABLE } from "constant/tables"
 import { FC } from "react"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 
-interface StorageGoodsWithProductionInfoTableProps {
+interface ProductionInfoTableProps {
   goodsWithProductionInfoList: StorageGoodWithProductionInfo[]
 }
 
-export const StorageGoodsWithProductionInfoTable: FC<
-  StorageGoodsWithProductionInfoTableProps
-> = (props) => {
+export const ProductionInfoTable: FC<ProductionInfoTableProps> = (props) => {
   const { goodsWithProductionInfoList } = props
 
   return (
@@ -27,7 +25,7 @@ export const StorageGoodsWithProductionInfoTable: FC<
 
         <Tbody>
           {goodsWithProductionInfoList?.map((goodWithProductionInfo, index) => (
-            <StorageGoodsWithProductionInfoTableRow
+            <ProductionInfoTableRow
               key={index}
               goodWithProductionInfo={goodWithProductionInfo}
             />
