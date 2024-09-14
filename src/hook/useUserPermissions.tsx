@@ -46,6 +46,18 @@ export const useUserPermissions = () => {
     isUserAdmin,
   )
 
+  //* Production Info
+  const canReadProductionInfo = isUserHasPermission(
+    Permission.PRODUCTION_INFO_READ,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canEditProductionInfo = isUserHasPermission(
+    Permission.PRODUCTION_INFO_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
+
   //* Suppliers
   const canReadSuppliers = isUserHasPermission(
     Permission.STORAGE_READ,
@@ -83,6 +95,10 @@ export const useUserPermissions = () => {
     //* Storage
     canReadStorage,
     canEditStorage,
+
+    //* Production Info
+    canReadProductionInfo,
+    canEditProductionInfo,
 
     //* Suppliers
     canReadSuppliers,
