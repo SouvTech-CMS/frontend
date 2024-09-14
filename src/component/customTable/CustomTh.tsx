@@ -103,7 +103,7 @@ export const CustomTh: FC<CustomThProps> = (props) => {
         >
           <Flex alignItems="center" gap={1}>
             <PopoverAnchor>
-              <Text>{name}</Text>
+              <Text whiteSpace="break-spaces">{name}</Text>
             </PopoverAnchor>
 
             {/* Search Btn */}

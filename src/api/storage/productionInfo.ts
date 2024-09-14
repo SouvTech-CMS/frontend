@@ -1,25 +1,16 @@
 import { axiosClient } from "api/axiosClient"
+import { ApiRequest } from "type/api/apiRequest"
 import { ApiResponse } from "type/api/apiResponse"
+import { ProductionInfoSearchFilter } from "type/productionInfo/productionInfo"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
+import { beautifyBody } from "util/apiRequestBody"
 
 export const getStorageGoodsWithProductionInfo = async (
-  limit: number,
-  offset: number,
-  // shopId: number,
-  // sort_field?: string,
-  // sort_direction?: SortDirection,
-  // search_filter?: StorageGoodSearchFilter,
+  body: ApiRequest<ProductionInfoSearchFilter>,
 ): Promise<ApiResponse<StorageGoodWithProductionInfo[]>> => {
   const { data: goodsWithProductionInfoList } = await axiosClient.post(
     "/storage/good/all/production_info/",
-    {
-      limit,
-      offset,
-      sort_field: "id",
-      sort_direction: "asc",
-      // shops: shopId > 0 ? [shopId] : undefined,
-      // search_filter,
-    },
+    beautifyBody(body),
   )
   return goodsWithProductionInfoList
 }

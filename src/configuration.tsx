@@ -33,6 +33,7 @@ import {
 } from "react-icons/fi"
 import { GoodSearchFilter } from "type/order/good"
 import { OrderSearchFilter } from "type/order/order"
+import { ProductionInfoSearchFilter } from "type/productionInfo/productionInfo"
 import { StorageGoodSearchFilter } from "type/storage/storageGood"
 import { getApiBaseUrl, getWebSocketBaseUrl } from "util/urls"
 
@@ -167,7 +168,9 @@ export const configuration = {
       path: "/production-info",
       permissions: [Permission.PRODUCTION_INFO_READ],
       component: (
-        <ProductionInfo guideNotionPageId="3120cc3e2bee43e894b2ab32553e3b5e" />
+        <TableContextProvider<ProductionInfoSearchFilter>>
+          <ProductionInfo guideNotionPageId="3120cc3e2bee43e894b2ab32553e3b5e" />
+        </TableContextProvider>
       ),
     },
     // Employees
