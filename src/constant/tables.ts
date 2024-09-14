@@ -4,8 +4,6 @@ export const INITIAL_ROWS_PER_PAGE = 10
 
 export const ROWS_PER_PAGE_SELECT_VARIANTS = [10, 50, 100]
 
-export const PURCHASES_TABLE_COLUMNS = ["ID", "Amount", "Shipping", "Deadline"]
-
 export const STORAGE_GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
   { name: "ID", param: "id", isSearchable: true, isSortable: true },
   {
@@ -111,7 +109,7 @@ export const DELIVERIES_HISTORY_TABLE = [
   "",
 ]
 
-export const GOODS_WITH_PRODUCTION_INFO_TABLE = [
+export const GOODS_PRODUCTION_INFO_TABLE = [
   "ID",
   "SKU",
   "Name",
