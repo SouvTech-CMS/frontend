@@ -1,9 +1,11 @@
+import { getTablesAccessListByRolesIds } from "api/tableAccess/tableAccess"
 import { getCurrentUser } from "api/user"
 import { ADMIN_ROLE } from "constant/roles"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { FCC } from "type/fcc"
 import { Shop } from "type/shop"
+import { TableWithAccessList } from "type/tableAccess/tableAccess"
 import { User, UserWithRolesAndShops } from "type/user"
 import { WithId } from "type/withId"
 
@@ -12,6 +14,7 @@ interface UserContextProps {
   userRoles?: string[]
   userPermissions?: string[]
   userShops?: WithId<Shop>[]
+  userTableAccessList?: TableWithAccessList[]
   isUserAdmin?: boolean
   isLoadingCurrentUser: boolean
 }
@@ -22,22 +25,35 @@ export const UserContext = createContext<UserContextProps>({
 
 export const UserContextProvider: FCC = (props) => {
   const { children } = props
+
   const [userRoles, setUserRoles] = useState<string[]>([])
   const [userShops, setUserShops] = useState<WithId<Shop>[]>([])
   const [userPermissions, setUserPermissions] = useState<string[]>([])
+
   const [isLoadingRoles, setIsLoadingRoles] = useState<boolean>(true)
+  const [isLoadingShops, setIsLoadingShops] = useState<boolean>(true)
   const [isLoadingPermissions, setIsLoadingPermissions] =
     useState<boolean>(true)
-  const [isLoadingShops, setIsLoadingShops] = useState<boolean>(true)
 
   const { data: currentUser, isLoading: isLoadingCurrentUser } =
     useQuery<UserWithRolesAndShops>("currentUser", getCurrentUser)
+
+  const rolesIds = currentUser?.roles.map((role) => role.id)
+  const { data: userTableAccessList, isLoading: isTableAccessListLoading } =
+    useQuery<TableWithAccessList[]>(
+      ["userTableAccessList", currentUser?.id],
+      () => getTablesAccessListByRolesIds(rolesIds!),
+      {
+        enabled: !!rolesIds?.length,
+      },
+    )
 
   const isLoading =
     isLoadingCurrentUser ||
     isLoadingRoles ||
     isLoadingPermissions ||
-    isLoadingShops
+    isLoadingShops ||
+    isTableAccessListLoading
 
   const isUserAdmin = userRoles.includes(ADMIN_ROLE)
 
@@ -68,6 +84,7 @@ export const UserContextProvider: FCC = (props) => {
         userRoles,
         userPermissions,
         userShops,
+        userTableAccessList,
         isUserAdmin,
         isLoadingCurrentUser: isLoading,
       }}

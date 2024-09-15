@@ -5,5 +5,11 @@ export const isUserHasPermission = (
   userPermissions?: string[],
   isUserAdmin?: boolean,
 ) => {
-  return isUserAdmin || userPermissions?.includes(permission)
+  if (isUserAdmin) {
+    return true
+  }
+
+  const isHasPermission = userPermissions?.includes(permission)
+
+  return isHasPermission
 }

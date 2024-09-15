@@ -110,9 +110,27 @@ export const DELIVERIES_HISTORY_TABLE = [
 ]
 
 export const GOODS_PRODUCTION_INFO_TABLE: (TableColumn | null)[] = [
-  { name: "ID", param: "id", isSearchable: true, isSortable: true },
-  { name: "SKU", param: "sku", isSearchable: true, isSortable: false },
-  { name: "Name", param: "name", isSearchable: true, isSortable: false },
+  {
+    name: "ID",
+    param: "id",
+    isMain: true,
+    isSearchable: true,
+    isSortable: true,
+  },
+  {
+    name: "SKU",
+    param: "uniquename",
+    isMain: true,
+    isSearchable: true,
+    isSortable: false,
+  },
+  {
+    name: "Name",
+    param: "name",
+    isMain: true,
+    isSearchable: true,
+    isSortable: false,
+  },
   { name: "Power", param: "power", isSearchable: false, isSortable: false },
   { name: "Speed", param: "speed", isSearchable: false, isSortable: false },
   {

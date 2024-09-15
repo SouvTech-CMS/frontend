@@ -3,4 +3,5 @@ export type TableColumn = {
   param: string
   isSortable?: boolean
   isSearchable?: boolean
+  isMain?: boolean
 }
