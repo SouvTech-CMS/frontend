@@ -2,6 +2,7 @@ import { Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
 import { SKUBadge } from "component/SKUBadge"
 import { ProductionInfoModal } from "component/productionInfo/ProductionInfoModal"
 import { ProductionInfoTableRowMenu } from "component/productionInfo/ProductionInfoTableRowMenu"
+import { useUserTableAccess } from "hook/useUserTableAccess"
 import { FC } from "react"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 
@@ -9,10 +10,14 @@ interface ProductionInfoTableRowProps {
   goodWithProductionInfo: StorageGoodWithProductionInfo
 }
 
+const TABLE_NAME = "production_info"
+
 export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
   props,
 ) => {
   const { goodWithProductionInfo } = props
+
+  const { isCanAccessColumn } = useUserTableAccess()
 
   const good = goodWithProductionInfo
   const productionInfo = good.production_info
@@ -42,71 +47,97 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
         </Td>
 
         {/* Power */}
-        <Td>
-          <Text>{productionInfo?.power}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "power") && (
+          <Td>
+            <Text>{productionInfo?.power}</Text>
+          </Td>
+        )}
 
         {/* Speed */}
-        <Td>
-          <Text>{productionInfo?.speed}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "speed") && (
+          <Td>
+            <Text>{productionInfo?.speed}</Text>
+          </Td>
+        )}
 
         {/* Penetration Step */}
-        <Td>
-          <Text>{productionInfo?.penetration_step}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "penetration_step") && (
+          <Td>
+            <Text>{productionInfo?.penetration_step}</Text>
+          </Td>
+        )}
 
         {/* Engraving Width Max */}
-        <Td>
-          <Text>{productionInfo?.engraving_width_max}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "engraving_width_max") && (
+          <Td>
+            <Text>{productionInfo?.engraving_width_max}</Text>
+          </Td>
+        )}
 
         {/* Engraving Height Max */}
-        <Td>
-          <Text>{productionInfo?.engraving_height_max}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "engraving_height_max") && (
+          <Td>
+            <Text>{productionInfo?.engraving_height_max}</Text>
+          </Td>
+        )}
 
         {/* Length Inch */}
-        <Td>
-          <Text>{productionInfo?.length_inch}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "length_inch") && (
+          <Td>
+            <Text>{productionInfo?.length_inch}</Text>
+          </Td>
+        )}
 
         {/* Width Inch */}
-        <Td>
-          <Text>{productionInfo?.width_inch}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "width_inch") && (
+          <Td>
+            <Text>{productionInfo?.width_inch}</Text>
+          </Td>
+        )}
 
         {/* Thickness Inch */}
-        <Td>
-          <Text>{productionInfo?.thickness_inch}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "thickness_inch") && (
+          <Td>
+            <Text>{productionInfo?.thickness_inch}</Text>
+          </Td>
+        )}
 
         {/* Package Size Max */}
-        <Td>
-          <Text>{productionInfo?.package_size_max}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "package_size_max") && (
+          <Td>
+            <Text>{productionInfo?.package_size_max}</Text>
+          </Td>
+        )}
 
         {/* Weight Oz */}
-        <Td>
-          <Text>{productionInfo?.weight_oz}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "weight_oz") && (
+          <Td>
+            <Text>{productionInfo?.weight_oz}</Text>
+          </Td>
+        )}
 
         {/* Production Time */}
-        <Td>
-          <Text>{productionInfo?.production_time}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "production_time") && (
+          <Td>
+            <Text>{productionInfo?.production_time}</Text>
+          </Td>
+        )}
 
         {/* Cost Of Good */}
-        <Td>
-          <Text>{productionInfo?.cost_of_good}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "cost_of_good") && (
+          <Td>
+            <Text>{productionInfo?.cost_of_good}</Text>
+          </Td>
+        )}
 
         {/* Competitive Price */}
-        <Td>
-          <Text>{productionInfo?.competitive_price}</Text>
-        </Td>
+        {isCanAccessColumn(TABLE_NAME, "competitive_price") && (
+          <Td>
+            <Text>{productionInfo?.competitive_price}</Text>
+          </Td>
+        )}
 
-        {/* Competitive Price */}
+        {/* Menu Btns */}
         <Td>
           <ProductionInfoTableRowMenu
             onEdit={onProductionInfoUpdateModalOpen}

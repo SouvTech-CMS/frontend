@@ -12,7 +12,7 @@ export const getAllUsers = async (): Promise<UserWithRolesAndShops[]> => {
 }
 
 export const createUser = async (
-  user: UserCreate
+  user: UserCreate,
 ): Promise<UserWithRolesAndShops> => {
   const { data: newUser } = await axiosClient.post("/user/", user)
   return newUser

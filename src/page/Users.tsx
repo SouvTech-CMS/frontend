@@ -37,13 +37,8 @@ export const Users = (props: PageProps) => {
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
           <NewUserCard />
 
-          {filteredUsersList?.map((user, index) => (
-            <UserCard
-              key={index}
-              user={user}
-              roles={user.roles}
-              shops={user.shops}
-            />
+          {filteredUsersList?.map(({ roles, shops, ...user }, index) => (
+            <UserCard key={index} user={user} roles={roles} shops={shops} />
           ))}
         </SimpleGrid>
       ) : (
