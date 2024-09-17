@@ -8,14 +8,17 @@ export const useUserTableAccess = () => {
     if (isUserAdmin) {
       return true
     }
+    const isUserTableAccessExists = userTableAccessList !== undefined
 
-    const isCanAccess = userTableAccessList?.some(
-      ({ table_name, columns }) =>
-        table_name === table &&
-        columns.some(
-          (columnName) => columnName.toLowerCase() === column.toLowerCase(),
-        ),
-    )
+    const isCanAccess = isUserTableAccessExists
+      ? userTableAccessList.some(
+          ({ table_name, columns }) =>
+            table_name === table &&
+            columns.some(
+              (columnName) => columnName.toLowerCase() === column.toLowerCase(),
+            ),
+        )
+      : true
 
     return isCanAccess
   }
