@@ -35,33 +35,26 @@ export const useUserTableAccess = () => {
     return filteredTableColumns
   }
 
-  const filterAccessibleParams = <DataType extends {}>(
-    tableName: string,
-    tableColumns: (TableColumn | null)[],
-    dataList: DataType[],
+  const filterAccessibleParams = <DataType,>(
+    filteredTableColumns: (TableColumn | null)[],
+    obj?: DataType,
   ) => {
-    const filteredTableColumns = getAccessibleTableColumns(
-      tableName,
-      tableColumns,
-    )
+    if (!obj) {
+      return obj
+    }
 
     const allowedParams = new Set(
       filteredTableColumns.map((column) => column?.param),
     )
 
-    const filteredData = dataList.map((obj) => {
-      const filteredItem: DataType = {} as DataType
-
-      Object.keys(obj).forEach((key) => {
-        if (allowedParams.has(key)) {
-          filteredItem[key as keyof DataType] = obj[key as keyof DataType]
-        }
-      })
-
-      return filteredItem
+    const filteredItem = {} as DataType
+    Object.keys(obj).forEach((key) => {
+      if (allowedParams.has(key)) {
+        filteredItem[key as keyof DataType] = obj[key as keyof DataType]
+      }
     })
 
-    return [filteredTableColumns, filteredData] as const
+    return filteredItem
   }
 
   return {

@@ -4,20 +4,21 @@ import { ProductionInfoModal } from "component/productionInfo/ProductionInfoModa
 import { ProductionInfoTableRowMenu } from "component/productionInfo/ProductionInfoTableRowMenu"
 import { useUserTableAccess } from "hook/useUserTableAccess"
 import { FC } from "react"
+import { ProductionInfo } from "type/productionInfo/productionInfo"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
+import { TableColumn } from "type/tableColumn"
 
 interface ProductionInfoTableRowProps {
+  accessibleColumns: (TableColumn | null)[]
   goodWithProductionInfo: StorageGoodWithProductionInfo
 }
-
-const TABLE_NAME = "production_info"
 
 export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
   props,
 ) => {
-  const { goodWithProductionInfo } = props
+  const { accessibleColumns, goodWithProductionInfo } = props
 
-  const { isCanAccessColumn } = useUserTableAccess()
+  const { filterAccessibleParams } = useUserTableAccess()
 
   const good = goodWithProductionInfo
   const productionInfo = good.production_info
@@ -27,6 +28,11 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
     onOpen: onProductionInfoUpdateModalOpen,
     onClose: onProductionInfoUpdateModalClose,
   } = useDisclosure()
+
+  const filteredProductionInfo = filterAccessibleParams<ProductionInfo>(
+    accessibleColumns,
+    productionInfo,
+  )
 
   return (
     <>
@@ -47,95 +53,69 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
         </Td>
 
         {/* Power */}
-        {isCanAccessColumn(TABLE_NAME, "power") && (
-          <Td>
-            <Text>{productionInfo?.power}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.power}</Text>
+        </Td>
 
         {/* Speed */}
-        {isCanAccessColumn(TABLE_NAME, "speed") && (
-          <Td>
-            <Text>{productionInfo?.speed}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.speed}</Text>
+        </Td>
 
         {/* Penetration Step */}
-        {isCanAccessColumn(TABLE_NAME, "penetration_step") && (
-          <Td>
-            <Text>{productionInfo?.penetration_step}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.penetration_step}</Text>
+        </Td>
 
         {/* Engraving Width Max */}
-        {isCanAccessColumn(TABLE_NAME, "engraving_width_max") && (
-          <Td>
-            <Text>{productionInfo?.engraving_width_max}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.engraving_width_max}</Text>
+        </Td>
 
         {/* Engraving Height Max */}
-        {isCanAccessColumn(TABLE_NAME, "engraving_height_max") && (
-          <Td>
-            <Text>{productionInfo?.engraving_height_max}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.engraving_height_max}</Text>
+        </Td>
 
         {/* Length Inch */}
-        {isCanAccessColumn(TABLE_NAME, "length_inch") && (
-          <Td>
-            <Text>{productionInfo?.length_inch}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.length_inch}</Text>
+        </Td>
 
         {/* Width Inch */}
-        {isCanAccessColumn(TABLE_NAME, "width_inch") && (
-          <Td>
-            <Text>{productionInfo?.width_inch}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.width_inch}</Text>
+        </Td>
 
         {/* Thickness Inch */}
-        {isCanAccessColumn(TABLE_NAME, "thickness_inch") && (
-          <Td>
-            <Text>{productionInfo?.thickness_inch}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.thickness_inch}</Text>
+        </Td>
 
         {/* Package Size Max */}
-        {isCanAccessColumn(TABLE_NAME, "package_size_max") && (
-          <Td>
-            <Text>{productionInfo?.package_size_max}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.package_size_max}</Text>
+        </Td>
 
         {/* Weight Oz */}
-        {isCanAccessColumn(TABLE_NAME, "weight_oz") && (
-          <Td>
-            <Text>{productionInfo?.weight_oz}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.weight_oz}</Text>
+        </Td>
 
         {/* Production Time */}
-        {isCanAccessColumn(TABLE_NAME, "production_time") && (
-          <Td>
-            <Text>{productionInfo?.production_time}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.production_time}</Text>
+        </Td>
 
         {/* Cost Of Good */}
-        {isCanAccessColumn(TABLE_NAME, "cost_of_good") && (
-          <Td>
-            <Text>{productionInfo?.cost_of_good}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.cost_of_good}</Text>
+        </Td>
 
         {/* Competitive Price */}
-        {isCanAccessColumn(TABLE_NAME, "competitive_price") && (
-          <Td>
-            <Text>{productionInfo?.competitive_price}</Text>
-          </Td>
-        )}
+        <Td>
+          <Text>{filteredProductionInfo?.competitive_price}</Text>
+        </Td>
 
         {/* Menu Btns */}
         <Td>
