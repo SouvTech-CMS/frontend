@@ -78,6 +78,10 @@ export const WebSocketContextProvider: FCC = (props) => {
           case "production_info":
             queryClient.invalidateQueries("goodsWithProductionInfoList")
             break
+
+          case "table_access":
+            queryClient.invalidateQueries("roleTableAccess")
+            break
         }
       }
 

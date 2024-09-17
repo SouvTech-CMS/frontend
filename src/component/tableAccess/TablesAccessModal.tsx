@@ -41,7 +41,7 @@ export const TablesAccessModal: FC<TablesAccessModalProps> = (props) => {
     ["roleTableAccess", roleId],
     () => getRoleTablesAccess(roleId),
     {
-      onSuccess(roleTableAccess) {
+      onSuccess: (roleTableAccess) => {
         setTableAccess(roleTableAccess)
       },
     },

@@ -29,6 +29,10 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
     onClose: onProductionInfoUpdateModalClose,
   } = useDisclosure()
 
+  const accessibleParamColumns = accessibleColumns.filter(
+    (column) => !column?.isMain,
+  )
+
   const filteredProductionInfo = filterAccessibleParams<ProductionInfo>(
     accessibleColumns,
     productionInfo,
@@ -52,70 +56,20 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
           <Text>{good.name}</Text>
         </Td>
 
-        {/* Power */}
-        <Td>
-          <Text>{filteredProductionInfo?.power}</Text>
-        </Td>
+        {accessibleParamColumns.map((column, index) => {
+          if (!column || !filteredProductionInfo) {
+            return <Td key={index}></Td>
+          }
 
-        {/* Speed */}
-        <Td>
-          <Text>{filteredProductionInfo?.speed}</Text>
-        </Td>
+          const param = column.param as keyof ProductionInfo
 
-        {/* Penetration Step */}
-        <Td>
-          <Text>{filteredProductionInfo?.penetration_step}</Text>
-        </Td>
-
-        {/* Engraving Width Max */}
-        <Td>
-          <Text>{filteredProductionInfo?.engraving_width_max}</Text>
-        </Td>
-
-        {/* Engraving Height Max */}
-        <Td>
-          <Text>{filteredProductionInfo?.engraving_height_max}</Text>
-        </Td>
-
-        {/* Length Inch */}
-        <Td>
-          <Text>{filteredProductionInfo?.length_inch}</Text>
-        </Td>
-
-        {/* Width Inch */}
-        <Td>
-          <Text>{filteredProductionInfo?.width_inch}</Text>
-        </Td>
-
-        {/* Thickness Inch */}
-        <Td>
-          <Text>{filteredProductionInfo?.thickness_inch}</Text>
-        </Td>
-
-        {/* Package Size Max */}
-        <Td>
-          <Text>{filteredProductionInfo?.package_size_max}</Text>
-        </Td>
-
-        {/* Weight Oz */}
-        <Td>
-          <Text>{filteredProductionInfo?.weight_oz}</Text>
-        </Td>
-
-        {/* Production Time */}
-        <Td>
-          <Text>{filteredProductionInfo?.production_time}</Text>
-        </Td>
-
-        {/* Cost Of Good */}
-        <Td>
-          <Text>{filteredProductionInfo?.cost_of_good}</Text>
-        </Td>
-
-        {/* Competitive Price */}
-        <Td>
-          <Text>{filteredProductionInfo?.competitive_price}</Text>
-        </Td>
+          return (
+            <Td key={index}>
+              {/* <Text>{param}</Text> */}
+              <Text>{filteredProductionInfo[param]}</Text>
+            </Td>
+          )
+        })}
 
         {/* Menu Btns */}
         <Td>
