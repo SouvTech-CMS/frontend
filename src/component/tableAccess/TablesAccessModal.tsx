@@ -11,29 +11,78 @@ import {
 import { getRoleTablesAccess } from "api/tableAccess/tableAccess"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { TableAccessCard } from "component/tableAccess/TableAccessCard"
-import { FC } from "react"
+import { FC, useState } from "react"
 import { useQuery } from "react-query"
+import { useRoleTableAccessUpdateMutation } from "service/tableAccess/tableAccess"
+import { titleCase } from "title-case"
 import { ModalProps } from "type/modalProps"
 import { Role } from "type/role/role"
-import { RoleTableAccess } from "type/tableAccess/tableAccess"
+import {
+  RoleTableAccess,
+  TableWithAccessList,
+} from "type/tableAccess/tableAccess"
 import { WithId } from "type/withId"
+import { notify } from "util/toasts"
 
 interface TablesAccessModalProps extends ModalProps {
   role: WithId<Role>
 }
 
-const TABLES_LIST = ["Production Info"]
-
 export const TablesAccessModal: FC<TablesAccessModalProps> = (props) => {
   const { role, isOpen, onClose } = props
 
   const roleId = role.id
+  const roleName = role.name
 
-  const { data: roleTableAccess, isLoading: isRoleAccessLoading } =
-    useQuery<RoleTableAccess>(["roleTableAccess", roleId], () =>
-      getRoleTablesAccess(roleId),
+  const [tableAccess, setTableAccess] = useState<RoleTableAccess | undefined>()
+  const tables = tableAccess?.tables
+
+  const { isLoading: isRoleAccessLoading } = useQuery<RoleTableAccess>(
+    ["roleTableAccess", roleId],
+    () => getRoleTablesAccess(roleId),
+    {
+      onSuccess(roleTableAccess) {
+        setTableAccess(roleTableAccess)
+      },
+    },
+  )
+
+  const roleTableAccessUpdateMutation = useRoleTableAccessUpdateMutation()
+
+  const isLoading =
+    isRoleAccessLoading || roleTableAccessUpdateMutation.isLoading
+
+  const isSaveBtnDisabled = isLoading
+
+  const handleTableAccessChange = (newTableAccess: TableWithAccessList) => {
+    setTableAccess(
+      (prevTableAccess) =>
+        ({
+          role_id: prevTableAccess?.role_id,
+          tables: [
+            ...(prevTableAccess?.tables.filter(
+              ({ table_name }) => table_name !== newTableAccess.table_name,
+            ) as TableWithAccessList[]),
+            newTableAccess,
+          ],
+        } as RoleTableAccess),
     )
-  const tables = roleTableAccess?.tables
+  }
+
+  const handleRoleTablesAccessUpdate = async () => {
+    if (!tableAccess) {
+      return
+    }
+
+    await roleTableAccessUpdateMutation.mutateAsync(tableAccess)
+
+    notify(
+      `${titleCase(roleName)}'s table access updated successfully`,
+      "success",
+    )
+
+    onClose()
+  }
 
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose} isCentered>
@@ -48,33 +97,24 @@ export const TablesAccessModal: FC<TablesAccessModalProps> = (props) => {
             {tables?.map((tableAccess, index) => (
               <TableAccessCard
                 key={index}
-                roleId={roleId}
-                tableAccess={tableAccess}
+                prevTableAccess={tableAccess}
+                onChange={handleTableAccessChange}
               />
             ))}
-            {/* TODO: add Select with table */}
-            {/* TODO: when table selected append it above table Select */}
-            {/* TODO: add Select with table columns as tags */}
-            {/* TODO: get role tables access */}
-            {/* TODO: after all selected, update or create tables accesses */}
           </Flex>
         </ModalBody>
 
         <ModalFooter>
           <Flex gap={5}>
             <Button
-            // onClick={onTablesAccessUpdate}
-            // isLoading={isLoading}
-            // isDisabled={isSaveBtnDisabled}
+              onClick={handleRoleTablesAccessUpdate}
+              isLoading={isLoading}
+              isDisabled={isSaveBtnDisabled}
             >
               Save
             </Button>
 
-            <Button
-              variant="secondary"
-              onClick={onClose}
-              // isLoading={isLoading}
-            >
+            <Button variant="secondary" onClick={onClose} isLoading={isLoading}>
               Cancel
             </Button>
           </Flex>

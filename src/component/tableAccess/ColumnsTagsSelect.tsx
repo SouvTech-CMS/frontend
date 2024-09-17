@@ -8,9 +8,11 @@ import {
 import { FC } from "react"
 import { titleCase } from "title-case"
 import { SelectStringOption } from "type/selectOption"
+import { TableColumn } from "type/tableColumn"
 
 interface ColumnsTagsSelectProps {
-  tableColumns: string[]
+  tableColumns: TableColumn[]
+  accessibleColumns: string[]
   onChange: (columnsList: string[]) => void
   isLoading?: boolean
 }
@@ -26,12 +28,12 @@ const styles: ChakraStylesConfig<
   }),
   menu: (provided) => ({
     ...provided,
-    w: "fit-content",
+    w: "full",
   }),
 }
 
 export const ColumnsTagsSelect: FC<ColumnsTagsSelectProps> = (props) => {
-  const { tableColumns, onChange, isLoading } = props
+  const { tableColumns, accessibleColumns, onChange, isLoading } = props
 
   const handleAccessSelect = (
     newValue: MultiValue<SelectStringOption>,
@@ -44,9 +46,13 @@ export const ColumnsTagsSelect: FC<ColumnsTagsSelectProps> = (props) => {
   return (
     <Select<SelectStringOption, true, GroupBase<SelectStringOption>>
       placeholder="Select columns"
-      options={tableColumns?.map((column) => ({
-        value: column.toLowerCase(),
-        label: titleCase(column),
+      options={tableColumns.map((column) => ({
+        value: column.param.toLowerCase(),
+        label: titleCase(column.name),
+      }))}
+      value={accessibleColumns.map((col) => ({
+        value: col,
+        label: titleCase(col),
       }))}
       isClearable
       useBasicStyles

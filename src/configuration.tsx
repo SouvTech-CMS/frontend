@@ -190,7 +190,6 @@ export const configuration = {
       path: "/roles",
       permissions: [],
       component: <Roles />,
-      isDisabled: true,
     },
     // Logs
     {

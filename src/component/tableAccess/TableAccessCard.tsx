@@ -1,32 +1,42 @@
 import { Flex, Text } from "@chakra-ui/react"
-import { FC, useState } from "react"
+import { ColumnsTagsSelect } from "component/tableAccess/ColumnsTagsSelect"
+import { GOODS_PRODUCTION_INFO_TABLE } from "constant/tables"
+import { FC, useEffect, useState } from "react"
 import { titleCase } from "title-case"
 import { TableWithAccessList } from "type/tableAccess/tableAccess"
+import { TableColumn } from "type/tableColumn"
 
 interface TableAccessCardProps {
-  roleId: number
-  tableAccess: TableWithAccessList
+  prevTableAccess: TableWithAccessList
+  onChange: (tableAccess: TableWithAccessList) => void
 }
 
-export const TableAccessCard: FC<TableAccessCardProps> = (props) => {
-  const { roleId, tableAccess } = props
+const FILTERED_COLUMNS = GOODS_PRODUCTION_INFO_TABLE.filter(
+  (column) => column !== null && !column.isMain,
+) as TableColumn[]
 
-  const tableName = tableAccess.table_name
-  const prevColumns = tableAccess.columns
+export const TableAccessCard: FC<TableAccessCardProps> = (props) => {
+  const { prevTableAccess, onChange } = props
+
+  const tableName = prevTableAccess.table_name
+  const prevColumns = prevTableAccess.columns
   const [columns, setColumns] = useState<string[]>(prevColumns)
 
   const isColumnsEqual =
     columns.sort().join(",") === prevColumns.sort().join(",")
-  console.log(isColumnsEqual)
-  console.log(columns)
-  console.log(prevColumns)
-  console.log()
 
   const handleColumnsChange = (columnsList: string[]) => {
     setColumns(columnsList)
   }
 
-  const handleTableAccessChange = () => {}
+  useEffect(() => {
+    if (!isColumnsEqual) {
+      onChange({
+        table_name: tableName,
+        columns,
+      })
+    }
+  }, [onChange, tableName, isColumnsEqual, columns])
 
   return (
     <Flex w="full" alignItems="center" borderRadius={10} borderWidth={1}>
@@ -42,11 +52,12 @@ export const TableAccessCard: FC<TableAccessCardProps> = (props) => {
         </Text>
       </Flex>
 
-      {/* <ColumnsTagsSelect
-        tableColumns={GOODS_PRODUCTION_INFO_TABLE}
+      <ColumnsTagsSelect
+        tableColumns={FILTERED_COLUMNS}
+        accessibleColumns={columns}
         onChange={handleColumnsChange}
         // isLoading={isLoading}
-      /> */}
+      />
     </Flex>
   )
 }
