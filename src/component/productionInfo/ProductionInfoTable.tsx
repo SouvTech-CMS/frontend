@@ -37,6 +37,7 @@ export const ProductionInfoTable: FC<ProductionInfoTableProps> = (props) => {
           {goodsWithProductionInfoList.map((goodWithProductionInfo, index) => (
             <ProductionInfoTableRow
               key={index}
+              accessibleColumns={filteredTableColumns}
               goodWithProductionInfo={goodWithProductionInfo}
             />
           ))}
