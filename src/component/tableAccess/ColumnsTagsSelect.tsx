@@ -55,8 +55,9 @@ export const ColumnsTagsSelect: FC<ColumnsTagsSelectProps> = (props) => {
         label: titleCase(col),
       }))}
       isClearable
-      useBasicStyles
       isMulti
+      hideSelectedOptions
+      useBasicStyles
       chakraStyles={styles}
       onChange={handleAccessSelect}
       isLoading={isLoading}

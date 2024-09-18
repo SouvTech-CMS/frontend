@@ -10,8 +10,9 @@ import {
 } from "@chakra-ui/react"
 import { getRoleTablesAccess } from "api/tableAccess/tableAccess"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
+import { NewTableAccessTableSelect } from "component/tableAccess/NewTableAccessTableSelect"
 import { TableAccessCard } from "component/tableAccess/TableAccessCard"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { useRoleTableAccessUpdateMutation } from "service/tableAccess/tableAccess"
 import { titleCase } from "title-case"
@@ -37,7 +38,11 @@ export const TablesAccessModal: FC<TablesAccessModalProps> = (props) => {
   const [tableAccess, setTableAccess] = useState<RoleTableAccess | undefined>()
   const tables = tableAccess?.tables
 
-  const { isLoading: isRoleAccessLoading } = useQuery<RoleTableAccess>(
+  const {
+    isLoading: isRoleAccessLoading,
+    refetch,
+    isRefetching,
+  } = useQuery<RoleTableAccess>(
     ["roleTableAccess", roleId],
     () => getRoleTablesAccess(roleId),
     {
@@ -50,7 +55,9 @@ export const TablesAccessModal: FC<TablesAccessModalProps> = (props) => {
   const roleTableAccessUpdateMutation = useRoleTableAccessUpdateMutation()
 
   const isLoading =
-    isRoleAccessLoading || roleTableAccessUpdateMutation.isLoading
+    isRoleAccessLoading ||
+    isRefetching ||
+    roleTableAccessUpdateMutation.isLoading
 
   const isSaveBtnDisabled = isLoading
 
@@ -84,6 +91,16 @@ export const TablesAccessModal: FC<TablesAccessModalProps> = (props) => {
     onClose()
   }
 
+  useEffect(
+    () => {
+      if (!isRefetching) {
+        refetch()
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [refetch, isOpen],
+  )
+
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalBackgroundBlur />
@@ -101,6 +118,11 @@ export const TablesAccessModal: FC<TablesAccessModalProps> = (props) => {
                 onChange={handleTableAccessChange}
               />
             ))}
+
+            <NewTableAccessTableSelect
+              selectedTablesAccess={tables}
+              onChange={handleTableAccessChange}
+            />
           </Flex>
         </ModalBody>
 
