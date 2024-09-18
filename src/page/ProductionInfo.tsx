@@ -1,18 +1,23 @@
 import { Flex } from "@chakra-ui/react"
 import { getStorageGoodsWithProductionInfo } from "api/storage/productionInfo"
 import { Container } from "component/Container"
+import { SearchFiltersClearBtn } from "component/customTable/SearchFiltersClearBtn"
+import { ShopFilter } from "component/filter/ShopFilter"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
-import { StorageGoodsWithProductionInfoTable } from "component/productionInfo/StorageGoodsWithProductionInfoTable"
+import { ProductionInfoTable } from "component/productionInfo/ProductionInfoTable"
 import { usePaginationContext } from "context/pagination"
+import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
+import { useShopFilter } from "hook/useShopFilter"
 import { useEffect } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
+import { ProductionInfoSearchFilter } from "type/productionInfo/productionInfo"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 
 export const ProductionInfo = (props: PageProps) => {
@@ -20,21 +25,30 @@ export const ProductionInfo = (props: PageProps) => {
 
   const { currentPage, setCurrentPage, offset, setOffset } = usePagination()
   const { rowsPerPageCount } = usePaginationContext()
+  const { selectedShopId, handleShopSelect } = useShopFilter()
+  const { sortDirection, sortField, searchFilter } =
+    useTableContext<ProductionInfoSearchFilter>()
 
   const {
     data: goodsWithProductionInfoResponse,
-    isLoading: isLoadingProductionInfo,
+    isLoading,
     refetch,
     isRefetching,
   } = useQuery<ApiResponse<StorageGoodWithProductionInfo[]>>(
     "goodsWithProductionInfoList",
-    () => getStorageGoodsWithProductionInfo(rowsPerPageCount, offset),
+    () =>
+      getStorageGoodsWithProductionInfo({
+        limit: rowsPerPageCount,
+        offset,
+        shopId: selectedShopId,
+        sortDirection,
+        sortField,
+        searchFilter,
+      }),
   )
   const goodsCount = goodsWithProductionInfoResponse?.count
   const goodsWithProductionInfoList = goodsWithProductionInfoResponse?.result
   const isGoodsExist = goodsWithProductionInfoList !== undefined
-
-  const isLoading = isLoadingProductionInfo
 
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
@@ -43,7 +57,15 @@ export const ProductionInfo = (props: PageProps) => {
 
   useEffect(() => {
     refetch()
-  }, [refetch, offset, rowsPerPageCount])
+  }, [
+    refetch,
+    offset,
+    rowsPerPageCount,
+    selectedShopId,
+    sortDirection,
+    sortField,
+    searchFilter,
+  ])
 
   return (
     <Page guideNotionPageId={guideNotionPageId}>
@@ -53,11 +75,17 @@ export const ProductionInfo = (props: PageProps) => {
 
       {isGoodsExist && (
         <Container>
-          <Flex w="full" justifyContent="flex-end">
-            <RowsPerPageSelect isLoading={isLoading || isRefetching} />
+          <Flex w="full" justifyContent="space-between">
+            <ShopFilter handleShopSelect={handleShopSelect} />
+
+            <Flex alignItems="center" gap={2}>
+              <SearchFiltersClearBtn isLoading={isLoading || isRefetching} />
+
+              <RowsPerPageSelect isLoading={isLoading || isRefetching} />
+            </Flex>
           </Flex>
 
-          <StorageGoodsWithProductionInfoTable
+          <ProductionInfoTable
             goodsWithProductionInfoList={goodsWithProductionInfoList}
           />
 

@@ -4,8 +4,6 @@ export const INITIAL_ROWS_PER_PAGE = 10
 
 export const ROWS_PER_PAGE_SELECT_VARIANTS = [10, 50, 100]
 
-export const PURCHASES_TABLE_COLUMNS = ["ID", "Amount", "Shipping", "Deadline"]
-
 export const STORAGE_GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
   { name: "ID", param: "id", isSearchable: true, isSortable: true },
   {
@@ -111,21 +109,95 @@ export const DELIVERIES_HISTORY_TABLE = [
   "",
 ]
 
-export const GOODS_WITH_PRODUCTION_INFO_TABLE = [
-  "ID",
-  "SKU",
-  "Name",
-  "Power",
-  "Speed",
-  "Penetration Step",
-  "Engraving Width Max",
-  "Engraving Height Max",
-  "Length Inch",
-  "Width Inch",
-  "Thickness Inch",
-  "Package Size Max",
-  "Weight Oz",
-  "Production Time",
-  "Cost Of Good",
-  "Competitive Price",
+export const GOODS_PRODUCTION_INFO_TABLE: (TableColumn | null)[] = [
+  {
+    name: "ID",
+    param: "id",
+    isMain: true,
+    isSearchable: true,
+    isSortable: true,
+  },
+  {
+    name: "SKU",
+    param: "uniquename",
+    isMain: true,
+    isSearchable: true,
+    isSortable: false,
+  },
+  {
+    name: "Name",
+    param: "name",
+    isMain: true,
+    isSearchable: true,
+    isSortable: false,
+  },
+  { name: "Power", param: "power", isSearchable: false, isSortable: false },
+  { name: "Speed", param: "speed", isSearchable: false, isSortable: false },
+  {
+    name: "Penetration Step",
+    param: "penetration_step",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
+    name: "Engraving Width Max",
+    param: "engraving_width_max",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
+    name: "Engraving Height Max",
+    param: "engraving_height_max",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
+    name: "Length Inch",
+    param: "length_inch",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
+    name: "Width Inch",
+    param: "width_inch",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
+    name: "Thickness Inch",
+    param: "thickness_inch",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
+    name: "Package Size Max",
+    param: "package_size_max",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
+    name: "Weight Oz",
+    param: "weight_oz",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
+    name: "Production Time",
+    param: "production_time",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
+    name: "Cost Of Good",
+    param: "cost_of_good",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
+    name: "Competitive Price",
+    param: "competitive_price",
+    isSearchable: false,
+    isSortable: false,
+  },
+  null,
 ]

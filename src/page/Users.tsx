@@ -20,7 +20,7 @@ export const Users = (props: PageProps) => {
     getAllUsers,
   )
 
-  const filteredUsersList = usersList?.filter(({ user }) =>
+  const filteredUsersList = usersList?.filter((user) =>
     isQueryExists
       ? user.username.toLowerCase().includes(query.toLowerCase()) ||
         user.fio?.toLowerCase().includes(query.toLowerCase()) ||
@@ -37,16 +37,9 @@ export const Users = (props: PageProps) => {
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
           <NewUserCard />
 
-          {filteredUsersList?.map(
-            ({ user, roles_with_permissions, shops }, index) => (
-              <UserCard
-                key={index}
-                user={user}
-                roles={roles_with_permissions}
-                shops={shops}
-              />
-            ),
-          )}
+          {filteredUsersList?.map(({ roles, shops, ...user }, index) => (
+            <UserCard key={index} user={user} roles={roles} shops={shops} />
+          ))}
         </SimpleGrid>
       ) : (
         <LoadingPage />

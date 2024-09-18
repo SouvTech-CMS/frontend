@@ -12,6 +12,7 @@ import { Orders } from "page/Orders"
 import { ProductionInfo } from "page/ProductionInfo"
 import { Purchases } from "page/Purchases"
 import { PurchasesHistory } from "page/PurchasesHistory"
+import { Roles } from "page/Roles"
 import { Storage } from "page/Storage"
 import { StorageGoodDetails } from "page/StorageGoodDetails"
 import { Suppliers } from "page/Suppliers"
@@ -24,6 +25,7 @@ import {
   FiHome,
   FiMap,
   FiPackage,
+  FiPocket,
   FiShoppingBag,
   FiShoppingCart,
   FiTruck,
@@ -31,6 +33,7 @@ import {
 } from "react-icons/fi"
 import { GoodSearchFilter } from "type/order/good"
 import { OrderSearchFilter } from "type/order/order"
+import { ProductionInfoSearchFilter } from "type/productionInfo/productionInfo"
 import { StorageGoodSearchFilter } from "type/storage/storageGood"
 import { getApiBaseUrl, getWebSocketBaseUrl } from "util/urls"
 
@@ -46,7 +49,7 @@ type Route = {
 }
 
 export const configuration = {
-  version: "v0.1.3",
+  version: "v0.2.5",
   isDevEnv: process.env.NODE_ENV === "development",
   sidebarItems: [
     //* Main pages
@@ -165,7 +168,9 @@ export const configuration = {
       path: "/production-info",
       permissions: [Permission.PRODUCTION_INFO_READ],
       component: (
-        <ProductionInfo guideNotionPageId="3120cc3e2bee43e894b2ab32553e3b5e" />
+        <TableContextProvider<ProductionInfoSearchFilter>>
+          <ProductionInfo guideNotionPageId="3120cc3e2bee43e894b2ab32553e3b5e" />
+        </TableContextProvider>
       ),
     },
     // Employees
@@ -176,6 +181,15 @@ export const configuration = {
       path: "/users",
       permissions: [],
       component: <Users guideNotionPageId="57b7bd55eab24fd89a2692f2296560c8" />,
+    },
+    // Roles
+    {
+      type: "main",
+      icon: FiPocket,
+      name: "Role Access",
+      path: "/roles",
+      permissions: [],
+      component: <Roles />,
     },
     // Logs
     {
