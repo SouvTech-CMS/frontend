@@ -66,6 +66,7 @@ export const WebSocketContextProvider: FCC = (props) => {
           case "role":
             queryClient.invalidateQueries("currentUser")
             queryClient.invalidateQueries("usersList")
+            queryClient.invalidateQueries("rolesList")
             break
 
           case "storage":
