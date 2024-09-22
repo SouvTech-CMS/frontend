@@ -87,7 +87,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
         {/* Good Name */}
         <Td>
-          <Text>{storageGood.name}</Text>
+          <Text whiteSpace="break-spaces">{storageGood.name}</Text>
         </Td>
 
         {/* Good Total Quantity */}
