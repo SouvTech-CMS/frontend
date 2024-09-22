@@ -53,7 +53,7 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
 
         {/* Good Name */}
         <Td>
-          <Text>{good.name}</Text>
+          <Text whiteSpace="break-spaces">{good.name}</Text>
         </Td>
 
         {accessibleParamColumns.map((column, index) => {

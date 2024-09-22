@@ -8,28 +8,31 @@ interface SidebarListItemProps {
   icon: IconType
   label: string
   to: string
+  isCollapsed?: boolean
   isDisabled?: boolean
 }
 
 export const SidebarListItem: FC<SidebarListItemProps> = (props) => {
-  const { icon, label, to, isDisabled } = props
+  const { icon, label, to, isCollapsed, isDisabled } = props
+
+  const justifyContent = isCollapsed ? "center" : "flex-start"
 
   if (isDisabled) {
     return (
-      <Button
-        w="full"
-        variant="ghost"
-        justifyContent="flex-start"
-        alignItems="center"
-        gap={3}
-        isDisabled={isDisabled}
-      >
-        <Icon as={icon} />
+      <CommingSoonTooltip>
+        <Button
+          w="full"
+          variant="ghost"
+          justifyContent={justifyContent}
+          alignItems="center"
+          gap={3}
+          isDisabled={isDisabled}
+        >
+          <Icon as={icon} />
 
-        <CommingSoonTooltip>
-          <Text>{label}</Text>
-        </CommingSoonTooltip>
-      </Button>
+          {!isCollapsed && <Text>{label}</Text>}
+        </Button>
+      </CommingSoonTooltip>
     )
   }
 
@@ -38,14 +41,14 @@ export const SidebarListItem: FC<SidebarListItemProps> = (props) => {
       as={Link}
       w="full"
       variant="ghost"
-      justifyContent="flex-start"
+      justifyContent={justifyContent}
       alignItems="center"
       gap={3}
       to={to}
     >
       <Icon as={icon} />
 
-      <Text>{label}</Text>
+      {!isCollapsed && <Text>{label}</Text>}
     </Button>
   )
 }

@@ -37,7 +37,7 @@ export const OrdersFilters: FC<OrdersFiltersProps> = (props) => {
         isChecked={isShowNoneGoodOrders}
         onChange={handleShowNoneGoodOrdersCheckboxChange}
       >
-        Show None Good Orders
+        Show Orders with Goods, where SKU not Recognized
       </Checkbox>
     </Flex>
   )

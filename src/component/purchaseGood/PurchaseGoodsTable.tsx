@@ -1,6 +1,7 @@
 import {
   Button,
   Table,
+  TableContainer,
   Tbody,
   Td,
   Th,
@@ -57,39 +58,43 @@ export const PurchaseGoodsTable: FC<PurchaseGoodsTableProps> = (props) => {
 
   return (
     <>
-      <Table w="full" variant="simple" bgColor="gray.200" borderRadius={10}>
-        <Thead>
-          <Tr>
-            {TABLE_COLUMNS.map((columnName, index) => (
-              <Th key={index}>{columnName}</Th>
+      <TableContainer w="full">
+        <Table w="full" variant="simple" bgColor="gray.200" borderRadius={10}>
+          <Thead>
+            <Tr>
+              {TABLE_COLUMNS.map((columnName, index) => (
+                <Th key={index} whiteSpace="break-spaces">
+                  {columnName}
+                </Th>
+              ))}
+            </Tr>
+          </Thead>
+
+          <Tbody>
+            {goods.map((good, index) => (
+              <NewPurchaseGoodRow
+                key={index}
+                good={good}
+                onEdit={handleUpdateGood}
+                onRemove={handleRemoveGood}
+              />
             ))}
-          </Tr>
-        </Thead>
 
-        <Tbody>
-          {goods.map((good, index) => (
-            <NewPurchaseGoodRow
-              key={index}
-              good={good}
-              onEdit={handleUpdateGood}
-              onRemove={handleRemoveGood}
-            />
-          ))}
-
-          <Tr>
-            <Td colSpan={TABLE_COLUMNS.length} p={0}>
-              <Button
-                w="full"
-                variant="ghost"
-                colorScheme="blue"
-                onClick={onNewGoodModalOpen}
-              >
-                Add good
-              </Button>
-            </Td>
-          </Tr>
-        </Tbody>
-      </Table>
+            <Tr>
+              <Td colSpan={TABLE_COLUMNS.length} p={0}>
+                <Button
+                  w="full"
+                  variant="ghost"
+                  colorScheme="blue"
+                  onClick={onNewGoodModalOpen}
+                >
+                  Add good
+                </Button>
+              </Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </TableContainer>
 
       <NewPurchaseGoodModal
         onAddGood={handleAddGood}

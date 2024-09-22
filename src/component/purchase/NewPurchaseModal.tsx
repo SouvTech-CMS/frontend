@@ -16,7 +16,10 @@ import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { CommentInput } from "component/comment/Comment"
 import { PurchaseGoodsTable } from "component/purchaseGood/PurchaseGoodsTable"
 import { PurchaseServicesTable } from "component/purchaseService/PurchaseServicesTable"
-import { INITIAL_PURCHASE_STATUS } from "constant/purchaseStatus"
+import {
+  INITIAL_PURCHASE_STATUS,
+  PurchaseStatus,
+} from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
 import { ChangeEvent, FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
@@ -71,11 +74,12 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
 
   const isLoading = purchaseCreateMutation.isLoading
 
-  const isManagerSelectDisabled = supplierId === 0
+  const isSupplierSelected = supplierId > 0
+  const isManagerSelected = purchase.supplier_manager_id > 0
   const isSaveBtnDisabled =
     isLoading ||
-    isManagerSelectDisabled ||
-    !purchase.supplier_manager_id ||
+    // !isSupplierSelected ||
+    // !isManagerSelected ||
     goods.length === 0 ||
     !deadline.trim()
 
@@ -105,6 +109,9 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
         ...purchase,
         amount: goodsAmountSum,
         deadline: formattedDeadline,
+        status: isManagerSelected
+          ? PurchaseStatus.Order
+          : PurchaseStatus.Request,
       },
       goods,
       services,
@@ -122,6 +129,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
     setPurchase(newPurchase)
     setGoods([])
     setServices([])
+    setSupplierId(0)
   }, [isOpen])
 
   return (
@@ -181,12 +189,12 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
 
                 <Select
                   placeholder="Select manager"
-                  isDisabled={isManagerSelectDisabled}
                   value={purchase.supplier_manager_id}
                   onChange={(e) => {
                     const value = Number(e.target.value)
                     handlePurchaseUpdate("supplier_manager_id", value)
                   }}
+                  isDisabled={!isSupplierSelected}
                 >
                   {managersList?.map(({ id, name }) => (
                     <option key={id} value={id}>

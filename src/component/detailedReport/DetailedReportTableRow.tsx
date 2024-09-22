@@ -22,7 +22,7 @@ export const DetailedReportTableRow: FC<DetailedReportTableRowProps> = (
 
       {/* Name */}
       <Td>
-        <Text>{goodReport.good_name}</Text>
+        <Text whiteSpace="break-spaces">{goodReport.good_name}</Text>
       </Td>
 
       {/* SKU */}
