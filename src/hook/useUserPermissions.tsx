@@ -5,6 +5,30 @@ import { isUserHasPermission } from "util/permission"
 export const useUserPermissions = () => {
   const { userPermissions, isUserAdmin } = useUserContext()
 
+  //* Goods
+  const canReadGoods = isUserHasPermission(
+    Permission.GOOD_READ,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canEditGoods = isUserHasPermission(
+    Permission.GOOD_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
+
+  //* Orders
+  const canReadOrders = isUserHasPermission(
+    Permission.ORDER_READ,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canEditOrders = isUserHasPermission(
+    Permission.ORDER_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
+
   //* Reports
   const canReadDetailedReports = isUserHasPermission(
     Permission.REPORT_DETAILED,
@@ -13,23 +37,6 @@ export const useUserPermissions = () => {
   )
   const canReadGeneralReports = isUserHasPermission(
     Permission.REPORT_GENERAL,
-    userPermissions,
-    isUserAdmin,
-  )
-
-  //* Purchase Documents
-  const canReadDocuments = isUserHasPermission(
-    Permission.DOCUMENT_READ,
-    userPermissions,
-    isUserAdmin,
-  )
-  const canEditDocuments = isUserHasPermission(
-    Permission.DOCUMENT_WRITE,
-    userPermissions,
-    isUserAdmin,
-  )
-  const canDeleteDocuments = isUserHasPermission(
-    Permission.DOCUMENT_DELETE,
     userPermissions,
     isUserAdmin,
   )
@@ -82,15 +89,35 @@ export const useUserPermissions = () => {
     isUserAdmin,
   )
 
+  //* Purchase Documents
+  const canReadDocuments = isUserHasPermission(
+    Permission.DOCUMENT_READ,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canEditDocuments = isUserHasPermission(
+    Permission.DOCUMENT_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canDeleteDocuments = isUserHasPermission(
+    Permission.DOCUMENT_DELETE,
+    userPermissions,
+    isUserAdmin,
+  )
+
   return {
+    //* Goods
+    canReadGoods,
+    canEditGoods,
+
+    //* Orders
+    canReadOrders,
+    canEditOrders,
+
     //* Reports
     canReadDetailedReports,
     canReadGeneralReports,
-
-    //* Documents
-    canReadDocuments,
-    canEditDocuments,
-    canDeleteDocuments,
 
     //* Storage
     canReadStorage,
@@ -107,5 +134,10 @@ export const useUserPermissions = () => {
     //* Purchases
     canReadPurchases,
     canEditPurchases,
+
+    //* Documents
+    canReadDocuments,
+    canEditDocuments,
+    canDeleteDocuments,
   }
 }
