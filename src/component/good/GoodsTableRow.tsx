@@ -49,7 +49,7 @@ export const GoodsTableRow: FC<GoodsTableRowProps> = (props) => {
 
         {/* Name */}
         <Td>
-          <Text whiteSpace="normal">{good.name}</Text>
+          <Text whiteSpace="break-spaces">{good.name}</Text>
         </Td>
 
         {/* Price */}
