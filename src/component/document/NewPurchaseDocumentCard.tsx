@@ -1,5 +1,6 @@
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react"
 import { NewPurchaseDocumentModal } from "component/document/NewPurchaseDocumentModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiUpload } from "react-icons/fi"
 
@@ -13,11 +14,17 @@ export const NewPurchaseDocumentCard: FC<NewPurchaseDocumentCardProps> = (
 ) => {
   const { purchaseId, isDelivery = false } = props
 
+  const { canEditDocuments } = useUserPermissions()
+
   const {
     isOpen: isPurchaseFileCreateModalOpen,
     onOpen: onPurchaseFileCreateModalOpen,
     onClose: onPurchaseFileCreateModalClose,
   } = useDisclosure()
+
+  if (!canEditDocuments) {
+    return <></>
+  }
 
   return (
     <>

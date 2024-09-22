@@ -1,14 +1,21 @@
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react"
 import { SupplierModal } from "component/supplier/SupplierModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiPlusCircle } from "react-icons/fi"
 
 export const NewSupplierCard: FC = () => {
+  const { canEditSuppliers } = useUserPermissions()
+
   const {
     isOpen: isSupplierEditModalOpen,
     onOpen: onSupplierEditModalOpen,
     onClose: onSupplierEditModalClose,
   } = useDisclosure()
+
+  if (!canEditSuppliers) {
+    return <></>
+  }
 
   return (
     <>

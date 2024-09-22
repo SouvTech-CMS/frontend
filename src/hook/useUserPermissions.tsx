@@ -5,31 +5,38 @@ import { isUserHasPermission } from "util/permission"
 export const useUserPermissions = () => {
   const { userPermissions, isUserAdmin } = useUserContext()
 
-  //* Reports
-  const canReadReports = isUserHasPermission(
-    Permission.STORAGE_READ,
+  //* Goods
+  const canReadGoods = isUserHasPermission(
+    Permission.GOOD_READ,
     userPermissions,
     isUserAdmin,
   )
-  const canEditReports = isUserHasPermission(
-    Permission.STORAGE_WRITE,
+  const canEditGoods = isUserHasPermission(
+    Permission.GOOD_WRITE,
     userPermissions,
     isUserAdmin,
   )
 
-  //* Documents
-  const canReadDocuments = isUserHasPermission(
-    Permission.STORAGE_READ,
+  //* Orders
+  const canReadOrders = isUserHasPermission(
+    Permission.ORDER_READ,
     userPermissions,
     isUserAdmin,
   )
-  const canEditDocuments = isUserHasPermission(
-    Permission.STORAGE_WRITE,
+  const canEditOrders = isUserHasPermission(
+    Permission.ORDER_WRITE,
     userPermissions,
     isUserAdmin,
   )
-  const canDeleteDocuments = isUserHasPermission(
-    Permission.STORAGE_WRITE,
+
+  //* Reports
+  const canReadDetailedReports = isUserHasPermission(
+    Permission.REPORT_DETAILED,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canReadGeneralReports = isUserHasPermission(
+    Permission.REPORT_GENERAL,
     userPermissions,
     isUserAdmin,
   )
@@ -60,37 +67,57 @@ export const useUserPermissions = () => {
 
   //* Suppliers
   const canReadSuppliers = isUserHasPermission(
-    Permission.STORAGE_READ,
+    Permission.SUPPLIER_READ,
     userPermissions,
     isUserAdmin,
   )
   const canEditSuppliers = isUserHasPermission(
-    Permission.STORAGE_WRITE,
+    Permission.SUPPLIER_WRITE,
     userPermissions,
     isUserAdmin,
   )
 
   //* Purchases
   const canReadPurchases = isUserHasPermission(
-    Permission.STORAGE_READ,
+    Permission.PURCHASE_READ,
     userPermissions,
     isUserAdmin,
   )
   const canEditPurchases = isUserHasPermission(
-    Permission.STORAGE_WRITE,
+    Permission.PURCHASE_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
+
+  //* Purchase Documents
+  const canReadDocuments = isUserHasPermission(
+    Permission.DOCUMENT_READ,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canEditDocuments = isUserHasPermission(
+    Permission.DOCUMENT_WRITE,
+    userPermissions,
+    isUserAdmin,
+  )
+  const canDeleteDocuments = isUserHasPermission(
+    Permission.DOCUMENT_DELETE,
     userPermissions,
     isUserAdmin,
   )
 
   return {
-    //* Reports
-    canReadReports,
-    canEditReports,
+    //* Goods
+    canReadGoods,
+    canEditGoods,
 
-    //* Documents
-    canReadDocuments,
-    canEditDocuments,
-    canDeleteDocuments,
+    //* Orders
+    canReadOrders,
+    canEditOrders,
+
+    //* Reports
+    canReadDetailedReports,
+    canReadGeneralReports,
 
     //* Storage
     canReadStorage,
@@ -107,5 +134,10 @@ export const useUserPermissions = () => {
     //* Purchases
     canReadPurchases,
     canEditPurchases,
+
+    //* Documents
+    canReadDocuments,
+    canEditDocuments,
+    canDeleteDocuments,
   }
 }

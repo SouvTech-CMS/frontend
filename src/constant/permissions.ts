@@ -1,12 +1,15 @@
 export enum Permission {
+  //* Goods
+  GOOD_READ = "good_read",
+  GOOD_WRITE = "good_write",
+
+  //* Orders
+  ORDER_READ = "order_read",
+  ORDER_WRITE = "order_write",
+
   //* Reports
   REPORT_DETAILED = "report_detailed",
   REPORT_GENERAL = "report_general",
-
-  //* Documents
-  DOCUMENT_READ = "document_read",
-  DOCUMENT_WRITE = "document_write",
-  DOCUMENT_DELETE = "document_delete",
 
   //* Storage
   STORAGE_READ = "storage_read",
@@ -20,11 +23,10 @@ export enum Permission {
   PURCHASE_READ = "purchase_read",
   PURCHASE_WRITE = "purchase_write",
 
-  //* Orders
-  ORDER_READ = "order_read",
-
-  //* Goods
-  GOOD_READ = "good_read",
+  //* Documents
+  DOCUMENT_READ = "document_read",
+  DOCUMENT_WRITE = "document_write",
+  DOCUMENT_DELETE = "document_delete",
 
   //* Production Info
   PRODUCTION_INFO_READ = "production_info_read",

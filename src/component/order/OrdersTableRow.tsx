@@ -1,4 +1,5 @@
 import { Flex, IconButton, Td, Text, Tooltip, Tr } from "@chakra-ui/react"
+import { OrderStatusBadge } from "component/OrderStatusBadge"
 import { MarketplaceAvatar } from "component/marketplace/MarketplaceAvatar"
 import { FC } from "react"
 import { FiExternalLink } from "react-icons/fi"
@@ -47,6 +48,11 @@ export const OrdersTableRow: FC<OrdersTableRowProps> = (props) => {
       {/* Date */}
       <Td>
         <Text>{orderDate}</Text>
+      </Td>
+
+      {/* Status */}
+      <Td>
+        <OrderStatusBadge status={order.status} />
       </Td>
 
       {/* Quantity */}

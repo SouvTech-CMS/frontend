@@ -31,3 +31,5 @@ export const GuideOpenBtn: FC<GuideOpenBtnProps> = (props) => {
     </Tooltip>
   )
 }
+
+// TODO: move this btn to page heading
