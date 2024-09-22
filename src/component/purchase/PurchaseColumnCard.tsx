@@ -13,10 +13,10 @@ import { DividerWithTitle } from "component/DividerWithTitle"
 import { CommentTooltip } from "component/comment/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseCardGoodsList } from "component/purchase/PurchaseCardGoodsList"
+import { PurchaseCardMenu } from "component/purchase/PurchaseCardMenu"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseGoodsModal } from "component/purchase/PurchaseGoodsModal"
-import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
 import { PurchaseStatusUpdateModal } from "component/purchase/PurchaseStatusUpdateModal"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
 import { PurchaseUpdateModal } from "component/purchase/PurchaseUpdateModal"
@@ -170,7 +170,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
             )}
 
             {/* Menu Btn */}
-            <PurchaseRowMenu
+            <PurchaseCardMenu
               onDocuments={onDocumentsModalOpen}
               onGoods={onGoodsModalOpen}
               onServices={onServicesModalOpen}

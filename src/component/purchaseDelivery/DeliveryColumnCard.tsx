@@ -15,9 +15,9 @@ import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { DeliveryCardGoodsList } from "component/purchaseDelivery/DeliveryCardGoodsList"
 import { DeliveryStatusUpdateModal } from "component/purchaseDelivery/DeliveryStatusUpdateModal"
 import { DeliveryUpdateModal } from "component/purchaseDelivery/DeliveryUpdateModal"
+import { PurchaseDeliveryCardMenu } from "component/purchaseDelivery/PurchaseDeliveryCardMenu"
 import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/PurchaseDeliveryDeleteModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
-import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
 import { PurchaseDeliveryToStorageModal } from "component/purchaseDelivery/PurchaseDeliveryToStorageModal"
 import { DeliveryServicesModal } from "component/purchaseDeliveryService/DeliveryServicesModal"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
@@ -149,7 +149,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
               />
             )}
 
-            <PurchaseDeliveryRowMenu
+            <PurchaseDeliveryCardMenu
               onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
               onDocuments={onDocumentsModalOpen}
               onGoods={onDeliveryGoodsModalOpen}

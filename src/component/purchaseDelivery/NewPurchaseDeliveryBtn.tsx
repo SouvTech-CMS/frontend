@@ -1,5 +1,6 @@
 import { Button, useDisclosure } from "@chakra-ui/react"
 import { NewDeliveryModal } from "component/purchaseDelivery/NewPurchaseDeliveryModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 
 export const NewPurchaseDeliveryBtn: FC = () => {
@@ -9,9 +10,15 @@ export const NewPurchaseDeliveryBtn: FC = () => {
     onClose: onNewPurchaseDeliveryModalClose,
   } = useDisclosure()
 
+  const { canEditPurchases } = useUserPermissions()
+
   return (
     <>
-      <Button w="fit-content" onClick={onNewPurchaseDeliveryModalOpen}>
+      <Button
+        w="fit-content"
+        onClick={onNewPurchaseDeliveryModalOpen}
+        isDisabled={!canEditPurchases}
+      >
         Add delivery
       </Button>
 
