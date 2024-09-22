@@ -12,6 +12,7 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ManagerCard } from "component/supplierManager/ManagerCard"
 import { ManagerModal } from "component/supplierManager/ManagerModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { ModalProps } from "type/modalProps"
 import { SupplierManager } from "type/supplier/supplierManager"
@@ -26,6 +27,8 @@ export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
   props,
 ) => {
   const { supplierId, managers, isOpen, onClose } = props
+
+  const { canEditSuppliers } = useUserPermissions()
 
   const {
     isOpen: isNewManagerModalOpen,
@@ -51,7 +54,11 @@ export const SupplierManagersModal: FC<SupplierManagersModalProps> = (
           </ModalBody>
 
           <ModalFooter>
-            <Button w="full" onClick={onNewManagerModalOpen}>
+            <Button
+              w="full"
+              onClick={onNewManagerModalOpen}
+              isDisabled={!canEditSuppliers}
+            >
               Add manager
             </Button>
           </ModalFooter>
