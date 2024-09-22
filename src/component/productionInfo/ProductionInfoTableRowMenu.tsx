@@ -18,7 +18,7 @@ export const ProductionInfoTableRowMenu: FC<ProductionInfoTableRowMenuProps> = (
 ) => {
   const { onEdit } = props
 
-  const { canEditStorage } = useUserPermissions()
+  const { canEditProductionInfo } = useUserPermissions()
 
   return (
     <Menu>
@@ -33,7 +33,7 @@ export const ProductionInfoTableRowMenu: FC<ProductionInfoTableRowMenuProps> = (
         <MenuItem
           icon={<FiEdit />}
           onClick={onEdit}
-          isDisabled={!canEditStorage}
+          isDisabled={!canEditProductionInfo}
         >
           Edit
         </MenuItem>
