@@ -1,6 +1,7 @@
 import {
   Button,
   Table,
+  TableContainer,
   Tbody,
   Td,
   Th,
@@ -55,39 +56,41 @@ export const PurchaseServicesTable: FC<PurchaseServicesTableProps> = (
 
   return (
     <>
-      <Table w="full" variant="simple" bgColor="gray.200" borderRadius={10}>
-        <Thead>
-          <Tr>
-            {TABLE_COLUMNS.map((columnName, index) => (
-              <Th key={index}>{columnName}</Th>
+      <TableContainer w="full">
+        <Table w="full" variant="simple" bgColor="gray.200" borderRadius={10}>
+          <Thead>
+            <Tr>
+              {TABLE_COLUMNS.map((columnName, index) => (
+                <Th key={index} whiteSpace="break-spaces">{columnName}</Th>
+              ))}
+            </Tr>
+          </Thead>
+
+          <Tbody>
+            {services.map((service, index) => (
+              <NewPurchaseServiceRow
+                key={index}
+                service={service}
+                onEdit={handleUpdateService}
+                onRemove={handleRemoveService}
+              />
             ))}
-          </Tr>
-        </Thead>
 
-        <Tbody>
-          {services.map((service, index) => (
-            <NewPurchaseServiceRow
-              key={index}
-              service={service}
-              onEdit={handleUpdateService}
-              onRemove={handleRemoveService}
-            />
-          ))}
-
-          <Tr>
-            <Td colSpan={TABLE_COLUMNS.length} p={0}>
-              <Button
-                w="full"
-                variant="ghost"
-                colorScheme="blue"
-                onClick={onNewServiceModalOpen}
-              >
-                Add service
-              </Button>
-            </Td>
-          </Tr>
-        </Tbody>
-      </Table>
+            <Tr>
+              <Td colSpan={TABLE_COLUMNS.length} p={0}>
+                <Button
+                  w="full"
+                  variant="ghost"
+                  colorScheme="blue"
+                  onClick={onNewServiceModalOpen}
+                >
+                  Add service
+                </Button>
+              </Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </TableContainer>
 
       <NewPurchaseServiceModal
         onAddService={handleAddService}
