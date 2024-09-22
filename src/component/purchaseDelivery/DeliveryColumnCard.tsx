@@ -22,6 +22,7 @@ import { PurchaseDeliveryToStorageModal } from "component/purchaseDelivery/Purch
 import { DeliveryServicesModal } from "component/purchaseDeliveryService/DeliveryServicesModal"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiFileText } from "react-icons/fi"
 import { FullPurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
@@ -34,6 +35,8 @@ interface DeliveryColumnCardProps {
 
 export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   const { status, delivery } = props
+
+  const { canReadDocuments } = useUserPermissions()
 
   const deliveryId = delivery.id
 
@@ -136,13 +139,15 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
             {isCommentExists && <CommentTooltip comment={comment} />}
 
             {/* Documents */}
-            <IconButton
-              aria-label="documents-icon-btn"
-              size="sm"
-              variant="ghost"
-              icon={<FiFileText />}
-              onClick={onDocumentsModalOpen}
-            />
+            {canReadDocuments && (
+              <IconButton
+                aria-label="documents-icon-btn"
+                size="sm"
+                variant="ghost"
+                icon={<FiFileText />}
+                onClick={onDocumentsModalOpen}
+              />
+            )}
 
             <PurchaseDeliveryRowMenu
               onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
