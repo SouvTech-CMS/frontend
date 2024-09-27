@@ -1,9 +1,9 @@
 import { axiosClient } from "api/axiosClient"
-import { ProductionInfo } from "type/productionInfo/productionInfo"
+import { GoodProductionInfo } from "type/productionInfo/productionInfo"
 
 export const updateProductionInfo = async (
-  body: ProductionInfo,
-): Promise<ProductionInfo> => {
+  body: GoodProductionInfo,
+): Promise<GoodProductionInfo> => {
   const { data: productionInfo } = await axiosClient.put(
     "/storage/good/production_info/",
     body,
