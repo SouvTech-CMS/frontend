@@ -14,10 +14,13 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { SKUBadge } from "component/SKUBadge"
 import { ProductionInfoModalInput } from "component/productionInfo/ProductionInfoModalInput"
-import { FC, useEffect, useMemo, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useProductionInfoUpdateMutation } from "service/productionInfo/productionInfo"
 import { ModalProps } from "type/modalProps"
-import { ProductionInfo } from "type/productionInfo/productionInfo"
+import {
+  GoodProductionInfo,
+  ProductionInfo,
+} from "type/productionInfo/productionInfo"
 import { StorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
@@ -33,16 +36,9 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
   const goodId = good.id
   const isNewProductionInfo = !prevProductionInfo
 
-  const newProductionInfo: ProductionInfo = useMemo(
-    () => ({
-      good_id: goodId,
-    }),
-    [goodId],
-  )
-
-  const [productionInfo, setProductionInfo] = useState<ProductionInfo>(
-    prevProductionInfo || newProductionInfo,
-  )
+  const [productionInfo, setProductionInfo] = useState<
+    ProductionInfo | undefined
+  >(prevProductionInfo)
 
   const productionInfoUpdateMutation = useProductionInfoUpdateMutation()
 
@@ -56,7 +52,12 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
   }
 
   const handleProductionInfoUpdate = async () => {
-    await productionInfoUpdateMutation.mutateAsync(productionInfo)
+    const body: GoodProductionInfo = {
+      ...productionInfo,
+      good_id: goodId!,
+    }
+
+    await productionInfoUpdateMutation.mutateAsync(body)
 
     notify(`Storage Good #${goodId} Production updated successfully`, "success")
 
@@ -65,11 +66,11 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
 
   useEffect(() => {
     if (isNewProductionInfo) {
-      setProductionInfo(newProductionInfo)
+      setProductionInfo(undefined)
     } else {
       setProductionInfo(prevProductionInfo)
     }
-  }, [isOpen, isNewProductionInfo, newProductionInfo, prevProductionInfo])
+  }, [isOpen, isNewProductionInfo, prevProductionInfo])
 
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
@@ -100,7 +101,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Power */}
               <ProductionInfoModalInput
                 placeholder="Power"
-                value={productionInfo.power}
+                value={productionInfo?.power}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("power", value)
@@ -111,7 +112,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Speed */}
               <ProductionInfoModalInput
                 placeholder="Speed"
-                value={productionInfo.speed}
+                value={productionInfo?.speed}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("speed", value)
@@ -122,7 +123,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Penetration Step */}
               <ProductionInfoModalInput
                 placeholder="Penetration Step"
-                value={productionInfo.penetration_step}
+                value={productionInfo?.penetration_step}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("penetration_step", value)
@@ -133,7 +134,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Engraving Width Max */}
               <ProductionInfoModalInput
                 placeholder="Engraving Width Max"
-                value={productionInfo.engraving_width_max}
+                value={productionInfo?.engraving_width_max}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("engraving_width_max", value)
@@ -144,7 +145,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Engraving Height Max */}
               <ProductionInfoModalInput
                 placeholder="Engraving Height Max"
-                value={productionInfo.engraving_height_max}
+                value={productionInfo?.engraving_height_max}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("engraving_height_max", value)
@@ -155,7 +156,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Length Inch */}
               <ProductionInfoModalInput
                 placeholder="Length Inch"
-                value={productionInfo.length_inch}
+                value={productionInfo?.length_inch}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("length_inch", value)
@@ -166,7 +167,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Width Inch */}
               <ProductionInfoModalInput
                 placeholder="Width Inch"
-                value={productionInfo.width_inch}
+                value={productionInfo?.width_inch}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("width_inch", value)
@@ -177,7 +178,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Thickness Inch */}
               <ProductionInfoModalInput
                 placeholder="Thickness Inch"
-                value={productionInfo.thickness_inch}
+                value={productionInfo?.thickness_inch}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("thickness_inch", value)
@@ -188,7 +189,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Package Size Max */}
               <ProductionInfoModalInput
                 placeholder="Package Size Max"
-                value={productionInfo.package_size_max}
+                value={productionInfo?.package_size_max}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("package_size_max", value)
@@ -199,7 +200,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Weight Oz */}
               <ProductionInfoModalInput
                 placeholder="Weight Oz"
-                value={productionInfo.weight_oz}
+                value={productionInfo?.weight_oz}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("weight_oz", value)
@@ -210,7 +211,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Production Time */}
               <ProductionInfoModalInput
                 placeholder="Production Time"
-                value={productionInfo.production_time}
+                value={productionInfo?.production_time}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("production_time", value)
@@ -221,7 +222,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Cost Of Good */}
               <ProductionInfoModalInput
                 placeholder="Cost Of Good"
-                value={productionInfo.cost_of_good}
+                value={productionInfo?.cost_of_good}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("cost_of_good", value)
@@ -232,7 +233,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               {/* Competitive Price */}
               <ProductionInfoModalInput
                 placeholder="Competitive Price"
-                value={productionInfo.competitive_price}
+                value={productionInfo?.competitive_price}
                 onChange={(e) => {
                   const value = e.target.value
                   handleChange("competitive_price", value)
