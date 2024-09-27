@@ -8,6 +8,7 @@ import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
+import { NewProductionInfoBtn } from "component/productionInfo/NewProductionInfoBtn"
 import { ProductionInfoTable } from "component/productionInfo/ProductionInfoTable"
 import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
@@ -76,7 +77,10 @@ export const ProductionInfo = (props: PageProps) => {
       {isGoodsExist && (
         <Container>
           <Flex w="full" justifyContent="space-between">
-            <ShopFilter handleShopSelect={handleShopSelect} />
+            <Flex alignItems="center" gap={5}>
+              <NewProductionInfoBtn />
+              <ShopFilter handleShopSelect={handleShopSelect} />
+            </Flex>
 
             <Flex alignItems="center" gap={2}>
               <SearchFiltersClearBtn isLoading={isLoading || isRefetching} />

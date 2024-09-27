@@ -9,40 +9,67 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Text,
 } from "@chakra-ui/react"
+import { getFullStorageGoodsList } from "api/storage/storageGood"
+import {
+  ActionMeta,
+  ChakraStylesConfig,
+  GroupBase,
+  Select,
+  SingleValue,
+} from "chakra-react-select"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { SKUBadge } from "component/SKUBadge"
 import { ProductionInfoModalInput } from "component/productionInfo/ProductionInfoModalInput"
 import { FC, useEffect, useState } from "react"
-import { useProductionInfoUpdateMutation } from "service/productionInfo/productionInfo"
+import { useQuery } from "react-query"
+import { useProductionInfoCreateMutation } from "service/productionInfo/productionInfo"
+import { ApiResponse } from "type/api/apiResponse"
 import { ModalProps } from "type/modalProps"
 import {
   GoodProductionInfo,
   ProductionInfo,
 } from "type/productionInfo/productionInfo"
+import { SelectOption } from "type/selectOption"
 import { StorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
-interface ProductionInfoModalProps extends ModalProps {
-  good: WithId<StorageGood>
-  prevProductionInfo?: ProductionInfo
+interface NewProductionInfoModalProps extends ModalProps {}
+
+const selectStyles: ChakraStylesConfig<
+  SelectOption,
+  false,
+  GroupBase<SelectOption>
+> = {
+  container: (provided) => ({
+    ...provided,
+    width: "full",
+  }),
 }
 
-export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
-  const { good, prevProductionInfo, isOpen, onClose } = props
+export const NewProductionInfoModal: FC<NewProductionInfoModalProps> = (
+  props,
+) => {
+  const { isOpen, onClose } = props
 
-  const goodId = good.id
-  const isNewProductionInfo = !prevProductionInfo
+  const [goodId, setGoodId] = useState<number>(0)
+  const [productionInfo, setProductionInfo] = useState<ProductionInfo>()
 
-  const [productionInfo, setProductionInfo] = useState<
-    ProductionInfo | undefined
-  >(prevProductionInfo)
+  const { data: storageGoodsResponse, isLoading: isStorageGoodsLoading } =
+    useQuery<ApiResponse<WithId<StorageGood>[]>>(
+      "storageGoodsFullList",
+      getFullStorageGoodsList,
+    )
+  const storageGoodsList = storageGoodsResponse?.result
 
-  const productionInfoUpdateMutation = useProductionInfoUpdateMutation()
+  const productionInfoCreateMutation = useProductionInfoCreateMutation()
 
-  const isLoading = productionInfoUpdateMutation.isLoading
+  const isSelectedStorageGoodInvalid = goodId === 0
+
+  const isLoading =
+    productionInfoCreateMutation.isLoading || isStorageGoodsLoading
+
+  const isSaveBtnDisabled = isLoading || isSelectedStorageGoodInvalid
 
   const handleChange = (param: string, value: number | string) => {
     setProductionInfo((prevProductionInfo) => ({
@@ -51,13 +78,21 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
     }))
   }
 
+  const handleStorageGoodSelect = (
+    newValue: SingleValue<SelectOption>,
+    _: ActionMeta<SelectOption>,
+  ) => {
+    const selectedOption = newValue as SelectOption
+    const storageGoodId = Number(selectedOption.value)
+    setGoodId(storageGoodId)
+  }
+
   const handleProductionInfoUpdate = async () => {
     const body: GoodProductionInfo = {
       ...productionInfo,
       good_id: goodId!,
     }
-
-    await productionInfoUpdateMutation.mutateAsync(body)
+    await productionInfoCreateMutation.mutateAsync(body)
 
     notify(`Storage Good #${goodId} Production updated successfully`, "success")
 
@@ -65,38 +100,37 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
   }
 
   useEffect(() => {
-    if (isNewProductionInfo) {
-      setProductionInfo(undefined)
-    } else {
-      setProductionInfo(prevProductionInfo)
-    }
-  }, [isOpen, isNewProductionInfo, prevProductionInfo])
+    setGoodId(0)
+    setProductionInfo(undefined)
+  }, [isOpen])
 
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Storage Good #{goodId} ProductionInfo</ModalHeader>
+        <ModalHeader>New Production Info</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <Flex direction="column" gap={5}>
             {/* Good Name & SKU */}
             <Divider />
-            <Flex
-              w="full"
-              justifyContent="center"
-              alignItems="center"
-              fontSize="lg"
-              gap={2}
-            >
-              <SKUBadge sku={good.uniquename} size="md" />
-
-              <Text fontWeight="semibold">{good.name}</Text>
-            </Flex>
+            <Select<SelectOption, false, GroupBase<SelectOption>>
+              chakraStyles={selectStyles}
+              placeholder="Select storage good"
+              options={storageGoodsList?.map((storageGood) => ({
+                value: storageGood.id,
+                label: storageGood.name,
+              }))}
+              onChange={handleStorageGoodSelect}
+              isSearchable
+              isInvalid={isSelectedStorageGoodInvalid}
+              isDisabled={isStorageGoodsLoading}
+            />
             <Divider />
 
+            {/* Production Info */}
             <Grid templateColumns="repeat(2, 1fr)" gap={5}>
               {/* Power */}
               <ProductionInfoModalInput
@@ -246,7 +280,11 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
 
         <ModalFooter>
           <Flex gap={5}>
-            <Button onClick={handleProductionInfoUpdate} isLoading={isLoading}>
+            <Button
+              onClick={handleProductionInfoUpdate}
+              isLoading={isLoading}
+              isDisabled={isSaveBtnDisabled}
+            >
               Save
             </Button>
 
@@ -255,6 +293,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
               colorScheme="gray"
               onClick={onClose}
               isLoading={isLoading}
+              isDisabled={isLoading}
             >
               Cancel
             </Button>

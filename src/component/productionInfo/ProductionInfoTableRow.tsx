@@ -66,7 +66,7 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
           return (
             <Td key={index}>
               {/* <Text>{param}</Text> */}
-              <Text>{filteredProductionInfo[param]}</Text>
+              <Text w="fit-content">{filteredProductionInfo[param]}</Text>
             </Td>
           )
         })}
