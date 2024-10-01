@@ -29,3 +29,13 @@ export type StorageActualInfo = {
   box_quantity: number
   shelf: string[]
 }
+
+export type StorageCreate = {
+  storage: Omit<Storage, "shops">
+  shops_ids: number[]
+}
+
+export type StorageUpdate = {
+  storage: Omit<WithId<Storage>, "shops">
+  shops_ids: number[]
+}
