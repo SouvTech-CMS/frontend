@@ -13,6 +13,7 @@ import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 
 interface StorageShopSelectProps {
+  prevShopsIds: number[]
   onChange: (shopsIdsList: number[]) => void
 }
 
@@ -28,11 +29,15 @@ const selectStyles: ChakraStylesConfig<
 }
 
 export const StorageShopSelect: FC<StorageShopSelectProps> = (props) => {
-  const { onChange } = props
+  const { prevShopsIds, onChange } = props
 
   const { data: shopsList, isLoading } = useQuery<WithId<Shop>[]>(
     "shopsList",
     getAllShops,
+  )
+
+  const prevShopsList = shopsList?.filter((shop) =>
+    prevShopsIds.includes(shop.id),
   )
 
   const handleChange = (
@@ -48,6 +53,10 @@ export const StorageShopSelect: FC<StorageShopSelectProps> = (props) => {
       chakraStyles={selectStyles}
       placeholder="Select shops"
       options={shopsList?.map((shop) => ({
+        value: shop.id,
+        label: shop.name,
+      }))}
+      value={prevShopsList?.map((shop) => ({
         value: shop.id,
         label: shop.name,
       }))}

@@ -223,7 +223,10 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
             />
 
             {/* Shops Select */}
-            <StorageShopSelect onChange={handleShopsIdsChange} />
+            <StorageShopSelect
+              prevShopsIds={shopsIds}
+              onChange={handleShopsIdsChange}
+            />
           </Flex>
         </ModalBody>
 
