@@ -15,7 +15,7 @@ import {
 } from "chakra-react-select"
 import { DeliveryToStorageShopsSelect } from "component/purchaseDelivery/DeliveryToStorageShopsSelect"
 import { ShelfInput } from "component/ShelfInput"
-import { ChangeEvent, FC, useEffect, useState } from "react"
+import { ChangeEvent, FC, useCallback, useEffect, useState } from "react"
 import { FiArrowRight, FiDollarSign, FiInbox, FiPackage } from "react-icons/fi"
 import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { SelectOption } from "type/selectOption"
@@ -38,22 +38,33 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
 
   const isStorageGoodsLoading = !storageGoods
 
+  const storageGoodId = goodsPair.storage_good_id
+  const isStorageGoodIdExists = !!storageGoodId
+
   const deliveryGoodId = goodsPair.delivery_good_id
-  const purchaseGood = deliveryGoods?.find(
-    (good) => good.id === deliveryGoodId,
-  )?.purchase_good
+  const deliveryGood = deliveryGoods?.find((good) => good.id === deliveryGoodId)
+  const purchaseGood = deliveryGood?.purchase_good
+  const goodSKU = purchaseGood?.sku?.trim().toLowerCase()
+  const isSKUExists = !!goodSKU
+
+  const selectedStorageGood = storageGoods?.find((good) =>
+    isStorageGoodIdExists
+      ? good.id === storageGoodId
+      : good.uniquename.trim().toLowerCase() === goodSKU,
+  )
+  const isStorageGoodExists = selectedStorageGood !== undefined
 
   const isSelectedStorageGoodInvalid = !goodsPair.storage_good_id
 
-  const handleGoodChange = (
-    param: string,
-    value: number | string | number[],
-  ) => {
-    setGoodsPair((prevGood) => ({
-      ...prevGood,
-      [param]: value,
-    }))
-  }
+  const handleGoodChange = useCallback(
+    (param: string, value: number | string | number[]) => {
+      setGoodsPair((prevGood) => ({
+        ...prevGood,
+        [param]: value,
+      }))
+    },
+    [],
+  )
 
   const handleStorageGoodSelect = (
     newValue: SingleValue<SelectOption>,
@@ -83,6 +94,12 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
     }
   }, [handleGoodsPairUpdate, prevGoodsPair, goodsPair])
 
+  useEffect(() => {
+    if (isStorageGoodExists && isSKUExists) {
+      handleGoodChange("storage_good_id", selectedStorageGood.id)
+    }
+  }, [handleGoodChange, isStorageGoodExists, isSKUExists, selectedStorageGood])
+
   return (
     <Card boxShadow="md">
       <CardBody>
@@ -105,6 +122,14 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
                 value: storageGood.id,
                 label: storageGood.name,
               }))}
+              value={
+                isStorageGoodExists
+                  ? {
+                      value: selectedStorageGood.id,
+                      label: selectedStorageGood.name,
+                    }
+                  : undefined
+              }
               onChange={handleStorageGoodSelect}
               isSearchable
               isInvalid={isSelectedStorageGoodInvalid}
