@@ -19,6 +19,7 @@ export type DeliveryToStorage = {
   storage_good_id: number
   box_quantity?: number
   in_box_quantity?: number
+  prime_cost?: number
   shelf?: string
   shops: number[]
 }

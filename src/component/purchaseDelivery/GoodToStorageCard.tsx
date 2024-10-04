@@ -16,7 +16,7 @@ import {
 import { DeliveryToStorageShopsSelect } from "component/purchaseDelivery/DeliveryToStorageShopsSelect"
 import { ShelfInput } from "component/ShelfInput"
 import { ChangeEvent, FC, useEffect, useState } from "react"
-import { FiArrowRight, FiInbox, FiPackage } from "react-icons/fi"
+import { FiArrowRight, FiDollarSign, FiInbox, FiPackage } from "react-icons/fi"
 import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { SelectOption } from "type/selectOption"
 import { DeliveryToStorage } from "type/storage/storage"
@@ -154,6 +154,23 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
               onChange={handleGoodChange}
             />
           </Flex>
+
+          {/* Prime Cost */}
+          <InputGroup w="full">
+            <InputLeftElement color="gray">
+              <FiDollarSign />
+            </InputLeftElement>
+
+            <Input
+              placeholder="Prime Cost"
+              type="number"
+              value={goodsPair.prime_cost}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                const value = e.target.valueAsNumber
+                handleGoodChange("prime_cost", value)
+              }}
+            />
+          </InputGroup>
 
           <Flex w="full">
             <DeliveryToStorageShopsSelect handleGoodChange={handleGoodChange} />
