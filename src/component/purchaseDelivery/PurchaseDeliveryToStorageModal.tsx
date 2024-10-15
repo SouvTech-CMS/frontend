@@ -45,9 +45,8 @@ export const PurchaseDeliveryToStorageModal: FC<
     useState<DeliveryToStorage[]>(initialGoodsPairList)
 
   const { data: storageGoodsResponse, isLoading: isLoadingStorageGoodsList } =
-    useQuery<ApiResponse<WithId<StorageGood>[]>>(
-      "storageGoodsFullList",
-      getFullStorageGoodsList,
+    useQuery<ApiResponse<WithId<StorageGood>[]>>("storageGoodsFullList", () =>
+      getFullStorageGoodsList(),
     )
   const storageGoodsList = storageGoodsResponse?.result
 

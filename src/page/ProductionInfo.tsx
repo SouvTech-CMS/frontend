@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react"
-import { getStorageGoodsWithProductionInfo } from "api/storage/productionInfo"
+import { getStorageGoodsWithProductionInfo } from "api/productionInfo/productionInfo"
 import { Container } from "component/Container"
 import { SearchFiltersClearBtn } from "component/customTable/SearchFiltersClearBtn"
 import { ShopFilter } from "component/filter/ShopFilter"

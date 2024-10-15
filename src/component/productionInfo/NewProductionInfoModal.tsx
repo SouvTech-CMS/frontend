@@ -56,9 +56,8 @@ export const NewProductionInfoModal: FC<NewProductionInfoModalProps> = (
   const [productionInfo, setProductionInfo] = useState<ProductionInfo>()
 
   const { data: storageGoodsResponse, isLoading: isStorageGoodsLoading } =
-    useQuery<ApiResponse<WithId<StorageGood>[]>>(
-      "storageGoodsFullList",
-      getFullStorageGoodsList,
+    useQuery<ApiResponse<WithId<StorageGood>[]>>("storageGoodsFullList", () =>
+      getFullStorageGoodsList(false),
     )
   const storageGoodsList = storageGoodsResponse?.result
 

@@ -19,14 +19,15 @@ export const getAllStorageGoods = async (
   return storageGoodsList
 }
 
-export const getFullStorageGoodsList = async (): Promise<
-  ApiResponse<WithId<StorageGood>[]>
-> => {
+export const getFullStorageGoodsList = async (
+  has_production_info?: boolean,
+): Promise<ApiResponse<WithId<StorageGood>[]>> => {
   const { data: storageGoodsList } = await axiosClient.post(
     "/storage/good/all/",
     {
       limit: undefined,
       offset: 0,
+      has_production_info,
     },
   )
   return storageGoodsList
