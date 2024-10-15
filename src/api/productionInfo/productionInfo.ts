@@ -9,7 +9,9 @@ import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 import { beautifyBody } from "util/apiRequestBody"
 
 export const getStorageGoodsWithProductionInfo = async (
-  body: ApiRequest<ProductionInfoSearchFilter>,
+  body: ApiRequest<ProductionInfoSearchFilter> & {
+    has_production_info?: boolean
+  },
 ): Promise<ApiResponse<StorageGoodWithProductionInfo[]>> => {
   const { data: goodsWithProductionInfoList } = await axiosClient.post(
     "/storage/good/all/production_info/",

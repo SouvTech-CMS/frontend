@@ -45,6 +45,7 @@ export const ProductionInfo = (props: PageProps) => {
         sortDirection,
         sortField,
         searchFilter,
+        has_production_info: true,
       }),
   )
   const goodsCount = goodsWithProductionInfoResponse?.count
