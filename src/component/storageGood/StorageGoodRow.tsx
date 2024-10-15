@@ -107,7 +107,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
         {/* Shelfs Badges */}
         <Td>
           <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Flex gap={2}>
+            <Flex gap={1}>
               {goodsShelfsList?.map((shelf, index) => (
                 <ShelfBadge key={index} shelf={shelf} />
               ))}

@@ -92,6 +92,7 @@ export const ProductionInfo = (props: PageProps) => {
 
           <ProductionInfoTable
             goodsWithProductionInfoList={goodsWithProductionInfoList}
+            selectedShopId={selectedShopId}
           />
 
           <Pagination

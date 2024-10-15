@@ -9,7 +9,13 @@ export const TableTdSkeleton: FCC<TableTdSkeletonProps> = (props) => {
   const { children, isLoading } = props
 
   return (
-    <Skeleton h={4} w={10} isLoaded={!isLoading}>
+    <Skeleton
+      minH={4}
+      minW={10}
+      h="fit-content"
+      w="fit-content"
+      isLoaded={!isLoading}
+    >
       {children}
     </Skeleton>
   )

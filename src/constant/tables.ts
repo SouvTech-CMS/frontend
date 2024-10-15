@@ -132,6 +132,13 @@ export const GOODS_PRODUCTION_INFO_TABLE: (TableColumn | null)[] = [
     isSearchable: true,
     isSortable: false,
   },
+  {
+    name: "Total quantity",
+    param: "quantity",
+    isSearchable: false,
+    isSortable: false,
+  },
+  { name: "Shelf", param: "shelf", isSearchable: false, isSortable: false },
   { name: "Power", param: "power", isSearchable: false, isSortable: false },
   { name: "Speed", param: "speed", isSearchable: false, isSortable: false },
   {
