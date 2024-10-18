@@ -1,5 +1,12 @@
 import { Badge, CloseButton, Flex, IconButton, Input } from "@chakra-ui/react"
-import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from "react"
+import {
+  ChangeEvent,
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react"
 import { FiCheck, FiEdit2 } from "react-icons/fi"
 import { PurchaseGood } from "type/purchase/purchaseGood"
 import { WithId } from "type/withId"
@@ -16,10 +23,14 @@ export const SelectedGoodEditableQuantityBadge: FC<
 
   const goodId = good.id
 
-  const [newQuantity, setNewQuantity] = useState<number>(good.quantity)
+  const [newQuantity, setNewQuantity] = useState<number>(
+    good.quantity - good.in_delivery,
+  )
   const [isEditingQuantity, setIsEditingQuantity] = useState<boolean>(false)
 
-  const isNewQuantityInvalid = !newQuantity || newQuantity > good.quantity
+  const isNewQuantityInvalid = !newQuantity
+  // This filter removed to fix quantity returning to prev value
+  //! || newQuantity > good.quantity
   const isSaveBtnDisabled = isNewQuantityInvalid
 
   const handleIsEditingChange = () => {
@@ -32,11 +43,13 @@ export const SelectedGoodEditableQuantityBadge: FC<
   }
 
   const handleSelectedGoodQuantityChange = () => {
-    setSelectedGoods((prevGoods) =>
-      prevGoods.map((good) =>
-        good.id === goodId ? { ...good, quantity: newQuantity } : good,
-      ),
-    )
+    //* Replaced with useEffect
+    // setSelectedGoods((prevGoods) =>
+    //   prevGoods.map((good) =>
+    //     good.id === goodId ? { ...good, quantity: newQuantity } : good,
+    //   ),
+    // )
+
     handleIsEditingChange()
   }
 
@@ -44,6 +57,15 @@ export const SelectedGoodEditableQuantityBadge: FC<
     setNewQuantity(good.quantity)
     handleIsEditingChange()
   }
+
+  //* Auto update good quantity when change
+  useEffect(() => {
+    setSelectedGoods((prevGoods) =>
+      prevGoods.map((good) =>
+        good.id === goodId ? { ...good, quantity: newQuantity } : good,
+      ),
+    )
+  }, [setSelectedGoods, goodId, newQuantity])
 
   if (isEditingQuantity) {
     return (
@@ -81,7 +103,7 @@ export const SelectedGoodEditableQuantityBadge: FC<
 
   return (
     <Flex alignItems="center" gap={1}>
-      <Badge fontSize="sm">Quantity: {good.quantity}</Badge>
+      <Badge fontSize="sm">Quantity: {newQuantity}</Badge>
 
       {/* Edit Btn */}
       <IconButton

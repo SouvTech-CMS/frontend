@@ -89,7 +89,7 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
                   <Flex justifyContent="space-between" gap={2}>
                     <Text>Unit Price:</Text>
                     <Text>
-                      ${numberWithCurrency(roundNumber(good.price_per_item))}
+                      {numberWithCurrency(roundNumber(good.price_per_item))}
                     </Text>
                   </Flex>
                 </Badge>
@@ -99,7 +99,7 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
                   <Flex justifyContent="space-between" gap={2}>
                     <Text>Amount: </Text>
                     <Text>
-                      ${numberWithCurrency(roundNumber(good.total_amount))}
+                      {numberWithCurrency(roundNumber(good.total_amount))}
                     </Text>
                   </Flex>
                 </Badge>
