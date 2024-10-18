@@ -67,15 +67,19 @@ export const PurchaseGoodsModal: FC<PurchaseGoodsModalProps> = (props) => {
               {goods.map((good, index) => (
                 <PurchaseGoodsModalCard key={index} good={good} />
               ))}
-
-              <Button onClick={onNewGoodAddModalOpen}>Add</Button>
             </Flex>
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="secondary" onClick={onClose}>
-              Close
-            </Button>
+            <Flex w="full" gap={2}>
+              <Button w="full" onClick={onNewGoodAddModalOpen}>
+                Add
+              </Button>
+
+              <Button variant="secondary" onClick={onClose}>
+                Close
+              </Button>
+            </Flex>
           </ModalFooter>
         </ModalContent>
       </Modal>
