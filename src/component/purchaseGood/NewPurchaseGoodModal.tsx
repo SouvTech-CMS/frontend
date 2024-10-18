@@ -29,6 +29,7 @@ import { roundNumber } from "util/formatting"
 interface NewPurchaseGoodModalProps extends ModalProps {
   prevGood?: PurchaseGood
   onAddGood: (good: PurchaseGood) => void
+  isLoading?: boolean
 }
 
 const newGood: PurchaseGood = {
@@ -40,7 +41,7 @@ const newGood: PurchaseGood = {
 }
 
 export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
-  const { prevGood = newGood, onAddGood, isOpen, onClose } = props
+  const { prevGood = newGood, onAddGood, isLoading, isOpen, onClose } = props
 
   const isEditing = !!prevGood.name.trim()
 
@@ -61,7 +62,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
 
   const isNameInvalid = !good?.name.trim()
   const isQuantityInvalid = !good.quantity
-  const isSaveBtnDisabled = isNameInvalid || isQuantityInvalid
+  const isSaveBtnDisabled = isNameInvalid || isQuantityInvalid || isLoading
 
   const handleGoodChange = (param: string, value: number | string) => {
     switch (param) {
@@ -224,6 +225,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
                   const value = e.target.value
                   handleGoodChange("sku", value)
                 }}
+                isDisabled={isLoading}
               />
             </InputGroup>
 
@@ -240,6 +242,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
                   const value = e.target.value
                   handleGoodChange("name", value)
                 }}
+                isDisabled={isLoading}
                 isInvalid={isNameInvalid}
               />
             </InputGroup>
@@ -257,6 +260,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
                   const value = e.target.value
                   handleGoodChange("description", value)
                 }}
+                isDisabled={isLoading}
               />
             </InputGroup>
 
@@ -276,6 +280,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
                     const value = e.target.valueAsNumber
                     handleGoodChange("quantity", value)
                   }}
+                  isDisabled={isLoading}
                   isInvalid={isQuantityInvalid}
                 />
               </InputGroup>
@@ -294,6 +299,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
                     const value = e.target.valueAsNumber
                     handleGoodChange("initialItemPrice", value)
                   }}
+                  isDisabled={isLoading}
                 />
               </InputGroup>
             </Flex>
@@ -314,6 +320,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
                     const value = e.target.valueAsNumber
                     handleGoodChange("amount", value)
                   }}
+                  isDisabled={isLoading}
                 />
               </InputGroup>
 
@@ -336,6 +343,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
                     value={discount}
                     type="number"
                     onChange={handleDiscountChange}
+                    isDisabled={isLoading}
                   />
                 </InputGroup>
               </Tooltip>
@@ -354,6 +362,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
                   value={good.total_amount}
                   type="number"
                   isReadOnly
+                  isDisabled={isLoading}
                 />
               </InputGroup>
 
@@ -368,6 +377,7 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
                   value={good.price_per_item}
                   type="number"
                   isReadOnly
+                  isDisabled={isLoading}
                 />
               </InputGroup>
             </Flex>
@@ -380,7 +390,11 @@ export const NewPurchaseGoodModal: FC<NewPurchaseGoodModalProps> = (props) => {
               Save
             </Button>
 
-            <Button variant="secondary" onClick={onClose}>
+            <Button
+              variant="secondary"
+              onClick={onClose}
+              isDisabled={isLoading}
+            >
               Cancel
             </Button>
           </Flex>
