@@ -135,10 +135,17 @@ export const GOODS_PRODUCTION_INFO_TABLE: (TableColumn | null)[] = [
   {
     name: "Total quantity",
     param: "quantity",
+    isMain: true,
     isSearchable: false,
     isSortable: false,
   },
-  { name: "Shelf", param: "shelf", isSearchable: false, isSortable: false },
+  {
+    name: "Shelf",
+    param: "shelf",
+    isMain: true,
+    isSearchable: false,
+    isSortable: false,
+  },
   { name: "Power", param: "power", isSearchable: false, isSortable: false },
   { name: "Speed", param: "speed", isSearchable: false, isSortable: false },
   {
