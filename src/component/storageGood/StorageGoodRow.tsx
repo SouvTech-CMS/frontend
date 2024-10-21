@@ -9,11 +9,10 @@ import {
 } from "@chakra-ui/react"
 import { getStorageActualInfoByGoodId } from "api/storage/storage"
 import { SKUBadge } from "component/SKUBadge"
-import { TableTdSkeleton } from "component/TableTdSkeleton"
 import { ShelfBadge } from "component/ShelfBadge"
+import { TableTdSkeleton } from "component/TableTdSkeleton"
 import { StorageGoodModal } from "component/storageGood/StorageGoodModal"
 import { StorageGoodRowMenu } from "component/storageGood/StorageGoodRowMenu"
-import { useUserContext } from "context/user"
 import { FC, useEffect } from "react"
 import { FiExternalLink } from "react-icons/fi"
 import { useQuery } from "react-query"
@@ -29,8 +28,6 @@ interface StorageGoodRowProps {
 
 export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   const { storageGood, selectedShopId } = props
-
-  const { isUserAdmin } = useUserContext()
 
   const goodId = storageGood.id
 
@@ -90,7 +87,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
         {/* Good Name */}
         <Td>
-          <Text>{storageGood.name}</Text>
+          <Text whiteSpace="break-spaces">{storageGood.name}</Text>
         </Td>
 
         {/* Good Total Quantity */}
@@ -110,7 +107,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
         {/* Shelfs Badges */}
         <Td>
           <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Flex gap={2}>
+            <Flex gap={1}>
               {goodsShelfsList?.map((shelf, index) => (
                 <ShelfBadge key={index} shelf={shelf} />
               ))}
@@ -134,9 +131,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
             </Tooltip>
 
             {/* Menu Btn */}
-            {isUserAdmin && (
-              <StorageGoodRowMenu onEdit={onStorageGoodModalOpen} />
-            )}
+            <StorageGoodRowMenu onEdit={onStorageGoodModalOpen} />
           </Flex>
         </Td>
       </Tr>

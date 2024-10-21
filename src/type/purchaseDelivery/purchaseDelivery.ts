@@ -12,6 +12,7 @@ export type PurchaseDelivery = {
   deadline: number
   status: string
   shipping?: number
+  prime_cost?: number
   after_custom_shipping?: number
   track_number?: string
   after_custom_track_number?: string

@@ -8,10 +8,11 @@ import {
   Text,
 } from "@chakra-ui/react"
 import { SelectedGoodEditableQuantityBadge } from "component/purchaseDelivery/SelectedGoodEditableQuantityBadge"
-import { Dispatch, FC, SetStateAction } from "react"
+import { Dispatch, FC, SetStateAction, useEffect } from "react"
 import { FiTrash2 } from "react-icons/fi"
 import { PurchaseGood } from "type/purchase/purchaseGood"
 import { WithId } from "type/withId"
+import { numberWithCurrency, roundNumber } from "util/formatting"
 
 interface SelectedPurchaseGoodCardProps {
   good: WithId<PurchaseGood>
@@ -25,11 +26,35 @@ export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
 
   const goodId = good.id
 
+  const itemPrice = numberWithCurrency(roundNumber(good.price_per_item))
+  const amount = numberWithCurrency(roundNumber(good.amount))
+
   const handleGoodRemove = () => {
     setSelectedGoods((prevGoods) =>
       prevGoods.filter((prevGood) => prevGood.id !== goodId),
     )
   }
+
+  //* Count new amount if quantity updated
+  useEffect(() => {
+    const itemPrice = good.price_per_item
+    const isItemPriceExists = itemPrice !== undefined
+
+    if (isItemPriceExists) {
+      const newAmount = good.quantity * itemPrice
+      setSelectedGoods((prevGoods) =>
+        prevGoods.map((good) =>
+          good.id === goodId ? { ...good, amount: newAmount } : good,
+        ),
+      )
+    }
+  }, [
+    setSelectedGoods,
+    goodId,
+    good.price_per_item,
+    good.quantity,
+    good.in_delivery,
+  ])
 
   return (
     <Card boxShadow="md" borderRadius={20}>
@@ -59,8 +84,8 @@ export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
                 good={good}
                 setSelectedGoods={setSelectedGoods}
               />
-              <Badge fontSize="sm">Unit Price: ${good.price_per_item}</Badge>
-              <Badge fontSize="sm">Amount: ${good.amount}</Badge>
+              <Badge fontSize="sm">Unit Price: {itemPrice}</Badge>
+              <Badge fontSize="sm">Amount: {amount}</Badge>
             </Flex>
           </Flex>
         </Flex>

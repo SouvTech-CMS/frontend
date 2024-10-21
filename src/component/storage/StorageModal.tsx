@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ShelfInput } from "component/ShelfInput"
+import { StorageShopSelect } from "component/storage/StorageShopSelect"
 import { FC, useEffect, useMemo, useState } from "react"
 import { FiDollarSign, FiInbox, FiLayers, FiPackage } from "react-icons/fi"
 import {
@@ -20,7 +21,7 @@ import {
   useStorageUpdateMutation,
 } from "service/storage/storage"
 import { ModalProps } from "type/modalProps"
-import { Storage } from "type/storage/storage"
+import { Storage, StorageCreate, StorageUpdate } from "type/storage/storage"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
@@ -42,6 +43,8 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
 
   const isNewStorage = !prevStorage
 
+  const prevShopsIdsList = prevStorage?.shops?.map((shop) => shop.id)
+  const [shopsIds, setShopsIds] = useState<number[]>(prevShopsIdsList || [])
   const [storage, setStorage] = useState<Storage>(prevStorage || newStorage)
 
   const storageCreateMutation = useStorageCreateMutation()
@@ -61,21 +64,32 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
     }))
   }
 
+  const handleShopsIdsChange = (shopsIdsList: number[]) => {
+    setShopsIds(shopsIdsList)
+  }
+
   const onStorageUpdate = async () => {
-    //* Remove storage shops param, to not change them
+    //* Remove storage shops param with objs, to not change them
     delete storage["shops"]
 
     if (isNewStorage) {
-      await storageCreateMutation.mutateAsync(storage)
+      const body: StorageCreate = {
+        storage,
+        shops_ids: shopsIds,
+      }
+      await storageCreateMutation.mutateAsync(body)
 
       notify(
         `Storage Record for Good #${storageGoodId} was created successfully`,
         "success",
       )
     } else {
-      const body: WithId<Storage> = {
-        ...storage,
-        id: prevStorage.id,
+      const body: StorageUpdate = {
+        storage: {
+          ...storage,
+          id: prevStorage.id,
+        },
+        shops_ids: shopsIds,
       }
 
       await storageUpdateMutation.mutateAsync(body)
@@ -206,6 +220,12 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
             <ShelfInput
               prevShelf={storage.shelf}
               onChange={handleStorageChange}
+            />
+
+            {/* Shops Select */}
+            <StorageShopSelect
+              prevShopsIds={shopsIds}
+              onChange={handleShopsIdsChange}
             />
           </Flex>
         </ModalBody>

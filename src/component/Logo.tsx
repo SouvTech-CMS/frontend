@@ -4,21 +4,30 @@ import { FC } from "react"
 import logoPath from "asset/logo/souvtech-cms-logo.svg"
 
 interface LogoProps {
-  imageSize?: "sm" | "md" | "lg"
+  imageSize?: "xs" | "sm" | "md" | "lg"
   textSize?: ThemeTypings["sizes"]
   gap?: number
+  isCollapsed?: boolean
 }
 
 export const Logo: FC<LogoProps> = (props) => {
-  const { imageSize = "md", textSize = "md", gap = 5 } = props
+  const { imageSize = "md", textSize = "md", gap = 5, isCollapsed } = props
+
+  const logoSize = isCollapsed ? "lg" : imageSize
 
   return (
-    <Flex w="full" direction="column" alignItems="center" gap={gap}>
-      <Flex w="full" justifyContent="center">
-        <Image w={`logo.${imageSize}`} src={logoPath} alt="Logo" />
+    <Flex
+      w={isCollapsed ? "3rem" : "full"}
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      gap={gap}
+    >
+      <Flex w="full" justifyContent="center" alignItems="center">
+        <Image w={`logo.${logoSize}`} src={logoPath} alt="Logo" />
       </Flex>
 
-      <Heading size={textSize}>SouvTech CMS</Heading>
+      {!isCollapsed && <Heading size={textSize}>SouvTech CMS</Heading>}
     </Flex>
   )
 }

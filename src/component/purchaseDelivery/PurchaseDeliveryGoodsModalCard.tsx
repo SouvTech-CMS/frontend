@@ -3,6 +3,7 @@ import { SKUBadge } from "component/SKUBadge"
 import { FC } from "react"
 import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { WithId } from "type/withId"
+import { numberWithCurrency, roundNumber } from "util/formatting"
 
 interface PurchaseDeliveryGoodsModalCardProps {
   good: WithId<PurchaseDeliveryGood>
@@ -17,6 +18,10 @@ export const PurchaseDeliveryGoodsModalCard: FC<
 
   const goodSKU = purchaseGood.sku
   const isSKUExists = goodSKU !== undefined
+
+  const quantity = good.quantity
+  const itemPrice = roundNumber(good.price_per_item)
+  const amount = roundNumber(good.amount)
 
   return (
     <Card boxShadow="md" borderRadius={10}>
@@ -50,9 +55,11 @@ export const PurchaseDeliveryGoodsModalCard: FC<
 
             {/* Side Badges */}
             <Flex direction="column" gap={3}>
-              <Badge fontSize="sm">Quantity: {good.quantity}</Badge>
-              <Badge fontSize="sm">Unit Price: ${good.price_per_item}</Badge>
-              <Badge fontSize="sm">Amount: ${good.amount}</Badge>
+              <Badge fontSize="sm">Quantity: {quantity}</Badge>
+              <Badge fontSize="sm">
+                Unit Price: {numberWithCurrency(itemPrice)}
+              </Badge>
+              <Badge fontSize="sm">Amount: {numberWithCurrency(amount)}</Badge>
             </Flex>
           </Flex>
 

@@ -49,15 +49,15 @@ export const StorageGoodDetails = (props: PageProps) => {
             <Heading size="lg">Storage Records</Heading>
 
             <Grid templateColumns="repeat(4, 1fr)" gap={5}>
+              <GridItem>
+                <NewStorageCard storageGoodId={storageGoodId} />
+              </GridItem>
+
               {storagesList?.map((storage, index) => (
                 <GridItem key={index}>
                   <StorageCard storage={storage} />
                 </GridItem>
               ))}
-
-              <GridItem>
-                <NewStorageCard storageGoodId={storageGoodId} />
-              </GridItem>
             </Grid>
           </Flex>
         </Flex>

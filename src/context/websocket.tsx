@@ -66,6 +66,7 @@ export const WebSocketContextProvider: FCC = (props) => {
           case "role":
             queryClient.invalidateQueries("currentUser")
             queryClient.invalidateQueries("usersList")
+            queryClient.invalidateQueries("rolesList")
             break
 
           case "storage":
@@ -81,6 +82,7 @@ export const WebSocketContextProvider: FCC = (props) => {
 
           case "table_access":
             queryClient.invalidateQueries("roleTableAccess")
+            queryClient.invalidateQueries("userTableAccessList")
             break
         }
       }

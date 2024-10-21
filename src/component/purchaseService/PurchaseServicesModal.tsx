@@ -53,6 +53,8 @@ export const PurchaseServicesModal: FC<PurchaseServicesModalProps> = (
               {servicesList?.map((service, index) => (
                 <PurchaseServicesModalCard key={index} service={service} />
               ))}
+
+              {/* TODO: add creating new service to existing purchase, not priority */}
             </Flex>
           </ModalBody>
 

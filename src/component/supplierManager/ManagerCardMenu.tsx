@@ -6,6 +6,7 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiEdit, FiMoreVertical, FiTrash2 } from "react-icons/fi"
 
@@ -16,6 +17,8 @@ interface ManagerCardMenuProps {
 
 export const ManagerCardMenu: FC<ManagerCardMenuProps> = (props) => {
   const { onEdit, onDelete } = props
+
+  const { canEditSuppliers } = useUserPermissions()
 
   return (
     <Flex position="absolute" top={0} right={0}>
@@ -28,11 +31,20 @@ export const ManagerCardMenu: FC<ManagerCardMenuProps> = (props) => {
         />
 
         <MenuList>
-          <MenuItem icon={<FiEdit />} onClick={onEdit}>
+          <MenuItem
+            icon={<FiEdit />}
+            onClick={onEdit}
+            isDisabled={!canEditSuppliers}
+          >
             Edit
           </MenuItem>
 
-          <MenuItem icon={<FiTrash2 />} color="red" onClick={onDelete}>
+          <MenuItem
+            icon={<FiTrash2 />}
+            color="red"
+            onClick={onDelete}
+            isDisabled={!canEditSuppliers}
+          >
             Delete
           </MenuItem>
         </MenuList>

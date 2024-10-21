@@ -3,6 +3,8 @@ import {
   DeliveryToStorage,
   Storage,
   StorageActualInfo,
+  StorageCreate,
+  StorageUpdate,
 } from "type/storage/storage"
 import { WithId } from "type/withId"
 
@@ -26,14 +28,14 @@ export const getStorageActualInfoByGoodId = async (
 }
 
 export const createStorage = async (
-  body: Omit<Storage, "shops">,
+  body: StorageCreate,
 ): Promise<WithId<Storage>> => {
   const { data: storage } = await axiosClient.post("/storage/", body)
   return storage
 }
 
 export const updateStorage = async (
-  body: Omit<WithId<Storage>, "shops">,
+  body: StorageUpdate,
 ): Promise<WithId<Storage>> => {
   const { data: storage } = await axiosClient.put("/storage/", body)
   return storage

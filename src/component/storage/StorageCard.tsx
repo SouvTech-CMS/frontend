@@ -12,7 +12,6 @@ import { ShelfBadge } from "component/ShelfBadge"
 import { StorageCardMenu } from "component/storage/StorageCardMenu"
 import { StorageDeleteModal } from "component/storage/StorageDeleteModal"
 import { StorageModal } from "component/storage/StorageModal"
-import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { Storage } from "type/storage/storage"
 import { WithId } from "type/withId"
@@ -29,8 +28,6 @@ interface StorageCardProps {
 
 export const StorageCard: FC<StorageCardProps> = (props) => {
   const { storage } = props
-
-  const { canEditStorage } = useUserPermissions()
 
   const storageId = storage.id
   const storageGoodId = storage.storage_good_id
@@ -63,17 +60,16 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
             {/* Created At */}
             {isCreatedAtExists && (
               <Heading size="md" fontWeight="medium">
+                <Text>Moved to storage at</Text>
                 <Text>{storageDate.toDateString()}</Text>
               </Heading>
             )}
           </Flex>
 
-          {canEditStorage && (
-            <StorageCardMenu
-              onEdit={onStorageUpdateModalOpen}
-              onDelete={onStorageDeleteModalOpen}
-            />
-          )}
+          <StorageCardMenu
+            onEdit={onStorageUpdateModalOpen}
+            onDelete={onStorageDeleteModalOpen}
+          />
         </CardHeader>
 
         <CardBody>

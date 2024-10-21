@@ -15,13 +15,14 @@ import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { DeliveryCardGoodsList } from "component/purchaseDelivery/DeliveryCardGoodsList"
 import { DeliveryStatusUpdateModal } from "component/purchaseDelivery/DeliveryStatusUpdateModal"
 import { DeliveryUpdateModal } from "component/purchaseDelivery/DeliveryUpdateModal"
+import { PurchaseDeliveryCardMenu } from "component/purchaseDelivery/PurchaseDeliveryCardMenu"
 import { PurchaseDeliveryDeleteModal } from "component/purchaseDelivery/PurchaseDeliveryDeleteModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
-import { PurchaseDeliveryRowMenu } from "component/purchaseDelivery/PurchaseDeliveryRowMenu"
 import { PurchaseDeliveryToStorageModal } from "component/purchaseDelivery/PurchaseDeliveryToStorageModal"
 import { DeliveryServicesModal } from "component/purchaseDeliveryService/DeliveryServicesModal"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { useCommentInput } from "hook/useCommentInput"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiFileText } from "react-icons/fi"
 import { FullPurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
@@ -34,6 +35,8 @@ interface DeliveryColumnCardProps {
 
 export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   const { status, delivery } = props
+
+  const { canReadDocuments } = useUserPermissions()
 
   const deliveryId = delivery.id
 
@@ -136,15 +139,17 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
             {isCommentExists && <CommentTooltip comment={comment} />}
 
             {/* Documents */}
-            <IconButton
-              aria-label="documents-icon-btn"
-              size="sm"
-              variant="ghost"
-              icon={<FiFileText />}
-              onClick={onDocumentsModalOpen}
-            />
+            {canReadDocuments && (
+              <IconButton
+                aria-label="documents-icon-btn"
+                size="sm"
+                variant="ghost"
+                icon={<FiFileText />}
+                onClick={onDocumentsModalOpen}
+              />
+            )}
 
-            <PurchaseDeliveryRowMenu
+            <PurchaseDeliveryCardMenu
               onMoveGoodsToStorage={onPurchaseDeliveryToStorageModalOpen}
               onDocuments={onDocumentsModalOpen}
               onGoods={onDeliveryGoodsModalOpen}

@@ -38,7 +38,7 @@ export const NewPurchaseGoodRow: FC<NewPurchaseGoodRowProps> = (props) => {
       <Tr position="relative" fontWeight="semibold">
         {/* Name */}
         <Td>
-          <Text>{good.name}</Text>
+          <Text whiteSpace="break-spaces">{good.name}</Text>
         </Td>
 
         {/* Unit Price */}

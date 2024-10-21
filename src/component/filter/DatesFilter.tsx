@@ -1,3 +1,4 @@
+import { CloseButton, Flex } from "@chakra-ui/react"
 import { RangeDatepicker } from "chakra-dayzed-datepicker"
 import { useTableContext } from "context/table"
 import { FC, useEffect, useState } from "react"
@@ -11,8 +12,14 @@ export const DatesFilter: FC<DatesFilterProps> = (props) => {
 
   const [selectedDates, setSelectedDates] = useState<Date[]>([])
 
+  const isAnyDateSelected = selectedDates.length > 0
+
   const handleDatesChange = (dates: Date[]) => {
     setSelectedDates(dates)
+  }
+
+  const handleClear = () => {
+    setSelectedDates([])
   }
 
   useEffect(() => {
@@ -53,12 +60,19 @@ export const DatesFilter: FC<DatesFilterProps> = (props) => {
   }, [setSearchFilter, selectedDates])
 
   return (
-    <RangeDatepicker
-      selectedDates={selectedDates}
-      onDateChange={handleDatesChange}
-      configs={{
-        dateFormat: "yyyy-MM-dd",
-      }}
-    />
+    <Flex alignItems="center" gap={0}>
+      <RangeDatepicker
+        selectedDates={selectedDates}
+        onDateChange={handleDatesChange}
+        configs={{
+          dateFormat: "yyyy-MM-dd",
+        }}
+      />
+
+      {/* Btn to clear Dates */}
+      {isAnyDateSelected && (
+        <CloseButton size="md" p={2} onClick={handleClear} />
+      )}
+    </Flex>
   )
 }

@@ -8,12 +8,13 @@ import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 
 interface ProductionInfoTableProps {
   goodsWithProductionInfoList: StorageGoodWithProductionInfo[]
+  selectedShopId: number
 }
 
 const TABLE_NAME = "production_info"
 
 export const ProductionInfoTable: FC<ProductionInfoTableProps> = (props) => {
-  const { goodsWithProductionInfoList } = props
+  const { goodsWithProductionInfoList, selectedShopId } = props
 
   const { getAccessibleTableColumns } = useUserTableAccess()
 
@@ -39,6 +40,7 @@ export const ProductionInfoTable: FC<ProductionInfoTableProps> = (props) => {
               key={index}
               accessibleColumns={filteredTableColumns}
               goodWithProductionInfo={goodWithProductionInfo}
+              selectedShopId={selectedShopId}
             />
           ))}
         </Tbody>

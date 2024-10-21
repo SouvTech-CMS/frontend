@@ -13,15 +13,16 @@ import { DividerWithTitle } from "component/DividerWithTitle"
 import { CommentTooltip } from "component/comment/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseCardGoodsList } from "component/purchase/PurchaseCardGoodsList"
+import { PurchaseCardMenu } from "component/purchase/PurchaseCardMenu"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
 import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseGoodsModal } from "component/purchase/PurchaseGoodsModal"
-import { PurchaseRowMenu } from "component/purchase/PurchaseRowMenu"
 import { PurchaseStatusUpdateModal } from "component/purchase/PurchaseStatusUpdateModal"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
 import { PurchaseUpdateModal } from "component/purchase/PurchaseUpdateModal"
 import { PurchaseServicesModal } from "component/purchaseService/PurchaseServicesModal"
 import { useCommentInput } from "hook/useCommentInput"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiFileText } from "react-icons/fi"
 import { useQuery } from "react-query"
@@ -42,6 +43,8 @@ interface PurchaseColumnCardProps {
 
 export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
   const { purchase, status } = props
+
+  const { canReadDocuments } = useUserPermissions()
 
   const purchaseId = purchase.id
   const goods = purchase.goods.filter((good) => !isGoodFullInDelivery(good))
@@ -156,16 +159,18 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
             {isCommentExists && <CommentTooltip comment={comment} />}
 
             {/* Documents */}
-            <IconButton
-              aria-label="documents-icon-btn"
-              size="sm"
-              variant="ghost"
-              icon={<FiFileText />}
-              onClick={onDocumentsModalOpen}
-            />
+            {canReadDocuments && (
+              <IconButton
+                aria-label="documents-icon-btn"
+                size="sm"
+                variant="ghost"
+                icon={<FiFileText />}
+                onClick={onDocumentsModalOpen}
+              />
+            )}
 
             {/* Menu Btn */}
-            <PurchaseRowMenu
+            <PurchaseCardMenu
               onDocuments={onDocumentsModalOpen}
               onGoods={onGoodsModalOpen}
               onServices={onServicesModalOpen}

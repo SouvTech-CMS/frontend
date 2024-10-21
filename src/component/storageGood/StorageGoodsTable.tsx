@@ -1,4 +1,4 @@
-import { Table, Tbody, Thead, Tr } from "@chakra-ui/react"
+import { Table, TableContainer, Tbody, Thead, Tr } from "@chakra-ui/react"
 import { CustomTh } from "component/customTable/CustomTh"
 import { StorageGoodRow } from "component/storageGood/StorageGoodRow"
 import { STORAGE_GOODS_TABLE_COLUMNS } from "constant/tables"
@@ -16,28 +16,30 @@ export const StorageGoodsTable: FC<StorageGoodsTableProps> = (props) => {
   const { storageGoodsList, selectedShopId, resetCurrentPage } = props
 
   return (
-    <Table size="md" variant="striped">
-      <Thead>
-        <Tr>
-          {STORAGE_GOODS_TABLE_COLUMNS.map((column, index) => (
-            <CustomTh
+    <TableContainer w="full">
+      <Table w="full" variant="striped">
+        <Thead>
+          <Tr>
+            {STORAGE_GOODS_TABLE_COLUMNS.map((column, index) => (
+              <CustomTh
+                key={index}
+                column={column}
+                resetCurrentPage={resetCurrentPage}
+              />
+            ))}
+          </Tr>
+        </Thead>
+
+        <Tbody>
+          {storageGoodsList?.map((goodWithStorages, index) => (
+            <StorageGoodRow
               key={index}
-              column={column}
-              resetCurrentPage={resetCurrentPage}
+              storageGood={goodWithStorages}
+              selectedShopId={selectedShopId}
             />
           ))}
-        </Tr>
-      </Thead>
-
-      <Tbody>
-        {storageGoodsList?.map((goodWithStorages, index) => (
-          <StorageGoodRow
-            key={index}
-            storageGood={goodWithStorages}
-            selectedShopId={selectedShopId}
-          />
-        ))}
-      </Tbody>
-    </Table>
+        </Tbody>
+      </Table>
+    </TableContainer>
   )
 }

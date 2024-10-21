@@ -16,7 +16,7 @@ import { FC } from "react"
 import { FiTrash2 } from "react-icons/fi"
 import { PurchaseGood } from "type/purchase/purchaseGood"
 import { WithId } from "type/withId"
-import { numberWithCurrency } from "util/formatting"
+import { numberWithCurrency, roundNumber } from "util/formatting"
 import { isGoodPartiallyInDelivery } from "util/purchaseGood"
 
 interface PurchaseGoodsModalCardProps {
@@ -88,7 +88,9 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
                 <Badge fontSize="sm">
                   <Flex justifyContent="space-between" gap={2}>
                     <Text>Unit Price:</Text>
-                    <Text>${good.price_per_item}</Text>
+                    <Text>
+                      {numberWithCurrency(roundNumber(good.price_per_item))}
+                    </Text>
                   </Flex>
                 </Badge>
 
@@ -96,7 +98,9 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
                 <Badge fontSize="sm">
                   <Flex justifyContent="space-between" gap={2}>
                     <Text>Amount: </Text>
-                    <Text>${good.total_amount}</Text>
+                    <Text>
+                      {numberWithCurrency(roundNumber(good.total_amount))}
+                    </Text>
                   </Flex>
                 </Badge>
 

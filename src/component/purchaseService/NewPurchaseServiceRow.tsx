@@ -40,7 +40,7 @@ export const NewPurchaseServiceRow: FC<NewPurchaseServiceRowProps> = (
       <Tr position="relative" fontWeight="semibold">
         {/* Name */}
         <Td>
-          <Text>{service.name}</Text>
+          <Text whiteSpace="break-spaces">{service.name}</Text>
         </Td>
 
         {/* Total Amount */}

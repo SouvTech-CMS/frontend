@@ -2,7 +2,6 @@ import { StorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
 export type ProductionInfo = {
-  good_id: number
   power?: string
   speed?: string
   penetration_step?: string
@@ -16,6 +15,10 @@ export type ProductionInfo = {
   production_time?: string
   cost_of_good?: string
   competitive_price?: string
+}
+
+export type GoodProductionInfo = ProductionInfo & {
+  good_id: number
 }
 
 export type ProductionInfoSearchFilter = WithId<StorageGood>
