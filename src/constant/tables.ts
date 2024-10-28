@@ -92,7 +92,7 @@ export const DETAILED_REPORT_TABLE_COLUMNS = [
 ]
 
 export const PURCHASES_HISTORY_TABLE: (TableColumn | null)[] = [
-  { name: "Name", param: "id", isSearchable: true, isSortable: true },
+  { name: "ID", param: "id", isSearchable: true, isSortable: true },
   { name: "Amount", param: "amount", isSearchable: false, isSortable: true },
   { name: "Status", param: "status", isSearchable: true, isSortable: true },
   {
