@@ -26,7 +26,7 @@ interface PurchaseServicesModalProps extends ModalProps {
 export const PurchaseServicesModal: FC<PurchaseServicesModalProps> = (
   props,
 ) => {
-  const { purchaseId, isOpen, onClose } = props
+  const { purchaseId, isOpen, onClose, isReadOnly } = props
 
   const { data: servicesList, isLoading } = useQuery<WithId<PurchaseService>[]>(
     ["purchaseServicesList", purchaseId],
@@ -51,7 +51,7 @@ export const PurchaseServicesModal: FC<PurchaseServicesModalProps> = (
           <ModalBody>
             <Flex direction="column" gap={2}>
               {servicesList?.map((service, index) => (
-                <PurchaseServicesModalCard key={index} service={service} />
+                <PurchaseServicesModalCard key={index} service={service} isReadOnly={isReadOnly} />
               ))}
 
               {/* TODO: add creating new service to existing purchase, not priority */}
@@ -59,14 +59,16 @@ export const PurchaseServicesModal: FC<PurchaseServicesModalProps> = (
           </ModalBody>
 
           <ModalFooter>
-            <Flex w="full" gap={2}>
-              <Button
-                w="full"
-                onClick={onServiceCreateModalOpen}
-                isLoading={isLoading}
-              >
-                Add service
-              </Button>
+            <Flex w="full" justifyContent="flex-end" gap={2}>
+              {!isReadOnly && (
+                <Button
+                  w="full"
+                  onClick={onServiceCreateModalOpen}
+                  isLoading={isLoading}
+                >
+                  Add service
+                </Button>
+              )}
 
               <Button
                 variant="secondary"

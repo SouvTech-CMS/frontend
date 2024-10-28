@@ -34,6 +34,7 @@ import {
 import { GoodSearchFilter } from "type/order/good"
 import { OrderSearchFilter } from "type/order/order"
 import { ProductionInfoSearchFilter } from "type/productionInfo/productionInfo"
+import { PurchaseHistorySearchFilter } from "type/purchase/purchaseHistory"
 import { StorageGoodSearchFilter } from "type/storage/storageGood"
 import { getApiBaseUrl, getWebSocketBaseUrl } from "util/urls"
 
@@ -126,7 +127,11 @@ export const configuration = {
       name: "Purchases",
       path: "/purchases/history",
       permissions: [Permission.PURCHASE_READ],
-      component: <PurchasesHistory />,
+      component: (
+        <TableContextProvider<PurchaseHistorySearchFilter>>
+          <PurchasesHistory />
+        </TableContextProvider>
+      ),
     },
     // Suppliers
     {

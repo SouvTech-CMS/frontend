@@ -25,7 +25,7 @@ interface PurchaseGoodsModalProps extends ModalProps {
 }
 
 export const PurchaseGoodsModal: FC<PurchaseGoodsModalProps> = (props) => {
-  const { purchaseId, goods, isOpen, onClose } = props
+  const { purchaseId, goods, isOpen, onClose, isReadOnly } = props
 
   const purchaseGoodCreateMutation = usePurchaseGoodCreateMutation()
 
@@ -65,16 +65,22 @@ export const PurchaseGoodsModal: FC<PurchaseGoodsModalProps> = (props) => {
           <ModalBody>
             <Flex direction="column" gap={2}>
               {goods.map((good, index) => (
-                <PurchaseGoodsModalCard key={index} good={good} />
+                <PurchaseGoodsModalCard
+                  key={index}
+                  good={good}
+                  isReadOnly={isReadOnly}
+                />
               ))}
             </Flex>
           </ModalBody>
 
           <ModalFooter>
-            <Flex w="full" gap={2}>
-              <Button w="full" onClick={onNewGoodAddModalOpen}>
-                Add
-              </Button>
+            <Flex w="full" justifyContent="flex-end" gap={2}>
+              {!isReadOnly && (
+                <Button w="full" onClick={onNewGoodAddModalOpen}>
+                  Add
+                </Button>
+              )}
 
               <Button variant="secondary" onClick={onClose}>
                 Close

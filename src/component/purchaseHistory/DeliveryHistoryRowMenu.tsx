@@ -6,17 +6,18 @@ import {
   MenuList,
 } from "@chakra-ui/react"
 import { FC } from "react"
-import { FiFileText, FiMoreVertical, FiPackage } from "react-icons/fi"
+import { FiFileText, FiMoreVertical, FiPackage, FiTruck } from "react-icons/fi"
 
 interface DeliveryHistoryRowMenuProps {
   onDocuments: () => void
   onGoods: () => void
+  onServices: () => void
 }
 
 export const DeliveryHistoryRowMenu: FC<DeliveryHistoryRowMenuProps> = (
   props,
 ) => {
-  const { onDocuments, onGoods } = props
+  const { onDocuments, onGoods, onServices } = props
 
   return (
     <Menu>
@@ -35,6 +36,10 @@ export const DeliveryHistoryRowMenu: FC<DeliveryHistoryRowMenuProps> = (
 
         <MenuItem icon={<FiPackage />} onClick={onGoods}>
           Goods
+        </MenuItem>
+
+        <MenuItem icon={<FiTruck />} onClick={onServices}>
+          Services
         </MenuItem>
       </MenuList>
     </Menu>

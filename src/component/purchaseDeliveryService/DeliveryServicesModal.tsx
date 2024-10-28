@@ -22,13 +22,13 @@ import { WithId } from "type/withId"
 
 interface DeliveryServicesModalProps extends ModalProps {
   deliveryId: number
-  purchasesIds: number[]
+  purchasesIds?: number[]
 }
 
 export const DeliveryServicesModal: FC<DeliveryServicesModalProps> = (
   props,
 ) => {
-  const { deliveryId, purchasesIds, isOpen, onClose } = props
+  const { deliveryId, purchasesIds, isOpen, onClose, isReadOnly } = props
 
   const { data: deliveryServicesList, isLoading: isDeliveryServicesLoading } =
     useQuery<WithId<PurchaseService>[]>(
@@ -37,12 +37,17 @@ export const DeliveryServicesModal: FC<DeliveryServicesModalProps> = (
     )
   const isDeliveryServicesExist = deliveryServicesList !== undefined
 
+  const isPurchasesIdsExist = !!purchasesIds && purchasesIds?.length > 0
+
   const {
     data: purchasesListServices,
     isLoading: isPurchasesListServicesLoading,
   } = useQuery<WithId<PurchaseService>[]>(
     ["purchasesListServices", purchasesIds],
-    () => getPurchaseServicesByPurchaseIds(purchasesIds),
+    () => getPurchaseServicesByPurchaseIds(purchasesIds!),
+    {
+      enabled: isPurchasesIdsExist,
+    },
   )
   const isPurchasesServicesExist = purchasesListServices !== undefined
 
@@ -78,14 +83,16 @@ export const DeliveryServicesModal: FC<DeliveryServicesModalProps> = (
           </ModalBody>
 
           <ModalFooter>
-            <Flex w="full" gap={2}>
-              <Button
-                w="full"
-                onClick={onServiceCreateModalOpen}
-                isLoading={isLoading}
-              >
-                Add service
-              </Button>
+            <Flex w="full" justifyContent="flex-end" gap={2}>
+              {!isReadOnly && (
+                <Button
+                  w="full"
+                  onClick={onServiceCreateModalOpen}
+                  isLoading={isLoading}
+                >
+                  Add service
+                </Button>
+              )}
 
               <Button
                 variant="secondary"

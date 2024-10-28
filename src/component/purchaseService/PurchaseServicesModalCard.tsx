@@ -19,12 +19,13 @@ import { numberWithCurrency } from "util/formatting"
 
 interface PurchaseServicesModalCardProps {
   service: WithId<PurchaseService>
+  isReadOnly?: boolean
 }
 
 export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
   props,
 ) => {
-  const { service } = props
+  const { service, isReadOnly } = props
 
   const serviceId = service.id
 
@@ -86,26 +87,28 @@ export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
               </Flex>
             </Flex>
 
-            <Flex w="full" gap={2}>
-              {/* Edit Btn */}
-              <Button
-                w="full"
-                variant="ghost"
-                colorScheme="blue"
-                onClick={onServiceEditModalOpen}
-              >
-                Edit
-              </Button>
+            {!isReadOnly && (
+              <Flex w="full" gap={2}>
+                {/* Edit Btn */}
+                <Button
+                  w="full"
+                  variant="ghost"
+                  colorScheme="blue"
+                  onClick={onServiceEditModalOpen}
+                >
+                  Edit
+                </Button>
 
-              {/* Delete */}
-              <IconButton
-                aria-label="delete-service"
-                variant="ghost"
-                colorScheme="red"
-                icon={<FiTrash2 />}
-                onClick={onServiceDeleteModalOpen}
-              />
-            </Flex>
+                {/* Delete */}
+                <IconButton
+                  aria-label="delete-service"
+                  variant="ghost"
+                  colorScheme="red"
+                  icon={<FiTrash2 />}
+                  onClick={onServiceDeleteModalOpen}
+                />
+              </Flex>
+            )}
           </Flex>
         </CardHeader>
       </Card>
