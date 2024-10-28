@@ -2,7 +2,9 @@ import { Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
 import { PurchaseStatusBadge } from "component/PurchaseStatusBadge"
 import { DeliveryDocumentsModal } from "component/document/DeliveryDocumentsModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
+import { DeliveryServicesModal } from "component/purchaseDeliveryService/DeliveryServicesModal"
 import { DeliveryHistoryRowMenu } from "component/purchaseHistory/DeliveryHistoryRowMenu"
+import { useUserContext } from "context/user"
 import { FC } from "react"
 import { DeliveryHistory } from "type/purchaseDelivery/deliveryHistory"
 import {
@@ -20,22 +22,33 @@ export const DeliveriesHistoryTableRow: FC<DeliveriesHistoryTableRowProps> = (
 ) => {
   const { delivery } = props
 
+  const { isUserAdmin } = useUserContext()
+
   const deliveryId = delivery.id
   const allDocumentsList = delivery.files
   const goods = delivery.goods
 
   const deliveryCreatedAtDate = timestampToDate(delivery.created_at)
 
+  // Documents
   const {
     isOpen: isDocumentsModalOpen,
     onOpen: onDocumentsModalOpen,
     onClose: onDocumentsModalClose,
   } = useDisclosure()
 
+  // Goods
   const {
     isOpen: isDeliveryGoodsModalOpen,
     onOpen: onDeliveryGoodsModalOpen,
     onClose: onDeliveryGoodsModalClose,
+  } = useDisclosure()
+
+  // Services
+  const {
+    isOpen: isServicesModalOpen,
+    onOpen: onServicesModalOpen,
+    onClose: onServicesModalClose,
   } = useDisclosure()
 
   return (
@@ -83,6 +96,7 @@ export const DeliveriesHistoryTableRow: FC<DeliveriesHistoryTableRowProps> = (
           <DeliveryHistoryRowMenu
             onDocuments={onDocumentsModalOpen}
             onGoods={onDeliveryGoodsModalOpen}
+            onServices={onServicesModalOpen}
           />
         </Td>
       </Tr>
@@ -94,6 +108,7 @@ export const DeliveriesHistoryTableRow: FC<DeliveriesHistoryTableRowProps> = (
           documents={allDocumentsList}
           isOpen={isDocumentsModalOpen}
           onClose={onDocumentsModalClose}
+          isReadOnly={!isUserAdmin}
         />
 
         <PurchaseDeliveryGoodsModal
@@ -101,6 +116,13 @@ export const DeliveriesHistoryTableRow: FC<DeliveriesHistoryTableRowProps> = (
           goods={goods}
           isOpen={isDeliveryGoodsModalOpen}
           onClose={onDeliveryGoodsModalClose}
+        />
+
+        <DeliveryServicesModal
+          deliveryId={deliveryId}
+          isOpen={isServicesModalOpen}
+          onClose={onServicesModalClose}
+          isReadOnly={!isUserAdmin}
         />
       </>
     </>

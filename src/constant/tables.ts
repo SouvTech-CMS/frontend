@@ -91,12 +91,17 @@ export const DETAILED_REPORT_TABLE_COLUMNS = [
   "Shipping",
 ]
 
-export const PURCHASES_HISTORY_TABLE = [
-  "Name",
-  "Amount",
-  "Status",
-  "Created At",
-  "",
+export const PURCHASES_HISTORY_TABLE: (TableColumn | null)[] = [
+  { name: "Name", param: "id", isSearchable: true, isSortable: true },
+  { name: "Amount", param: "amount", isSearchable: false, isSortable: true },
+  { name: "Status", param: "status", isSearchable: true, isSortable: true },
+  {
+    name: "Created At",
+    param: "created_at",
+    isSearchable: false,
+    isSortable: false,
+  },
+  null,
 ]
 
 export const DELIVERIES_HISTORY_TABLE = [

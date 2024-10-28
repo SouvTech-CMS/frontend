@@ -1,11 +1,14 @@
 import { Collapse, Flex, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
 import { PurchaseStatusBadge } from "component/PurchaseStatusBadge"
+import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseGoodsModal } from "component/purchase/PurchaseGoodsModal"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
 import { CollapseBtn } from "component/purchaseHistory/CollapseBtn"
 import { DeliveriesHistoryTable } from "component/purchaseHistory/DeliveryHistoryTable"
 import { PurchaseHistoryRowMenu } from "component/purchaseHistory/PurchaseHistoryRowMenu"
+import { PurchaseServicesModal } from "component/purchaseService/PurchaseServicesModal"
 import { PURCHASES_HISTORY_TABLE } from "constant/tables"
+import { useUserContext } from "context/user"
 import { FC, useState } from "react"
 import { PurchaseHistory } from "type/purchase/purchaseHistory"
 import {
@@ -23,8 +26,11 @@ export const PurchasesHistoryTableRow: FC<PurchasesHistoryTableRowProps> = (
 ) => {
   const { purchase } = props
 
+  const { isUserAdmin } = useUserContext()
+
   const purchaseId = purchase.id
-  // const files = purchase.files
+
+  const files = purchase.files
   const goods = purchase.goods
   const manager = purchase.manager
   const supplier = manager.supplier
@@ -34,18 +40,28 @@ export const PurchasesHistoryTableRow: FC<PurchasesHistoryTableRowProps> = (
   const isDeliveriesExist = purchase.deliveries.length > 0
   const purchaseCreatedAtDate = timestampToDate(purchase.created_at)
 
-  // const {
-  //   isOpen: isDocumentsModalOpen,
-  //   onOpen: onDocumentsModalOpen,
-  //   onClose: onDocumentsModalClose,
-  // } = useDisclosure()
+  // Documents
+  const {
+    isOpen: isDocumentsModalOpen,
+    onOpen: onDocumentsModalOpen,
+    onClose: onDocumentsModalClose,
+  } = useDisclosure()
 
+  // Goods
   const {
     isOpen: isPurchaseGoodsModalOpen,
     onOpen: onPurchaseGoodsModalOpen,
     onClose: onPurchaseGoodsModalClose,
   } = useDisclosure()
 
+  // Services
+  const {
+    isOpen: isServicesModalOpen,
+    onOpen: onServicesModalOpen,
+    onClose: onServicesModalClose,
+  } = useDisclosure()
+
+  // Supplier & Manager
   const {
     isOpen: isSupplierManagerModalOpen,
     onOpen: onSupplierManagerModalOpen,
@@ -87,8 +103,9 @@ export const PurchasesHistoryTableRow: FC<PurchasesHistoryTableRowProps> = (
         {/* Row Btns */}
         <Td>
           <PurchaseHistoryRowMenu
-            // onDocuments={onDocumentsModalOpen}
+            onDocuments={onDocumentsModalOpen}
             onGoods={onPurchaseGoodsModalOpen}
+            onServices={onServicesModalOpen}
             onSupplierManager={onSupplierManagerModalOpen}
           />
         </Td>
@@ -107,18 +124,27 @@ export const PurchasesHistoryTableRow: FC<PurchasesHistoryTableRowProps> = (
 
       {/* Purchase Modals */}
       <>
-        {/* <PurchaseDocumentsModal
+        <PurchaseDocumentsModal
           purchaseId={purchaseId}
           documents={files}
           isOpen={isDocumentsModalOpen}
           onClose={onDocumentsModalClose}
-        /> */}
+          isReadOnly={!isUserAdmin}
+        />
 
         <PurchaseGoodsModal
           purchaseId={purchaseId}
           goods={goods}
           isOpen={isPurchaseGoodsModalOpen}
           onClose={onPurchaseGoodsModalClose}
+          isReadOnly={!isUserAdmin}
+        />
+
+        <PurchaseServicesModal
+          purchaseId={purchaseId}
+          isOpen={isServicesModalOpen}
+          onClose={onServicesModalClose}
+          isReadOnly={!isUserAdmin}
         />
 
         <PurchaseSupplierModal

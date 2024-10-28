@@ -25,7 +25,7 @@ interface DeliveryDocumentsModalProps extends ModalProps {
 export const DeliveryDocumentsModal: FC<DeliveryDocumentsModalProps> = (
   props,
 ) => {
-  const { deliveryId, documents, isOpen, onClose } = props
+  const { deliveryId, documents, isOpen, onClose, isReadOnly } = props
 
   return (
     <Modal
@@ -43,7 +43,9 @@ export const DeliveryDocumentsModal: FC<DeliveryDocumentsModalProps> = (
 
         <ModalBody>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 3 }} spacing={10}>
-            <NewPurchaseDocumentCard purchaseId={deliveryId} isDelivery />
+            {!isReadOnly && (
+              <NewPurchaseDocumentCard purchaseId={deliveryId} isDelivery />
+            )}
 
             {documents.map((document, index) => (
               <PurchaseDocumentCard key={index} document={document} />

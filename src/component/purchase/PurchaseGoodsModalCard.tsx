@@ -21,12 +21,13 @@ import { isGoodPartiallyInDelivery } from "util/purchaseGood"
 
 interface PurchaseGoodsModalCardProps {
   good: WithId<PurchaseGood>
+  isReadOnly?: boolean
 }
 
 export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
   props,
 ) => {
-  const { good } = props
+  const { good, isReadOnly } = props
 
   const discountAsNumber = parseFloat(good.discount || "") || undefined
   const isDiscountExists = discountAsNumber !== undefined
@@ -139,26 +140,28 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
             Find this good in purchases
           </Button> */}
 
-            <Flex w="full" gap={2}>
-              {/* Edit Btn */}
-              <Button
-                w="full"
-                variant="ghost"
-                colorScheme="blue"
-                onClick={onGoodEditModalOpen}
-              >
-                Edit
-              </Button>
+            {!isReadOnly && (
+              <Flex w="full" gap={2}>
+                {/* Edit Btn */}
+                <Button
+                  w="full"
+                  variant="ghost"
+                  colorScheme="blue"
+                  onClick={onGoodEditModalOpen}
+                >
+                  Edit
+                </Button>
 
-              {/* Delete */}
-              <IconButton
-                aria-label="delete-good"
-                variant="ghost"
-                colorScheme="red"
-                icon={<FiTrash2 />}
-                onClick={onGoodDeleteModalOpen}
-              />
-            </Flex>
+                {/* Delete */}
+                <IconButton
+                  aria-label="delete-good"
+                  variant="ghost"
+                  colorScheme="red"
+                  icon={<FiTrash2 />}
+                  onClick={onGoodDeleteModalOpen}
+                />
+              </Flex>
+            )}
           </Flex>
         </CardHeader>
       </Card>

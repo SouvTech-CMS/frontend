@@ -8,18 +8,24 @@ import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { PurchasesHistoryTable } from "component/purchaseHistory/PurchaseHistoryTable"
 import { usePaginationContext } from "context/pagination"
+import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
 import { useEffect } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
-import { PurchaseHistory } from "type/purchase/purchaseHistory"
+import {
+  PurchaseHistory,
+  PurchaseHistorySearchFilter,
+} from "type/purchase/purchaseHistory"
 
 export const PurchasesHistory = (props: PageProps) => {
   const { guideNotionPageId } = props
 
   const { currentPage, setCurrentPage, offset, setOffset } = usePagination()
   const { rowsPerPageCount } = usePaginationContext()
+  const { sortDirection, sortField, searchFilter } =
+    useTableContext<PurchaseHistorySearchFilter>()
 
   const {
     data: purchasesHistoryResponse,
@@ -27,10 +33,19 @@ export const PurchasesHistory = (props: PageProps) => {
     refetch,
     isRefetching,
   } = useQuery<ApiResponse<PurchaseHistory[]>>("ordersResponse", () =>
-    getPurchasesHistory(rowsPerPageCount, offset),
+    getPurchasesHistory({
+      limit: rowsPerPageCount,
+      offset,
+      // Just to ignore this field
+      shopId: 0,
+      sortDirection,
+      sortField,
+      searchFilter,
+    }),
   )
   const purchasesHistoryCount = purchasesHistoryResponse?.count
   const purchasesHistory = purchasesHistoryResponse?.result
+
   const isHistoryExists = purchasesHistory !== undefined
 
   useEffect(() => {
@@ -40,7 +55,14 @@ export const PurchasesHistory = (props: PageProps) => {
 
   useEffect(() => {
     refetch()
-  }, [refetch, offset, rowsPerPageCount])
+  }, [
+    refetch,
+    offset,
+    rowsPerPageCount,
+    sortDirection,
+    sortField,
+    searchFilter,
+  ])
 
   return (
     <Page guideNotionPageId={guideNotionPageId}>
