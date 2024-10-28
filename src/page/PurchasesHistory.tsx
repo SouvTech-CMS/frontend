@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react"
 import { getPurchasesHistory } from "api/purchase/purchasesHistory"
 import { Container } from "component/Container"
+import { SearchFiltersClearBtn } from "component/customTable/SearchFiltersClearBtn"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
@@ -69,7 +70,9 @@ export const PurchasesHistory = (props: PageProps) => {
       <PageHeading title="Purchases History" isSearchHidden />
 
       <Container>
-        <Flex w="full" justifyContent="space-between">
+        <Flex w="full" justifyContent="flex-end" gap={2}>
+          <SearchFiltersClearBtn isLoading={isLoading || isRefetching} />
+
           <RowsPerPageSelect isLoading={isLoading || isRefetching} />
         </Flex>
 

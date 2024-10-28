@@ -7,14 +7,24 @@ import {
 } from "type/purchase/purchaseHistory"
 import { beautifyBody } from "util/apiRequestBody"
 
+// export const getPurchasesHistory = async (
+//   body: ApiRequest<PurchaseHistorySearchFilter>,
+// ): Promise<ApiResponse<PurchaseHistory[]>> => {
+//   const { data: purchaseHistory } = await axiosClient.get(
+//     "/purchase/history/",
+//     {
+//       params: beautifyBody(body),
+//     },
+//   )
+//   return purchaseHistory
+// }
+
 export const getPurchasesHistory = async (
   body: ApiRequest<PurchaseHistorySearchFilter>,
 ): Promise<ApiResponse<PurchaseHistory[]>> => {
-  const { data: purchaseHistory } = await axiosClient.get(
+  const { data: purchaseHistory } = await axiosClient.post(
     "/purchase/history/",
-    {
-      params: beautifyBody(body),
-    },
+    beautifyBody(body),
   )
   return purchaseHistory
 }

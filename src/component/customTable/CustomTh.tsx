@@ -48,8 +48,10 @@ export const CustomTh: FC<CustomThProps> = (props) => {
   }
 
   const handleSortDirectionChange = () => {
+    const isSortFieldChanged = sortField !== param
+
     // no-sort -> asc
-    if (isNoSort) {
+    if (isNoSort || isSortFieldChanged) {
       setSortDirection("asc")
       setSortField(param)
     }
