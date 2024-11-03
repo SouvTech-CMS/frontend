@@ -1,5 +1,4 @@
 import {
-  Badge,
   Card,
   CardBody,
   CardHeader,
@@ -75,7 +74,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
         <CardBody>
           <Flex direction="column" gap={2}>
             {/* Shelf */}
-            <Flex alignItems="center" gap={2}>
+            <Flex alignItems="center" gap={1}>
               <Text fontWeight="light" color="gray">
                 Shelfs:
               </Text>
@@ -136,17 +135,6 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
               </Text>
 
               <Text>{storage.box_quantity}</Text>
-            </Flex>
-
-            {/* Shops */}
-            <Flex alignItems="center" flexWrap="wrap" gap={2}>
-              <Text fontWeight="light" color="gray">
-                To Shops:
-              </Text>
-
-              {storage.shops?.map((shop, index) => (
-                <Badge key={index}>{shop.name}</Badge>
-              ))}
             </Flex>
           </Flex>
         </CardBody>

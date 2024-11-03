@@ -13,32 +13,42 @@ import {
   Textarea,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
+import { StorageGoodShopsSelect } from "component/storageGood/StorageGoodShopsSelect"
+import { useUserContext } from "context/user"
 import { FC, useEffect, useState } from "react"
-import { FiAlignLeft, FiHash, FiType } from "react-icons/fi"
+import { FiAlignLeft, FiHash, FiLayers, FiType } from "react-icons/fi"
 import {
   useStorageGoodCreateMutation,
   useStorageGoodUpdateMutation,
 } from "service/storage/storageGood"
 import { ModalProps } from "type/modalProps"
-import { StorageGood } from "type/storage/storageGood"
-import { WithId } from "type/withId"
+import {
+  GoodWithShops,
+  StorageGood,
+  StorageGoodCreate,
+  StorageGoodUpdate,
+} from "type/storage/storageGood"
 import { notify } from "util/toasts"
-
 interface StorageGoodModalProps extends ModalProps {
-  prevGood?: WithId<StorageGood>
+  prevGood?: GoodWithShops
 }
 
 const newGood: StorageGood = {
   uniquename: "",
   name: "",
+  quantity: NaN,
 }
 
 export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
   const { prevGood, isOpen, onClose } = props
 
+  const { isUserAdmin } = useUserContext()
+
   const isNewGood = !prevGood
 
   const [good, setGood] = useState<StorageGood>(prevGood || newGood)
+  const prevShopsIds = prevGood?.shops.map((shop) => shop.id)
+  const [shopsIds, setShopsIds] = useState<number[]>(prevShopsIds || [])
 
   const storageGoodCreateMutation = useStorageGoodCreateMutation()
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
@@ -47,10 +57,12 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
     storageGoodCreateMutation.isLoading || storageGoodUpdateMutation.isLoading
 
   const isUniqueNameDisabled = isLoading
-  const isUniqueNameReadOnly = !isNewGood
-
+  const isUniqueNameReadOnly = !isNewGood && !isUserAdmin
   const isUniqueNameInvalid = !isUniqueNameDisabled && !good.uniquename?.trim()
+
   const isNameInvalid = !good.name?.trim()
+
+  const isQuantityInvalid = !good.quantity
 
   const isSaveBtnDisabled = isLoading || isUniqueNameInvalid || isNameInvalid
 
@@ -63,13 +75,21 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
 
   const onStorageGoodUpdate = async () => {
     if (isNewGood) {
-      await storageGoodCreateMutation.mutateAsync(good)
+      const body: StorageGoodCreate = {
+        storage_good: good,
+        shops_ids: shopsIds,
+      }
+
+      await storageGoodCreateMutation.mutateAsync(body)
 
       notify(`Storage Good #${good?.name} was created successfully`, "success")
     } else {
-      const body: WithId<StorageGood> = {
-        ...good,
-        id: prevGood.id,
+      const body: StorageGoodUpdate = {
+        storage_good: {
+          ...good,
+          id: prevGood.id,
+        },
+        shops_ids: shopsIds,
       }
 
       await storageGoodUpdateMutation.mutateAsync(body)
@@ -87,7 +107,8 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
     if (isNewGood) {
       setGood(newGood)
     } else {
-      setGood(prevGood)
+      const { shops, ...allParams } = prevGood
+      setGood(allParams)
     }
   }, [isOpen, isNewGood, prevGood])
 
@@ -141,6 +162,31 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
                 isDisabled={isLoading}
               />
             </InputGroup>
+
+            {/* Quantity Input */}
+            <InputGroup>
+              <InputLeftElement color="gray">
+                <FiLayers />
+              </InputLeftElement>
+
+              <Input
+                placeholder="Quantity"
+                value={good.quantity}
+                type="number"
+                onChange={(e) => {
+                  const value = e.target.value
+                  handleStorageGoodChange("quantity", value)
+                }}
+                isInvalid={isQuantityInvalid}
+                isDisabled={isLoading}
+              />
+            </InputGroup>
+
+            {/* Shops Select */}
+            <StorageGoodShopsSelect
+              selectedShopsIds={shopsIds}
+              onSelect={setShopsIds}
+            />
 
             {/* Description Input */}
             <InputGroup>

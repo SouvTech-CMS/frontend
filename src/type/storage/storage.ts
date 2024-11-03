@@ -1,17 +1,15 @@
-import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 
 export type Storage = {
   storage_good_id: number
   quantity: number
-  created_at?: number
-  order_link?: number
+  purchase_delivery_id?: number
   prime_cost?: number
   cost_per_item?: number
   box_quantity?: number
   in_box_quantity?: number
+  created_at?: number
   shelf?: string
-  shops?: WithId<Shop>[]
 }
 
 export type DeliveryToStorage = {
@@ -21,7 +19,6 @@ export type DeliveryToStorage = {
   in_box_quantity?: number
   prime_cost?: number
   shelf?: string
-  shops: number[]
 }
 
 export type StorageActualInfo = {
@@ -32,11 +29,9 @@ export type StorageActualInfo = {
 }
 
 export type StorageCreate = {
-  storage: Omit<Storage, "shops">
-  shops_ids: number[]
+  storage: Storage
 }
 
 export type StorageUpdate = {
-  storage: Omit<WithId<Storage>, "shops">
-  shops_ids: number[]
+  storage: WithId<Storage>
 }

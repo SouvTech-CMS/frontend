@@ -12,18 +12,23 @@ import { SelectOption } from "type/selectOption"
 import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 
-interface DeliveryToStorageShopsSelectProps {
-  handleGoodChange: (param: string, value: number | string | number[]) => void
+interface StorageGoodShopsSelectProps {
+  selectedShopsIds: number[]
+  onSelect: (shopsIds: number[]) => void
 }
 
-export const DeliveryToStorageShopsSelect: FC<
-  DeliveryToStorageShopsSelectProps
-> = (props) => {
-  const { handleGoodChange } = props
+export const StorageGoodShopsSelect: FC<StorageGoodShopsSelectProps> = (
+  props,
+) => {
+  const { selectedShopsIds, onSelect } = props
 
   const { data: shopsList, isLoading } = useQuery<WithId<Shop>[]>(
     "shopsList",
     getAllShops,
+  )
+
+  const selectedShops = shopsList?.filter((shop) =>
+    selectedShopsIds.includes(shop.id),
   )
 
   const handleShopSelectChange = (
@@ -31,7 +36,7 @@ export const DeliveryToStorageShopsSelect: FC<
     _: ActionMeta<SelectOption>,
   ) => {
     const shopsIds = newValue.map((selectedShop) => selectedShop.value)
-    handleGoodChange("shops", shopsIds)
+    onSelect(shopsIds)
   }
 
   const selectStyles: ChakraStylesConfig<
@@ -50,6 +55,10 @@ export const DeliveryToStorageShopsSelect: FC<
       chakraStyles={selectStyles}
       placeholder="Select shops"
       options={shopsList?.map((shop) => ({
+        value: shop.id,
+        label: shop.name,
+      }))}
+      value={selectedShops?.map((shop) => ({
         value: shop.id,
         label: shop.name,
       }))}
