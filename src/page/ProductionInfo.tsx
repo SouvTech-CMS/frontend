@@ -80,6 +80,7 @@ export const ProductionInfo = (props: PageProps) => {
           <Flex w="full" justifyContent="space-between">
             <Flex alignItems="center" gap={5}>
               <NewProductionInfoBtn />
+
               <ShopFilter handleShopSelect={handleShopSelect} />
             </Flex>
 

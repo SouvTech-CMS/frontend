@@ -46,7 +46,7 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
   const goodTotalQuantity = good.quantity
   const goodsShelfsList = storageActualInfo?.shelf
 
-  const isShowShelf = isUserManager
+  const isShowShelf = !isUserManager
 
   const {
     isOpen: isProductionInfoUpdateModalOpen,
