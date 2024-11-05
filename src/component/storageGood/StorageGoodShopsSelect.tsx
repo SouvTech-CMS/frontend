@@ -17,6 +17,17 @@ interface StorageGoodShopsSelectProps {
   onSelect: (shopsIds: number[]) => void
 }
 
+const selectStyles: ChakraStylesConfig<
+  SelectOption,
+  true,
+  GroupBase<SelectOption>
+> = {
+  container: (provided) => ({
+    ...provided,
+    width: "full",
+  }),
+}
+
 export const StorageGoodShopsSelect: FC<StorageGoodShopsSelectProps> = (
   props,
 ) => {
@@ -37,17 +48,6 @@ export const StorageGoodShopsSelect: FC<StorageGoodShopsSelectProps> = (
   ) => {
     const shopsIds = newValue.map((selectedShop) => selectedShop.value)
     onSelect(shopsIds)
-  }
-
-  const selectStyles: ChakraStylesConfig<
-    SelectOption,
-    true,
-    GroupBase<SelectOption>
-  > = {
-    container: (provided) => ({
-      ...provided,
-      width: "full",
-    }),
   }
 
   return (

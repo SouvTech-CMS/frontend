@@ -29,6 +29,7 @@ import {
   StorageGoodUpdate,
 } from "type/storage/storageGood"
 import { notify } from "util/toasts"
+
 interface StorageGoodModalProps extends ModalProps {
   prevGood?: GoodWithShops
 }
@@ -103,14 +104,20 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
     onClose()
   }
 
-  useEffect(() => {
-    if (isNewGood) {
-      setGood(newGood)
-    } else {
-      const { shops, ...allParams } = prevGood
-      setGood(allParams)
-    }
-  }, [isOpen, isNewGood, prevGood])
+  useEffect(
+    () => {
+      if (isNewGood) {
+        setGood(newGood)
+        setShopsIds([])
+      } else {
+        const { shops, ...allParams } = prevGood
+        setGood(allParams)
+        setShopsIds(prevShopsIds || [])
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isOpen, isNewGood, prevGood],
+  )
 
   return (
     <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
@@ -183,10 +190,12 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
             </InputGroup>
 
             {/* Shops Select */}
-            <StorageGoodShopsSelect
-              selectedShopsIds={shopsIds}
-              onSelect={setShopsIds}
-            />
+            {isUserAdmin && (
+              <StorageGoodShopsSelect
+                selectedShopsIds={shopsIds}
+                onSelect={setShopsIds}
+              />
+            )}
 
             {/* Description Input */}
             <InputGroup>
