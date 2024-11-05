@@ -18,11 +18,10 @@ import { FiExternalLink } from "react-icons/fi"
 import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import { StorageActualInfo } from "type/storage/storage"
-import { StorageGood } from "type/storage/storageGood"
-import { WithId } from "type/withId"
+import { GoodWithShops } from "type/storage/storageGood"
 
 interface StorageGoodRowProps {
-  storageGood: WithId<StorageGood>
+  storageGood: GoodWithShops
   selectedShopId: number
 }
 
@@ -42,7 +41,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
   const isLoadingActualInfo = isLoading || isRefetching
 
-  const goodTotalQuantity = storageActualInfo?.quantity
+  const goodTotalQuantity = storageGood.quantity
   const goodBoxesQuantity = storageActualInfo?.box_quantity
   const goodsShelfsList = storageActualInfo?.shelf
 
@@ -92,9 +91,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
         {/* Good Total Quantity */}
         <Td>
-          <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Text>{goodTotalQuantity}</Text>
-          </TableTdSkeleton>
+          <Text>{goodTotalQuantity}</Text>
         </Td>
 
         {/* Good Boxes Quantity */}
@@ -107,7 +104,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
         {/* Shelfs Badges */}
         <Td>
           <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Flex gap={1}>
+            <Flex flexWrap="wrap" gap={1}>
               {goodsShelfsList?.map((shelf, index) => (
                 <ShelfBadge key={index} shelf={shelf} />
               ))}

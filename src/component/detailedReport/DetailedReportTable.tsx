@@ -28,6 +28,7 @@ export const DetailedReportTable: FC<DetailedReportTableProps> = (props) => {
   const [isShowFullTable, setIsShowFullTable] = useState<boolean>(false)
 
   const showMoreRowsBtnText = isShowFullTable ? "Show less" : "Show more"
+  const isNeedShowMoreBtn = goodsReports.length > INITIAL_ROWS_PER_PAGE
 
   const filteredGoodsReportsList = isShowFullTable
     ? goodsReports
@@ -55,17 +56,19 @@ export const DetailedReportTable: FC<DetailedReportTableProps> = (props) => {
           ))}
 
           {/* Show More Rows */}
-          <Tr>
-            <Td p={0} colSpan={DETAILED_REPORT_TABLE_COLUMNS.length}>
-              <Button
-                w="full"
-                variant="secondary"
-                onClick={handleShowFullTableChange}
-              >
-                <Text>{showMoreRowsBtnText}</Text>
-              </Button>
-            </Td>
-          </Tr>
+          {isNeedShowMoreBtn && (
+            <Tr>
+              <Td p={0} colSpan={DETAILED_REPORT_TABLE_COLUMNS.length}>
+                <Button
+                  w="full"
+                  variant="secondary"
+                  onClick={handleShowFullTableChange}
+                >
+                  <Text>{showMoreRowsBtnText}</Text>
+                </Button>
+              </Td>
+            </Tr>
+          )}
 
           {/* Total Counts */}
           <DetailedReportTableTotalsRow goodsReports={goodsReports} />

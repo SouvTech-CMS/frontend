@@ -38,7 +38,6 @@ export const PurchaseDeliveryToStorageModal: FC<
   const initialGoodsPairList: DeliveryToStorage[] = goods.map((good) => ({
     delivery_good_id: good.id,
     storage_good_id: NaN,
-    shops: [],
   }))
 
   const [goodsPairs, setGoodsPairs] =
@@ -71,7 +70,7 @@ export const PurchaseDeliveryToStorageModal: FC<
     await moveGoodsToStorageMutation.mutateAsync(body)
 
     notify(
-      `Goods from delivery #${deliveryId} was moved to Storage successfully`,
+      `Goods from Delivery #${deliveryId} was moved to Storage successfully`,
       "success",
     )
     onClose()
@@ -115,7 +114,11 @@ export const PurchaseDeliveryToStorageModal: FC<
               Save
             </Button>
 
-            <Button variant="secondary" onClick={onClose}>
+            <Button
+              variant="secondary"
+              onClick={onClose}
+              isDisabled={isLoading}
+            >
               Cancel
             </Button>
           </Flex>

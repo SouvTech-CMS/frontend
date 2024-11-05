@@ -93,14 +93,23 @@ export const RoleCard: FC<RoleCardProps> = (props) => {
         </CardHeader>
 
         <CardFooter mt="auto">
-          <Flex w="full">
+          <Flex w="full" gap={1}>
+            <Button
+              w="full"
+              variant="ghost"
+              colorScheme="blue"
+              onClick={onRoleEditModalOpen}
+            >
+              Permissions
+            </Button>
+
             <Button
               w="full"
               variant="ghost"
               colorScheme="blue"
               onClick={onTablesAccessModalOpen}
             >
-              Edit access to tables data
+              Tables Access
             </Button>
           </Flex>
         </CardFooter>

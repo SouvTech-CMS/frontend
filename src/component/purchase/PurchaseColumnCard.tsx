@@ -49,8 +49,9 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
   const purchaseId = purchase.id
   const goods = purchase.goods.filter((good) => !isGoodFullInDelivery(good))
   const manager = purchase.manager
-  const managerId = manager.id
-  const supplier = manager.supplier
+  const managerId = manager?.id
+  const supplier = manager?.supplier
+  const supplierId = supplier?.id
   const files = purchase.files
 
   const { data: servicesList } = useQuery<WithId<PurchaseService>[]>(
@@ -258,7 +259,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
 
         <PurchaseUpdateModal
           prevPurchase={purchase}
-          prevSupplierId={supplier.id}
+          prevSupplierId={supplierId}
           prevManagerId={managerId}
           isOpen={isPurchaseUpdateModalOpen}
           onClose={onPurchaseUpdateModalClose}

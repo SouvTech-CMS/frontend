@@ -17,8 +17,10 @@ import { useEffect } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
-import { StorageGood, StorageGoodSearchFilter } from "type/storage/storageGood"
-import { WithId } from "type/withId"
+import {
+  GoodWithShops,
+  StorageGoodSearchFilter,
+} from "type/storage/storageGood"
 
 export const Storage = (props: PageProps) => {
   const { guideNotionPageId } = props
@@ -35,7 +37,7 @@ export const Storage = (props: PageProps) => {
     isLoading,
     refetch,
     isRefetching,
-  } = useQuery<ApiResponse<WithId<StorageGood>[]>>("storageGoodsList", () =>
+  } = useQuery<ApiResponse<GoodWithShops[]>>("storageGoodsList", () =>
     getAllStorageGoods({
       limit: rowsPerPageCount,
       offset,

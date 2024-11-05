@@ -17,7 +17,7 @@ export const STORAGE_GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
     name: "Total quantity",
     param: "quantity",
     isSearchable: false,
-    isSortable: false,
+    isSortable: true,
   },
   {
     name: "Boxes quantity",
