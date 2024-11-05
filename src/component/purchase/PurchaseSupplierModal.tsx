@@ -17,14 +17,17 @@ import { WithId } from "type/withId"
 
 interface PurchaseSupplierModalProps extends ModalProps {
   purchaseId: number
-  supplier: WithId<Supplier>
-  manager: WithId<SupplierManager>
+  supplier?: WithId<Supplier>
+  manager?: WithId<SupplierManager>
 }
 
 export const PurchaseSupplierModal: FC<PurchaseSupplierModalProps> = (
   props,
 ) => {
   const { purchaseId, supplier, manager, isOpen, onClose } = props
+
+  const isSupplierExists = !!supplier
+  const isManagerExists = !!manager
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
@@ -35,7 +38,9 @@ export const PurchaseSupplierModal: FC<PurchaseSupplierModalProps> = (
         <ModalCloseButton />
 
         <ModalBody>
-          <PurchaseSupplierModalCard supplier={supplier} manager={manager} />
+          {isSupplierExists && isManagerExists && (
+            <PurchaseSupplierModalCard supplier={supplier} manager={manager} />
+          )}
         </ModalBody>
 
         <ModalFooter>

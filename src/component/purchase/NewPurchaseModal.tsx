@@ -74,8 +74,8 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
 
   const isLoading = purchaseCreateMutation.isLoading
 
-  const isSupplierSelected = supplierId > 0
-  const isManagerSelected = purchase.supplier_manager_id > 0
+  const isSupplierSelected = !!supplierId
+  const isManagerSelected = !!purchase.supplier_manager_id
   const isSaveBtnDisabled =
     isLoading ||
     // !isSupplierSelected ||

@@ -28,7 +28,7 @@ import { notify } from "util/toasts"
 
 interface PurchaseStatusUpdateModalProps extends ModalProps {
   purchase: WithId<Purchase>
-  managerId: number
+  managerId?: number
   prevStatus: string
 }
 
