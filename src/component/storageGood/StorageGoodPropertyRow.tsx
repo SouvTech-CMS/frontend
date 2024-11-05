@@ -14,14 +14,14 @@ export const StorageGoodPropertyRow: FC<StorageGoodPropertyRowProps> = (
   return (
     <>
       {/* Property Name */}
-      <GridItem>
-        <Text fontWeight="light" color="gray">
+      <GridItem w="fit-content">
+        <Text w="fit-content" fontWeight="light" color="gray">
           {name}
         </Text>
       </GridItem>
 
       {/* Value */}
-      <GridItem>{value}</GridItem>
+      <GridItem w="fit-content">{value}</GridItem>
     </>
   )
 }

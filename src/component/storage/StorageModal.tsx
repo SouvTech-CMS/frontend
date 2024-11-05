@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ShelfInput } from "component/ShelfInput"
-import { StorageShopSelect } from "component/storage/StorageShopSelect"
 import { FC, useEffect, useMemo, useState } from "react"
 import { FiDollarSign, FiInbox, FiLayers, FiPackage } from "react-icons/fi"
 import {
@@ -43,8 +42,6 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
 
   const isNewStorage = !prevStorage
 
-  const prevShopsIdsList = prevStorage?.shops?.map((shop) => shop.id)
-  const [shopsIds, setShopsIds] = useState<number[]>(prevShopsIdsList || [])
   const [storage, setStorage] = useState<Storage>(prevStorage || newStorage)
 
   const storageCreateMutation = useStorageCreateMutation()
@@ -64,18 +61,10 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
     }))
   }
 
-  const handleShopsIdsChange = (shopsIdsList: number[]) => {
-    setShopsIds(shopsIdsList)
-  }
-
   const onStorageUpdate = async () => {
-    //* Remove storage shops param with objs, to not change them
-    delete storage["shops"]
-
     if (isNewStorage) {
       const body: StorageCreate = {
         storage,
-        shops_ids: shopsIds,
       }
       await storageCreateMutation.mutateAsync(body)
 
@@ -89,7 +78,6 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
           ...storage,
           id: prevStorage.id,
         },
-        shops_ids: shopsIds,
       }
 
       await storageUpdateMutation.mutateAsync(body)
@@ -220,12 +208,6 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
             <ShelfInput
               prevShelf={storage.shelf}
               onChange={handleStorageChange}
-            />
-
-            {/* Shops Select */}
-            <StorageShopSelect
-              prevShopsIds={shopsIds}
-              onChange={handleShopsIdsChange}
             />
           </Flex>
         </ModalBody>

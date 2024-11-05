@@ -13,7 +13,6 @@ import {
   Select,
   SingleValue,
 } from "chakra-react-select"
-import { DeliveryToStorageShopsSelect } from "component/purchaseDelivery/DeliveryToStorageShopsSelect"
 import { ShelfInput } from "component/ShelfInput"
 import { ChangeEvent, FC, useCallback, useEffect, useState } from "react"
 import { FiArrowRight, FiDollarSign, FiInbox, FiPackage } from "react-icons/fi"
@@ -28,6 +27,17 @@ interface GoodToStorageCardProps {
   deliveryGoods?: WithId<PurchaseDeliveryGood>[]
   storageGoods?: WithId<StorageGood>[]
   handleGoodsPairUpdate: (goodsPair: DeliveryToStorage) => void
+}
+
+const selectStyles: ChakraStylesConfig<
+  SelectOption,
+  false,
+  GroupBase<SelectOption>
+> = {
+  container: (provided) => ({
+    ...provided,
+    width: "full",
+  }),
 }
 
 export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
@@ -75,17 +85,6 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
     handleGoodChange("storage_good_id", storageGoodId)
   }
 
-  const storageGoodSelectStyles: ChakraStylesConfig<
-    SelectOption,
-    false,
-    GroupBase<SelectOption>
-  > = {
-    container: (provided) => ({
-      ...provided,
-      width: "full",
-    }),
-  }
-
   useEffect(() => {
     // Prevent infinite rerendering
     if (prevGoodsPair !== goodsPair) {
@@ -116,7 +115,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
 
             {/* Storage Good Select */}
             <Select<SelectOption, false, GroupBase<SelectOption>>
-              chakraStyles={storageGoodSelectStyles}
+              chakraStyles={selectStyles}
               placeholder="Select storage good"
               options={storageGoods?.map((storageGood) => ({
                 value: storageGood.id,
@@ -196,10 +195,6 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
               }}
             />
           </InputGroup>
-
-          <Flex w="full">
-            <DeliveryToStorageShopsSelect handleGoodChange={handleGoodChange} />
-          </Flex>
         </Flex>
       </CardBody>
     </Card>

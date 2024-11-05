@@ -1,4 +1,4 @@
-import { Divider, Flex, Grid, GridItem, Heading } from "@chakra-ui/react"
+import { Divider, Flex, Heading, SimpleGrid } from "@chakra-ui/react"
 import { getGoodWithStoragesById } from "api/storage/storageGood"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
@@ -28,9 +28,12 @@ export const StorageGoodDetails = (props: PageProps) => {
       enabled: storageGoodId > 0,
     },
   )
-  const storagesList = storageGood?.storage
+
+  const storagesList = storageGood?.storages
   const isGoodWithStoragesExists =
     storageGood !== undefined && storageGood !== undefined
+
+  const shopsList = storageGood?.shops
 
   return (
     <Page guideNotionPageId={guideNotionPageId}>
@@ -41,24 +44,23 @@ export const StorageGoodDetails = (props: PageProps) => {
       {isGoodWithStoragesExists && (
         <Flex direction="column" justifyContent="flex-start" gap={10}>
           {/* StorageGood Properties */}
-          <StorageGoodProperties storageGood={storageGood} />
+          <StorageGoodProperties storageGood={storageGood} shops={shopsList} />
 
           <Divider borderWidth={1} />
 
           <Flex direction="column" gap={5}>
             <Heading size="lg">Storage Records</Heading>
 
-            <Grid templateColumns="repeat(4, 1fr)" gap={5}>
-              <GridItem>
-                <NewStorageCard storageGoodId={storageGoodId} />
-              </GridItem>
+            <SimpleGrid
+              columns={{ base: 1, sm: 2, md: 2, lg: 3, xl: 4 }}
+              spacing={5}
+            >
+              <NewStorageCard storageGoodId={storageGoodId} />
 
               {storagesList?.map((storage, index) => (
-                <GridItem key={index}>
-                  <StorageCard storage={storage} />
-                </GridItem>
+                <StorageCard key={index} storage={storage} />
               ))}
-            </Grid>
+            </SimpleGrid>
           </Flex>
         </Flex>
       )}

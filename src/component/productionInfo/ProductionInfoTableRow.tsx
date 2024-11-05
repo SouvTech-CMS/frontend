@@ -5,6 +5,7 @@ import { ShelfBadge } from "component/ShelfBadge"
 import { TableTdSkeleton } from "component/TableTdSkeleton"
 import { ProductionInfoModal } from "component/productionInfo/ProductionInfoModal"
 import { ProductionInfoTableRowMenu } from "component/productionInfo/ProductionInfoTableRowMenu"
+import { useUserContext } from "context/user"
 import { useUserTableAccess } from "hook/useUserTableAccess"
 import { FC, useEffect } from "react"
 import { useQuery } from "react-query"
@@ -24,8 +25,8 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
 ) => {
   const { accessibleColumns, goodWithProductionInfo, selectedShopId } = props
 
+  const { isUserManager } = useUserContext()
   const { filterAccessibleParams } = useUserTableAccess()
-  // const { selectedShopId, handleShopSelect } = useShopFilter()
 
   const good = goodWithProductionInfo
   const goodId = good.id
@@ -42,8 +43,10 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
 
   const isLoadingActualInfo = isLoading || isRefetching
 
-  const goodTotalQuantity = storageActualInfo?.quantity
+  const goodTotalQuantity = good.quantity
   const goodsShelfsList = storageActualInfo?.shelf
+
+  const isShowShelf = !isUserManager
 
   const {
     isOpen: isProductionInfoUpdateModalOpen,
@@ -84,21 +87,21 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
 
         {/* Good Total Quantity */}
         <Td>
-          <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Text>{goodTotalQuantity}</Text>
-          </TableTdSkeleton>
+          <Text>{goodTotalQuantity}</Text>
         </Td>
 
         {/* Shelfs Badges */}
-        <Td>
-          <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Flex gap={1}>
-              {goodsShelfsList?.map((shelf, index) => (
-                <ShelfBadge key={index} shelf={shelf} />
-              ))}
-            </Flex>
-          </TableTdSkeleton>
-        </Td>
+        {isShowShelf && (
+          <Td>
+            <TableTdSkeleton isLoading={isLoadingActualInfo}>
+              <Flex gap={1}>
+                {goodsShelfsList?.map((shelf, index) => (
+                  <ShelfBadge key={index} shelf={shelf} />
+                ))}
+              </Flex>
+            </TableTdSkeleton>
+          </Td>
+        )}
 
         {accessibleParamColumns.map((column, index) => {
           if (!column || !filteredProductionInfo) {

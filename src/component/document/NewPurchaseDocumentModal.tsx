@@ -49,7 +49,14 @@ export const NewPurchaseDocumentModal: FC<NewPurchaseDocumentModalProps> = (
 
     if (files !== null) {
       const uploadedFilesList = Array.from(files)
-      setFilesList(uploadedFilesList)
+      setFilesList((prevFiles) => {
+        const existingFilesNames = new Set(prevFiles.map((file) => file.name))
+        const filteredFiles = uploadedFilesList.filter(
+          (file) => !existingFilesNames.has(file.name),
+        )
+
+        return [...new Set([...prevFiles, ...filteredFiles])]
+      })
     }
   }
 

@@ -19,8 +19,8 @@ export const useMoveGoodsToStorageMutation = () => {
 
 export const useStorageCreateMutation = () => {
   return useMutation(createStorage, {
-    onSuccess: ({ storage_good_id }) => {
-      queryClient.invalidateQueries(["goodWithStorages", storage_good_id])
+    onSuccess: () => {
+      queryClient.invalidateQueries("goodWithStorages")
     },
   })
 }

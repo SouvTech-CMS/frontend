@@ -25,8 +25,8 @@ import { notify } from "util/toasts"
 
 interface PurchaseUpdateModalProps extends ModalProps {
   prevPurchase: FullPurchase
-  prevSupplierId: number
-  prevManagerId: number
+  prevSupplierId?: number
+  prevManagerId?: number
 }
 
 export const PurchaseUpdateModal: FC<PurchaseUpdateModalProps> = (props) => {
@@ -47,7 +47,9 @@ export const PurchaseUpdateModal: FC<PurchaseUpdateModalProps> = (props) => {
   )
 
   const [purchase, setPurchase] = useState<PurchaseUpdate>(prevPurchaseData)
-  const [supplierId, setSupplierId] = useState<number>(prevSupplierId)
+  const [supplierId, setSupplierId] = useState<number | undefined>(
+    prevSupplierId,
+  )
 
   const purchaseUpdateMutation = usePurchaseUpdateMutation()
 

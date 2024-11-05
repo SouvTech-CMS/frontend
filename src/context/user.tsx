@@ -1,6 +1,6 @@
 import { getTablesAccessListByRolesIds } from "api/tableAccess/tableAccess"
 import { getCurrentUser } from "api/user"
-import { ADMIN_ROLE } from "constant/roles"
+import { ADMIN_ROLE, Role } from "constant/roles"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { FCC } from "type/fcc"
@@ -16,6 +16,7 @@ interface UserContextProps {
   userShops?: WithId<Shop>[]
   userTableAccessList?: TableWithAccessList[]
   isUserAdmin?: boolean
+  isUserManager?: boolean
   isLoadingCurrentUser: boolean
 }
 
@@ -56,6 +57,7 @@ export const UserContextProvider: FCC = (props) => {
     isTableAccessListLoading
 
   const isUserAdmin = userRoles.includes(ADMIN_ROLE)
+  const isUserManager = !isUserAdmin && userRoles.includes(Role.MANAGER)
 
   useEffect(() => {
     if (currentUser) {
@@ -86,6 +88,7 @@ export const UserContextProvider: FCC = (props) => {
         userShops,
         userTableAccessList,
         isUserAdmin,
+        isUserManager,
         isLoadingCurrentUser: isLoading,
       }}
     >

@@ -33,7 +33,7 @@ export const PurchasesHistoryTableRow: FC<PurchasesHistoryTableRowProps> = (
   const files = purchase.files
   const goods = purchase.goods
   const manager = purchase.manager
-  const supplier = manager.supplier
+  const supplier = manager?.supplier
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
 

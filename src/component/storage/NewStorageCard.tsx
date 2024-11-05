@@ -1,5 +1,6 @@
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react"
 import { StorageModal } from "component/storage/StorageModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiPlusCircle } from "react-icons/fi"
 
@@ -10,11 +11,17 @@ interface NewStorageCardProps {
 export const NewStorageCard: FC<NewStorageCardProps> = (props) => {
   const { storageGoodId } = props
 
+  const { canEditStorage } = useUserPermissions()
+
   const {
     isOpen: isStorageCreateModalOpen,
     onOpen: onStorageCreateModalOpen,
     onClose: onStorageCreateModalClose,
   } = useDisclosure()
+
+  if (!canEditStorage) {
+    return <></>
+  }
 
   return (
     <>
