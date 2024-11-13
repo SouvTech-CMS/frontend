@@ -32,7 +32,7 @@ export const PurchasesTable: FC = () => {
   }
 
   return (
-    <Flex w="full" direction="row" gap={10}>
+    <Flex w="full" direction="row" gap={10} overflowX="auto">
       {PURCHASE_STATUS_COLUMNS.map((status, index) => (
         <PurchasesTableStatusColumn
           key={index}
