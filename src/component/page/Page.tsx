@@ -17,10 +17,9 @@ export const Page: FCC<PageProps> = (props) => {
       w="full"
       direction="column"
       py={5}
-      px={10}
+      px={5}
       pb={10}
-      overflowX="hidden"
-      overflowY="auto"
+      overflow="auto"
     >
       {children}
 

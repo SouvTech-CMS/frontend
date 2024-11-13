@@ -30,6 +30,7 @@ export const Sidebar: FC = () => {
   return (
     <Flex
       bgColor="sidebar"
+      h="full"
       direction="column"
       justifyContent="flex-start"
       alignItems="center"
@@ -38,6 +39,7 @@ export const Sidebar: FC = () => {
       borderRightColor="thinBorder"
       borderRightWidth={1}
       gap={5}
+      overflowY="auto"
     >
       <Logo isCollapsed={isCollapsed} />
 
