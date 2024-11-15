@@ -29,7 +29,7 @@ export const PurchaseDeleteModal: FC<PurchaseDeleteModalProps> = (props) => {
   const onDeleteConfirm = async () => {
     await purchaseDeleteMutation.mutateAsync(purchaseId)
 
-    notify(`Purchase ${purchaseId} was successfully deleted`, "success")
+    notify(`Order #${purchaseId} was successfully deleted`, "success")
     onClose()
   }
 
@@ -38,11 +38,11 @@ export const PurchaseDeleteModal: FC<PurchaseDeleteModalProps> = (props) => {
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Delete Purchase</ModalHeader>
+        <ModalHeader>Delete Order</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <Text>Are you sure you want to delete the purchase</Text>
+          <Text>Are you sure you want to delete the order</Text>
           <Text fontWeight="bold">#{purchaseId}</Text>
         </ModalBody>
 

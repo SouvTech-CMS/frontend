@@ -38,7 +38,6 @@ export const DeliveryPurchaseCard: FC<DeliveryPurchaseCardProps> = (props) => {
 
   const purchaseId = purchase.id
   const goods = purchase.goods
-  console.log(goods)
   const manager = purchase.manager
   const supplier = manager?.supplier
   const files = purchase.files

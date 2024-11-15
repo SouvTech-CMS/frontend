@@ -63,7 +63,7 @@ export const PurchaseDeliveryGoodsSelectList: FC<
         placeholder="Select good"
         options={filteredGoods?.map((good) => ({
           value: good.id,
-          label: `#${good.id} ${good.name} - Purchase #${good.purchase_id}`,
+          label: `#${good.id} ${good.name} - Order #${good.purchase_id}`,
         }))}
         onChange={handleGoodSelect}
         isSearchable

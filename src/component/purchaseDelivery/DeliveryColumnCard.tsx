@@ -133,14 +133,14 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
         borderRadius={10}
         gap={2}
       >
-        {/* Purchase Card Header */}
+        {/* Delivery Card Header */}
         <Flex w="full" justifyContent="space-between" alignItems="center">
           <Flex alignItems="center" gap={1}>
             <AccordionButton w="fit-content" p={2} borderRadius={5}>
               <AccordionIcon />
             </AccordionButton>
 
-            {/* Purchase ID */}
+            {/* Delivery ID */}
             <Text fontSize="lg" fontWeight="semibold">
               Delivery #{deliveryId}
             </Text>
@@ -194,7 +194,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
         </Flex>
       </Flex>
 
-      {/* Purchase Modals */}
+      {/* Delivery Modals */}
       <>
         <PurchaseDeliveryToStorageModal
           delivery={delivery}

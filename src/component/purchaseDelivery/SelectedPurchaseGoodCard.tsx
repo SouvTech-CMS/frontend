@@ -64,7 +64,7 @@ export const SelectedPurchaseGoodCard: FC<SelectedPurchaseGoodCardProps> = (
             <Flex w="full" direction="column" gap={2}>
               {/* Purchase ID */}
               <Flex>
-                <Badge colorScheme="blue">Purchase #{good.purchase_id}</Badge>
+                <Badge colorScheme="blue">Order #{good.purchase_id}</Badge>
               </Flex>
 
               {/* Good Name */}

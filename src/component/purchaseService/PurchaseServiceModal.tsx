@@ -159,7 +159,7 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
       } else {
         await purchaseServiceCreateMutation.mutateAsync(service)
 
-        notify(`Purchase Service #${serviceId} created successfully`, "success")
+        notify(`Order Service #${serviceId} created successfully`, "success")
       }
     } else {
       const body: WithId<PurchaseService> = {
@@ -174,7 +174,7 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
       } else {
         await purchaseServiceUpdateMutation.mutateAsync(body)
 
-        notify(`Purchase Service #${serviceId} updated successfully`, "success")
+        notify(`Order Service #${serviceId} updated successfully`, "success")
       }
     }
 
@@ -208,7 +208,7 @@ export const PurchaseServiceModal: FC<PurchaseServiceModalProps> = (props) => {
         <ModalHeader>
           {isDelivery
             ? `Delivery #${service.purchase_delivery_id} `
-            : `Purchase #${service.purchase_id} `}
+            : `Order #${service.purchase_id} `}
 
           {isNewService ? "New Service" : "Service #{serviceId}"}
         </ModalHeader>

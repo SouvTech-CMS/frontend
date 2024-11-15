@@ -46,7 +46,7 @@ export const PurchaseGoodsModal: FC<PurchaseGoodsModalProps> = (props) => {
     await purchaseGoodCreateMutation.mutateAsync(body)
 
     notify(
-      `New good ${good.name} for Purchase #${purchaseId} was added successfully`,
+      `New good ${good.name} for Order #${purchaseId} was added successfully`,
       "success",
     )
 
@@ -59,7 +59,7 @@ export const PurchaseGoodsModal: FC<PurchaseGoodsModalProps> = (props) => {
         <ModalBackgroundBlur />
 
         <ModalContent>
-          <ModalHeader>Purchase #{purchaseId} Goods</ModalHeader>
+          <ModalHeader>Order #{purchaseId} Goods</ModalHeader>
           <ModalCloseButton />
 
           <ModalBody>
