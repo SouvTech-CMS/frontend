@@ -50,7 +50,7 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
               {isDeliveryPurchaseDocumnet && (
                 <Flex>
                   <Badge colorScheme="blue">
-                    Purchase #{document.purchase_id}
+                    Order #{document.purchase_id}
                   </Badge>
                 </Flex>
               )}

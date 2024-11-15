@@ -78,7 +78,7 @@ export const NewPurchaseDocumentModal: FC<NewPurchaseDocumentModalProps> = (
 
     notify(
       `Documents for ${
-        isDelivery ? "delivery" : "purchase"
+        isDelivery ? "delivery" : "order"
       } #${purchaseId} was uploaded successfully`,
       "success",
     )

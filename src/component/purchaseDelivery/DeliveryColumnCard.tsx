@@ -1,18 +1,18 @@
 import {
+  Accordion,
   AccordionButton,
   AccordionIcon,
+  AccordionItem,
   AccordionPanel,
-  Divider,
   Flex,
   IconButton,
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
-import { DividerWithTitle } from "component/DividerWithTitle"
 import { CommentTooltip } from "component/comment/CommentTooltip"
 import { DeliveryDocumentsModal } from "component/document/DeliveryDocumentsModal"
 import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
-import { DeliveryCardGoodsList } from "component/purchaseDelivery/DeliveryCardGoodsList"
+import { DeliveryPurchaseCardWithGoods } from "component/purchaseDelivery/DeliveryPurchaseCardWithGoods"
 import { DeliveryStatusUpdateModal } from "component/purchaseDelivery/DeliveryStatusUpdateModal"
 import { DeliveryUpdateModal } from "component/purchaseDelivery/DeliveryUpdateModal"
 import { PurchaseDeliveryCardMenu } from "component/purchaseDelivery/PurchaseDeliveryCardMenu"
@@ -25,12 +25,13 @@ import { useCommentInput } from "hook/useCommentInput"
 import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiFileText } from "react-icons/fi"
+import { FullPurchase } from "type/purchase/purchase"
 import { FullPurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
 import { timestampToDate } from "util/formatting"
 
 interface DeliveryColumnCardProps {
-  status: PurchaseDeliveryStatus
   delivery: FullPurchaseDelivery
+  status: PurchaseDeliveryStatus
 }
 
 export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
@@ -41,8 +42,19 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   const deliveryId = delivery.id
 
   const goods = delivery.goods
+  const purchaseGoods = goods.map((good) => ({
+    ...good,
+    ...good.purchase_good,
+    total_amount: good.amount,
+  }))
   const deliveryDocuments = delivery.files
   const purchases = delivery.purchases
+  const purchasesWithGoods: FullPurchase[] = delivery.purchases.map(
+    (purchase) => ({
+      ...purchase,
+      goods: purchaseGoods.filter((good) => good.purchase_id === purchase.id),
+    }),
+  )
   const purchasesDocuments = purchases.flatMap((purchase) =>
     purchase.files.map((file) => ({ ...file, purchase_id: purchase.id })),
   )
@@ -121,14 +133,14 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
         borderRadius={10}
         gap={2}
       >
-        {/* Purchase Card Header */}
+        {/* Delivery Card Header */}
         <Flex w="full" justifyContent="space-between" alignItems="center">
           <Flex alignItems="center" gap={1}>
             <AccordionButton w="fit-content" p={2} borderRadius={5}>
               <AccordionIcon />
             </AccordionButton>
 
-            {/* Purchase ID */}
+            {/* Delivery ID */}
             <Text fontSize="lg" fontWeight="semibold">
               Delivery #{deliveryId}
             </Text>
@@ -162,23 +174,27 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
           </Flex>
         </Flex>
 
-        {/* Card Content with Goods */}
-        <AccordionPanel>
-          <Flex direction="column" gap={5}>
-            <DividerWithTitle title="Goods" />
-
-            <DeliveryCardGoodsList goods={goods} />
-
-            <Divider />
-          </Flex>
+        {/* Card Content with Purchases */}
+        <AccordionPanel p={2}>
+          {/* Purchases Cards with Goods */}
+          <Accordion w="full" allowMultiple>
+            <Flex w="full" direction="column" gap={2}>
+              {purchasesWithGoods.map((purchase, index) => (
+                <AccordionItem key={index} w="full" border="none">
+                  <DeliveryPurchaseCardWithGoods purchase={purchase} />
+                </AccordionItem>
+              ))}
+            </Flex>
+          </Accordion>
         </AccordionPanel>
 
+        {/* Deadline Badge */}
         <Flex alignItems="center" px={2} gap={5}>
           <PurchaseDeadlineBadge deadline={purchaseDeadline} />
         </Flex>
       </Flex>
 
-      {/* Purchase Modals */}
+      {/* Delivery Modals */}
       <>
         <PurchaseDeliveryToStorageModal
           delivery={delivery}

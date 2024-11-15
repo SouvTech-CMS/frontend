@@ -53,9 +53,7 @@ export const DeliveryServicesModalCard: FC<DeliveryServicesModalCardProps> = (
             {/* Purchase ID */}
             {isPurchaseService && (
               <Flex>
-                <Badge colorScheme="blue">
-                  Purchase #{service.purchase_id}
-                </Badge>
+                <Badge colorScheme="blue">Order #{service.purchase_id}</Badge>
               </Flex>
             )}
 

@@ -79,7 +79,7 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
 
     await purchaseUpdateMutation.mutateAsync(body)
 
-    notify(`Purchase #${purchase.id} was updated successfully`, "success")
+    notify(`Order #${purchase.id} was updated successfully`, "success")
     onClose()
   }
 
@@ -93,7 +93,7 @@ export const PurchaseStatusUpdateModal: FC<PurchaseStatusUpdateModalProps> = (
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Update Purchase Status & Deadline</ModalHeader>
+        <ModalHeader>Update Order Status & Deadline</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>

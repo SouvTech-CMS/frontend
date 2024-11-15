@@ -96,7 +96,7 @@ export const PurchaseUpdateModal: FC<PurchaseUpdateModalProps> = (props) => {
 
     await onCommentSubmit()
 
-    notify(`Purchase #${purchaseId} updated successfully`, "success")
+    notify(`Order #${purchaseId} updated successfully`, "success")
     onClose()
   }
 
@@ -109,7 +109,7 @@ export const PurchaseUpdateModal: FC<PurchaseUpdateModalProps> = (props) => {
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Purchase #{purchaseId}</ModalHeader>
+        <ModalHeader>Order #{purchaseId}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>

@@ -34,7 +34,7 @@ export const PurchaseSupplierModal: FC<PurchaseSupplierModalProps> = (
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Purchase #{purchaseId} Manager</ModalHeader>
+        <ModalHeader>Order #{purchaseId} Manager</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>

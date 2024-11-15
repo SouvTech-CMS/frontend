@@ -47,7 +47,7 @@ export const PurchaseDocumentsModal: FC<PurchaseDocumentsModalProps> = (
 
       <ModalContent bgColor="modal.base">
         <ModalHeader>
-          {isDelivery ? "Delivery" : "Purchase"} #{purchaseId} Documents
+          {isDelivery ? "Delivery" : "Order"} #{purchaseId} Documents
         </ModalHeader>
         <ModalCloseButton />
 

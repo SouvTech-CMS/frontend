@@ -12,7 +12,7 @@ import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { DetailedReport } from "type/detailedReport/detailedReport"
 import { PageProps } from "type/page/page"
-import { getCurrentMonth, getCurrentYear } from "util/formatting"
+import { getCurrentMonth, getCurrentYear } from "util/dates"
 
 export const DetailedReports = (props: PageProps) => {
   const { guideNotionPageId } = props

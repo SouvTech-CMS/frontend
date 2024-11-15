@@ -91,7 +91,7 @@ export const DeliveryStatusUpdateModal: FC<DeliveryStatusUpdateModalProps> = (
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Update Purchase Status & Deadline</ModalHeader>
+        <ModalHeader>Update Delivery Status & Deadline</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
