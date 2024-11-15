@@ -19,7 +19,7 @@ export const NewPurchaseBtn: FC = () => {
         onClick={onNewPurchaseModalOpen}
         isDisabled={!canEditPurchases}
       >
-        Add purchase
+        Add order
       </Button>
 
       <NewPurchaseModal

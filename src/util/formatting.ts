@@ -48,13 +48,3 @@ export const dateToDateAsString = (date: Date) => {
 
   return dateAsString
 }
-
-export const getCurrentYear = () => {
-  const year = new Date().getFullYear()
-  return year
-}
-
-export const getCurrentMonth = () => {
-  const month = new Date().getMonth() + 1
-  return month
-}

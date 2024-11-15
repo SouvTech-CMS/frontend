@@ -45,16 +45,18 @@ export const PurchaseServicesModal: FC<PurchaseServicesModalProps> = (
         <ModalBackgroundBlur />
 
         <ModalContent>
-          <ModalHeader>Purchase #{purchaseId} Services</ModalHeader>
+          <ModalHeader>Order #{purchaseId} Services</ModalHeader>
           <ModalCloseButton />
 
           <ModalBody>
             <Flex direction="column" gap={2}>
               {servicesList?.map((service, index) => (
-                <PurchaseServicesModalCard key={index} service={service} isReadOnly={isReadOnly} />
+                <PurchaseServicesModalCard
+                  key={index}
+                  service={service}
+                  isReadOnly={isReadOnly}
+                />
               ))}
-
-              {/* TODO: add creating new service to existing purchase, not priority */}
             </Flex>
           </ModalBody>
 

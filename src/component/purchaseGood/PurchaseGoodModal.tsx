@@ -174,7 +174,7 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
 
     await purchaseGoodUpdateMutation.mutateAsync(good)
 
-    notify(`Purchase Good #${good.id} updated successfully`, "success")
+    notify(`Order Good #${good.id} updated successfully`, "success")
     onClose()
   }
 
@@ -199,7 +199,7 @@ export const PurchaseGoodModal: FC<PurchaseGoodModalProps> = (props) => {
 
       <ModalContent>
         <ModalHeader>
-          Purchase #{good.purchase_id} Good #{good.id}
+          Order #{good.purchase_id} Good #{good.id}
         </ModalHeader>
         <ModalCloseButton />
 

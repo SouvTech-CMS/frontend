@@ -1,5 +1,6 @@
 import {
   Flex,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
@@ -8,7 +9,7 @@ import {
 } from "@chakra-ui/react"
 import { ShelfBadge } from "component/ShelfBadge"
 import { ChangeEvent, FC, KeyboardEvent, useState } from "react"
-import { FiCheck, FiHash } from "react-icons/fi"
+import { FiHash, FiPlus } from "react-icons/fi"
 import { combineShelfs, parseShelfs } from "util/shelf"
 
 interface ShelfInputProps {
@@ -22,7 +23,7 @@ export const ShelfInput: FC<ShelfInputProps> = (props) => {
   const [shelf, setShelf] = useState<string>("")
   const [shelfsList, setShelfsList] = useState<string[]>(parseShelfs(prevShelf))
 
-  const isShelfExists = !!shelf.trim() && shelf.trim().length >= 2
+  const isShelfExists = !!shelf.trim()
 
   const handleShelfsListChange = (newShelfsList: string[]) => {
     setShelfsList(newShelfsList)
@@ -37,19 +38,27 @@ export const ShelfInput: FC<ShelfInputProps> = (props) => {
     }
   }
 
+  const handleShelfAdd = () => {
+    const newShelfsList = [...shelfsList, shelf.trim()]
+    handleShelfsListChange(newShelfsList)
+  }
+
   const handleShelfRemove = (shelfCode: string) => {
     const newShelfsList = shelfsList.filter((shelf) => shelf !== shelfCode)
     handleShelfsListChange(newShelfsList)
   }
 
   const handleShelfChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toUpperCase().trim()
+    const value = e.target.value.toUpperCase()
     setShelf(value)
   }
 
   return (
     <Flex w="full" direction="column" gap={2}>
-      <Tooltip label="Press Enter to add shelf" placement="bottom-start">
+      <Tooltip
+        label="Click plus-button at the right to add shelf"
+        placement="bottom-start"
+      >
         <InputGroup>
           <InputLeftElement color="gray">
             <FiHash />
@@ -63,11 +72,17 @@ export const ShelfInput: FC<ShelfInputProps> = (props) => {
             onKeyDown={handleShelfEnterPress}
           />
 
-          {isShelfExists && (
-            <InputRightElement color="green">
-              <FiCheck />
-            </InputRightElement>
-          )}
+          <InputRightElement>
+            <IconButton
+              aria-label="add-shelf-btn"
+              variant="solid"
+              colorScheme="gray"
+              fontSize="xl"
+              icon={<FiPlus />}
+              onClick={handleShelfAdd}
+              isDisabled={!isShelfExists}
+            />
+          </InputRightElement>
         </InputGroup>
       </Tooltip>
 

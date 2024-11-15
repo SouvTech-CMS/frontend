@@ -1,4 +1,4 @@
-import { getCurrentYear } from "util/formatting"
+import { getCurrentYear } from "util/dates"
 
 export const INITIAL_REPORTS_YEAR = 2021
 

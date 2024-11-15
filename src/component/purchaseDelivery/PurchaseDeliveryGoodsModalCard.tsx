@@ -33,7 +33,7 @@ export const PurchaseDeliveryGoodsModalCard: FC<
               {/* Purchase ID Badge */}
               <Flex>
                 <Badge colorScheme="blue">
-                  Purchase #{purchaseGood.purchase_id}
+                  Order #{purchaseGood.purchase_id}
                 </Badge>
               </Flex>
 

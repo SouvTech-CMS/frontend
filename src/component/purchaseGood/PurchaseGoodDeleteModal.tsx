@@ -31,7 +31,7 @@ export const PurchaseGoodDeleteModal: FC<PurchaseGoodDeleteModalProps> = (
   const onDeleteConfirm = async () => {
     await purchaseGoodDeleteMutation.mutateAsync(goodId)
 
-    notify(`Purchase Good ${goodId} was successfully deleted`, "success")
+    notify(`Order Good ${goodId} was successfully deleted`, "success")
     onClose()
   }
 
@@ -40,11 +40,11 @@ export const PurchaseGoodDeleteModal: FC<PurchaseGoodDeleteModalProps> = (
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Delete Purchase Good</ModalHeader>
+        <ModalHeader>Delete Order Good</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <Text>Are you sure you want to delete the purchase good</Text>
+          <Text>Are you sure you want to delete the order good</Text>
           <Text fontWeight="bold">#{goodId}</Text>
         </ModalBody>
 

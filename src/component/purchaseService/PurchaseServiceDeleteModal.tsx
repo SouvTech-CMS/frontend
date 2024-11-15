@@ -42,10 +42,7 @@ export const PurchaseServiceDeleteModal: FC<PurchaseServiceDeleteModalProps> = (
     } else {
       await purchaseServiceDeleteMutation.mutateAsync(serviceId)
 
-      notify(
-        `Purchase Service ${serviceId} was successfully deleted`,
-        "success",
-      )
+      notify(`Order Service ${serviceId} was successfully deleted`, "success")
     }
 
     onClose()
@@ -57,14 +54,14 @@ export const PurchaseServiceDeleteModal: FC<PurchaseServiceDeleteModalProps> = (
 
       <ModalContent>
         <ModalHeader>
-          Delete {isDelivery ? "Delivery" : "Purchase"} Service
+          Delete {isDelivery ? "Delivery" : "Order"} Service
         </ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <Text>
             Are you sure you want to delete the
-            {isDelivery ? " delivery" : " purchase"} service
+            {isDelivery ? " delivery" : " order"} service
           </Text>
           <Text fontWeight="bold">#{serviceId}</Text>
         </ModalBody>
