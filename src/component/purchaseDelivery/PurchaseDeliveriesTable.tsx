@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react"
 import { getAllPurchaseDeliveries } from "api/purchaseDelivery/purchaseDelivery"
 import { LoadingPage } from "component/page/LoadingPage"
-import { DeliveriesTableStatusColumn } from "component/purchaseDelivery/PurchaseDeliveriesTableStatusColumn"
+import { DeliveriesTableStatusColumn } from "component/purchaseDelivery/DeliveriesTableStatusColumn"
 import { PurchaseDeliveryStatus } from "constant/purchaseStatus"
 import { FC } from "react"
 import { useQuery } from "react-query"

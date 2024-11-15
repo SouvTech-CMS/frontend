@@ -13,13 +13,9 @@ import { DividerWithTitle } from "component/DividerWithTitle"
 import { CommentTooltip } from "component/comment/CommentTooltip"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseCardGoodsList } from "component/purchase/PurchaseCardGoodsList"
-import { PurchaseCardMenu } from "component/purchase/PurchaseCardMenu"
-import { PurchaseDeadlineBadge } from "component/purchase/PurchaseDeadlineBadge"
-import { PurchaseDeleteModal } from "component/purchase/PurchaseDeleteModal"
 import { PurchaseGoodsModal } from "component/purchase/PurchaseGoodsModal"
-import { PurchaseStatusUpdateModal } from "component/purchase/PurchaseStatusUpdateModal"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
-import { PurchaseUpdateModal } from "component/purchase/PurchaseUpdateModal"
+import { DeliveryPurchaseCardMenu } from "component/purchaseDelivery/DeliveryPurchaseCardMenu"
 import { PurchaseServicesModal } from "component/purchaseService/PurchaseServicesModal"
 import { useCommentInput } from "hook/useCommentInput"
 import { useUserPermissions } from "hook/useUserPermissions"
@@ -29,29 +25,22 @@ import { useQuery } from "react-query"
 import { FullPurchase } from "type/purchase/purchase"
 import { PurchaseService } from "type/purchase/purchaseService"
 import { WithId } from "type/withId"
-import {
-  numberWithCurrency,
-  roundNumber,
-  timestampToDate,
-} from "util/formatting"
-import { isGoodFullInDelivery } from "util/purchaseGood"
+import { numberWithCurrency, roundNumber } from "util/formatting"
 
-interface PurchaseColumnCardProps {
+interface DeliveryPurchaseCardProps {
   purchase: FullPurchase
-  status: string
 }
 
-export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
-  const { purchase, status } = props
+export const DeliveryPurchaseCard: FC<DeliveryPurchaseCardProps> = (props) => {
+  const { purchase } = props
 
   const { canReadDocuments } = useUserPermissions()
 
   const purchaseId = purchase.id
-  const goods = purchase.goods.filter((good) => !isGoodFullInDelivery(good))
+  const goods = purchase.goods
+  console.log(goods)
   const manager = purchase.manager
-  const managerId = manager?.id
   const supplier = manager?.supplier
-  const supplierId = supplier?.id
   const files = purchase.files
 
   const { data: servicesList } = useQuery<WithId<PurchaseService>[]>(
@@ -70,8 +59,6 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
     : 0
 
   const totalAmount = goodsAmount + servicesAmount
-
-  const purchaseDeadline = timestampToDate(purchase.deadline)
 
   const isDepositExists = purchase.deposit !== undefined
 
@@ -103,32 +90,11 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
     onClose: onServicesModalClose,
   } = useDisclosure()
 
-  // Status & Deadline
-  const {
-    isOpen: isPurchaseGoodsStatusModalOpen,
-    onOpen: onPurchaseGoodsStatusModalOpen,
-    onClose: onPurchaseGoodsStatusModalClose,
-  } = useDisclosure()
-
   // Manager
   const {
     isOpen: isSupplierManagerModalOpen,
     onOpen: onSupplierManagerModalOpen,
     onClose: onSupplierManagerModalClose,
-  } = useDisclosure()
-
-  // Edit
-  const {
-    isOpen: isPurchaseUpdateModalOpen,
-    onOpen: onPurchaseUpdateModalOpen,
-    onClose: onPurchaseUpdateModalClose,
-  } = useDisclosure()
-
-  // Delete
-  const {
-    isOpen: isPurchaseDeleteModalOpen,
-    onOpen: onPurchaseDeleteModalOpen,
-    onClose: onPurchaseDeleteModalClose,
   } = useDisclosure()
 
   return (
@@ -138,7 +104,9 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
         direction="column"
         bgColor="white"
         p={2}
-        borderRadius={10}
+        borderRadius={8}
+        borderWidth={1}
+        borderColor="gray.200"
         gap={2}
       >
         {/* Purchase Card Header */}
@@ -171,14 +139,11 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
             )}
 
             {/* Menu Btn */}
-            <PurchaseCardMenu
+            <DeliveryPurchaseCardMenu
               onDocuments={onDocumentsModalOpen}
               onGoods={onGoodsModalOpen}
               onServices={onServicesModalOpen}
               onSupplierManager={onSupplierManagerModalOpen}
-              onStatusUpdate={onPurchaseGoodsStatusModalOpen}
-              onEdit={onPurchaseUpdateModalOpen}
-              onDelete={onPurchaseDeleteModalOpen}
             />
           </Flex>
         </Flex>
@@ -209,26 +174,16 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
             </Text>
           </Flex>
         </AccordionPanel>
-
-        {/* Deadline Badge */}
-        <Flex alignItems="center" px={2} gap={5}>
-          <PurchaseDeadlineBadge deadline={purchaseDeadline} />
-        </Flex>
       </Flex>
 
       {/* Purchase Modals */}
       <>
-        <PurchaseDeleteModal
-          purchaseId={purchaseId}
-          isOpen={isPurchaseDeleteModalOpen}
-          onClose={onPurchaseDeleteModalClose}
-        />
-
         <PurchaseDocumentsModal
           purchaseId={purchaseId}
           documents={files}
           isOpen={isDocumentsModalOpen}
           onClose={onDocumentsModalClose}
+          isReadOnly
         />
 
         <PurchaseGoodsModal
@@ -236,20 +191,14 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
           goods={goods}
           isOpen={isGoodsModalOpen}
           onClose={onGoodsModalClose}
+          isReadOnly
         />
 
         <PurchaseServicesModal
           purchaseId={purchaseId}
           isOpen={isServicesModalOpen}
           onClose={onServicesModalClose}
-        />
-
-        <PurchaseStatusUpdateModal
-          purchase={purchase}
-          managerId={managerId}
-          prevStatus={status}
-          isOpen={isPurchaseGoodsStatusModalOpen}
-          onClose={onPurchaseGoodsStatusModalClose}
+          isReadOnly
         />
 
         <PurchaseSupplierModal
@@ -258,14 +207,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
           manager={manager}
           isOpen={isSupplierManagerModalOpen}
           onClose={onSupplierManagerModalClose}
-        />
-
-        <PurchaseUpdateModal
-          prevPurchase={purchase}
-          prevSupplierId={supplierId}
-          prevManagerId={managerId}
-          isOpen={isPurchaseUpdateModalOpen}
-          onClose={onPurchaseUpdateModalClose}
+          isReadOnly
         />
       </>
     </>

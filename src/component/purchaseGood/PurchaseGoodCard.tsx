@@ -19,24 +19,24 @@ export const PurchaseGoodCard: FC<PurchaseGoodCardProps> = (props) => {
       </GridItem>
 
       <GridItem>
-        <Text>{good.name}</Text>
-      </GridItem>
+        <Flex w="full" direction="column">
+          <Text>{good.name}</Text>
 
-      <GridItem>
-        <Flex h="full" alignItems="center">
-          {isGoodPartiallyInDelivery(good) && (
-            <Tooltip
-              label={
-                <GoodQuantitiesTooltipContent
-                  totalQuantity={good.quantity}
-                  inDeliveryQuantity={good.in_delivery}
-                />
-              }
-              placement="top"
-            >
-              <Badge colorScheme="purple">Partially in Delivery</Badge>
-            </Tooltip>
-          )}
+          <Flex alignItems="center">
+            {isGoodPartiallyInDelivery(good) && (
+              <Tooltip
+                label={
+                  <GoodQuantitiesTooltipContent
+                    totalQuantity={good.quantity}
+                    inDeliveryQuantity={good.in_delivery}
+                  />
+                }
+                placement="top"
+              >
+                <Badge colorScheme="purple">Partially in Delivery</Badge>
+              </Tooltip>
+            )}
+          </Flex>
         </Flex>
       </GridItem>
     </>
