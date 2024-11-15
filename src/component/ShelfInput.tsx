@@ -49,7 +49,7 @@ export const ShelfInput: FC<ShelfInputProps> = (props) => {
   }
 
   const handleShelfChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toUpperCase().trim()
+    const value = e.target.value.toUpperCase()
     setShelf(value)
   }
 
