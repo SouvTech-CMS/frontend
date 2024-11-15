@@ -1,10 +1,10 @@
 import { Flex, Select } from "@chakra-ui/react"
 import { ActionMeta, SingleValue } from "chakra-react-select"
 import { ShopFilter } from "component/filter/ShopFilter"
-import { MONTHS_LIST, YEARS_LIST } from "constant/reports"
+import { YEARS_LIST } from "constant/reports"
 import { ChangeEvent, Dispatch, FC, SetStateAction } from "react"
 import { SelectOption } from "type/selectOption"
-import { getCurrentMonth } from "util/formatting"
+import { getMonthsListByYear } from "util/dates"
 
 interface DetailedReportFiltersProps {
   selectedYear: number
@@ -28,7 +28,7 @@ export const DetailedReportFilters: FC<DetailedReportFiltersProps> = (
     handleShopSelect,
   } = props
 
-  const filteredMonthList = MONTHS_LIST.slice(0, getCurrentMonth())
+  const monthsList = getMonthsListByYear(selectedYear)
 
   const handleYearSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     const year = Number(e.target.value)
@@ -67,7 +67,7 @@ export const DetailedReportFilters: FC<DetailedReportFiltersProps> = (
           value={selectedMonth}
           onChange={handleMonthSelect}
         >
-          {filteredMonthList.map((month, index) => (
+          {monthsList.map((month, index) => (
             <option key={index} value={index + 1}>
               {month}
             </option>
