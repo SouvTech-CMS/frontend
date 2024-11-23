@@ -8,6 +8,7 @@ export type StorageGood = {
   name: string
   quantity: number
   description?: string
+  is_actual?: boolean
 }
 
 export type GoodWithStorages = WithId<StorageGood> & {

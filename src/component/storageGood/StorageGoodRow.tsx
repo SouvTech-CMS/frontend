@@ -17,8 +17,10 @@ import { FC, useEffect } from "react"
 import { FiExternalLink } from "react-icons/fi"
 import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
+import { useStorageGoodUpdateMutation } from "service/storage/storageGood"
 import { StorageActualInfo } from "type/storage/storage"
-import { GoodWithShops } from "type/storage/storageGood"
+import { GoodWithShops, StorageGoodUpdate } from "type/storage/storageGood"
+import { notify } from "util/toasts"
 
 interface StorageGoodRowProps {
   storageGood: GoodWithShops
@@ -45,21 +47,31 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   const goodBoxesQuantity = storageActualInfo?.box_quantity
   const goodsShelfsList = storageActualInfo?.shelf
 
-  // const storagesList = storageGood.storage
+  const goodShopsIds = storageGood.shops.map((shop) => shop.id)
 
-  // const goodTotalQuantity = storagesList.reduce(
-  //   (acc, storage) => acc + storage.quantity,
-  //   0,
-  // )
+  const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
 
-  // const goodBoxesQuantity = storagesList.reduce(
-  //   (acc, storage) => acc + (storage.box_quantity || 0),
-  //   0,
-  // )
+  const toggleGoodIsHidden = async () => {
+    const { shops, ...updatedStorageGood } = storageGood
+    const updatedIsActul = !storageGood.is_actual
 
-  // const goodsShelfsList = storagesList
-  //   .flatMap(({ shelf }) => shelf?.split(";") || "")
-  //   .filter((shelf) => !!shelf?.trim())
+    const body: StorageGoodUpdate = {
+      storage_good: {
+        ...updatedStorageGood,
+        is_actual: updatedIsActul,
+      },
+      shops_ids: goodShopsIds,
+    }
+
+    await storageGoodUpdateMutation.mutateAsync(body)
+
+    notify(
+      `Storage Good #${goodId} was successfully ${
+        updatedIsActul ? "shown" : "hidden"
+      }`,
+      "success",
+    )
+  }
 
   const {
     isOpen: isStorageGoodModalOpen,
@@ -128,7 +140,11 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
             </Tooltip>
 
             {/* Menu Btn */}
-            <StorageGoodRowMenu onEdit={onStorageGoodModalOpen} />
+            <StorageGoodRowMenu
+              isGoodHidden={!storageGood.is_actual}
+              onEdit={onStorageGoodModalOpen}
+              onToggleIsHidden={toggleGoodIsHidden}
+            />
           </Flex>
         </Td>
       </Tr>
