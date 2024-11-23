@@ -44,6 +44,8 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   const isLoadingActualInfo = isLoading || isRefetching
 
   const goodTotalQuantity = storageGood.quantity
+  const goodIsActual = storageGood.is_actual
+
   const goodBoxesQuantity = storageActualInfo?.box_quantity
   const goodsShelfsList = storageActualInfo?.shelf
 
@@ -53,7 +55,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
   const toggleGoodIsHidden = async () => {
     const { shops, ...updatedStorageGood } = storageGood
-    const updatedIsActul = !storageGood.is_actual
+    const updatedIsActul = !goodIsActual
 
     const body: StorageGoodUpdate = {
       storage_good: {
@@ -141,7 +143,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
             {/* Menu Btn */}
             <StorageGoodRowMenu
-              isGoodHidden={!storageGood.is_actual}
+              isGoodHidden={!goodIsActual}
               onEdit={onStorageGoodModalOpen}
               onToggleIsHidden={toggleGoodIsHidden}
             />

@@ -23,7 +23,7 @@ export const StorageGoodsFilters: FC<StorageGoodsFiltersProps> = (props) => {
 
       <ShopFilter handleShopSelect={handleShopSelect} />
 
-      {/* Show None Good Order Checkbox */}
+      {/* Show-Hide Goods Checkbox */}
       <Checkbox isChecked={!isActual} onChange={toggleIsActual}>
         Show Hidden Goods
       </Checkbox>
