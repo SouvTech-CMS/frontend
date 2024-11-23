@@ -13,7 +13,7 @@ import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
 import { Good, GoodSearchFilter } from "type/order/good"
@@ -30,6 +30,8 @@ export const Goods = (props: PageProps) => {
   const { sortDirection, sortField, searchFilter } =
     useTableContext<GoodSearchFilter>()
 
+  const [isActual, setIsActual] = useState<boolean | undefined>(true)
+
   const {
     data: goodsResponse,
     isLoading,
@@ -42,7 +44,12 @@ export const Goods = (props: PageProps) => {
       shopId: selectedShopId,
       sortDirection,
       sortField,
-      searchFilter,
+      searchFilter: {
+        ...(searchFilter !== undefined
+          ? searchFilter
+          : ({} as GoodSearchFilter)),
+        is_actual: isActual,
+      },
     }),
   )
   const goodsCount = goodsResponse?.count
@@ -50,6 +57,10 @@ export const Goods = (props: PageProps) => {
 
   const isGoodsExist = goodsList !== undefined
   const isShopSelected = selectedShopId > 0
+
+  const toggleIsActual = () => {
+    setIsActual((prevIsActual) => !prevIsActual)
+  }
 
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
@@ -66,6 +77,7 @@ export const Goods = (props: PageProps) => {
     sortDirection,
     sortField,
     searchFilter,
+    isActual,
   ])
 
   return (
@@ -77,7 +89,11 @@ export const Goods = (props: PageProps) => {
       {isGoodsExist && (
         <Container>
           <Flex w="full" justifyContent="space-between">
-            <GoodsFilters handleShopSelect={handleShopSelect} />
+            <GoodsFilters
+              handleShopSelect={handleShopSelect}
+              isActual={isActual}
+              toggleIsActual={toggleIsActual}
+            />
 
             <Flex alignItems="center" gap={2}>
               <SearchFiltersClearBtn isLoading={isLoading || isRefetching} />
