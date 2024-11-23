@@ -6,10 +6,12 @@ import { GoodsTableRowMenu } from "component/good/GoodsTableRowMenu"
 import { MarketplaceAvatar } from "component/marketplace/MarketplaceAvatar"
 import { FC } from "react"
 import { useQuery } from "react-query"
+import { useGoodUpdateMutation } from "service/good"
 import { Good } from "type/order/good"
 import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 import { numberWithCurrency, roundNumber } from "util/formatting"
+import { notify } from "util/toasts"
 
 interface GoodsTableRowProps {
   good: WithId<Good>
@@ -25,7 +27,11 @@ export const GoodsTableRow: FC<GoodsTableRowProps> = (props) => {
     onClose: onGoodModalClose,
   } = useDisclosure()
 
+  const goodId = good.id
   const shopId = good.shop_id
+
+  const goodIsActual = good.is_actual
+
   const { data: shop, isLoading } = useQuery<WithId<Shop>>(
     ["shop", shopId],
     () => getShopById(shopId),
@@ -33,6 +39,27 @@ export const GoodsTableRow: FC<GoodsTableRowProps> = (props) => {
       enabled: !!shopId && isShowShop,
     },
   )
+
+  const goodUpdateMutation = useGoodUpdateMutation()
+
+  const toggleGoodIsHidden = async () => {
+    const updatedIsActual = !goodIsActual
+
+    const { shop, ...updatedGood } = good
+    const body: WithId<Good> = {
+      ...updatedGood,
+      is_actual: updatedIsActual,
+    }
+
+    await goodUpdateMutation.mutateAsync(body)
+
+    notify(
+      `Good #${goodId} was successfully ${
+        updatedIsActual ? "shown" : "hidden"
+      }`,
+      "success",
+    )
+  }
 
   return (
     <>
@@ -73,7 +100,11 @@ export const GoodsTableRow: FC<GoodsTableRowProps> = (props) => {
         {/* Good Menu Btn */}
         <Td p={0}>
           <Flex alignItems="center">
-            <GoodsTableRowMenu onEdit={onGoodModalOpen} />
+            <GoodsTableRowMenu
+              isGoodHidden={!goodIsActual}
+              onEdit={onGoodModalOpen}
+              onToggleIsHidden={toggleGoodIsHidden}
+            />
           </Flex>
         </Td>
       </Tr>

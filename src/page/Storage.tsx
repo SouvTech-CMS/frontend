@@ -13,7 +13,7 @@ import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
@@ -32,6 +32,8 @@ export const Storage = (props: PageProps) => {
   const { sortDirection, sortField, searchFilter } =
     useTableContext<StorageGoodSearchFilter>()
 
+  const [isActual, setIsActual] = useState<boolean | undefined>(true)
+
   const {
     data: storageGoodsResponse,
     isLoading,
@@ -44,13 +46,22 @@ export const Storage = (props: PageProps) => {
       shopId: selectedShopId,
       sortDirection,
       sortField,
-      searchFilter,
+      searchFilter: {
+        ...(searchFilter !== undefined
+          ? searchFilter
+          : ({} as StorageGoodSearchFilter)),
+        is_actual: isActual,
+      },
     }),
   )
   const storageGoodsCount = storageGoodsResponse?.count
   const storageGoodsList = storageGoodsResponse?.result
 
   const isStorageGoodsExist = storageGoodsList !== undefined
+
+  const toggleIsActual = () => {
+    setIsActual((prevIsActual) => !prevIsActual)
+  }
 
   useEffect(() => {
     const newOffset = currentPage * rowsPerPageCount
@@ -67,6 +78,7 @@ export const Storage = (props: PageProps) => {
     sortDirection,
     sortField,
     searchFilter,
+    isActual,
   ])
 
   return (
@@ -75,7 +87,11 @@ export const Storage = (props: PageProps) => {
 
       <Container>
         <Flex w="full" justifyContent="space-between">
-          <StorageGoodsFilters handleShopSelect={handleShopSelect} />
+          <StorageGoodsFilters
+            handleShopSelect={handleShopSelect}
+            isActual={isActual}
+            toggleIsActual={toggleIsActual}
+          />
 
           <Flex alignItems="center" gap={2}>
             <SearchFiltersClearBtn isLoading={isLoading || isRefetching} />
