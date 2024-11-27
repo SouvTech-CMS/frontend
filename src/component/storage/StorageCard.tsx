@@ -84,11 +84,11 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
               ))}
             </Flex>
 
-            {/* Prime Price */}
+            {/* Prime Cost */}
             {isPrimeCostExists && (
               <Flex alignItems="center" gap={2}>
                 <Text fontWeight="light" color="gray">
-                  Prime Price:
+                  Prime Cost:
                 </Text>
 
                 <Text>
