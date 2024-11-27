@@ -25,11 +25,13 @@ export type GoodWithShops = WithId<StorageGood> & {
 export type StorageGoodCreate = {
   storage_good: StorageGood
   shops_ids: number[]
+  shelf?: number[]
 }
 
 export type StorageGoodUpdate = {
   storage_good: WithId<StorageGood>
   shops_ids: number[]
+  shelf?: number[]
 }
 
 export type StorageGoodSearchFilter = WithId<StorageGood>

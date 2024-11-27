@@ -13,7 +13,8 @@ import {
   Textarea,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { StorageGoodShopsSelect } from "component/storageGood/StorageGoodShopsSelect"
+import { ShelfsSelect } from "component/select/ShelfsSelect"
+import { ShopsSelect } from "component/select/ShopsSelect"
 import { useUserContext } from "context/user"
 import { FC, useEffect, useState } from "react"
 import { FiAlignLeft, FiHash, FiLayers, FiType } from "react-icons/fi"
@@ -48,8 +49,12 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
   const isNewGood = !prevGood
 
   const [good, setGood] = useState<StorageGood>(prevGood || newGood)
+
   const prevShopsIds = prevGood?.shops.map((shop) => shop.id)
   const [shopsIds, setShopsIds] = useState<number[]>(prevShopsIds || [])
+
+  const prevShelfsIds = prevGood?.shelf?.map((shelf) => shelf.id)
+  const [shelfsIds, setShelfsIds] = useState<number[]>(prevShelfsIds || [])
 
   const storageGoodCreateMutation = useStorageGoodCreateMutation()
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
@@ -79,18 +84,23 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
       const body: StorageGoodCreate = {
         storage_good: good,
         shops_ids: shopsIds,
+        shelf: shelfsIds,
       }
 
       await storageGoodCreateMutation.mutateAsync(body)
 
       notify(`Storage Good #${good?.name} was created successfully`, "success")
     } else {
+      // Remove shelf from good
+      const { shelf, ...updatedGood } = good
+
       const body: StorageGoodUpdate = {
         storage_good: {
-          ...good,
+          ...updatedGood,
           id: prevGood.id,
         },
         shops_ids: shopsIds,
+        shelf: shelfsIds,
       }
 
       await storageGoodUpdateMutation.mutateAsync(body)
@@ -191,11 +201,14 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
 
             {/* Shops Select */}
             {isUserAdmin && (
-              <StorageGoodShopsSelect
-                selectedShopsIds={shopsIds}
-                onSelect={setShopsIds}
-              />
+              <ShopsSelect selectedShopsIds={shopsIds} onSelect={setShopsIds} />
             )}
+
+            {/* Shelfs Select */}
+            <ShelfsSelect
+              selectedShelfsIds={shelfsIds}
+              onSelect={setShelfsIds}
+            />
 
             {/* Description Input */}
             <InputGroup>

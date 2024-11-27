@@ -50,6 +50,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   const goodBoxesQuantity = storageActualInfo?.box_quantity
 
   const goodShopsIds = storageGood.shops.map((shop) => shop.id)
+  const goodShelfsIds = storageGood.shelf?.map((shelf) => shelf.id)
 
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
 
@@ -63,6 +64,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
         is_actual: updatedIsActul,
       },
       shops_ids: goodShopsIds,
+      shelf: goodShelfsIds,
     }
 
     await storageGoodUpdateMutation.mutateAsync(body)

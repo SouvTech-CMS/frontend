@@ -7,7 +7,6 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
-import { ShelfBadge } from "component/badge/ShelfBadge"
 import { StorageCardMenu } from "component/storage/StorageCardMenu"
 import { StorageDeleteModal } from "component/storage/StorageDeleteModal"
 import { StorageModal } from "component/storage/StorageModal"
@@ -19,7 +18,6 @@ import {
   roundNumber,
   timestampToDate,
 } from "util/formatting"
-import { parseShelfs } from "util/shelf"
 
 interface StorageCardProps {
   storage: WithId<Storage>
@@ -37,7 +35,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
   const isPrimeCostExists = storage.prime_cost !== undefined
   const isItemPriceExists = storage.cost_per_item !== undefined
 
-  const shelfsList = parseShelfs(storage.shelf)
+  // const shelfsList = parseShelfs(storage.shelf)
 
   const {
     isOpen: isStorageUpdateModalOpen,
@@ -74,7 +72,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
         <CardBody>
           <Flex direction="column" gap={2}>
             {/* Shelf */}
-            <Flex alignItems="center" gap={1}>
+            {/* <Flex alignItems="center" gap={1}>
               <Text fontWeight="light" color="gray">
                 Shelfs:
               </Text>
@@ -82,7 +80,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
               {shelfsList?.map((shelf, index) => (
                 <ShelfBadge key={index} shelf={shelf} />
               ))}
-            </Flex>
+            </Flex> */}
 
             {/* Prime Cost */}
             {isPrimeCostExists && (
