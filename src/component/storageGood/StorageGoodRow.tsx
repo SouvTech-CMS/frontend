@@ -45,16 +45,16 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
   const goodTotalQuantity = storageGood.quantity
   const goodIsActual = storageGood.is_actual
+  const goodsShelfsList = storageGood?.shelf?.map((shelf) => shelf.name)
 
   const goodBoxesQuantity = storageActualInfo?.box_quantity
-  const goodsShelfsList = storageActualInfo?.shelf
 
   const goodShopsIds = storageGood.shops.map((shop) => shop.id)
 
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
 
   const toggleGoodIsHidden = async () => {
-    const { shops, ...updatedStorageGood } = storageGood
+    const { shops, shelf, ...updatedStorageGood } = storageGood
     const updatedIsActul = !goodIsActual
 
     const body: StorageGoodUpdate = {
