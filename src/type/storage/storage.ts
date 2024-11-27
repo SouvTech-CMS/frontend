@@ -18,7 +18,7 @@ export type DeliveryToStorage = {
   box_quantity?: number
   in_box_quantity?: number
   prime_cost?: number
-  shelf?: string
+  shelf?: number[]
 }
 
 export type StorageActualInfo = {
