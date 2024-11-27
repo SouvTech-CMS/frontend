@@ -1,16 +1,12 @@
 import { Flex, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
-import { getStorageActualInfoByGoodId } from "api/storage/storage"
 import { SKUBadge } from "component/badge/SKUBadge"
 import { ShelfBadge } from "component/badge/ShelfBadge"
-import { TableTdSkeleton } from "component/customTable/TableTdSkeleton"
 import { ProductionInfoModal } from "component/productionInfo/ProductionInfoModal"
 import { ProductionInfoTableRowMenu } from "component/productionInfo/ProductionInfoTableRowMenu"
 import { useUserContext } from "context/user"
 import { useUserTableAccess } from "hook/useUserTableAccess"
-import { FC, useEffect } from "react"
-import { useQuery } from "react-query"
+import { FC } from "react"
 import { ProductionInfo } from "type/productionInfo/productionInfo"
-import { StorageActualInfo } from "type/storage/storage"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 import { TableColumn } from "type/tableColumn"
 
@@ -23,28 +19,16 @@ interface ProductionInfoTableRowProps {
 export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
   props,
 ) => {
-  const { accessibleColumns, goodWithProductionInfo, selectedShopId } = props
+  const { accessibleColumns, goodWithProductionInfo } = props
 
   const { isUserManager } = useUserContext()
   const { filterAccessibleParams } = useUserTableAccess()
 
   const good = goodWithProductionInfo
-  const goodId = good.id
   const productionInfo = good.production_info
 
-  const {
-    data: storageActualInfo,
-    isLoading,
-    refetch,
-    isRefetching,
-  } = useQuery<StorageActualInfo>(["storageActualInfo", goodId], () =>
-    getStorageActualInfoByGoodId(goodId, selectedShopId),
-  )
-
-  const isLoadingActualInfo = isLoading || isRefetching
-
   const goodTotalQuantity = good.quantity
-  const goodsShelfsList = storageActualInfo?.shelf
+  const goodsShelfsList = good?.shelf
 
   const isShowShelf = !isUserManager
 
@@ -62,10 +46,6 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
     accessibleColumns,
     productionInfo,
   )
-
-  useEffect(() => {
-    refetch()
-  }, [refetch, selectedShopId])
 
   return (
     <>
@@ -93,13 +73,11 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
         {/* Shelfs Badges */}
         {isShowShelf && (
           <Td>
-            <TableTdSkeleton isLoading={isLoadingActualInfo}>
-              <Flex gap={1}>
-                {goodsShelfsList?.map((shelf, index) => (
-                  <ShelfBadge key={index} shelf={shelf} />
-                ))}
-              </Flex>
-            </TableTdSkeleton>
+            <Flex flexWrap="wrap" gap={1}>
+              {goodsShelfsList?.map((shelf, index) => (
+                <ShelfBadge key={index} shelf={shelf.name} />
+              ))}
+            </Flex>
           </Td>
         )}
 
@@ -112,7 +90,6 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
 
           return (
             <Td key={index}>
-              {/* <Text>{param}</Text> */}
               <Text w="fit-content">{filteredProductionInfo[param]}</Text>
             </Td>
           )

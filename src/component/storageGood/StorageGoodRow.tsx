@@ -119,13 +119,11 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
         {/* Shelfs Badges */}
         <Td>
-          <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Flex flexWrap="wrap" gap={1}>
-              {goodsShelfsList?.map((shelf, index) => (
-                <ShelfBadge key={index} shelf={shelf} />
-              ))}
-            </Flex>
-          </TableTdSkeleton>
+          <Flex flexWrap="wrap" gap={1}>
+            {goodsShelfsList?.map((shelf, index) => (
+              <ShelfBadge key={index} shelf={shelf} />
+            ))}
+          </Flex>
         </Td>
 
         {/* Storage Good Btns */}
