@@ -8,9 +8,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react"
 import { getStorageActualInfoByGoodId } from "api/storage/storage"
-import { SKUBadge } from "component/SKUBadge"
-import { ShelfBadge } from "component/ShelfBadge"
-import { TableTdSkeleton } from "component/TableTdSkeleton"
+import { SKUBadge } from "component/badge/SKUBadge"
+import { ShelfBadge } from "component/badge/ShelfBadge"
+import { TableTdSkeleton } from "component/customTable/TableTdSkeleton"
 import { StorageGoodModal } from "component/storageGood/StorageGoodModal"
 import { StorageGoodRowMenu } from "component/storageGood/StorageGoodRowMenu"
 import { FC, useEffect } from "react"

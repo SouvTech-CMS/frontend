@@ -1,5 +1,5 @@
 import { Td, Text, Tr } from "@chakra-ui/react"
-import { SKUBadge } from "component/SKUBadge"
+import { SKUBadge } from "component/badge/SKUBadge"
 import { FC } from "react"
 import { GoodReport } from "type/detailedReport/detailedReport"
 import { numberWithCurrency, roundNumber } from "util/formatting"

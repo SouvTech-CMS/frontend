@@ -1,6 +1,6 @@
 import { Flex, Grid } from "@chakra-ui/react"
-import { ShopBadge } from "component/ShopBadge"
-import { SKUBadge } from "component/SKUBadge"
+import { ShopBadge } from "component/badge/ShopBadge"
+import { SKUBadge } from "component/badge/SKUBadge"
 import { StorageGoodPropertyRow } from "component/storageGood/StorageGoodPropertyRow"
 import { FC } from "react"
 import { Shop } from "type/shop"

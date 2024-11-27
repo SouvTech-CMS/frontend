@@ -7,7 +7,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
-import { ShelfBadge } from "component/ShelfBadge"
+import { ShelfBadge } from "component/badge/ShelfBadge"
 import { StorageCardMenu } from "component/storage/StorageCardMenu"
 import { StorageDeleteModal } from "component/storage/StorageDeleteModal"
 import { StorageModal } from "component/storage/StorageModal"

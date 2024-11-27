@@ -7,7 +7,7 @@ import {
   InputRightElement,
   Tooltip,
 } from "@chakra-ui/react"
-import { ShelfBadge } from "component/ShelfBadge"
+import { ShelfBadge } from "component/badge/ShelfBadge"
 import { ChangeEvent, FC, KeyboardEvent, useState } from "react"
 import { FiHash, FiPlus } from "react-icons/fi"
 import { combineShelfs, parseShelfs } from "util/shelf"

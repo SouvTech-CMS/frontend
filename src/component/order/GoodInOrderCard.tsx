@@ -7,7 +7,7 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react"
-import { SKUBadge } from "component/SKUBadge"
+import { SKUBadge } from "component/badge/SKUBadge"
 import { FC } from "react"
 import { GoodInOrder } from "type/order/good"
 import { WithId } from "type/withId"
