@@ -30,3 +30,11 @@ export const getShelfFullCode = (shelf: ShelfWithPlacement) => {
   const fullCode = `${placement.name_hash}-${shelf.name}`
   return fullCode
 }
+
+export const combineShelfWithPlacementCode = (
+  placementCode: string,
+  shelfCode: string,
+) => {
+  const fullCode = `${placementCode}-${shelfCode}`
+  return fullCode
+}
