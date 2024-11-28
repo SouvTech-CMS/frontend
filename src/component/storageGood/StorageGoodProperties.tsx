@@ -56,7 +56,7 @@ export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
       value: (
         <Flex direction="column" gap={1}>
           {shelfs?.map((shelf, index) => (
-            <ShelfBadge key={index} shelf={shelf.name} />
+            <ShelfBadge key={index} shelf={shelf} />
           ))}
         </Flex>
       ),

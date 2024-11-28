@@ -45,7 +45,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
   const goodTotalQuantity = storageGood.quantity
   const goodIsActual = storageGood.is_actual
-  const goodsShelfsList = storageGood?.shelf?.map((shelf) => shelf.name)
+  const goodsShelfsList = storageGood?.shelf
 
   const goodBoxesQuantity = storageActualInfo?.box_quantity
 

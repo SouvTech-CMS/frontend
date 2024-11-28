@@ -9,8 +9,9 @@ import {
 import { FC } from "react"
 import { useQuery } from "react-query"
 import { SelectOption } from "type/selectOption"
-import { Shelf } from "type/storage/shelf"
+import { Shelf } from "type/shelf/shelf"
 import { WithId } from "type/withId"
+import { getShelfFullCode } from "util/shelf"
 
 interface ShelfsSelectProps {
   selectedShelfsIds: number[]
@@ -55,11 +56,11 @@ export const ShelfsSelect: FC<ShelfsSelectProps> = (props) => {
       placeholder="Select shelfs"
       options={shelfsList?.map((shelf) => ({
         value: shelf.id,
-        label: shelf.name,
+        label: getShelfFullCode(shelf),
       }))}
       value={selectedShelfs?.map((shelf) => ({
         value: shelf.id,
-        label: shelf.name,
+        label: getShelfFullCode(shelf),
       }))}
       isClearable
       useBasicStyles

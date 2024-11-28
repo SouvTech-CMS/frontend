@@ -1,6 +1,6 @@
 import { ProductionInfo } from "type/productionInfo/productionInfo"
+import { ShelfWithPlacement } from "type/shelf/shelf"
 import { Shop } from "type/shop"
-import { Shelf } from "type/storage/shelf"
 import { Storage } from "type/storage/storage"
 import { WithId } from "type/withId"
 
@@ -10,7 +10,7 @@ export type StorageGood = {
   quantity: number
   description?: string
   is_actual?: boolean
-  shelf?: WithId<Shelf>[]
+  shelf?: ShelfWithPlacement[]
 }
 
 export type GoodWithStorages = WithId<StorageGood> & {

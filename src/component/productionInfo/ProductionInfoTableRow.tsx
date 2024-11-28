@@ -75,7 +75,7 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
           <Td>
             <Flex flexWrap="wrap" gap={1}>
               {goodsShelfsList?.map((shelf, index) => (
-                <ShelfBadge key={index} shelf={shelf.name} />
+                <ShelfBadge key={index} shelf={shelf} />
               ))}
             </Flex>
           </Td>

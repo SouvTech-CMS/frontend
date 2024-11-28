@@ -1,31 +1,20 @@
-import { Badge, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react"
+import { Badge } from "@chakra-ui/react"
 import { FC } from "react"
+import { ShelfWithPlacement } from "type/shelf/shelf"
+import { getShelfFullCode } from "util/shelf"
 
 interface ShelfBadgeProps {
-  shelf: string
-  onRemove?: (shelfCode: string) => void
-  isCanRemove?: boolean
+  shelf: ShelfWithPlacement
 }
 
 export const ShelfBadge: FC<ShelfBadgeProps> = (props) => {
-  const { shelf, onRemove, isCanRemove } = props
+  const { shelf } = props
 
-  if (isCanRemove && onRemove) {
-    const handleRemove = () => {
-      onRemove(shelf)
-    }
-
-    return (
-      <Tag size="md" fontWeight="bold" colorScheme="purple">
-        <TagLabel>{shelf}</TagLabel>
-        <TagCloseButton onClick={handleRemove} />
-      </Tag>
-    )
-  }
+  const fullShelfCode = getShelfFullCode(shelf)
 
   return (
     <Badge fontSize="sm" colorScheme="purple">
-      {shelf.trim()}
+      {fullShelfCode}
     </Badge>
   )
 }

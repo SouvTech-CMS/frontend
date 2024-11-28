@@ -1,3 +1,5 @@
+import { ShelfWithPlacement } from "type/shelf/shelf"
+
 const SHELF_DELIMITER = ";"
 
 export const parseShelfs = (shelfs?: string) => {
@@ -15,4 +17,16 @@ export const parseShelfs = (shelfs?: string) => {
 
 export const combineShelfs = (shelfsList: string[]) => {
   return shelfsList.join(SHELF_DELIMITER)
+}
+
+export const getShelfFullCode = (shelf: ShelfWithPlacement) => {
+  const placement = shelf.shelf_placement
+
+  const isPlacementExists = !!placement
+  if (!isPlacementExists) {
+    return `${shelf.name}`
+  }
+
+  const fullCode = `${placement.name_hash}-${shelf.name}`
+  return fullCode
 }

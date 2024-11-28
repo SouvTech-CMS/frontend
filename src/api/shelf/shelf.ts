@@ -1,5 +1,5 @@
 import { axiosClient } from "api/axiosClient"
-import { Shelf } from "type/storage/shelf"
+import { Shelf } from "type/shelf/shelf"
 import { WithId } from "type/withId"
 
 export const getAllShelfs = async (): Promise<WithId<Shelf>[]> => {

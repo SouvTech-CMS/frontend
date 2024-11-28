@@ -12,7 +12,6 @@ import {
   ModalHeader,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { ShelfInput } from "component/ShelfInput"
 import { FC, useEffect, useMemo, useState } from "react"
 import { FiDollarSign, FiInbox, FiLayers, FiPackage } from "react-icons/fi"
 import {
@@ -203,12 +202,6 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
                 isDisabled={isLoading}
               />
             </InputGroup>
-
-            {/* Shelf Input */}
-            <ShelfInput
-              prevShelf={storage.shelf}
-              onChange={handleStorageChange}
-            />
           </Flex>
         </ModalBody>
 
