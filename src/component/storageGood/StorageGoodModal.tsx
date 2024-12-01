@@ -191,7 +191,7 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
                 value={good.quantity}
                 type="number"
                 onChange={(e) => {
-                  const value = e.target.value
+                  const value = e.target.valueAsNumber
                   handleStorageGoodChange("quantity", value)
                 }}
                 isInvalid={isQuantityInvalid}
