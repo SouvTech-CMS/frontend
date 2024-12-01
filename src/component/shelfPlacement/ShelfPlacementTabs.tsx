@@ -1,6 +1,6 @@
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import { Container } from "component/Container"
-import { PlacementShelfsColumn } from "component/shelfPlacement/PlacementShelfsColumn"
+import { PlacementShelfsTab } from "component/shelfPlacement/PlacementShelfsTab"
 import { FC } from "react"
 import { PlacementWithShelfsWithStorageGoods } from "type/shelf/shelfPlacement"
 
@@ -10,6 +10,8 @@ interface ShelfPlacementTabsProps {
 
 export const ShelfPlacementTabs: FC<ShelfPlacementTabsProps> = (props) => {
   const { placementsList } = props
+
+  // TODO: useSearchContext for shelfs searching
 
   return (
     <Tabs w="full" size="lg" variant="enclosed-colored" isFitted isLazy>
@@ -22,6 +24,8 @@ export const ShelfPlacementTabs: FC<ShelfPlacementTabsProps> = (props) => {
           overflowX="auto"
           gap={2}
         >
+          {/* TODO: create new placement btn */}
+
           {placementsList?.map((placement, index) => (
             <Tab
               key={index}
@@ -41,7 +45,7 @@ export const ShelfPlacementTabs: FC<ShelfPlacementTabsProps> = (props) => {
         {placementsList?.map((placement, index) => (
           <TabPanel key={index} px={0}>
             <Container>
-              <PlacementShelfsColumn placement={placement} />
+              <PlacementShelfsTab placement={placement} />
             </Container>
           </TabPanel>
         ))}

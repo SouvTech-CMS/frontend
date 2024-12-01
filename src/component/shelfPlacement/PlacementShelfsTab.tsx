@@ -3,13 +3,11 @@ import { ShelfWithGoodsCard } from "component/shelf/ShelfWithGoodsCard"
 import { FC } from "react"
 import { PlacementWithShelfsWithStorageGoods } from "type/shelf/shelfPlacement"
 
-interface PlacementShelfsColumnProps {
+interface PlacementShelfsTabProps {
   placement: PlacementWithShelfsWithStorageGoods
 }
 
-export const PlacementShelfsColumn: FC<PlacementShelfsColumnProps> = (
-  props,
-) => {
+export const PlacementShelfsTab: FC<PlacementShelfsTabProps> = (props) => {
   const { placement } = props
 
   const shelfsList = placement.shelf
@@ -17,6 +15,8 @@ export const PlacementShelfsColumn: FC<PlacementShelfsColumnProps> = (
   return (
     <Accordion w="full" allowMultiple>
       <Grid w="full" templateColumns="repeat(8, 1fr)" gap={3}>
+        {/* TODO: create new shelf btn */}
+
         {shelfsList?.map((shelf, index) => (
           <GridItem key={index}>
             <ShelfWithGoodsCard placement={placement} shelfWithGoods={shelf} />
