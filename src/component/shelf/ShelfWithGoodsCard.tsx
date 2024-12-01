@@ -32,22 +32,23 @@ export const ShelfWithGoodsCard: FC<ShelfWithGoodsCardProps> = (props) => {
     0,
   )
 
-  const isShelfsEmpty = totalQuantity === 0
+  const isQuantityZero = totalQuantity === 0
+  const isShelfEmpty = goodsList?.length === 0
 
   return (
-    <AccordionItem p={0} border="none">
+    <AccordionItem w="full" p={0} border="none">
       {({ isExpanded }) => (
         <Flex
           w="full"
           direction="column"
-          bgColor="white"
+          bgColor="gray.100"
           px={2}
           py={3}
           borderRadius={10}
           gap={3}
         >
-          <Flex direction="row" alignItems="center" gap={4}>
-            <Flex direction="row" alignItems="center" gap={1}>
+          <Flex w="full" direction="row" alignItems="center" pr={2} gap={5}>
+            <Flex w="full" direction="row" alignItems="center" gap={1}>
               {/* Collapse Btn */}
               <AccordionButton w="fit-content" p={1} borderRadius={5}>
                 <AccordionIcon />
@@ -65,8 +66,12 @@ export const ShelfWithGoodsCard: FC<ShelfWithGoodsCardProps> = (props) => {
             </Flex>
 
             {/* Free Badge */}
-            {isShelfsEmpty && (
-              <Badge w="fit-content" colorScheme="green">
+            {isQuantityZero && (
+              <Badge
+                w="fit-content"
+                colorScheme="green"
+                // opacity={isQuantityZero ? 1 : 0}
+              >
                 Free
               </Badge>
             )}
@@ -79,7 +84,7 @@ export const ShelfWithGoodsCard: FC<ShelfWithGoodsCardProps> = (props) => {
                 <ShelfGoodsList key={index} good={good} />
               ))}
 
-              {isShelfsEmpty && (
+              {isShelfEmpty && (
                 <Flex px={5} py={2}>
                   <Text fontSize="sm" color="gray" textAlign="center">
                     No Storage Goods on Shelf
