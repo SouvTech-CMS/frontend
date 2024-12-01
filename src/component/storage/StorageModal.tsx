@@ -123,7 +123,7 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
                 value={storage.quantity}
                 type="number"
                 onChange={(e) => {
-                  const value = e.target.value
+                  const value = e.target.valueAsNumber
                   handleStorageChange("quantity", value)
                 }}
                 isInvalid={isQuantityInvalid}
@@ -142,7 +142,7 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
                 value={storage.prime_cost}
                 type="number"
                 onChange={(e) => {
-                  const value = e.target.value
+                  const value = e.target.valueAsNumber
                   handleStorageChange("prime_cost", value)
                 }}
                 isDisabled={isLoading}
@@ -160,7 +160,7 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
                 value={storage.cost_per_item}
                 type="number"
                 onChange={(e) => {
-                  const value = e.target.value
+                  const value = e.target.valueAsNumber
                   handleStorageChange("cost_per_item", value)
                 }}
                 isDisabled={isLoading}
@@ -178,7 +178,7 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
                 value={storage.box_quantity}
                 type="number"
                 onChange={(e) => {
-                  const value = e.target.value
+                  const value = e.target.valueAsNumber
                   handleStorageChange("box_quantity", value)
                 }}
                 isDisabled={isLoading}
@@ -196,7 +196,7 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
                 value={storage.in_box_quantity}
                 type="number"
                 onChange={(e) => {
-                  const value = e.target.value
+                  const value = e.target.valueAsNumber
                   handleStorageChange("in_box_quantity", value)
                 }}
                 isDisabled={isLoading}
