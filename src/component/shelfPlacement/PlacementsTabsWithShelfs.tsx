@@ -1,41 +1,38 @@
-import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
+import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import { Container } from "component/Container"
-import { PlacementShelfsTab } from "component/shelfPlacement/PlacementShelfsTab"
+import { NewPlacementBtn } from "component/shelfPlacement/NewPlacementBtn"
+import { PlacementTab } from "component/shelfPlacement/PlacementTab"
+import { PlacementTabContent } from "component/shelfPlacement/PlacementTabContent"
 import { FC } from "react"
 import { PlacementWithShelfsWithStorageGoods } from "type/shelf/shelfPlacement"
 
-interface ShelfPlacementTabsProps {
+interface PlacementsTabsWithShelfsProps {
   placementsList?: PlacementWithShelfsWithStorageGoods[]
 }
 
-export const ShelfPlacementTabs: FC<ShelfPlacementTabsProps> = (props) => {
+export const PlacementsTabsWithShelfs: FC<PlacementsTabsWithShelfsProps> = (
+  props,
+) => {
   const { placementsList } = props
 
   // TODO: useSearchContext for shelfs searching
 
   return (
-    <Tabs w="full" size="lg" variant="enclosed-colored" isFitted isLazy>
+    <Tabs w="full" variant="enclosed-colored" isFitted isLazy>
       {/* Tabs Heading */}
       <TabList w="full" border="none">
         <Flex
           w="full"
           direction="row"
+          alignItems="center"
           overflowY="hidden"
           overflowX="auto"
           gap={2}
         >
-          {/* TODO: create new placement btn */}
+          <NewPlacementBtn />
 
           {placementsList?.map((placement, index) => (
-            <Tab
-              key={index}
-              w="full"
-              fontWeight="bold"
-              border="none"
-              borderRadius={10}
-            >
-              {placement.name} ({placement.name_hash})
-            </Tab>
+            <PlacementTab key={index} placement={placement} />
           ))}
         </Flex>
       </TabList>
@@ -45,7 +42,7 @@ export const ShelfPlacementTabs: FC<ShelfPlacementTabsProps> = (props) => {
         {placementsList?.map((placement, index) => (
           <TabPanel key={index} px={0}>
             <Container>
-              <PlacementShelfsTab placement={placement} />
+              <PlacementTabContent placement={placement} />
             </Container>
           </TabPanel>
         ))}

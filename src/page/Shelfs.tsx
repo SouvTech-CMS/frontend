@@ -2,7 +2,7 @@ import { getAllPlacements } from "api/shelf/shelfPlacement"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
-import { ShelfPlacementTabs } from "component/shelfPlacement/ShelfPlacementTabs"
+import { PlacementsTabsWithShelfs } from "component/shelfPlacement/PlacementsTabsWithShelfs"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
@@ -22,7 +22,7 @@ export const Shelfs = (props: PageProps) => {
       <PageHeading title="Shelfs" isSearchHidden />
 
       {!isLoading ? (
-        <ShelfPlacementTabs placementsList={placements} />
+        <PlacementsTabsWithShelfs placementsList={placements} />
       ) : (
         <LoadingPage />
       )}

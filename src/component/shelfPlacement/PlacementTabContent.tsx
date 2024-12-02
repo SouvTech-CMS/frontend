@@ -3,11 +3,11 @@ import { ShelfWithGoodsCard } from "component/shelf/ShelfWithGoodsCard"
 import { FC } from "react"
 import { PlacementWithShelfsWithStorageGoods } from "type/shelf/shelfPlacement"
 
-interface PlacementShelfsTabProps {
+interface PlacementTabContentProps {
   placement: PlacementWithShelfsWithStorageGoods
 }
 
-export const PlacementShelfsTab: FC<PlacementShelfsTabProps> = (props) => {
+export const PlacementTabContent: FC<PlacementTabContentProps> = (props) => {
   const { placement } = props
 
   const shelfsList = placement.shelf
