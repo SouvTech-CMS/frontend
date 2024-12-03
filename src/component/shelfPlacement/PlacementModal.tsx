@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { FC, useEffect, useState } from "react"
-import { FiAlignLeft, FiHash, FiUser } from "react-icons/fi"
+import { FiAlignLeft, FiHash, FiHome } from "react-icons/fi"
 import {
   usePlacementCreateMutation,
   usePlacementUpdateMutation,
@@ -109,7 +109,7 @@ export const PlacementModal: FC<PlacementModalProps> = (props) => {
 
       <ModalContent>
         <ModalHeader>
-          {isNewPlacement ? "New placement" : "Placement"}
+          {isNewPlacement ? "New Placement" : "Edit Placement"}
         </ModalHeader>
         <ModalCloseButton />
 
@@ -118,7 +118,7 @@ export const PlacementModal: FC<PlacementModalProps> = (props) => {
             {/* Name */}
             <InputGroup>
               <InputLeftElement color="gray">
-                <FiUser />
+                <FiHome />
               </InputLeftElement>
 
               <Input

@@ -4,8 +4,8 @@ import { WithId } from "type/withId"
 
 export type Shelf = {
   name: string
-  description: string
-  created_at: string
+  description?: string
+  created_at?: string
   shelf_placement_id?: number
 }
 
