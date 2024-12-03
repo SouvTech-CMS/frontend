@@ -29,6 +29,8 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
   const storageId = storage.id
   const storageGoodId = storage.storage_good_id
 
+  const isFromDelivery = !!storage.purchase_delivery_id
+
   const isCreatedAtExists = storage.created_at !== undefined
   const storageDate = timestampToDate(storage.created_at)
 
@@ -57,7 +59,9 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
             {/* Created At */}
             {isCreatedAtExists && (
               <Heading size="md" fontWeight="medium">
-                <Text>Moved to storage at</Text>
+                <Text>
+                  {isFromDelivery ? "Moved to storage at" : "Created at"}
+                </Text>
                 <Text>{storageDate.toDateString()}</Text>
               </Heading>
             )}
