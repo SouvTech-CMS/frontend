@@ -142,7 +142,6 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
             />
           </Flex>
 
-          {/* Quantities and Shelf Inputs */}
           <Flex w="full" gap={5}>
             {/* Box Count Input */}
             <InputGroup w="full">
@@ -200,6 +199,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
           <ShelfsSelect
             selectedShelfsIds={shelfsIds}
             onSelect={handleShelfSelect}
+            isCreatable
           />
         </Flex>
       </CardBody>
