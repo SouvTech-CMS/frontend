@@ -104,7 +104,7 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
         {/* Shelfs Badges */}
         {isShowShelf && (
           <Td>
-            <Flex flexWrap="wrap" gap={1}>
+            <Flex w="fit-content" flexWrap="wrap" gap={1}>
               {goodsShelfsList?.map((shelf, index) => (
                 <ShelfBadge key={index} shelf={shelf} />
               ))}
@@ -120,7 +120,7 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
           const param = column.param as keyof ProductionInfo
 
           return (
-            <Td key={index}>
+            <Td key={index} w="fit-content">
               <Text w="fit-content">{filteredProductionInfo[param]}</Text>
             </Td>
           )
