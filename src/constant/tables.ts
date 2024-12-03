@@ -153,6 +153,7 @@ export const GOODS_PRODUCTION_INFO_TABLE: (TableColumn | null)[] = [
   {
     name: "Prime Cost",
     param: "prime_cost",
+    isMain: true,
     isSearchable: false,
     isSortable: false,
   },

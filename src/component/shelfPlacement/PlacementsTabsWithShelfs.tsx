@@ -42,7 +42,9 @@ export const PlacementsTabsWithShelfs: FC<PlacementsTabsWithShelfsProps> = (
         {placementsList?.map((placement, index) => (
           <TabPanel key={index} px={0}>
             <Container>
-              <PlacementTabContent placement={placement} />
+              <Flex w="full" overflowX="auto">
+                <PlacementTabContent placement={placement} />
+              </Flex>
             </Container>
           </TabPanel>
         ))}

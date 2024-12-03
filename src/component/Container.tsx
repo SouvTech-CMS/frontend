@@ -31,7 +31,6 @@ export const Container: FCC<ContainerProps> = (props) => {
       bgColor="white"
       p={5}
       borderRadius={20}
-      overflowX="auto"
       gap={10}
     >
       {children}
