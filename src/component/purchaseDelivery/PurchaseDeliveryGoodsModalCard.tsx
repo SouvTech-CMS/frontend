@@ -1,5 +1,5 @@
 import { Badge, Card, CardHeader, Flex, Heading, Text } from "@chakra-ui/react"
-import { SKUBadge } from "component/SKUBadge"
+import { SKUBadge } from "component/badge/SKUBadge"
 import { FC } from "react"
 import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
 import { WithId } from "type/withId"

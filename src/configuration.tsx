@@ -13,6 +13,7 @@ import { ProductionInfo } from "page/ProductionInfo"
 import { Purchases } from "page/Purchases"
 import { PurchasesHistory } from "page/PurchasesHistory"
 import { Roles } from "page/Roles"
+import { Shelfs } from "page/Shelfs"
 import { Storage } from "page/Storage"
 import { StorageGoodDetails } from "page/StorageGoodDetails"
 import { Suppliers } from "page/Suppliers"
@@ -22,6 +23,7 @@ import {
   FiFeather,
   FiFileText,
   FiGlobe,
+  FiHash,
   FiHome,
   FiMap,
   FiPackage,
@@ -50,7 +52,7 @@ type Route = {
 }
 
 export const configuration = {
-  version: "v0.5.7",
+  version: "v0.6.3",
   isDevEnv: process.env.NODE_ENV === "development",
   sidebarItems: [
     //* Main pages
@@ -177,6 +179,15 @@ export const configuration = {
           <ProductionInfo guideNotionPageId="3120cc3e2bee43e894b2ab32553e3b5e" />
         </TableContextProvider>
       ),
+    },
+    // Shelfs
+    {
+      type: "main",
+      icon: FiHash,
+      name: "Shelfs",
+      path: "/shelfs",
+      permissions: [Permission.STORAGE_READ],
+      component: <Shelfs />,
     },
     // Employees
     {

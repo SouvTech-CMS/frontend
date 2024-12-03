@@ -1,6 +1,6 @@
 import { Flex, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
 import { getShopById } from "api/shop"
-import { SKUBadge } from "component/SKUBadge"
+import { SKUBadge } from "component/badge/SKUBadge"
 import { GoodModal } from "component/good/GoodModal"
 import { GoodsTableRowMenu } from "component/good/GoodsTableRowMenu"
 import { MarketplaceAvatar } from "component/marketplace/MarketplaceAvatar"

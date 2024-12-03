@@ -31,6 +31,9 @@ export const getFullStorageGoodsList = async (
       limit: undefined,
       offset: 0,
       has_production_info,
+      search_filter: {
+        is_actual: true,
+      },
     },
   )
   return storageGoodsList

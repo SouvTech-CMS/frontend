@@ -1,21 +1,22 @@
 import { Flex, Grid } from "@chakra-ui/react"
-import { ShopBadge } from "component/ShopBadge"
-import { SKUBadge } from "component/SKUBadge"
+import { ShelfBadge } from "component/badge/ShelfBadge"
+import { ShopBadge } from "component/badge/ShopBadge"
+import { SKUBadge } from "component/badge/SKUBadge"
 import { StorageGoodPropertyRow } from "component/storageGood/StorageGoodPropertyRow"
 import { FC } from "react"
-import { Shop } from "type/shop"
-import { StorageGood } from "type/storage/storageGood"
-import { WithId } from "type/withId"
+import { GoodWithShops } from "type/storage/storageGood"
 
 interface StorageGoodPropertiesProps {
-  storageGood: WithId<StorageGood>
-  shops?: WithId<Shop>[]
+  storageGood: GoodWithShops
 }
 
 export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
   props,
 ) => {
-  const { storageGood, shops } = props
+  const { storageGood } = props
+
+  const shops = storageGood.shops
+  const shelfs = storageGood.shelf
 
   const storageGoodPropertiesList = [
     // SKU segment
@@ -45,6 +46,17 @@ export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
         <Flex direction="column" gap={1}>
           {shops?.map((shop, index) => (
             <ShopBadge key={index} shop={shop} />
+          ))}
+        </Flex>
+      ),
+    },
+    // Shelfs
+    {
+      name: "Shelfs",
+      value: (
+        <Flex direction="column" gap={1}>
+          {shelfs?.map((shelf, index) => (
+            <ShelfBadge key={index} shelf={shelf} />
           ))}
         </Flex>
       ),

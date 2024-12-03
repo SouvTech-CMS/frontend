@@ -13,7 +13,7 @@ import {
   Select,
   SingleValue,
 } from "chakra-react-select"
-import { ShelfInput } from "component/ShelfInput"
+import { ShelfsSelect } from "component/select/ShelfsSelect"
 import { ChangeEvent, FC, useCallback, useEffect, useState } from "react"
 import { FiArrowRight, FiDollarSign, FiInbox, FiPackage } from "react-icons/fi"
 import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
@@ -64,7 +64,9 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
   )
   const isStorageGoodExists = selectedStorageGood !== undefined
 
-  const isSelectedStorageGoodInvalid = !goodsPair.storage_good_id
+  const isSelectedStorageGoodInvalid = !storageGoodId
+
+  const shelfsIds = goodsPair.shelf || []
 
   const handleGoodChange = useCallback(
     (param: string, value: number | string | number[]) => {
@@ -83,6 +85,10 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
     const selectedOption = newValue as SelectOption
     const storageGoodId = Number(selectedOption.value)
     handleGoodChange("storage_good_id", storageGoodId)
+  }
+
+  const handleShelfSelect = (shelfsIds: number[]) => {
+    handleGoodChange("shelf", shelfsIds)
   }
 
   useEffect(() => {
@@ -136,7 +142,6 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
             />
           </Flex>
 
-          {/* Quantities and Shelf Inputs */}
           <Flex w="full" gap={5}>
             {/* Box Count Input */}
             <InputGroup w="full">
@@ -172,29 +177,30 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
               />
             </InputGroup>
 
-            {/* Shelf Input */}
-            <ShelfInput
-              prevShelf={goodsPair.shelf}
-              onChange={handleGoodChange}
-            />
+            {/* Prime Cost */}
+            <InputGroup w="full">
+              <InputLeftElement color="gray">
+                <FiDollarSign />
+              </InputLeftElement>
+
+              <Input
+                placeholder="Prime Cost"
+                type="number"
+                value={goodsPair.prime_cost}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const value = e.target.valueAsNumber
+                  handleGoodChange("prime_cost", value)
+                }}
+              />
+            </InputGroup>
           </Flex>
 
-          {/* Prime Cost */}
-          <InputGroup w="full">
-            <InputLeftElement color="gray">
-              <FiDollarSign />
-            </InputLeftElement>
-
-            <Input
-              placeholder="Prime Cost"
-              type="number"
-              value={goodsPair.prime_cost}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                const value = e.target.valueAsNumber
-                handleGoodChange("prime_cost", value)
-              }}
-            />
-          </InputGroup>
+          {/* Shelf Input */}
+          <ShelfsSelect
+            selectedShelfsIds={shelfsIds}
+            onSelect={handleShelfSelect}
+            isCreatable
+          />
         </Flex>
       </CardBody>
     </Card>

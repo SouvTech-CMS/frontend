@@ -1,5 +1,5 @@
 import { Flex, IconButton, Td, Text, Tooltip, Tr } from "@chakra-ui/react"
-import { OrderStatusBadge } from "component/OrderStatusBadge"
+import { OrderStatusBadge } from "component/badge/OrderStatusBadge"
 import { MarketplaceAvatar } from "component/marketplace/MarketplaceAvatar"
 import { FC } from "react"
 import { FiExternalLink } from "react-icons/fi"

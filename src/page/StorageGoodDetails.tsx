@@ -33,8 +33,6 @@ export const StorageGoodDetails = (props: PageProps) => {
   const isGoodWithStoragesExists =
     storageGood !== undefined && storageGood !== undefined
 
-  const shopsList = storageGood?.shops
-
   return (
     <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title={`Storage Good #${storageGoodId}`} isSearchHidden />
@@ -44,7 +42,7 @@ export const StorageGoodDetails = (props: PageProps) => {
       {isGoodWithStoragesExists && (
         <Flex direction="column" justifyContent="flex-start" gap={10}>
           {/* StorageGood Properties */}
-          <StorageGoodProperties storageGood={storageGood} shops={shopsList} />
+          <StorageGoodProperties storageGood={storageGood} />
 
           <Divider borderWidth={1} />
 

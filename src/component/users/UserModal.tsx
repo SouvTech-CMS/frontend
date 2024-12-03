@@ -234,7 +234,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
                   value={user.username}
                   type="text"
                   onChange={(e) => {
-                    const value = e.target.value.trim()
+                    const value = e.target.value.replaceAll(" ", "").trim()
                     handleUserUpdate("username", value)
                   }}
                   isDisabled={isLoading}
@@ -253,7 +253,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
                   value={newPassword}
                   type="text"
                   onChange={(e) => {
-                    const value = e.target.value.trim()
+                    const value = e.target.value.replaceAll(" ", "").trim()
                     setNewPassword(value)
                   }}
                   isDisabled={isLoading}
@@ -291,7 +291,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
                   value={user.email}
                   type="email"
                   onChange={(e) => {
-                    const value = e.target.value.trim()
+                    const value = e.target.value.replaceAll(" ", "").trim()
                     handleUserUpdate("email", value)
                   }}
                   isDisabled={isLoading}
@@ -309,7 +309,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
                   value={user.phone}
                   type="number"
                   onChange={(e) => {
-                    const value = e.target.value
+                    const value = e.target.valueAsNumber
                     handleUserUpdate("phone", value)
                   }}
                   isDisabled={isLoading}
@@ -327,7 +327,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
                   value={user.salary}
                   type="number"
                   onChange={(e) => {
-                    const value = e.target.value
+                    const value = e.target.valueAsNumber
                     handleUserUpdate("salary", value)
                   }}
                   isDisabled={isLoading}

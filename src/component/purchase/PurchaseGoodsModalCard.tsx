@@ -9,7 +9,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
-import { SKUBadge } from "component/SKUBadge"
+import { SKUBadge } from "component/badge/SKUBadge"
 import { PurchaseGoodDeleteModal } from "component/purchaseGood/PurchaseGoodDeleteModal"
 import { PurchaseGoodModal } from "component/purchaseGood/PurchaseGoodModal"
 import { FC } from "react"
