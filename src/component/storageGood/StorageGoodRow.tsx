@@ -8,9 +8,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react"
 import { getStorageActualInfoByGoodId } from "api/storage/storage"
-import { SKUBadge } from "component/SKUBadge"
-import { ShelfBadge } from "component/ShelfBadge"
-import { TableTdSkeleton } from "component/TableTdSkeleton"
+import { SKUBadge } from "component/badge/SKUBadge"
+import { ShelfBadge } from "component/badge/ShelfBadge"
+import { TableTdSkeleton } from "component/customTable/TableTdSkeleton"
 import { StorageGoodModal } from "component/storageGood/StorageGoodModal"
 import { StorageGoodRowMenu } from "component/storageGood/StorageGoodRowMenu"
 import { FC, useEffect } from "react"
@@ -20,6 +20,7 @@ import { Link } from "react-router-dom"
 import { useStorageGoodUpdateMutation } from "service/storage/storageGood"
 import { StorageActualInfo } from "type/storage/storage"
 import { GoodWithShops, StorageGoodUpdate } from "type/storage/storageGood"
+import { numberWithCurrency, roundNumber } from "util/formatting"
 import { notify } from "util/toasts"
 
 interface StorageGoodRowProps {
@@ -38,23 +39,25 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
     refetch,
     isRefetching,
   } = useQuery<StorageActualInfo>(["storageActualInfo", goodId], () =>
-    getStorageActualInfoByGoodId(goodId, selectedShopId),
+    getStorageActualInfoByGoodId(goodId),
   )
 
   const isLoadingActualInfo = isLoading || isRefetching
 
   const goodTotalQuantity = storageGood.quantity
   const goodIsActual = storageGood.is_actual
+  const goodsShelfsList = storageGood?.shelf
 
+  const goodPrimeCost = storageActualInfo?.prime_cost
   const goodBoxesQuantity = storageActualInfo?.box_quantity
-  const goodsShelfsList = storageActualInfo?.shelf
 
   const goodShopsIds = storageGood.shops.map((shop) => shop.id)
+  const goodShelfsIds = storageGood.shelf?.map((shelf) => shelf.id)
 
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
 
   const toggleGoodIsHidden = async () => {
-    const { shops, ...updatedStorageGood } = storageGood
+    const { shops, shelf, ...updatedStorageGood } = storageGood
     const updatedIsActul = !goodIsActual
 
     const body: StorageGoodUpdate = {
@@ -63,6 +66,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
         is_actual: updatedIsActul,
       },
       shops_ids: goodShopsIds,
+      shelf: goodShelfsIds,
     }
 
     await storageGoodUpdateMutation.mutateAsync(body)
@@ -98,17 +102,24 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
           <SKUBadge sku={storageGood.uniquename} />
         </Td>
 
-        {/* Good Name */}
+        {/* Name */}
         <Td>
           <Text whiteSpace="break-spaces">{storageGood.name}</Text>
         </Td>
 
-        {/* Good Total Quantity */}
+        {/* Total Quantity */}
         <Td>
           <Text>{goodTotalQuantity}</Text>
         </Td>
 
-        {/* Good Boxes Quantity */}
+        {/* Prime Cost */}
+        <Td>
+          <TableTdSkeleton isLoading={isLoadingActualInfo}>
+            <Text>{numberWithCurrency(roundNumber(goodPrimeCost))}</Text>
+          </TableTdSkeleton>
+        </Td>
+
+        {/* Boxes Quantity */}
         <Td>
           <TableTdSkeleton isLoading={isLoadingActualInfo}>
             <Text>{goodBoxesQuantity}</Text>
@@ -117,13 +128,11 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
         {/* Shelfs Badges */}
         <Td>
-          <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Flex flexWrap="wrap" gap={1}>
-              {goodsShelfsList?.map((shelf, index) => (
-                <ShelfBadge key={index} shelf={shelf} />
-              ))}
-            </Flex>
-          </TableTdSkeleton>
+          <Flex flexWrap="wrap" gap={1}>
+            {goodsShelfsList?.map((shelf, index) => (
+              <ShelfBadge key={index} shelf={shelf} />
+            ))}
+          </Flex>
         </Td>
 
         {/* Storage Good Btns */}

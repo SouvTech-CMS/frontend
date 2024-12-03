@@ -12,7 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { SKUBadge } from "component/SKUBadge"
+import { SKUBadge } from "component/badge/SKUBadge"
 import { ProductionInfoModalInput } from "component/productionInfo/ProductionInfoModalInput"
 import { FC, useEffect, useState } from "react"
 import { useProductionInfoUpdateMutation } from "service/productionInfo/productionInfo"

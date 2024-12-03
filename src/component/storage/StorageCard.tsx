@@ -7,7 +7,6 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
-import { ShelfBadge } from "component/ShelfBadge"
 import { StorageCardMenu } from "component/storage/StorageCardMenu"
 import { StorageDeleteModal } from "component/storage/StorageDeleteModal"
 import { StorageModal } from "component/storage/StorageModal"
@@ -19,7 +18,6 @@ import {
   roundNumber,
   timestampToDate,
 } from "util/formatting"
-import { parseShelfs } from "util/shelf"
 
 interface StorageCardProps {
   storage: WithId<Storage>
@@ -31,13 +29,15 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
   const storageId = storage.id
   const storageGoodId = storage.storage_good_id
 
+  const isFromDelivery = !!storage.purchase_delivery_id
+
   const isCreatedAtExists = storage.created_at !== undefined
   const storageDate = timestampToDate(storage.created_at)
 
   const isPrimeCostExists = storage.prime_cost !== undefined
   const isItemPriceExists = storage.cost_per_item !== undefined
 
-  const shelfsList = parseShelfs(storage.shelf)
+  // const shelfsList = parseShelfs(storage.shelf)
 
   const {
     isOpen: isStorageUpdateModalOpen,
@@ -59,7 +59,9 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
             {/* Created At */}
             {isCreatedAtExists && (
               <Heading size="md" fontWeight="medium">
-                <Text>Moved to storage at</Text>
+                <Text>
+                  {isFromDelivery ? "Moved to storage at" : "Created at"}
+                </Text>
                 <Text>{storageDate.toDateString()}</Text>
               </Heading>
             )}
@@ -74,7 +76,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
         <CardBody>
           <Flex direction="column" gap={2}>
             {/* Shelf */}
-            <Flex alignItems="center" gap={1}>
+            {/* <Flex alignItems="center" gap={1}>
               <Text fontWeight="light" color="gray">
                 Shelfs:
               </Text>
@@ -82,13 +84,13 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
               {shelfsList?.map((shelf, index) => (
                 <ShelfBadge key={index} shelf={shelf} />
               ))}
-            </Flex>
+            </Flex> */}
 
-            {/* Prime Price */}
+            {/* Prime Cost */}
             {isPrimeCostExists && (
               <Flex alignItems="center" gap={2}>
                 <Text fontWeight="light" color="gray">
-                  Prime Price:
+                  Prime Cost:
                 </Text>
 
                 <Text>

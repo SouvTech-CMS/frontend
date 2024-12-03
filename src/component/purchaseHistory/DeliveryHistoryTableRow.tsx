@@ -1,5 +1,5 @@
 import { Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
-import { PurchaseStatusBadge } from "component/PurchaseStatusBadge"
+import { PurchaseStatusBadge } from "component/badge/PurchaseStatusBadge"
 import { DeliveryDocumentsModal } from "component/document/DeliveryDocumentsModal"
 import { PurchaseDeliveryGoodsModal } from "component/purchaseDelivery/PurchaseDeliveryGoodsModal"
 import { DeliveryServicesModal } from "component/purchaseDeliveryService/DeliveryServicesModal"

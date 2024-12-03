@@ -12,7 +12,7 @@ import { SelectOption } from "type/selectOption"
 import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 
-interface StorageGoodShopsSelectProps {
+interface ShopsSelectProps {
   selectedShopsIds: number[]
   onSelect: (shopsIds: number[]) => void
 }
@@ -28,9 +28,7 @@ const selectStyles: ChakraStylesConfig<
   }),
 }
 
-export const StorageGoodShopsSelect: FC<StorageGoodShopsSelectProps> = (
-  props,
-) => {
+export const ShopsSelect: FC<ShopsSelectProps> = (props) => {
   const { selectedShopsIds, onSelect } = props
 
   const { data: shopsList, isLoading } = useQuery<WithId<Shop>[]>(
@@ -53,6 +51,7 @@ export const StorageGoodShopsSelect: FC<StorageGoodShopsSelectProps> = (
   return (
     <Select<SelectOption, true, GroupBase<SelectOption>>
       chakraStyles={selectStyles}
+      colorScheme="teal"
       placeholder="Select shops"
       options={shopsList?.map((shop) => ({
         value: shop.id,

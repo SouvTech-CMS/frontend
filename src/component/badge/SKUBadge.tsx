@@ -10,7 +10,7 @@ export const SKUBadge: FC<SKUBadgeProps> = (props) => {
   const { size = "sm", sku } = props
 
   return (
-    <Badge fontSize={size} colorScheme="blue">
+    <Badge w="fit-content" fontSize={size} colorScheme="blue">
       {sku}
     </Badge>
   )

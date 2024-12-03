@@ -43,13 +43,13 @@ export const Auth = () => {
     (location.state as { from: { pathname: string } })?.from?.pathname || "/"
 
   const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const username = e.target.value.trim()
+    const username = e.target.value.replaceAll(" ", "").trim()
     setUsername(username)
     setIsError(false)
   }
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const password = e.target.value.trim()
+    const password = e.target.value.replaceAll(" ", "").trim()
     setPassword(password)
     setIsError(false)
   }

@@ -1,5 +1,5 @@
 import { Collapse, Flex, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
-import { PurchaseStatusBadge } from "component/PurchaseStatusBadge"
+import { PurchaseStatusBadge } from "component/badge/PurchaseStatusBadge"
 import { PurchaseDocumentsModal } from "component/document/PurchaseDocumentsModal"
 import { PurchaseGoodsModal } from "component/purchase/PurchaseGoodsModal"
 import { PurchaseSupplierModal } from "component/purchase/PurchaseSupplierModal"
