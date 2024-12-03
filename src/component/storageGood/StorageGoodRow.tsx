@@ -20,6 +20,7 @@ import { Link } from "react-router-dom"
 import { useStorageGoodUpdateMutation } from "service/storage/storageGood"
 import { StorageActualInfo } from "type/storage/storage"
 import { GoodWithShops, StorageGoodUpdate } from "type/storage/storageGood"
+import { numberWithCurrency, roundNumber } from "util/formatting"
 import { notify } from "util/toasts"
 
 interface StorageGoodRowProps {
@@ -38,7 +39,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
     refetch,
     isRefetching,
   } = useQuery<StorageActualInfo>(["storageActualInfo", goodId], () =>
-    getStorageActualInfoByGoodId(goodId, selectedShopId),
+    getStorageActualInfoByGoodId(goodId),
   )
 
   const isLoadingActualInfo = isLoading || isRefetching
@@ -47,6 +48,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   const goodIsActual = storageGood.is_actual
   const goodsShelfsList = storageGood?.shelf
 
+  const goodPrimeCost = storageActualInfo?.prime_cost
   const goodBoxesQuantity = storageActualInfo?.box_quantity
 
   const goodShopsIds = storageGood.shops.map((shop) => shop.id)
@@ -100,17 +102,24 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
           <SKUBadge sku={storageGood.uniquename} />
         </Td>
 
-        {/* Good Name */}
+        {/* Name */}
         <Td>
           <Text whiteSpace="break-spaces">{storageGood.name}</Text>
         </Td>
 
-        {/* Good Total Quantity */}
+        {/* Total Quantity */}
         <Td>
           <Text>{goodTotalQuantity}</Text>
         </Td>
 
-        {/* Good Boxes Quantity */}
+        {/* Prime Cost */}
+        <Td>
+          <TableTdSkeleton isLoading={isLoadingActualInfo}>
+            <Text>{numberWithCurrency(roundNumber(goodPrimeCost))}</Text>
+          </TableTdSkeleton>
+        </Td>
+
+        {/* Boxes Quantity */}
         <Td>
           <TableTdSkeleton isLoading={isLoadingActualInfo}>
             <Text>{goodBoxesQuantity}</Text>

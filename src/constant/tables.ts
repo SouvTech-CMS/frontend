@@ -20,6 +20,12 @@ export const STORAGE_GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
     isSortable: true,
   },
   {
+    name: "Prime Cost",
+    param: "prime_cost",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
     name: "Boxes quantity",
     param: "box_quantity",
     isSearchable: false,
@@ -141,6 +147,12 @@ export const GOODS_PRODUCTION_INFO_TABLE: (TableColumn | null)[] = [
     name: "Total quantity",
     param: "quantity",
     isMain: true,
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
+    name: "Prime Cost",
+    param: "prime_cost",
     isSearchable: false,
     isSortable: false,
   },

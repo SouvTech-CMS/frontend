@@ -22,10 +22,8 @@ export type DeliveryToStorage = {
 }
 
 export type StorageActualInfo = {
-  quantity: number
-  cost_per_item: number[]
-  box_quantity: number
-  shelf: string[]
+  prime_cost?: number
+  box_quantity?: number
 }
 
 export type StorageCreate = {

@@ -1,14 +1,19 @@
 import { Flex, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
+import { getStorageActualInfoByGoodId } from "api/storage/storage"
 import { SKUBadge } from "component/badge/SKUBadge"
 import { ShelfBadge } from "component/badge/ShelfBadge"
+import { TableTdSkeleton } from "component/customTable/TableTdSkeleton"
 import { ProductionInfoModal } from "component/productionInfo/ProductionInfoModal"
 import { ProductionInfoTableRowMenu } from "component/productionInfo/ProductionInfoTableRowMenu"
 import { useUserContext } from "context/user"
 import { useUserTableAccess } from "hook/useUserTableAccess"
-import { FC } from "react"
+import { FC, useEffect } from "react"
+import { useQuery } from "react-query"
 import { ProductionInfo } from "type/productionInfo/productionInfo"
+import { StorageActualInfo } from "type/storage/storage"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 import { TableColumn } from "type/tableColumn"
+import { numberWithCurrency, roundNumber } from "util/formatting"
 
 interface ProductionInfoTableRowProps {
   accessibleColumns: (TableColumn | null)[]
@@ -19,7 +24,7 @@ interface ProductionInfoTableRowProps {
 export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
   props,
 ) => {
-  const { accessibleColumns, goodWithProductionInfo } = props
+  const { accessibleColumns, goodWithProductionInfo, selectedShopId } = props
 
   const { isUserManager } = useUserContext()
   const { filterAccessibleParams } = useUserTableAccess()
@@ -47,6 +52,25 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
     productionInfo,
   )
 
+  const goodId = good.id
+
+  const {
+    data: storageActualInfo,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useQuery<StorageActualInfo>(["storageActualInfo", goodId], () =>
+    getStorageActualInfoByGoodId(goodId),
+  )
+
+  const isLoadingActualInfo = isLoading || isRefetching
+
+  const goodPrimeCost = storageActualInfo?.prime_cost
+
+  useEffect(() => {
+    refetch()
+  }, [refetch, selectedShopId])
+
   return (
     <>
       <Tr>
@@ -60,14 +84,21 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
           <SKUBadge sku={good.uniquename} />
         </Td>
 
-        {/* Good Name */}
+        {/* Name */}
         <Td>
           <Text whiteSpace="break-spaces">{good.name}</Text>
         </Td>
 
-        {/* Good Total Quantity */}
+        {/* Total Quantity */}
         <Td>
           <Text>{goodTotalQuantity}</Text>
+        </Td>
+
+        {/* Prime Cost */}
+        <Td>
+          <TableTdSkeleton isLoading={isLoadingActualInfo}>
+            <Text>{numberWithCurrency(roundNumber(goodPrimeCost))}</Text>
+          </TableTdSkeleton>
         </Td>
 
         {/* Shelfs Badges */}
