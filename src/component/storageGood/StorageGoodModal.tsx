@@ -119,10 +119,12 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
       if (isNewGood) {
         setGood(newGood)
         setShopsIds([])
+        setShelfsIds([])
       } else {
         const { shops, ...allParams } = prevGood
         setGood(allParams)
         setShopsIds(prevShopsIds || [])
+        setShelfsIds(prevShelfsIds || [])
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
