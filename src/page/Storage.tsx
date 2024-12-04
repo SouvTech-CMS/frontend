@@ -81,8 +81,6 @@ export const Storage = (props: PageProps) => {
     isActual,
   ])
 
-  // TODO: prime cost from actul info
-
   return (
     <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Storage" isSearchHidden />
