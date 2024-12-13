@@ -125,7 +125,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
               placeholder="Select storage good"
               options={storageGoods?.map((storageGood) => ({
                 value: storageGood.id,
-                label: storageGood.name,
+                label: `${storageGood.uniquename} - ${storageGood.name}`,
               }))}
               value={
                 isStorageGoodExists

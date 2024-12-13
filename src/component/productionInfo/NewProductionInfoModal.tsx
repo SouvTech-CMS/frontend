@@ -120,7 +120,14 @@ export const NewProductionInfoModal: FC<NewProductionInfoModalProps> = (
               placeholder="Select storage good"
               options={storageGoodsList?.map((storageGood) => ({
                 value: storageGood.id,
-                label: storageGood.name,
+                // TODO: try to show SKU badge instead of just text
+                // label: (
+                //   <Flex direction="row" alignItems="center" gap={1}>
+                //     <SKUBadge sku={storageGood.uniquename} />
+                //     <Text>{storageGood.name}</Text>
+                //   </Flex>
+                // ),
+                label: `${storageGood.uniquename} - ${storageGood.name}`,
               }))}
               onChange={handleStorageGoodSelect}
               isSearchable
