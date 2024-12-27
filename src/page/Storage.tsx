@@ -7,6 +7,7 @@ import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
+import { FullStorageTotalAmountLabel } from "component/storage/FullStorageTotalAmountLabel"
 import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
 import { usePaginationContext } from "context/pagination"
@@ -85,19 +86,23 @@ export const Storage = (props: PageProps) => {
     <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Storage" isSearchHidden />
 
-      <Container>
-        <Flex w="full" justifyContent="space-between">
+      <Container gap={3}>
+        <Flex w="full" direction="row" justifyContent="space-between">
           <StorageGoodsFilters
             handleShopSelect={handleShopSelect}
             isActual={isActual}
             toggleIsActual={toggleIsActual}
           />
 
-          <Flex alignItems="center" gap={2}>
+          <Flex direction="row" alignItems="center" gap={2}>
             <SearchFiltersClearBtn isLoading={isLoading || isRefetching} />
 
             <RowsPerPageSelect isLoading={isLoading || isRefetching} />
           </Flex>
+        </Flex>
+
+        <Flex w="full" direction="row" mt={2}>
+          <FullStorageTotalAmountLabel />
         </Flex>
 
         {!isStorageGoodsExist && isLoading && <LoadingPage />}
