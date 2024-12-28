@@ -21,6 +21,13 @@ export const getStorageActualInfoByGoodId = async (
   return storageActualInfo
 }
 
+export const getFullStorageTotalAmount = async (): Promise<number> => {
+  const { data: fullStorageTotalAmount } = await axiosClient.get(
+    "/storage/get_total_storage",
+  )
+  return fullStorageTotalAmount
+}
+
 export const createStorage = async (
   body: StorageCreate,
 ): Promise<WithId<Storage>> => {

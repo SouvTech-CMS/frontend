@@ -7,6 +7,7 @@ interface ContainerProps {
   justifyContent?: FlexboxProps["justifyContent"]
   alignItems?: FlexboxProps["alignItems"]
   alignSelf?: FlexboxProps["alignSelf"]
+  gap?: FlexboxProps["gap"]
   style?: CSSProperties
 }
 
@@ -17,6 +18,7 @@ export const Container: FCC<ContainerProps> = (props) => {
     justifyContent = "flex-start",
     alignItems = "flex-start",
     alignSelf = "flex-start",
+    gap = 10,
     style,
   } = props
 
@@ -31,7 +33,7 @@ export const Container: FCC<ContainerProps> = (props) => {
       bgColor="white"
       p={5}
       borderRadius={20}
-      gap={10}
+      gap={gap}
     >
       {children}
     </Flex>
