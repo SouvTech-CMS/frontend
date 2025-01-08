@@ -13,7 +13,7 @@ import { ProductionInfo } from "page/ProductionInfo"
 import { Purchases } from "page/Purchases"
 import { PurchasesHistory } from "page/PurchasesHistory"
 import { Roles } from "page/Roles"
-import { Shelfs } from "page/Shelfs"
+import { Shelves } from "page/Shelves"
 import { Storage } from "page/Storage"
 import { StorageGoodDetails } from "page/StorageGoodDetails"
 import { Suppliers } from "page/Suppliers"
@@ -180,14 +180,14 @@ export const configuration = {
         </TableContextProvider>
       ),
     },
-    // Shelfs
+    // Shelves
     {
       type: "main",
       icon: FiHash,
-      name: "Shelfs",
-      path: "/shelfs",
+      name: "Shelves",
+      path: "/shelves",
       permissions: [Permission.STORAGE_READ],
-      component: <Shelfs />,
+      component: <Shelves />,
     },
     // Employees
     {

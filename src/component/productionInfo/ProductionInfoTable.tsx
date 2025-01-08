@@ -20,14 +20,14 @@ export const ProductionInfoTable: FC<ProductionInfoTableProps> = (props) => {
   const { isUserManager } = useUserContext()
   const { getAccessibleTableColumns } = useUserTableAccess()
 
-  const columnsWithoutShelfs = GOODS_PRODUCTION_INFO_TABLE.filter(
+  const columnsWithoutShelves = GOODS_PRODUCTION_INFO_TABLE.filter(
     (column) => column?.param !== "shelf",
   )
 
   const filteredTableColumns = getAccessibleTableColumns(
     TABLE_NAME,
     // GOODS_PRODUCTION_INFO_TABLE,
-    isUserManager ? columnsWithoutShelfs : GOODS_PRODUCTION_INFO_TABLE,
+    isUserManager ? columnsWithoutShelves : GOODS_PRODUCTION_INFO_TABLE,
   )
 
   return (

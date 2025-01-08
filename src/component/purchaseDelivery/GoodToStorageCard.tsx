@@ -13,7 +13,7 @@ import {
   Select,
   SingleValue,
 } from "chakra-react-select"
-import { ShelfsSelect } from "component/select/ShelfsSelect"
+import { ShelvesSelect } from "component/select/ShelvesSelect"
 import { ChangeEvent, FC, useCallback, useEffect, useState } from "react"
 import { FiArrowRight, FiDollarSign, FiInbox, FiPackage } from "react-icons/fi"
 import { PurchaseDeliveryGood } from "type/purchaseDelivery/purchaseDeliveryGood"
@@ -66,7 +66,7 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
 
   const isSelectedStorageGoodInvalid = !storageGoodId
 
-  const shelfsIds = goodsPair.shelf || []
+  const shelvesIds = goodsPair.shelf || []
 
   const handleGoodChange = useCallback(
     (param: string, value: number | string | number[]) => {
@@ -87,8 +87,8 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
     handleGoodChange("storage_good_id", storageGoodId)
   }
 
-  const handleShelfSelect = (shelfsIds: number[]) => {
-    handleGoodChange("shelf", shelfsIds)
+  const handleShelfSelect = (shelvesIds: number[]) => {
+    handleGoodChange("shelf", shelvesIds)
   }
 
   useEffect(() => {
@@ -196,8 +196,8 @@ export const GoodToStorageCard: FC<GoodToStorageCardProps> = (props) => {
           </Flex>
 
           {/* Shelf Input */}
-          <ShelfsSelect
-            selectedShelfsIds={shelfsIds}
+          <ShelvesSelect
+            selectedShelvesIds={shelvesIds}
             onSelect={handleShelfSelect}
             isCreatable
           />

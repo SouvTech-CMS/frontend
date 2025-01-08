@@ -2,27 +2,27 @@ import { getAllPlacements } from "api/shelf/shelfPlacement"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
-import { PlacementsTabsWithShelfs } from "component/shelfPlacement/PlacementsTabsWithShelfs"
+import { PlacementsTabsWithShelves } from "component/shelfPlacement/PlacementsTabsWithShelves"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
-import { PlacementWithShelfsWithStorageGoods } from "type/shelf/shelfPlacement"
+import { PlacementWithShelvesWithStorageGoods } from "type/shelf/shelfPlacement"
 
-export const Shelfs = (props: PageProps) => {
+export const Shelves = (props: PageProps) => {
   const { guideNotionPageId } = props
 
   const { data: placementsList, isLoading } = useQuery<
-    ApiResponse<PlacementWithShelfsWithStorageGoods[]>
+    ApiResponse<PlacementWithShelvesWithStorageGoods[]>
   >("placementsList", getAllPlacements)
 
   const placements = placementsList?.result
 
   return (
     <Page guideNotionPageId={guideNotionPageId}>
-      <PageHeading title="Shelfs" isSearchHidden />
+      <PageHeading title="Shelves" isSearchHidden />
 
       {!isLoading ? (
-        <PlacementsTabsWithShelfs placementsList={placements} />
+        <PlacementsTabsWithShelves placementsList={placements} />
       ) : (
         <LoadingPage />
       )}

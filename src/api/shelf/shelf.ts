@@ -2,9 +2,9 @@ import { axiosClient } from "api/axiosClient"
 import { Shelf, ShelfWithPlacement } from "type/shelf/shelf"
 import { WithId } from "type/withId"
 
-export const getAllShelfs = async (): Promise<ShelfWithPlacement[]> => {
-  const { data: shelfsList } = await axiosClient.get("/shelf/")
-  return shelfsList
+export const getAllShelves = async (): Promise<ShelfWithPlacement[]> => {
+  const { data: shelvesList } = await axiosClient.get("/shelf/")
+  return shelvesList
 }
 
 export const createShelf = async (shelf: Shelf): Promise<WithId<Shelf>> => {

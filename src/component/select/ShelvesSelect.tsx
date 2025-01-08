@@ -1,5 +1,5 @@
 import { Button, Flex, Text } from "@chakra-ui/react"
-import { getAllShelfs } from "api/shelf/shelf"
+import { getAllShelves } from "api/shelf/shelf"
 import {
   ActionMeta,
   ChakraStylesConfig,
@@ -18,9 +18,9 @@ import { WithId } from "type/withId"
 import { getShelfFullCode } from "util/shelf"
 import { notify } from "util/toasts"
 
-interface ShelfsSelectProps {
-  selectedShelfsIds: number[]
-  onSelect: (shelfsIds: number[]) => void
+interface ShelvesSelectProps {
+  selectedShelvesIds: number[]
+  onSelect: (shelvesIds: number[]) => void
   isCreatable?: boolean
 }
 
@@ -35,27 +35,27 @@ const selectStyles: ChakraStylesConfig<
   }),
 }
 
-export const ShelfsSelect: FC<ShelfsSelectProps> = (props) => {
-  const { selectedShelfsIds, onSelect, isCreatable } = props
+export const ShelvesSelect: FC<ShelvesSelectProps> = (props) => {
+  const { selectedShelvesIds, onSelect, isCreatable } = props
 
   const [shelfInputValue, setShelfInputValue] = useState<string>()
 
-  const { data: shelfsList, isLoading: isShelfsListLoading } = useQuery<
+  const { data: shelvesList, isLoading: isShelvesListLoading } = useQuery<
     ShelfWithPlacement[]
-  >("shelfsList", getAllShelfs)
+  >("shelvesList", getAllShelves)
 
   const shelfCreateMutation = useShelfCreateMutation()
 
-  const isLoading = isShelfsListLoading || shelfCreateMutation.isLoading
+  const isLoading = isShelvesListLoading || shelfCreateMutation.isLoading
 
   const uniquePlacementsList: WithId<ShelfPlacement>[] = Array.from(
-    new Set(shelfsList?.map((shelf) => JSON.stringify(shelf.shelf_placement))),
+    new Set(shelvesList?.map((shelf) => JSON.stringify(shelf.shelf_placement))),
   )
     .map((placement) => JSON.parse(placement))
     .filter(Boolean)
 
-  const selectedShelfs = shelfsList?.filter((shelf) =>
-    selectedShelfsIds.includes(shelf.id),
+  const selectedShelves = shelvesList?.filter((shelf) =>
+    selectedShelvesIds.includes(shelf.id),
   )
 
   const isShelfInputValueExists =
@@ -65,8 +65,8 @@ export const ShelfsSelect: FC<ShelfsSelectProps> = (props) => {
     newValue: MultiValue<SelectOption>,
     _: ActionMeta<SelectOption>,
   ) => {
-    const shelfsIds = newValue.map((selectedShelf) => selectedShelf.value)
-    onSelect(shelfsIds)
+    const shelvesIds = newValue.map((selectedShelf) => selectedShelf.value)
+    onSelect(shelvesIds)
   }
 
   const handleSelectInputChange = (newValue: string, _: InputActionMeta) => {
@@ -121,8 +121,8 @@ export const ShelfsSelect: FC<ShelfsSelectProps> = (props) => {
 
     const { id: shelfId } = await shelfCreateMutation.mutateAsync(body)
 
-    const newShelfsIds = [...selectedShelfsIds, shelfId]
-    onSelect(newShelfsIds)
+    const newShelvesIds = [...selectedShelvesIds, shelfId]
+    onSelect(newShelvesIds)
 
     notify(
       `Shelf ${inputPlacement.name_hash}-${shelfName} created and selected successfully`,
@@ -148,12 +148,12 @@ export const ShelfsSelect: FC<ShelfsSelectProps> = (props) => {
     <Select<SelectOption, true, GroupBase<SelectOption>>
       chakraStyles={selectStyles}
       colorScheme="purple"
-      placeholder="Select shelfs"
-      options={shelfsList?.map((shelf) => ({
+      placeholder="Select shelves"
+      options={shelvesList?.map((shelf) => ({
         value: shelf.id,
         label: getShelfFullCode(shelf),
       }))}
-      value={selectedShelfs?.map((shelf) => ({
+      value={selectedShelves?.map((shelf) => ({
         value: shelf.id,
         label: getShelfFullCode(shelf),
       }))}

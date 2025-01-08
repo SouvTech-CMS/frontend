@@ -4,18 +4,18 @@ import { NewPlacementBtn } from "component/shelfPlacement/NewPlacementBtn"
 import { PlacementTab } from "component/shelfPlacement/PlacementTab"
 import { PlacementTabContent } from "component/shelfPlacement/PlacementTabContent"
 import { FC } from "react"
-import { PlacementWithShelfsWithStorageGoods } from "type/shelf/shelfPlacement"
+import { PlacementWithShelvesWithStorageGoods } from "type/shelf/shelfPlacement"
 
-interface PlacementsTabsWithShelfsProps {
-  placementsList?: PlacementWithShelfsWithStorageGoods[]
+interface PlacementsTabsWithShelvesProps {
+  placementsList?: PlacementWithShelvesWithStorageGoods[]
 }
 
-export const PlacementsTabsWithShelfs: FC<PlacementsTabsWithShelfsProps> = (
+export const PlacementsTabsWithShelves: FC<PlacementsTabsWithShelvesProps> = (
   props,
 ) => {
   const { placementsList } = props
 
-  // TODO: useSearchContext for shelfs searching
+  // TODO: useSearchContext for shelves searching
 
   return (
     <Tabs w="full" variant="enclosed-colored" isFitted isLazy>

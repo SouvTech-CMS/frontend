@@ -16,7 +16,7 @@ export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
   const { storageGood } = props
 
   const shops = storageGood.shops
-  const shelfs = storageGood.shelf
+  const shelves = storageGood.shelf
 
   const storageGoodPropertiesList = [
     // SKU segment
@@ -50,12 +50,12 @@ export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
         </Flex>
       ),
     },
-    // Shelfs
+    // Shelves
     {
-      name: "Shelfs",
+      name: "Shelves",
       value: (
         <Flex direction="column" gap={1}>
-          {shelfs?.map((shelf, index) => (
+          {shelves?.map((shelf, index) => (
             <ShelfBadge key={index} shelf={shelf} />
           ))}
         </Flex>

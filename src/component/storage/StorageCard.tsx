@@ -37,7 +37,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
   const isPrimeCostExists = storage.prime_cost !== undefined
   const isItemPriceExists = storage.cost_per_item !== undefined
 
-  // const shelfsList = parseShelfs(storage.shelf)
+  // const shelvesList = parseShelves(storage.shelf)
 
   const {
     isOpen: isStorageUpdateModalOpen,
@@ -78,10 +78,10 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
             {/* Shelf */}
             {/* <Flex alignItems="center" gap={1}>
               <Text fontWeight="light" color="gray">
-                Shelfs:
+                Shelves:
               </Text>
 
-              {shelfsList?.map((shelf, index) => (
+              {shelvesList?.map((shelf, index) => (
                 <ShelfBadge key={index} shelf={shelf} />
               ))}
             </Flex> */}

@@ -3,10 +3,10 @@ import { PlacementDeleteModal } from "component/shelfPlacement/PlacementDeleteMo
 import { PlacementModal } from "component/shelfPlacement/PlacementModal"
 import { PlacementTabMenu } from "component/shelfPlacement/PlacementTabMenu"
 import { FC } from "react"
-import { PlacementWithShelfsWithStorageGoods } from "type/shelf/shelfPlacement"
+import { PlacementWithShelvesWithStorageGoods } from "type/shelf/shelfPlacement"
 
 interface PlacementTabProps {
-  placement: PlacementWithShelfsWithStorageGoods
+  placement: PlacementWithShelvesWithStorageGoods
 }
 
 export const PlacementTab: FC<PlacementTabProps> = (props) => {

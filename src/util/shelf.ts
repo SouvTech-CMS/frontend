@@ -2,9 +2,9 @@ import { ShelfWithPlacement } from "type/shelf/shelf"
 
 const SHELF_DELIMITER = ";"
 
-export const parseShelfs = (shelfs?: string) => {
-  if (!!shelfs) {
-    const parsedList = shelfs.split(SHELF_DELIMITER)
+export const parseShelves = (shelves?: string) => {
+  if (!!shelves) {
+    const parsedList = shelves.split(SHELF_DELIMITER)
 
     //* Remove empty strings
     const filteredList = parsedList.filter(Boolean)
@@ -15,8 +15,8 @@ export const parseShelfs = (shelfs?: string) => {
   return []
 }
 
-export const combineShelfs = (shelfsList: string[]) => {
-  return shelfsList.join(SHELF_DELIMITER)
+export const combineShelves = (shelvesList: string[]) => {
+  return shelvesList.join(SHELF_DELIMITER)
 }
 
 export const getShelfFullCode = (shelf: ShelfWithPlacement) => {

@@ -33,7 +33,7 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
   const productionInfo = good.production_info
 
   const goodTotalQuantity = good.quantity
-  const goodsShelfsList = good?.shelf
+  const goodsShelvesList = good?.shelf
 
   const isShowShelf = !isUserManager
 
@@ -101,11 +101,11 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
           </TableTdSkeleton>
         </Td>
 
-        {/* Shelfs Badges */}
+        {/* Shelves Badges */}
         {isShowShelf && (
           <Td>
             <Flex w="fit-content" flexWrap="wrap" gap={1}>
-              {goodsShelfsList?.map((shelf, index) => (
+              {goodsShelvesList?.map((shelf, index) => (
                 <ShelfBadge key={index} shelf={shelf} />
               ))}
             </Flex>

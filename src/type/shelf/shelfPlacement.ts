@@ -8,6 +8,6 @@ export type ShelfPlacement = {
   created_at?: Date
 }
 
-export type PlacementWithShelfsWithStorageGoods = WithId<ShelfPlacement> & {
+export type PlacementWithShelvesWithStorageGoods = WithId<ShelfPlacement> & {
   shelf?: ShelfWithStorageGoods[]
 }

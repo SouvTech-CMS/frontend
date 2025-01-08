@@ -10,6 +10,7 @@ import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { FullStorageTotalAmountLabel } from "component/storage/FullStorageTotalAmountLabel"
 import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
+import { ChooseDefectOrErrorBtn } from "component/storageGoodDefect/ChooseDefectOrErrorBtn"
 import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
@@ -101,8 +102,19 @@ export const Storage = (props: PageProps) => {
           </Flex>
         </Flex>
 
-        <Flex w="full" direction="row" mt={2}>
+        <Flex
+          w="full"
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mt={2}
+          px={1}
+        >
+          {/* Storage Total Amount */}
           <FullStorageTotalAmountLabel />
+
+          {/* Defect or Error */}
+          <ChooseDefectOrErrorBtn />
         </Flex>
 
         {!isStorageGoodsExist && isLoading && <LoadingPage />}
