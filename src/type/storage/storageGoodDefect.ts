@@ -4,4 +4,6 @@ export type StorageGoodDefect = {
   supplier_id?: number
   engraver_id?: number
   created_at?: Date
+  // Just for frontend to identify objects
+  index?: number
 }

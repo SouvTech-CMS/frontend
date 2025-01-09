@@ -68,7 +68,7 @@ export const SupplierSelect: FC<SupplierSelectProps> = (props) => {
               value: selectedSupplier.id,
               label: selectedSupplier.name,
             }
-          : undefined
+          : null
       }
       onChange={handleSelect}
       isSearchable

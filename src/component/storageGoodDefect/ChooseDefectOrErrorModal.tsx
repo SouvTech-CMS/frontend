@@ -35,12 +35,14 @@ export const ChooseDefectOrErrorModal: FC<ChooseDefectOrErrorModalProps> = (
     setIsEngraverErrorSelected(false)
 
     onAddDefectOrErrorModalOpen()
+    onClose()
   }
 
   const handleErrorAdd = () => {
     setIsEngraverErrorSelected(true)
 
     onAddDefectOrErrorModalOpen()
+    onClose()
   }
 
   return (

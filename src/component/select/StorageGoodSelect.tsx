@@ -49,10 +49,11 @@ export const StorageGoodSelect: FC<StorageGoodSelectProps> = (props) => {
     onSelect(storageGoodId)
   }
 
-  const selectedStorageGood = storageGoodsList?.find(
+  const storageGood = storageGoodsList?.find(
     (storageGood) => storageGood.id === selectedId,
   )
-  const isSelectedStorageGoodExists = !!selectedStorageGood
+
+  const isSelectedStorageGoodExists = !!storageGood
 
   const isSelectedStorageGoodInvalid = !selectedId
 
@@ -76,10 +77,10 @@ export const StorageGoodSelect: FC<StorageGoodSelectProps> = (props) => {
       value={
         isSelectedStorageGoodExists
           ? {
-              value: selectedStorageGood.id,
-              label: `${selectedStorageGood.uniquename} - ${selectedStorageGood.name}`,
+              value: storageGood.id,
+              label: `${storageGood.uniquename} - ${storageGood.name}`,
             }
-          : undefined
+          : null
       }
       onChange={handleSelect}
       isSearchable
