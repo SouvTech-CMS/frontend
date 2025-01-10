@@ -115,7 +115,7 @@ export const UserCard: FC<UserCardProps> = (props) => {
           />
         </CardHeader>
 
-        <CardBody>
+        <CardBody pt={0}>
           <Flex w="full" direction="column" gap={5}>
             {/* Salary */}
             {isSalaryExists && (
