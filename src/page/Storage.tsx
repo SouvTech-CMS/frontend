@@ -20,9 +20,10 @@ import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
 import {
-  GoodWithShops,
+  FullStorageGood,
   StorageGoodSearchFilter,
 } from "type/storage/storageGood"
+import { WithId } from "type/withId"
 
 export const Storage = (props: PageProps) => {
   const { guideNotionPageId } = props
@@ -41,7 +42,7 @@ export const Storage = (props: PageProps) => {
     isLoading,
     refetch,
     isRefetching,
-  } = useQuery<ApiResponse<GoodWithShops[]>>("storageGoodsList", () =>
+  } = useQuery<ApiResponse<WithId<FullStorageGood>[]>>("storageGoodsList", () =>
     getAllStorageGoods({
       limit: rowsPerPageCount,
       offset,

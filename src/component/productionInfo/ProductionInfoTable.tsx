@@ -6,9 +6,10 @@ import { useUserContext } from "context/user"
 import { useUserTableAccess } from "hook/useUserTableAccess"
 import { FC } from "react"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
+import { WithId } from "type/withId"
 
 interface ProductionInfoTableProps {
-  goodsWithProductionInfoList: StorageGoodWithProductionInfo[]
+  goodsWithProductionInfoList: WithId<StorageGoodWithProductionInfo>[]
   selectedShopId: number
 }
 

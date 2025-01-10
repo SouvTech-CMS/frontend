@@ -19,12 +19,13 @@ import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import { useStorageGoodUpdateMutation } from "service/storage/storageGood"
 import { StorageActualInfo } from "type/storage/storage"
-import { GoodWithShops, StorageGoodUpdate } from "type/storage/storageGood"
+import { FullStorageGood, StorageGoodUpdate } from "type/storage/storageGood"
+import { WithId } from "type/withId"
 import { numberWithCurrency, roundNumber } from "util/formatting"
 import { notify } from "util/toasts"
 
 interface StorageGoodRowProps {
-  storageGood: GoodWithShops
+  storageGood: WithId<FullStorageGood>
   selectedShopId: number
 }
 
@@ -51,13 +52,14 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   const goodPrimeCost = storageActualInfo?.prime_cost
   const goodBoxesQuantity = storageActualInfo?.box_quantity
 
-  const goodShopsIds = storageGood.shops.map((shop) => shop.id)
+  const goodShopsIds = storageGood.shops?.map((shop) => shop.id)
   const goodShelvesIds = storageGood.shelf?.map((shelf) => shelf.id)
 
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
 
   const toggleGoodIsHidden = async () => {
-    const { shops, shelf, ...updatedStorageGood } = storageGood
+    const { shops, storages, shelf, defect, ...updatedStorageGood } =
+      storageGood
     const updatedIsActul = !goodIsActual
 
     const body: StorageGoodUpdate = {

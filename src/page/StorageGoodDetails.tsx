@@ -9,7 +9,7 @@ import { StorageGoodProperties } from "component/storageGood/StorageGoodProperti
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
 import { PageProps } from "type/page/page"
-import { GoodWithStorages } from "type/storage/storageGood"
+import { FullStorageGood } from "type/storage/storageGood"
 
 type StorageGoodDetailsParams = {
   id: string
@@ -21,7 +21,7 @@ export const StorageGoodDetails = (props: PageProps) => {
   const { id } = useParams<StorageGoodDetailsParams>()
   const storageGoodId = Number(id)
 
-  const { data: storageGood, isLoading } = useQuery<GoodWithStorages>(
+  const { data: storageGood, isLoading } = useQuery<FullStorageGood>(
     ["goodWithStorages", storageGoodId],
     () => getGoodWithStoragesById(storageGoodId),
     {

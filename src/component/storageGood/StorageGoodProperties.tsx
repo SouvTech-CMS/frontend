@@ -4,10 +4,10 @@ import { ShopBadge } from "component/badge/ShopBadge"
 import { SKUBadge } from "component/badge/SKUBadge"
 import { StorageGoodPropertyRow } from "component/storageGood/StorageGoodPropertyRow"
 import { FC } from "react"
-import { GoodWithShops } from "type/storage/storageGood"
+import { FullStorageGood } from "type/storage/storageGood"
 
 interface StorageGoodPropertiesProps {
-  storageGood: GoodWithShops
+  storageGood: FullStorageGood
 }
 
 export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (

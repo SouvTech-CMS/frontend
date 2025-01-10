@@ -24,15 +24,16 @@ import {
 } from "service/storage/storageGood"
 import { ModalProps } from "type/modalProps"
 import {
-  GoodWithShops,
+  FullStorageGood,
   StorageGood,
   StorageGoodCreate,
   StorageGoodUpdate,
 } from "type/storage/storageGood"
+import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
 interface StorageGoodModalProps extends ModalProps {
-  prevGood?: GoodWithShops
+  prevGood?: WithId<FullStorageGood>
 }
 
 const newGood: StorageGood = {
@@ -50,7 +51,7 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
 
   const [good, setGood] = useState<StorageGood>(prevGood || newGood)
 
-  const prevShopsIds = prevGood?.shops.map((shop) => shop.id)
+  const prevShopsIds = prevGood?.shops?.map((shop) => shop.id)
   const [shopsIds, setShopsIds] = useState<number[]>(prevShopsIds || [])
 
   const prevShelvesIds = prevGood?.shelf?.map((shelf) => shelf.id)
@@ -91,8 +92,9 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
 
       notify(`Storage Good #${good?.name} was created successfully`, "success")
     } else {
-      // Remove shelf from good
-      const { shelf, ...updatedGood } = good
+      // Remove additional info from good
+      const { shops, storages, shelf, defect, ...updatedGood } =
+        good as FullStorageGood
 
       const body: StorageGoodUpdate = {
         storage_good: {
