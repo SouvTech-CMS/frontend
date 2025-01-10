@@ -17,6 +17,10 @@ export type UserWithRolesAndShops = WithId<User> & {
   shops: WithId<Shop>[]
 }
 
+export type UserWithShops = User & {
+  shops: WithId<Shop>[]
+}
+
 export type UserWithRolesIdsAndShopsIds = {
   user: WithId<User>
   roles_with_permissions: number[]
