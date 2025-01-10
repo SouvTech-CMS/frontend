@@ -3,6 +3,7 @@ import { TableContextProvider } from "context/table"
 import { Auth } from "page/Auth"
 import { Dashboard } from "page/Dashboard"
 import { DetailedReports } from "page/DetailedReports"
+import { Engravers } from "page/Engravers"
 import { Goods } from "page/Goods"
 import { Guides } from "page/Guides"
 import { Maintenance } from "page/Maintenance"
@@ -27,6 +28,7 @@ import {
   FiHome,
   FiMap,
   FiPackage,
+  FiPenTool,
   FiPocket,
   FiShoppingBag,
   FiShoppingCart,
@@ -188,6 +190,16 @@ export const configuration = {
       path: "/shelves",
       permissions: [Permission.STORAGE_READ],
       component: <Shelves />,
+    },
+    // Engravers
+    {
+      type: "main",
+      icon: FiPenTool,
+      name: "Engravers",
+      path: "/engravers",
+      permissions: [],
+      // TODO: add guide page url
+      component: <Engravers />,
     },
     // Employees
     {
