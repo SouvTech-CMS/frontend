@@ -17,7 +17,7 @@ export type FullStorageGood = StorageGood & {
   shops?: WithId<Shop>[]
   storages?: WithId<Storage>[]
   shelf?: ShelfWithPlacement[]
-  defect?: WithId<StorageGoodDefect>[]
+  defects?: WithId<StorageGoodDefect>[]
 }
 
 export type StorageGoodCreate = {

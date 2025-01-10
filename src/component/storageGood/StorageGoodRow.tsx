@@ -58,7 +58,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
 
   const toggleGoodIsHidden = async () => {
-    const { shops, storages, shelf, defect, ...updatedStorageGood } =
+    const { shops, storages, shelf, defects, ...updatedStorageGood } =
       storageGood
     const updatedIsActul = !goodIsActual
 
