@@ -15,6 +15,8 @@ import { WithId } from "type/withId"
 interface ShopsSelectProps {
   selectedShopsIds: number[]
   onSelect: (shopsIds: number[]) => void
+  isRequired?: boolean
+  isDisabled?: boolean
 }
 
 const selectStyles: ChakraStylesConfig<
@@ -29,12 +31,11 @@ const selectStyles: ChakraStylesConfig<
 }
 
 export const ShopsSelect: FC<ShopsSelectProps> = (props) => {
-  const { selectedShopsIds, onSelect } = props
+  const { selectedShopsIds, onSelect, isRequired, isDisabled } = props
 
-  const { data: shopsList, isLoading } = useQuery<WithId<Shop>[]>(
-    "shopsList",
-    getAllShops,
-  )
+  const { data: shopsList, isLoading: isShopsLoading } = useQuery<
+    WithId<Shop>[]
+  >("shopsList", getAllShops)
 
   const selectedShops = shopsList?.filter((shop) =>
     selectedShopsIds.includes(shop.id),
@@ -47,6 +48,10 @@ export const ShopsSelect: FC<ShopsSelectProps> = (props) => {
     const shopsIds = newValue.map((selectedShop) => selectedShop.value)
     onSelect(shopsIds)
   }
+
+  const isInvalid = isRequired && selectedShopsIds.length === 0
+
+  const isLoading = isDisabled || isShopsLoading
 
   return (
     <Select<SelectOption, true, GroupBase<SelectOption>>
@@ -65,6 +70,7 @@ export const ShopsSelect: FC<ShopsSelectProps> = (props) => {
       useBasicStyles
       isMulti
       onChange={handleShopSelectChange}
+      isInvalid={isInvalid}
       isLoading={isLoading}
       isDisabled={isLoading}
     />
