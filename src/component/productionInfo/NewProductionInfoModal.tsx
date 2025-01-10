@@ -76,26 +76,6 @@ export const NewProductionInfoModal: FC<NewProductionInfoModalProps> = (
           <Flex direction="column" gap={5}>
             {/* Good Name & SKU */}
             <Divider />
-            {/* <Select<SelectOption, false, GroupBase<SelectOption>>
-              chakraStyles={selectStyles}
-              placeholder="Select storage good"
-              options={storageGoodsList?.map((storageGood) => ({
-                value: storageGood.id,
-                // TODO: try to show SKU badge instead of just text
-                // label: (
-                //   <Flex direction="row" alignItems="center" gap={1}>
-                //     <SKUBadge sku={storageGood.uniquename} />
-                //     <Text>{storageGood.name}</Text>
-                //   </Flex>
-                // ),
-                label: `${storageGood.uniquename} - ${storageGood.name}`,
-              }))}
-              onChange={handleStorageGoodSelect}
-              isSearchable
-              isInvalid={isSelectedStorageGoodInvalid}
-              isDisabled={isStorageGoodsLoading}
-            /> */}
-
             <StorageGoodSelect
               selectedId={goodId}
               onSelect={setGoodId}
