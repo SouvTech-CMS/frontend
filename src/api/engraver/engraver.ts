@@ -1,5 +1,9 @@
 import { axiosClient } from "api/axiosClient"
-import { Engraver } from "type/engraver/engraver"
+import {
+  Engraver,
+  EngraverCreate,
+  EngraverUpdate,
+} from "type/engraver/engraver"
 import { WithId } from "type/withId"
 
 export const getAllEngravers = async (): Promise<WithId<Engraver>[]> => {
@@ -12,4 +16,19 @@ export const getEngraverById = async (
 ): Promise<WithId<Engraver>> => {
   const { data: engraver } = await axiosClient.get(`/engraver/id/${engraverId}`)
   return engraver
+}
+
+export const createEngraver = async (
+  engraver: EngraverCreate,
+): Promise<WithId<Engraver>> => {
+  const { data: newEngraver } = await axiosClient.post("/engraver/", engraver)
+  return newEngraver
+}
+
+export const updateEngraver = async (engraver: EngraverUpdate) => {
+  await axiosClient.put("/engraver/", engraver)
+}
+
+export const blockEngraver = async (engraverId: number) => {
+  await axiosClient.delete(`/engraver/${engraverId}`)
 }
