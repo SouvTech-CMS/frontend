@@ -75,17 +75,6 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
 
         <CardBody>
           <Flex direction="column" gap={2}>
-            {/* Shelf */}
-            {/* <Flex alignItems="center" gap={1}>
-              <Text fontWeight="light" color="gray">
-                Shelves:
-              </Text>
-
-              {shelvesList?.map((shelf, index) => (
-                <ShelfBadge key={index} shelf={shelf} />
-              ))}
-            </Flex> */}
-
             {/* Prime Cost */}
             {isPrimeCostExists && (
               <Flex alignItems="center" gap={2}>
