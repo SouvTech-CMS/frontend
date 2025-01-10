@@ -3,7 +3,7 @@ export type StorageGoodDefect = {
   quantity: number
   supplier_id?: number
   engraver_id?: number
-  created_at?: Date
+  created_at?: string
   // Just for frontend to identify objects
   index?: number
 }
