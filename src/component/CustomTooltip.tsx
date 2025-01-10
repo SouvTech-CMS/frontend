@@ -17,8 +17,10 @@ export const CustomTooltip: FCC<CustomTooltipProps> = (props) => {
         </Text>
       }
       placement={placement}
+      hasArrow
     >
-      {children}
+      {/* Wrap in Text to fix positioning */}
+      <Text>{children}</Text>
     </Tooltip>
   )
 }
