@@ -200,6 +200,7 @@ export const configuration = {
       permissions: [],
       // TODO: add guide page url
       component: <Engravers />,
+      isDisabled: true,
     },
     // Employees
     {
