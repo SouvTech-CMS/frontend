@@ -8,7 +8,7 @@ export type Engraver = {
   user: WithId<UserWithShops>
   scheduled_breaks: ScheduledBreak[]
   work_shifts: WorkShiftWithBreaks[]
-  documents: EngraverDocument[]
+  documents: WithId<EngraverDocument>[]
   user_id?: number
   is_blocked?: boolean
   blocked_at?: string
