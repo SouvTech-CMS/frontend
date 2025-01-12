@@ -29,6 +29,6 @@ export const updateEngraver = async (engraver: EngraverUpdate) => {
   await axiosClient.put("/engraver/", engraver)
 }
 
-export const blockEngraver = async (engraverId: number) => {
-  await axiosClient.delete(`/engraver/${engraverId}`)
+export const blockOrUnblockEngraver = async (engraverId: number) => {
+  await axiosClient.delete(`/engraver/${engraverId}/block_or_unblock`)
 }

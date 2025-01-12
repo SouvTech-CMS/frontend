@@ -1,5 +1,5 @@
 import {
-  blockEngraver,
+  blockOrUnblockEngraver,
   createEngraver,
   updateEngraver,
 } from "api/engraver/engraver"
@@ -39,7 +39,7 @@ export const useEngraverUpdateMutation = () => {
 }
 
 export const useEngraverBlockMutation = () => {
-  return useMutation(blockEngraver, {
+  return useMutation(blockOrUnblockEngraver, {
     onSuccess: () => {
       queryClient.invalidateQueries("engraversList")
     },
