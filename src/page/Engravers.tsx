@@ -1,6 +1,7 @@
 import { SimpleGrid } from "@chakra-ui/react"
 import { getAllEngravers } from "api/engraver/engraver"
 import { EngraverCard } from "component/engraver/EngraverCard"
+import { NewEngraverCard } from "component/engraver/NewEngraverCard"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
@@ -35,7 +36,7 @@ export const Engravers = (props: PageProps) => {
 
       {!isLoading ? (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
-          {/* <NewEngraverCard /> */}
+          <NewEngraverCard />
 
           {filteredEngraversList?.map((engraver, index) => (
             <EngraverCard key={index} engraver={engraver} />
