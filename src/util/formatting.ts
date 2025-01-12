@@ -48,3 +48,62 @@ export const dateToDateAsString = (date: Date) => {
 
   return dateAsString
 }
+
+export const dateAsStringToDate = (dateAsString?: string) => {
+  if (!dateAsString) {
+    return
+  }
+
+  const date = new Date(dateAsString)
+  return date
+}
+
+export const formatDate = (date?: Date) => {
+  if (!date) {
+    return
+  }
+
+  const formatedDate = date
+    .toLocaleString(undefined, {
+      weekday: "short",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+    // Remove ","
+    .replaceAll(",", "")
+  return formatedDate
+}
+
+export const getShortTime = (timeString?: string) => {
+  if (!timeString) {
+    return
+  }
+
+  // Extract hours and minutes from the time string
+  const [hours, minutes] = timeString.split(":")
+
+  const time = `${hours}:${minutes}`
+  return time
+}
+
+export const formatTime = (timeString?: string) => {
+  if (!timeString) {
+    return
+  }
+
+  // Extract hours and minutes from the time string
+  const [hours, minutes] = timeString.split(":")
+
+  // Create a Date object using the current date and the extracted time
+  const date = new Date()
+  date.setHours(parseInt(hours, 10))
+  date.setMinutes(parseInt(minutes, 10))
+
+  // Format the time in local format
+  const formatedTime = date.toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+  return formatedTime
+}

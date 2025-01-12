@@ -13,11 +13,12 @@ import { ProductionInfo } from "type/productionInfo/productionInfo"
 import { StorageActualInfo } from "type/storage/storage"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
 import { TableColumn } from "type/tableColumn"
+import { WithId } from "type/withId"
 import { numberWithCurrency, roundNumber } from "util/formatting"
 
 interface ProductionInfoTableRowProps {
   accessibleColumns: (TableColumn | null)[]
-  goodWithProductionInfo: StorageGoodWithProductionInfo
+  goodWithProductionInfo: WithId<StorageGoodWithProductionInfo>
   selectedShopId: number
 }
 
@@ -33,7 +34,7 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
   const productionInfo = good.production_info
 
   const goodTotalQuantity = good.quantity
-  const goodsShelfsList = good?.shelf
+  const goodsShelvesList = good?.shelf
 
   const isShowShelf = !isUserManager
 
@@ -101,11 +102,11 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
           </TableTdSkeleton>
         </Td>
 
-        {/* Shelfs Badges */}
+        {/* Shelves Badges */}
         {isShowShelf && (
           <Td>
             <Flex w="fit-content" flexWrap="wrap" gap={1}>
-              {goodsShelfsList?.map((shelf, index) => (
+              {goodsShelvesList?.map((shelf, index) => (
                 <ShelfBadge key={index} shelf={shelf} />
               ))}
             </Flex>

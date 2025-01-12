@@ -4,10 +4,10 @@ import { ShopBadge } from "component/badge/ShopBadge"
 import { SKUBadge } from "component/badge/SKUBadge"
 import { StorageGoodPropertyRow } from "component/storageGood/StorageGoodPropertyRow"
 import { FC } from "react"
-import { GoodWithShops } from "type/storage/storageGood"
+import { FullStorageGood } from "type/storage/storageGood"
 
 interface StorageGoodPropertiesProps {
-  storageGood: GoodWithShops
+  storageGood: FullStorageGood
 }
 
 export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
@@ -16,7 +16,7 @@ export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
   const { storageGood } = props
 
   const shops = storageGood.shops
-  const shelfs = storageGood.shelf
+  const shelves = storageGood.shelf
 
   const storageGoodPropertiesList = [
     // SKU segment
@@ -50,12 +50,12 @@ export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
         </Flex>
       ),
     },
-    // Shelfs
+    // Shelves
     {
-      name: "Shelfs",
+      name: "Shelves",
       value: (
         <Flex direction="column" gap={1}>
-          {shelfs?.map((shelf, index) => (
+          {shelves?.map((shelf, index) => (
             <ShelfBadge key={index} shelf={shelf} />
           ))}
         </Flex>

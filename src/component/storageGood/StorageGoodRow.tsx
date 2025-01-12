@@ -19,12 +19,13 @@ import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import { useStorageGoodUpdateMutation } from "service/storage/storageGood"
 import { StorageActualInfo } from "type/storage/storage"
-import { GoodWithShops, StorageGoodUpdate } from "type/storage/storageGood"
+import { FullStorageGood, StorageGoodUpdate } from "type/storage/storageGood"
+import { WithId } from "type/withId"
 import { numberWithCurrency, roundNumber } from "util/formatting"
 import { notify } from "util/toasts"
 
 interface StorageGoodRowProps {
-  storageGood: GoodWithShops
+  storageGood: WithId<FullStorageGood>
   selectedShopId: number
 }
 
@@ -46,18 +47,19 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
   const goodTotalQuantity = storageGood.quantity
   const goodIsActual = storageGood.is_actual
-  const goodsShelfsList = storageGood?.shelf
+  const goodsShelvesList = storageGood?.shelf
 
   const goodPrimeCost = storageActualInfo?.prime_cost
   const goodBoxesQuantity = storageActualInfo?.box_quantity
 
-  const goodShopsIds = storageGood.shops.map((shop) => shop.id)
-  const goodShelfsIds = storageGood.shelf?.map((shelf) => shelf.id)
+  const goodShopsIds = storageGood.shops?.map((shop) => shop.id)
+  const goodShelvesIds = storageGood.shelf?.map((shelf) => shelf.id)
 
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
 
   const toggleGoodIsHidden = async () => {
-    const { shops, shelf, ...updatedStorageGood } = storageGood
+    const { shops, storages, shelf, defects, ...updatedStorageGood } =
+      storageGood
     const updatedIsActul = !goodIsActual
 
     const body: StorageGoodUpdate = {
@@ -66,7 +68,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
         is_actual: updatedIsActul,
       },
       shops_ids: goodShopsIds,
-      shelf: goodShelfsIds,
+      shelf: goodShelvesIds,
     }
 
     await storageGoodUpdateMutation.mutateAsync(body)
@@ -126,10 +128,10 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
           </TableTdSkeleton>
         </Td>
 
-        {/* Shelfs Badges */}
+        {/* Shelves Badges */}
         <Td>
           <Flex flexWrap="wrap" gap={1}>
-            {goodsShelfsList?.map((shelf, index) => (
+            {goodsShelvesList?.map((shelf, index) => (
               <ShelfBadge key={index} shelf={shelf} />
             ))}
           </Flex>

@@ -1,5 +1,5 @@
 import { Button, Flex, useColorMode } from "@chakra-ui/react"
-import { CommingSoonTooltip } from "component/CommingSoonTooltip"
+import { ComingSoonTooltip } from "component/ComingSoonTooltip"
 import { NotificationsPopover } from "component/notification/NotificationsPopover"
 import { ProfileMenu } from "component/page/ProfileMenu"
 import { SearchBar } from "component/page/SearchBar"
@@ -22,9 +22,9 @@ export const HeadingBtns: FC<HeadingBtnsProps> = (props) => {
       {!isSearchHidden && <SearchBar isDisabled={isSearchDisabled} />}
 
       {/* Notifications */}
-      <CommingSoonTooltip>
+      <ComingSoonTooltip>
         <NotificationsPopover />
-      </CommingSoonTooltip>
+      </ComingSoonTooltip>
 
       {/* Avatar with Menu */}
       <ProfileMenu />

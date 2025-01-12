@@ -5,9 +5,9 @@ export type ShelfPlacement = {
   name: string
   name_hash: string
   description?: string
-  created_at?: Date
+  created_at?: string
 }
 
-export type PlacementWithShelfsWithStorageGoods = WithId<ShelfPlacement> & {
+export type PlacementWithShelvesWithStorageGoods = WithId<ShelfPlacement> & {
   shelf?: ShelfWithStorageGoods[]
 }

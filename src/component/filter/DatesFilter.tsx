@@ -66,6 +66,7 @@ export const DatesFilter: FC<DatesFilterProps> = (props) => {
         onDateChange={handleDatesChange}
         configs={{
           dateFormat: "yyyy-MM-dd",
+          monthsToDisplay: 1,
         }}
       />
 

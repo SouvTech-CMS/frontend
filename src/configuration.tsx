@@ -3,6 +3,7 @@ import { TableContextProvider } from "context/table"
 import { Auth } from "page/Auth"
 import { Dashboard } from "page/Dashboard"
 import { DetailedReports } from "page/DetailedReports"
+import { Engravers } from "page/Engravers"
 import { Goods } from "page/Goods"
 import { Guides } from "page/Guides"
 import { Maintenance } from "page/Maintenance"
@@ -13,7 +14,7 @@ import { ProductionInfo } from "page/ProductionInfo"
 import { Purchases } from "page/Purchases"
 import { PurchasesHistory } from "page/PurchasesHistory"
 import { Roles } from "page/Roles"
-import { Shelfs } from "page/Shelfs"
+import { Shelves } from "page/Shelves"
 import { Storage } from "page/Storage"
 import { StorageGoodDetails } from "page/StorageGoodDetails"
 import { Suppliers } from "page/Suppliers"
@@ -27,6 +28,7 @@ import {
   FiHome,
   FiMap,
   FiPackage,
+  FiPenTool,
   FiPocket,
   FiShoppingBag,
   FiShoppingCart,
@@ -180,14 +182,25 @@ export const configuration = {
         </TableContextProvider>
       ),
     },
-    // Shelfs
+    // Shelves
     {
       type: "main",
       icon: FiHash,
-      name: "Shelfs",
-      path: "/shelfs",
+      name: "Shelves",
+      path: "/shelves",
       permissions: [Permission.STORAGE_READ],
-      component: <Shelfs />,
+      component: <Shelves />,
+    },
+    // Engravers
+    {
+      type: "main",
+      icon: FiPenTool,
+      name: "Engravers",
+      path: "/engravers",
+      permissions: [],
+      // TODO: add guide page url
+      component: <Engravers />,
+      isDisabled: true,
     },
     // Employees
     {

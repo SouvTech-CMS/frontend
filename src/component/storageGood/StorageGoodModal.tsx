@@ -13,7 +13,7 @@ import {
   Textarea,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { ShelfsSelect } from "component/select/ShelfsSelect"
+import { ShelvesSelect } from "component/select/ShelvesSelect"
 import { ShopsSelect } from "component/select/ShopsSelect"
 import { useUserContext } from "context/user"
 import { FC, useEffect, useState } from "react"
@@ -24,15 +24,16 @@ import {
 } from "service/storage/storageGood"
 import { ModalProps } from "type/modalProps"
 import {
-  GoodWithShops,
+  FullStorageGood,
   StorageGood,
   StorageGoodCreate,
   StorageGoodUpdate,
 } from "type/storage/storageGood"
+import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
 interface StorageGoodModalProps extends ModalProps {
-  prevGood?: GoodWithShops
+  prevGood?: WithId<FullStorageGood>
 }
 
 const newGood: StorageGood = {
@@ -50,11 +51,11 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
 
   const [good, setGood] = useState<StorageGood>(prevGood || newGood)
 
-  const prevShopsIds = prevGood?.shops.map((shop) => shop.id)
+  const prevShopsIds = prevGood?.shops?.map((shop) => shop.id)
   const [shopsIds, setShopsIds] = useState<number[]>(prevShopsIds || [])
 
-  const prevShelfsIds = prevGood?.shelf?.map((shelf) => shelf.id)
-  const [shelfsIds, setShelfsIds] = useState<number[]>(prevShelfsIds || [])
+  const prevShelvesIds = prevGood?.shelf?.map((shelf) => shelf.id)
+  const [shelvesIds, setShelvesIds] = useState<number[]>(prevShelvesIds || [])
 
   const storageGoodCreateMutation = useStorageGoodCreateMutation()
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
@@ -84,15 +85,16 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
       const body: StorageGoodCreate = {
         storage_good: good,
         shops_ids: shopsIds,
-        shelf: shelfsIds,
+        shelf: shelvesIds,
       }
 
       await storageGoodCreateMutation.mutateAsync(body)
 
       notify(`Storage Good #${good?.name} was created successfully`, "success")
     } else {
-      // Remove shelf from good
-      const { shelf, ...updatedGood } = good
+      // Remove additional info from good
+      const { shops, storages, shelf, defects, ...updatedGood } =
+        good as FullStorageGood
 
       const body: StorageGoodUpdate = {
         storage_good: {
@@ -100,7 +102,7 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
           id: prevGood.id,
         },
         shops_ids: shopsIds,
-        shelf: shelfsIds,
+        shelf: shelvesIds,
       }
 
       await storageGoodUpdateMutation.mutateAsync(body)
@@ -119,12 +121,12 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
       if (isNewGood) {
         setGood(newGood)
         setShopsIds([])
-        setShelfsIds([])
+        setShelvesIds([])
       } else {
         const { shops, ...allParams } = prevGood
         setGood(allParams)
         setShopsIds(prevShopsIds || [])
-        setShelfsIds(prevShelfsIds || [])
+        setShelvesIds(prevShelvesIds || [])
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -206,10 +208,10 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
               <ShopsSelect selectedShopsIds={shopsIds} onSelect={setShopsIds} />
             )}
 
-            {/* Shelfs Select */}
-            <ShelfsSelect
-              selectedShelfsIds={shelfsIds}
-              onSelect={setShelfsIds}
+            {/* Shelves Select */}
+            <ShelvesSelect
+              selectedShelvesIds={shelvesIds}
+              onSelect={setShelvesIds}
             />
 
             {/* Description Input */}
@@ -243,7 +245,7 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
               Save
             </Button>
 
-            <Button variant="solid" colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </Flex>

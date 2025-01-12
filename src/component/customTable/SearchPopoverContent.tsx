@@ -20,8 +20,13 @@ export const SearchPopoverContent = <SearchFilterType,>(
 ) => {
   const { initialRef, param, onClose } = props
 
-  const { searchFilter, setSearchFilter, getSearchFilterValue } =
-    useTableContext<SearchFilterType>()
+  const {
+    searchFilter,
+    setSearchFilter,
+    getSearchFilterValue,
+    setSortDirection,
+    setSortField,
+  } = useTableContext<SearchFilterType>()
 
   const [searchValue, setSearchValue] = useState<string>(
     getSearchFilterValue(param),
@@ -35,6 +40,9 @@ export const SearchPopoverContent = <SearchFilterType,>(
   }
 
   const handleSearchFilterChange = () => {
+    setSortDirection("desc")
+    setSortField(param as string)
+
     setSearchFilter(
       (prevSearchFilter) =>
         ({

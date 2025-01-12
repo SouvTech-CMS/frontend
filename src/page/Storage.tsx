@@ -10,6 +10,7 @@ import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { FullStorageTotalAmountLabel } from "component/storage/FullStorageTotalAmountLabel"
 import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
+import { ChooseDefectOrErrorBtn } from "component/storageGoodDefect/ChooseDefectOrErrorBtn"
 import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
@@ -19,9 +20,10 @@ import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
 import {
-  GoodWithShops,
+  FullStorageGood,
   StorageGoodSearchFilter,
 } from "type/storage/storageGood"
+import { WithId } from "type/withId"
 
 export const Storage = (props: PageProps) => {
   const { guideNotionPageId } = props
@@ -40,7 +42,7 @@ export const Storage = (props: PageProps) => {
     isLoading,
     refetch,
     isRefetching,
-  } = useQuery<ApiResponse<GoodWithShops[]>>("storageGoodsList", () =>
+  } = useQuery<ApiResponse<WithId<FullStorageGood>[]>>("storageGoodsList", () =>
     getAllStorageGoods({
       limit: rowsPerPageCount,
       offset,
@@ -101,8 +103,19 @@ export const Storage = (props: PageProps) => {
           </Flex>
         </Flex>
 
-        <Flex w="full" direction="row" mt={2}>
+        <Flex
+          w="full"
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mt={2}
+          px={1}
+        >
+          {/* Storage Total Amount */}
           <FullStorageTotalAmountLabel />
+
+          {/* Defect or Error */}
+          <ChooseDefectOrErrorBtn />
         </Flex>
 
         {!isStorageGoodsExist && isLoading && <LoadingPage />}

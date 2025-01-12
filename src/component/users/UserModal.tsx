@@ -345,7 +345,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
             <Flex w="full" direction="column" gap={5}>
               {/* Shops badges */}
               <Flex direction="column">
-                <Text fontWeight="bold">Stores:</Text>
+                <Text fontWeight="bold">Shops:</Text>
 
                 <FormControl
                   isInvalid={isSelectedShopsInvalid}

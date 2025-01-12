@@ -28,7 +28,7 @@ export const NewStorageCard: FC<NewStorageCardProps> = (props) => {
       <Button
         h="full"
         w="full"
-        minH={300}
+        minH={250}
         variant="newCard"
         onClick={onStorageCreateModalOpen}
         borderRadius={10}

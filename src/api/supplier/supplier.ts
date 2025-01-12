@@ -7,6 +7,13 @@ export const getAllSuppliers = async (): Promise<SupplierWithManagers[]> => {
   return suppliersList
 }
 
+export const getSupplierById = async (
+  supplierId: number,
+): Promise<SupplierWithManagers> => {
+  const { data: supplier } = await axiosClient.get(`/supplier/id/${supplierId}`)
+  return supplier
+}
+
 export const createSupplier = async (
   supplier: Supplier,
 ): Promise<WithId<Supplier>> => {

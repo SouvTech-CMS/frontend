@@ -16,7 +16,7 @@ export const Suppliers = (props: PageProps) => {
   const { query, isQueryExists } = useSearchContext()
 
   const { data: suppliersList, isLoading } = useQuery<SupplierWithManagers[]>(
-    "suppliersWithManagersList",
+    "suppliersList",
     getAllSuppliers,
   )
 

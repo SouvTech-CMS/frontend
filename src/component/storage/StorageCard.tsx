@@ -37,7 +37,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
   const isPrimeCostExists = storage.prime_cost !== undefined
   const isItemPriceExists = storage.cost_per_item !== undefined
 
-  // const shelfsList = parseShelfs(storage.shelf)
+  // const shelvesList = parseShelves(storage.shelf)
 
   const {
     isOpen: isStorageUpdateModalOpen,
@@ -53,7 +53,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
 
   return (
     <>
-      <Card h="full" w="full" minH={300} size="sm">
+      <Card h="full" w="full" minH={250} size="sm">
         <CardHeader>
           <Flex direction="column" gap={2}>
             {/* Created At */}
@@ -75,20 +75,9 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
 
         <CardBody>
           <Flex direction="column" gap={2}>
-            {/* Shelf */}
-            {/* <Flex alignItems="center" gap={1}>
-              <Text fontWeight="light" color="gray">
-                Shelfs:
-              </Text>
-
-              {shelfsList?.map((shelf, index) => (
-                <ShelfBadge key={index} shelf={shelf} />
-              ))}
-            </Flex> */}
-
             {/* Prime Cost */}
             {isPrimeCostExists && (
-              <Flex alignItems="center" gap={2}>
+              <Flex alignItems="center" flexWrap="wrap" gap={2}>
                 <Text fontWeight="light" color="gray">
                   Prime Cost:
                 </Text>
@@ -101,7 +90,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
 
             {/* Item Price */}
             {isItemPriceExists && (
-              <Flex alignItems="center" gap={2}>
+              <Flex alignItems="center" flexWrap="wrap" gap={2}>
                 <Text fontWeight="light" color="gray">
                   Item Price:
                 </Text>
@@ -113,7 +102,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
             )}
 
             {/* Quantity */}
-            <Flex alignItems="center" gap={2}>
+            <Flex alignItems="center" flexWrap="wrap" gap={2}>
               <Text fontWeight="light" color="gray">
                 Quantity:
               </Text>
@@ -122,7 +111,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
             </Flex>
 
             {/* In Box Quantity */}
-            <Flex alignItems="center" gap={2}>
+            <Flex alignItems="center" flexWrap="wrap" gap={2}>
               <Text fontWeight="light" color="gray">
                 Goods In Box Quantity:
               </Text>
@@ -131,7 +120,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
             </Flex>
 
             {/* Box Quantity */}
-            <Flex alignItems="center" gap={2}>
+            <Flex alignItems="center" flexWrap="wrap" gap={2}>
               <Text fontWeight="light" color="gray">
                 Boxes Quantity:
               </Text>

@@ -51,13 +51,13 @@ export const GoodInOrderCard: FC<GoodInOrderCardProps> = (props) => {
             <SKUBadge size="xs" sku={good.uniquename} />
           </Flex>
 
-          {/* Item Price */}
+          {/* Prime Cost */}
           <Flex alignItems="center" gap={2}>
             <Text fontWeight="light" color="gray">
-              Item Price:
+              Prime Cost:
             </Text>
 
-            <Text>{numberWithCurrency(good.price)}</Text>
+            <Text>{numberWithCurrency(roundNumber(good.prime_cost))}</Text>
           </Flex>
 
           {/* Quantity */}

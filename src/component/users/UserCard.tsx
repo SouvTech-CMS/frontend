@@ -10,7 +10,7 @@ import {
   WrapItem,
   useDisclosure,
 } from "@chakra-ui/react"
-import { CardMenu } from "component/users/UserCardMenu"
+import { UserCardMenu } from "component/users/UserCardMenu"
 import { UserDeleteModal } from "component/users/UserDeleteModal"
 import { UserModal } from "component/users/UserModal"
 import { useCommentInput } from "hook/useCommentInput"
@@ -109,13 +109,13 @@ export const UserCard: FC<UserCardProps> = (props) => {
           </Flex>
 
           {/* Actions Menu Button */}
-          <CardMenu
+          <UserCardMenu
             onEdit={onUserEditModalOpen}
             onDelete={onUserDeleteModalOpen}
           />
         </CardHeader>
 
-        <CardBody>
+        <CardBody pt={0}>
           <Flex w="full" direction="column" gap={5}>
             {/* Salary */}
             {isSalaryExists && (
