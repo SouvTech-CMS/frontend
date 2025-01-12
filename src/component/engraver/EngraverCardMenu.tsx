@@ -12,10 +12,11 @@ import { FiEdit, FiMoreVertical, FiTrash2 } from "react-icons/fi"
 interface EngraverCardMenuProps {
   onEdit: () => void
   onBlock: () => void
+  wasBlocked?: boolean
 }
 
 export const EngraverCardMenu: FC<EngraverCardMenuProps> = (props) => {
-  const { onEdit, onBlock } = props
+  const { onEdit, onBlock, wasBlocked } = props
 
   return (
     <Flex position="absolute" top={0} right={0}>
@@ -33,7 +34,7 @@ export const EngraverCardMenu: FC<EngraverCardMenuProps> = (props) => {
           </MenuItem>
 
           <MenuItem icon={<FiTrash2 />} color="red" onClick={onBlock}>
-            Block
+            {wasBlocked ? "Unblock" : "Block"}
           </MenuItem>
         </MenuList>
       </Menu>

@@ -24,6 +24,8 @@ interface EngraverBlockModalProps extends ModalProps {
 export const EngraverBlockModal: FC<EngraverBlockModalProps> = (props) => {
   const { engraver, isOpen, onClose } = props
 
+  const isEngraverWasBlocked = engraver.is_blocked
+
   const engraverId = engraver.id
   const engraverUser = engraver.user
   const engraverName = engraverUser.fio || engraverUser.username
@@ -35,7 +37,12 @@ export const EngraverBlockModal: FC<EngraverBlockModalProps> = (props) => {
   const onEngraverBlockConfirm = async () => {
     await engraverBlockMutation.mutateAsync(engraverId)
 
-    notify(`Engraver ${engraverName} was successfully blocked`, "success")
+    notify(
+      `Engraver ${engraverName} was ${
+        isEngraverWasBlocked ? "unblocked" : "blocked"
+      } successfully`,
+      "success",
+    )
 
     onClose()
   }
@@ -45,11 +52,16 @@ export const EngraverBlockModal: FC<EngraverBlockModalProps> = (props) => {
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Block Engraver</ModalHeader>
+        <ModalHeader>
+          {isEngraverWasBlocked ? "Unblock" : "Block"} Engraver
+        </ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
-          <Text>Are you sure you want to block the engraver</Text>
+          <Text>
+            Are you sure you want to
+            {isEngraverWasBlocked ? " unblock" : " block"} the engraver
+          </Text>
           <Text fontWeight="bold">{engraverName}</Text>
         </ModalBody>
 
@@ -61,7 +73,7 @@ export const EngraverBlockModal: FC<EngraverBlockModalProps> = (props) => {
               isLoading={isLoading}
               isDisabled={isLoading}
             >
-              Block
+              {isEngraverWasBlocked ? "Unblock" : "Block"}
             </Button>
 
             <Button variant="secondary" onClick={onClose}>

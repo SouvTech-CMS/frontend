@@ -141,6 +141,7 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
           <EngraverCardMenu
             onEdit={onEngraverEditModalOpen}
             onBlock={onEngraverBlockModalOpen}
+            wasBlocked={isBlocked}
           />
         </CardHeader>
 
