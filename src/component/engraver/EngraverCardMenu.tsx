@@ -6,17 +6,21 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
-import { FiEdit, FiMoreVertical, FiTrash2 } from "react-icons/fi"
+import { FiEdit, FiFileText, FiMoreVertical, FiTrash2 } from "react-icons/fi"
 
 interface EngraverCardMenuProps {
+  onDocuments: () => void
   onEdit: () => void
   onBlock: () => void
   wasBlocked?: boolean
 }
 
 export const EngraverCardMenu: FC<EngraverCardMenuProps> = (props) => {
-  const { onEdit, onBlock, wasBlocked } = props
+  const { onDocuments, onEdit, onBlock, wasBlocked } = props
+
+  const { canReadDocuments } = useUserPermissions()
 
   return (
     <Flex position="absolute" top={0} right={0}>
@@ -29,6 +33,14 @@ export const EngraverCardMenu: FC<EngraverCardMenuProps> = (props) => {
         />
 
         <MenuList>
+          <MenuItem
+            icon={<FiFileText />}
+            onClick={onDocuments}
+            isDisabled={!canReadDocuments}
+          >
+            Documents
+          </MenuItem>
+
           <MenuItem icon={<FiEdit />} onClick={onEdit}>
             Edit
           </MenuItem>

@@ -15,10 +15,12 @@ import {
 import { ShopBadge } from "component/badge/ShopBadge"
 import { CustomTooltip } from "component/CustomTooltip"
 import { DividerWithTitle } from "component/DividerWithTitle"
+import { DocumentsModal } from "component/engraver/document/DocumentsModal"
 import { EngraverBlockModal } from "component/engraver/EngraverBlockModal"
 import { EngraverCardMenu } from "component/engraver/EngraverCardMenu"
 import { EngraverModal } from "component/engraver/EngraverModal"
 import { useCommentInput } from "hook/useCommentInput"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import {
   FiAtSign,
@@ -39,6 +41,10 @@ interface EngraverCardProps {
 export const EngraverCard: FC<EngraverCardProps> = (props) => {
   const { engraver } = props
 
+  const { canEditDocuments } = useUserPermissions()
+
+  const engraverId = engraver.id
+
   const isBlocked = engraver.is_blocked
   const blockedAt = dateAsStringToDate(engraver.blocked_at)
 
@@ -54,9 +60,16 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
 
   const { comment } = useCommentInput({
     objectName: "engraver",
-    objectId: engraver.id,
+    objectId: engraverId,
   })
   const isCommentExists = !!comment.trim()
+
+  // Documents
+  const {
+    isOpen: isDocumentsModalOpen,
+    onOpen: onDocumentsModalOpen,
+    onClose: onDocumentsModalClose,
+  } = useDisclosure()
 
   // Edit
   const {
@@ -83,7 +96,7 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
     <>
       <Card h="full" w="full" minH={150} variant="card" borderRadius={20}>
         <CardHeader>
-          <Flex direction="column" gap={2}>
+          <Flex direction="column" pr={5} gap={2}>
             <Heading size="md">
               <Flex direction="row" alignItems="center" gap={2}>
                 {/* Lock icon with Tooltip */}
@@ -139,6 +152,7 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
 
           {/* Menu Btn */}
           <EngraverCardMenu
+            onDocuments={onDocumentsModalOpen}
             onEdit={onEngraverEditModalOpen}
             onBlock={onEngraverBlockModalOpen}
             wasBlocked={isBlocked}
@@ -173,63 +187,78 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
         </CardBody>
 
         <CardFooter pt={2}>
-          {/* Scheduled Breaks */}
-          <Flex w="full" direction="column" gap={1}>
-            <Flex mb={2}>
-              <DividerWithTitle
-                title={
-                  <Flex
-                    w="full"
-                    direction="row"
-                    alignItems="center"
-                    fontWeight="medium"
-                    fontSize="sm"
-                    gap={1}
-                  >
-                    <FiClock />
+          <Flex w="full" direction="column" gap={5}>
+            {/* Scheduled Breaks */}
+            <Flex w="full" direction="column" gap={1}>
+              <Flex mb={2}>
+                <DividerWithTitle
+                  title={
+                    <Flex
+                      w="full"
+                      direction="row"
+                      alignItems="center"
+                      fontWeight="medium"
+                      fontSize="sm"
+                      gap={1}
+                    >
+                      <FiClock />
 
-                    <Text>Scheduled Breaks</Text>
-                  </Flex>
-                }
-                fontSize="sm"
-              />
-            </Flex>
-
-            {/* First 2 breaks */}
-            <Flex direction="column" alignSelf="center">
-              <Flex w="fit-content" direction="column" alignItems="flex-start">
-                {scheduledBreaks
-                  .slice(0, 2)
-                  .map(({ started_at, finished_at }, index) => (
-                    <Flex key={index} direction="row" alignItems="center">
-                      <Text fontSize="sm">
-                        {formatTime(started_at)} - {formatTime(finished_at)}
-                      </Text>
+                      <Text>Scheduled Breaks</Text>
                     </Flex>
-                  ))}
+                  }
+                  fontSize="sm"
+                />
+              </Flex>
 
-                <Flex w="full" direction="row" justifyContent="center">
-                  {/* Btn to open more breaks */}
-                  <Button
-                    w="full"
-                    variant="ghost"
-                    size="xs"
-                    onClick={onEngraverEditModalOpen}
-                  >
-                    {scheduledBreaks.length > 2 ? "Show more" : "Add breaks"}
-                  </Button>
+              {/* First 2 breaks */}
+              <Flex direction="column" alignSelf="center">
+                <Flex
+                  w="fit-content"
+                  direction="column"
+                  alignItems="flex-start"
+                >
+                  {scheduledBreaks
+                    .slice(0, 2)
+                    .map(({ started_at, finished_at }, index) => (
+                      <Flex key={index} direction="row" alignItems="center">
+                        <Text fontSize="sm">
+                          {formatTime(started_at)} - {formatTime(finished_at)}
+                        </Text>
+                      </Flex>
+                    ))}
+
+                  <Flex w="full" direction="row" justifyContent="center">
+                    {/* Btn to open more breaks */}
+                    <Button
+                      w="full"
+                      variant="ghost"
+                      size="xs"
+                      onClick={onEngraverEditModalOpen}
+                    >
+                      {scheduledBreaks.length > 2 ? "Show more" : "Add breaks"}
+                    </Button>
+                  </Flex>
                 </Flex>
               </Flex>
-            </Flex>
 
-            <Divider />
+              <Divider />
+            </Flex>
           </Flex>
         </CardFooter>
       </Card>
 
       {/* Modals */}
       <>
-        {/* Edit modal */}
+        {/* Documents Modal */}
+        <DocumentsModal
+          engraverId={engraverId}
+          documents={documents}
+          isOpen={isDocumentsModalOpen}
+          onClose={onDocumentsModalClose}
+          isReadOnly={!canEditDocuments}
+        />
+
+        {/* Edit Modal */}
         <EngraverModal
           prevEngraver={engraver}
           prevEngraverUser={user}
