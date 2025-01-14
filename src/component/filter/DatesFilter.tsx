@@ -3,14 +3,18 @@ import { RangeDatepicker } from "chakra-dayzed-datepicker"
 import { useTableContext } from "context/table"
 import { FC, useEffect, useState } from "react"
 import { OrderSearchFilter } from "type/order/order"
-import { dateToDateAsString } from "util/formatting"
+import { dateToDateAsString, stringToDate } from "util/formatting"
 
 interface DatesFilterProps {}
 
 export const DatesFilter: FC<DatesFilterProps> = (props) => {
-  const { setSearchFilter } = useTableContext<OrderSearchFilter>()
+  const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
 
-  const [selectedDates, setSelectedDates] = useState<Date[]>([])
+  const startDate = stringToDate(searchFilter?.start_date)
+  const endDate = stringToDate(searchFilter?.end_date)
+  const defaultDates = !!startDate && !!endDate ? [startDate, endDate] : []
+
+  const [selectedDates, setSelectedDates] = useState<Date[]>(defaultDates)
 
   const isAnyDateSelected = selectedDates.length > 0
 
@@ -58,6 +62,19 @@ export const DatesFilter: FC<DatesFilterProps> = (props) => {
       )
     }
   }, [setSearchFilter, selectedDates])
+
+  useEffect(
+    () => {
+      if (
+        selectedDates[0] !== defaultDates[0] &&
+        selectedDates[1] !== defaultDates[1]
+      ) {
+        setSelectedDates(defaultDates)
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [searchFilter?.start_date, searchFilter?.end_date],
+  )
 
   return (
     <Flex alignItems="center" gap={0}>

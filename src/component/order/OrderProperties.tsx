@@ -28,7 +28,7 @@ export const OrderProperties: FC<OrderPropertiesProps> = (props) => {
   )
 
   const orderUrl = getEtsyOrderUrl(order.order_id)
-  const orderDate = stringToDate(order.date).toDateString()
+  const orderDate = stringToDate(order.date)?.toDateString()
 
   const orderPropertiesList = [
     // Order Id on Marketplace

@@ -15,8 +15,14 @@ export const ChartCard: FC<ChartCardProps> = (props) => {
 
   return (
     <Card>
-      <CardBody>
-        <Flex h="full" justifyContent="flex-start" px={2} gap={5}>
+      <CardBody px={4} py={3} pr={20}>
+        <Flex
+          h="full"
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+          gap={5}
+        >
           {/* Big Icon */}
           {!isIconHidden && (
             <Flex
@@ -30,8 +36,9 @@ export const ChartCard: FC<ChartCardProps> = (props) => {
             </Flex>
           )}
 
+          {/* Title & Value */}
           <Flex direction="column" justifyContent="center">
-            <Text fontSize="xs" color="gray" fontWeight="light">
+            <Text fontSize="sm" color="gray" fontWeight="light">
               {title}
             </Text>
 
