@@ -1,4 +1,5 @@
 import { getOrdersAnalytics } from "api/analytics/analytics"
+import { getAllShops } from "api/shop"
 import { ChartData, ChartOptions } from "chart.js"
 import { LoadingPage } from "component/page/LoadingPage"
 import { useTableContext } from "context/table"
@@ -8,6 +9,8 @@ import { useQuery } from "react-query"
 import { useCustomTheme } from "theme"
 import { OrdersAnalyticsResponse } from "type/analytics/analytics"
 import { OrderSearchFilter } from "type/order/order"
+import { Shop } from "type/shop"
+import { WithId } from "type/withId"
 import {
   getFirstCurrentYearDateString,
   getLastCurrentYearDateString,
@@ -43,6 +46,13 @@ export const OrdersPerDayChart: FC<OrdersPerDayChartProps> = (props) => {
 
   const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
 
+  const { data: shopsList } = useQuery<WithId<Shop>[]>("shopsList", getAllShops)
+
+  const getShopById = (shopId: number) => {
+    const shop = shopsList?.find((shop) => shop.id === shopId)
+    return shop
+  }
+
   const {
     data: ordersAnalytics,
     isLoading,
@@ -58,12 +68,13 @@ export const OrdersPerDayChart: FC<OrdersPerDayChartProps> = (props) => {
   const data: LineChartData = {
     labels: ordersAnalytics?.labels,
     datasets:
-      ordersAnalytics?.data?.map((shop) => {
-        const [bgColor, borderColor] = getShopColor(colors, shop.shop_id)
+      ordersAnalytics?.data?.map((shopReport) => {
+        const shop = getShopById(shopReport.shop_id)
+        const [bgColor, borderColor] = getShopColor(colors, shopReport.shop_id)
 
         return {
-          label: `Shop ${shop.shop_id}`,
-          data: shop.report.map((report) => report.count),
+          label: `${shop?.name}`,
+          data: shopReport.report.map((report) => report.count),
 
           backgroundColor: `${bgColor}`,
           borderColor: `${borderColor}`,
