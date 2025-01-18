@@ -5,11 +5,15 @@ import {
 import { queryClient } from "api/queryClient"
 import { AxiosError } from "axios"
 import { useMutation } from "react-query"
+import { clearDeviceToken, setDeviceToken } from "util/authorizedDevice"
 import { notify } from "util/toasts"
 
 export const useDeviceCreateMutation = () => {
   return useMutation(createDevice, {
-    onSuccess: () => {
+    onSuccess: (device) => {
+      const deviceToken = device.token!
+      setDeviceToken(deviceToken)
+      queryClient.invalidateQueries("currentDevice")
       queryClient.invalidateQueries("devicesList")
     },
     onError: (error: AxiosError) => {
@@ -24,8 +28,11 @@ export const useDeviceCreateMutation = () => {
 
 // export const useDeviceUpdateMutation = () => {
 //   return useMutation(updateDevice, {
-//     onSuccess: () => {
+//     onSuccess: (device) => {
+//       const deviceToken = device.token!
 //       queryClient.invalidateQueries("devicesList")
+//       queryClient.invalidateQueries("currentDevice")
+//       setDeviceToken(deviceToken)
 //     },
 //     onError: (error: AxiosError) => {
 //       const responseData = error.response?.data as { detail?: string }
@@ -40,6 +47,8 @@ export const useDeviceCreateMutation = () => {
 export const useDeviceDeleteMutation = () => {
   return useMutation(deleteDevice, {
     onSuccess: () => {
+      clearDeviceToken()
+      queryClient.invalidateQueries("currentDevice")
       queryClient.invalidateQueries("devicesList")
     },
     onError: (error: AxiosError) => {
