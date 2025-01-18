@@ -49,7 +49,7 @@ export const Sidebar: FC = () => {
       {isLoadingCurrentUser ? (
         <LoadingPage />
       ) : (
-        <Flex direction="column" w="full" gap={2}>
+        <Flex w="full" direction="column" gap={2}>
           {sideBarRoutes.map(({ icon, name, path, isDisabled }) => (
             <SidebarListItem
               key={name}
