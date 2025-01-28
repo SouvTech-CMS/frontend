@@ -68,7 +68,11 @@ export const configuration = {
       name: "Dashboard",
       path: "/",
       permissions: [],
-      component: <Dashboard />,
+      component: (
+        <TableContextProvider<OrderSearchFilter>>
+          <Dashboard />
+        </TableContextProvider>
+      ),
       isDisabled: true,
     },
     // Reports

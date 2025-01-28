@@ -1,4 +1,8 @@
-export const stringToDate = (dateString: string): Date => {
+export const stringToDate = (dateString?: string) => {
+  if (!dateString) {
+    return
+  }
+
   const [day, month, year] = dateString.split(".").map(Number)
   const date = new Date(year, month - 1, day)
   return date

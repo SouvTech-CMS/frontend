@@ -10,12 +10,23 @@ export const getCurrentMonth = () => {
   return month
 }
 
-export const getMonthsListByYear = (year: number) => {
+export const getMonthsListByYear = (year?: number) => {
   const currentYear = getCurrentYear()
 
   if (year === currentYear) {
-    return MONTHS_LIST.slice(0, getCurrentMonth())
+    const currentMonth = getCurrentMonth()
+    return MONTHS_LIST.slice(0, currentMonth)
   }
 
   return MONTHS_LIST
+}
+
+export const getFirstCurrentYearDateString = () => {
+  const currentYear = getCurrentYear()
+  return `1.1.${currentYear}`
+}
+
+export const getLastCurrentYearDateString = () => {
+  const currentYear = getCurrentYear()
+  return `31.12.${currentYear}`
 }

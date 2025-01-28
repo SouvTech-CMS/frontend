@@ -1,9 +1,7 @@
-import { getCurrentYear } from "util/dates"
-
 export const INITIAL_REPORTS_YEAR = 2021
 
 export const YEARS_LIST = Array.from(
-  { length: getCurrentYear() - INITIAL_REPORTS_YEAR + 1 },
+  { length: new Date().getFullYear() - INITIAL_REPORTS_YEAR + 1 },
   (_, i) => INITIAL_REPORTS_YEAR + i,
 )
 

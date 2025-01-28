@@ -20,7 +20,7 @@ export const OrdersTableRow: FC<OrdersTableRowProps> = (props) => {
   const shop = order.shop
 
   const orderUrl = getEtsyOrderUrl(order.order_id)
-  const orderDate = stringToDate(order.date).toDateString()
+  const orderDate = stringToDate(order.date)?.toDateString()
 
   return (
     <Tr position="relative">

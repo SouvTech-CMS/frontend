@@ -1,10 +1,10 @@
-import { Flex, Select } from "@chakra-ui/react"
+import { Flex } from "@chakra-ui/react"
 import { ActionMeta, SingleValue } from "chakra-react-select"
+import { MonthFilter } from "component/filter/MonthFilter"
 import { ShopFilter } from "component/filter/ShopFilter"
-import { YEARS_LIST } from "constant/reports"
-import { ChangeEvent, Dispatch, FC, SetStateAction } from "react"
+import { YearFilter } from "component/filter/YearFilter"
+import { Dispatch, FC, SetStateAction } from "react"
 import { SelectOption } from "type/selectOption"
-import { getMonthsListByYear } from "util/dates"
 
 interface DetailedReportFiltersProps {
   selectedYear: number
@@ -28,52 +28,23 @@ export const DetailedReportFilters: FC<DetailedReportFiltersProps> = (
     handleShopSelect,
   } = props
 
-  const monthsList = getMonthsListByYear(selectedYear)
-
-  const handleYearSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    const year = Number(e.target.value)
-    setSelectedYear(year)
-  }
-
-  const handleMonthSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    const month = Number(e.target.value)
-    setSelectedMonth(month)
-  }
-
   return (
     <Flex justifyContent="flex-start" alignItems="center" gap={5}>
       {/* Shops Select */}
       <ShopFilter handleShopSelect={handleShopSelect} />
 
       {/* Year Select */}
-      <Flex>
-        <Select
-          placeholder="Select Year"
-          value={selectedYear}
-          onChange={handleYearSelect}
-        >
-          {YEARS_LIST.map((year, index) => (
-            <option key={index} value={year}>
-              {year}
-            </option>
-          ))}
-        </Select>
-      </Flex>
+      <YearFilter
+        selectedYear={selectedYear}
+        setSelectedYear={setSelectedYear}
+      />
 
       {/* Month Select */}
-      <Flex>
-        <Select
-          placeholder="Select Month"
-          value={selectedMonth}
-          onChange={handleMonthSelect}
-        >
-          {monthsList.map((month, index) => (
-            <option key={index} value={index + 1}>
-              {month}
-            </option>
-          ))}
-        </Select>
-      </Flex>
+      <MonthFilter
+        selectedYear={selectedYear}
+        selectedMonth={selectedMonth}
+        setSelectedMonth={setSelectedMonth}
+      />
     </Flex>
   )
 }
