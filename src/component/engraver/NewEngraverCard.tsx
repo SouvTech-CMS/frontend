@@ -15,7 +15,7 @@ export const NewEngraverCard: FC = () => {
       <Button
         h="full"
         w="full"
-        minH={150}
+        minH={250}
         variant="newCard"
         onClick={onEngraverEditModalOpen}
         borderRadius={20}
