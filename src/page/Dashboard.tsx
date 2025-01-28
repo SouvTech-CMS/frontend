@@ -10,12 +10,10 @@ import {
   Tooltip,
 } from "chart.js"
 import { Container } from "component/Container"
-import { ChartCard } from "component/chart/ChartCard"
 import { OrdersPerDayChart } from "component/chart/OrdersPerDayChart"
 import { DatesFilter } from "component/filter/DatesFilter"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
-import { FiBarChart2, FiDollarSign, FiShoppingCart } from "react-icons/fi"
 
 ChartJS.register(
   CategoryScale,
@@ -33,12 +31,11 @@ export const Dashboard = () => {
       <PageHeading title="Dashboard" isSearchHidden />
 
       <Flex w="full" direction="column" gap={10}>
-        <Flex direction="column" gap={3}>
+        {/* <Flex direction="column" gap={3}>
           <Heading size="lg" fontWeight={300}>
             Monthly Statistics
           </Heading>
 
-          {/* <Grid templateColumns="repeat(5, 1fr)" gap={5}> */}
           <Flex w="full" direction="row" alignItems="center" gap={5}>
             <ChartCard
               icon={FiBarChart2}
@@ -58,9 +55,8 @@ export const Dashboard = () => {
               title="Completed"
               value="512 orders"
             />
-            {/* </Grid> */}
           </Flex>
-        </Flex>
+        </Flex> */}
 
         {/* Orders Chart */}
         <Container>
