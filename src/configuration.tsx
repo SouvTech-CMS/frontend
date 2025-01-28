@@ -206,6 +206,7 @@ export const configuration = {
       permissions: [],
       // TODO: add guide page url
       component: <AuthorizedDevices />,
+      isDisabled: true,
     },
     // Engravers
     {
@@ -216,7 +217,6 @@ export const configuration = {
       permissions: [],
       // TODO: add guide page url
       component: <Engravers />,
-      isDisabled: true,
     },
     // Employees
     {
