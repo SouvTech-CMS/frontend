@@ -1,6 +1,7 @@
 import { Permission } from "constant/permissions"
 import { TableContextProvider } from "context/table"
 import { Auth } from "page/Auth"
+import { AuthorizedDevices } from "page/AuthorizedDevices"
 import { Dashboard } from "page/Dashboard"
 import { DetailedReports } from "page/DetailedReports"
 import { Engravers } from "page/Engravers"
@@ -21,6 +22,7 @@ import { Suppliers } from "page/Suppliers"
 import { Users } from "page/Users"
 import { IconType } from "react-icons"
 import {
+  FiCpu,
   FiFeather,
   FiFileText,
   FiGlobe,
@@ -190,6 +192,16 @@ export const configuration = {
       path: "/shelves",
       permissions: [Permission.STORAGE_READ],
       component: <Shelves />,
+    },
+    // Authorized Devices
+    {
+      type: "main",
+      icon: FiCpu,
+      name: "Devices",
+      path: "/authorized-devices",
+      permissions: [],
+      // TODO: add guide page url
+      component: <AuthorizedDevices />,
     },
     // Engravers
     {

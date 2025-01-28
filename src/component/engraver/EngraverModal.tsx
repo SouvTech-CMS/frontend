@@ -222,7 +222,9 @@ export const EngraverModal: FC<EngraverModalProps> = (props) => {
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>{isNewEngraver ? "New" : ""} Engraver</ModalHeader>
+        <ModalHeader>
+          {isNewEngraver ? "New Engraver" : `Engraver #${engraverId}`}
+        </ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
