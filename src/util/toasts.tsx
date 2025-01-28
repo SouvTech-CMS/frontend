@@ -13,15 +13,17 @@ const toastOptions: ToastOptions = {
 }
 
 export const notify = (text: string, type: "error" | "success") => {
+  const content = <Text fontWeight="bold">{text}</Text>
+
   switch (type) {
     case "error":
-      toast.error(<Text fontWeight="bold">{text}</Text>, toastOptions)
+      toast.error(content, toastOptions)
       break
     case "success":
-      toast.success(<Text fontWeight="bold">{text}</Text>, toastOptions)
+      toast.success(content, toastOptions)
       break
     default:
-      toast(<Text fontWeight="bold">{text}</Text>, toastOptions)
+      toast(content, toastOptions)
       break
   }
 }
