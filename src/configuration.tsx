@@ -73,7 +73,6 @@ export const configuration = {
           <Dashboard />
         </TableContextProvider>
       ),
-      isDisabled: true,
     },
     // Reports
     {
