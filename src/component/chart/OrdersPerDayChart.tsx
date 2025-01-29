@@ -1,4 +1,4 @@
-import { getOrdersAnalytics } from "api/analytics/analytics"
+import { getOrdersAnalytics } from "api/analytics/orders"
 import { ChartData, ChartOptions } from "chart.js"
 import { LoadingPage } from "component/page/LoadingPage"
 import { useTableContext } from "context/table"
@@ -6,7 +6,7 @@ import { FC, useEffect } from "react"
 import { Line } from "react-chartjs-2"
 import { useQuery } from "react-query"
 import { useCustomTheme } from "theme"
-import { OrdersAnalyticsResponse } from "type/analytics/analytics"
+import { OrdersAnalyticsResponse } from "type/analytics/orders"
 import { OrderSearchFilter } from "type/order/order"
 import {
   getFirstCurrentYearDateString,
