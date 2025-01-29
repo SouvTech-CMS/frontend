@@ -2,7 +2,7 @@ import { axiosClient } from "api/axiosClient"
 import {
   OrdersAnalyticsRequest,
   OrdersAnalyticsResponse,
-} from "type/analytics/analytics"
+} from "type/analytics/orders"
 
 export const getOrdersAnalytics = async (
   body: OrdersAnalyticsRequest,
