@@ -10,17 +10,37 @@ import {
 } from "@chakra-ui/react"
 import { FC } from "react"
 import { IconType } from "react-icons"
+import { getIsIncreased, getPercent } from "util/analytics"
+import { numberWithCurrency, roundNumber } from "util/formatting"
 
 interface ChartCardProps {
   icon?: IconType
   color?: ChakraProps["color"]
   title: string
-  value: string
+  value?: number
+  prevValue?: number
+  postfix?: string
   isIconHidden?: boolean
 }
 
 export const ChartCard: FC<ChartCardProps> = (props) => {
-  const { icon, color = "blue", title, value, isIconHidden } = props
+  const {
+    icon,
+    color = "blue",
+    title,
+    value,
+    prevValue,
+    postfix,
+    isIconHidden,
+  } = props
+
+  const [diff, isIncreased] = getIsIncreased(value, prevValue)
+  const isDiffExists = diff !== undefined
+  const isIncreasedExists = isIncreased !== undefined
+
+  const diffInPercent = getPercent(diff, prevValue)
+
+  const isPostfixExists = !!postfix
 
   return (
     <Flex
@@ -28,11 +48,10 @@ export const ChartCard: FC<ChartCardProps> = (props) => {
       direction="row"
       alignItems="center"
       py={3}
-      pb={1}
       px={5}
       pr={20}
       borderRadius={10}
-      gap={5}
+      gap={4}
     >
       {/* Big Icon */}
       {!isIconHidden && (
@@ -41,7 +60,6 @@ export const ChartCard: FC<ChartCardProps> = (props) => {
           justifyContent="center"
           alignItems="center"
           p={4}
-          mb={2}
           borderRadius="50%"
         >
           <Icon as={icon} fontSize="xl" boxSize="full" color={color} />
@@ -54,14 +72,25 @@ export const ChartCard: FC<ChartCardProps> = (props) => {
           {title}
         </StatLabel>
 
-        <StatNumber fontSize="xl" fontWeight="bold">
-          {value}
+        <StatNumber fontSize="xl" fontWeight="medium">
+          {isPostfixExists ? (
+            <>
+              {roundNumber(value)} {postfix}
+            </>
+          ) : (
+            <>{numberWithCurrency(roundNumber(value))}</>
+          )}
         </StatNumber>
 
-        <StatHelpText>
-          <StatArrow type="decrease" />
-          9.05%
-        </StatHelpText>
+        {isDiffExists && (
+          <StatHelpText color={isIncreased ? "green.600" : "red.600"}>
+            {isIncreasedExists && (
+              <StatArrow type={isIncreased ? "increase" : "decrease"} />
+            )}
+            {/* {numberWithCurrency(roundNumber(diff))} */}
+            {Math.abs(roundNumber(diffInPercent))}%
+          </StatHelpText>
+        )}
       </Stat>
     </Flex>
   )
