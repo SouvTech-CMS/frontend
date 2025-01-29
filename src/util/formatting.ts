@@ -8,23 +8,27 @@ export const stringToDate = (dateString?: string) => {
   return date
 }
 
-export const roundNumber = (
-  num: number = 0,
-  fractionDigits: number = 2,
-): number => {
-  if (num > 0) {
-    const roundedNum = parseFloat(num.toFixed(fractionDigits))
-    return roundedNum
+export const roundNumber = (num?: number, fractionDigits: number = 2) => {
+  if (!num) {
+    return 0
   }
 
-  return 0
+  const roundedNum = parseFloat(num.toFixed(fractionDigits))
+  return roundedNum
 }
 
 export const numberWithCurrency = (
-  num: number = 0,
+  num?: number,
   currencyChar: string = "$",
 ) => {
-  return `${currencyChar}${num}`
+  if (!num) {
+    return
+  }
+
+  if (num > 0) {
+    return `${currencyChar}${num}`
+  }
+  return `-${currencyChar}${Math.abs(num)}`
 }
 
 export const timestampToDate = (timestamp: number = 0) => {
