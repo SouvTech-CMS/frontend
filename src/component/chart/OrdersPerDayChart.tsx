@@ -9,12 +9,10 @@ import { useCustomTheme } from "theme"
 import { OrdersAnalyticsResponse } from "type/analytics/orders"
 import { OrderSearchFilter } from "type/order/order"
 import {
-  getFirstCurrentYearDateString,
-  getLastCurrentYearDateString,
+  getFirstCurrentMonthDateString,
+  getLastCurrentMonthDateString,
 } from "util/dates"
 import { getShopColor } from "util/shops"
-
-interface OrdersPerDayChartProps {}
 
 type LineChartData = ChartData<"line">
 type LineChartOptions = ChartOptions<"line">
@@ -38,21 +36,29 @@ const options: LineChartOptions = {
   spanGaps: true,
 }
 
-export const OrdersPerDayChart: FC<OrdersPerDayChartProps> = (props) => {
+export const OrdersPerDayChart: FC = () => {
   const { colors } = useCustomTheme()
 
   const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
+
+  const startDate = searchFilter?.start_date
+  const endDate = searchFilter?.end_date
 
   const {
     data: ordersAnalytics,
     isLoading,
     isRefetching,
     refetch,
-  } = useQuery<OrdersAnalyticsResponse>("ordersAnalytics", () =>
-    getOrdersAnalytics({
-      start_date: searchFilter?.start_date,
-      end_date: searchFilter?.end_date,
-    }),
+  } = useQuery<OrdersAnalyticsResponse>(
+    ["ordersAnalytics", searchFilter],
+    () =>
+      getOrdersAnalytics({
+        start_date: startDate,
+        end_date: endDate,
+      }),
+    {
+      enabled: !!startDate && !!endDate,
+    },
   )
 
   const data: LineChartData = {
@@ -74,8 +80,8 @@ export const OrdersPerDayChart: FC<OrdersPerDayChartProps> = (props) => {
   useEffect(
     () => {
       // Update Start Date
-      if (!searchFilter?.start_date) {
-        const firstDate = getFirstCurrentYearDateString()
+      if (!startDate) {
+        const firstDate = getFirstCurrentMonthDateString()
 
         setSearchFilter(
           (prevFilters) =>
@@ -87,8 +93,8 @@ export const OrdersPerDayChart: FC<OrdersPerDayChartProps> = (props) => {
       }
 
       // Update End Date
-      if (!searchFilter?.end_date) {
-        const lastDate = getLastCurrentYearDateString()
+      if (!endDate) {
+        const lastDate = getLastCurrentMonthDateString()
 
         setSearchFilter(
           (prevFilters) =>
@@ -98,12 +104,14 @@ export const OrdersPerDayChart: FC<OrdersPerDayChartProps> = (props) => {
             } as OrderSearchFilter),
         )
       }
-
-      refetch()
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
+
+  useEffect(() => {
+    refetch()
+  }, [refetch, searchFilter])
 
   if (isLoading || isRefetching) {
     return <LoadingPage />
