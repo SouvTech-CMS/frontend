@@ -8,11 +8,11 @@ import { useQuery } from "react-query"
 import { useCustomTheme } from "theme"
 import { OrdersAnalyticsResponse } from "type/analytics/orders"
 import { OrderSearchFilter } from "type/order/order"
+import { getColorsForItem } from "util/colors"
 import {
   getFirstCurrentMonthDateString,
   getLastCurrentMonthDateString,
 } from "util/dates"
-import { getShopColor } from "util/shops"
 
 type LineChartData = ChartData<"line">
 type LineChartOptions = ChartOptions<"line">
@@ -65,7 +65,7 @@ export const OrdersPerDayChart: FC = () => {
     labels: ordersAnalytics?.labels,
     datasets:
       ordersAnalytics?.data?.map(({ shop, report }) => {
-        const [bgColor, borderColor] = getShopColor(colors, shop.id)
+        const [bgColor, borderColor] = getColorsForItem(colors, shop.id)
 
         return {
           label: `${shop?.name}`,

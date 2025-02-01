@@ -40,5 +40,6 @@ export const getFirstCurrentMonthDateString = () => {
 export const getLastCurrentMonthDateString = () => {
   const currentYear = getCurrentYear()
   const currentMonth = getCurrentMonth()
-  return `31.${currentMonth}.${currentYear}`
+  const currentDate = new Date().getDate()
+  return `${currentDate}.${currentMonth}.${currentYear}`
 }

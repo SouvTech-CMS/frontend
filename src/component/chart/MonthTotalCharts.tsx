@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react"
+import { SimpleGrid } from "@chakra-ui/react"
 import { getMonthTotalAnalytics } from "api/analytics/monthTotal"
 import { ChartCard } from "component/chart/ChartCard"
 import { LoadingPage } from "component/page/LoadingPage"
@@ -33,7 +33,15 @@ export const MonthTotalCharts: FC = () => {
   }
 
   return (
-    <Flex w="full" direction="row" alignItems="center" gap={5}>
+    <SimpleGrid
+      columns={{
+        base: 1,
+        sm: 1,
+        md: 2,
+        lg: 2,
+      }}
+      spacing={5}
+    >
       <ChartCard
         icon={FiBarChart2}
         color="teal"
@@ -66,6 +74,6 @@ export const MonthTotalCharts: FC = () => {
         prevValue={prevMonthTotalOrdersCount}
         postfix="orders"
       />
-    </Flex>
+    </SimpleGrid>
   )
 }
