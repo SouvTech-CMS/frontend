@@ -49,7 +49,7 @@ export const ChartCard: FC<ChartCardProps> = (props) => {
       alignItems="center"
       py={3}
       px={5}
-      pr={20}
+      pr={10}
       borderRadius={10}
       gap={4}
     >
@@ -62,7 +62,7 @@ export const ChartCard: FC<ChartCardProps> = (props) => {
           p={4}
           borderRadius="50%"
         >
-          <Icon as={icon} fontSize="xl" boxSize="full" color={color} />
+          <Icon as={icon} fontSize="full" boxSize="full" color={color} />
         </Flex>
       )}
 
@@ -72,13 +72,13 @@ export const ChartCard: FC<ChartCardProps> = (props) => {
           {title}
         </StatLabel>
 
-        <StatNumber fontSize="xl" fontWeight="medium">
-          {isPostfixExists ? (
+        <StatNumber fontSize="xl" fontWeight="medium" whiteSpace="nowrap">
+          {isPostfixExists && !!value ? (
             <>
               {roundNumber(value)} {postfix}
             </>
           ) : (
-            <>{numberWithCurrency(roundNumber(value))}</>
+            <>{numberWithCurrency(roundNumber(value)) || "No data"}</>
           )}
         </StatNumber>
 

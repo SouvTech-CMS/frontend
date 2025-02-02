@@ -5,9 +5,13 @@ import { FC, useEffect, useState } from "react"
 import { OrderSearchFilter } from "type/order/order"
 import { dateToDateAsString, stringToDate } from "util/formatting"
 
-interface DatesFilterProps {}
+interface DatesFilterProps {
+  isFullWidth?: boolean
+}
 
 export const DatesFilter: FC<DatesFilterProps> = (props) => {
+  const { isFullWidth } = props
+
   const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
 
   const startDate = stringToDate(searchFilter?.start_date)
@@ -77,7 +81,7 @@ export const DatesFilter: FC<DatesFilterProps> = (props) => {
   )
 
   return (
-    <Flex alignItems="center" gap={0}>
+    <Flex w={isFullWidth ? "full" : undefined} alignItems="center" gap={0}>
       <RangeDatepicker
         selectedDates={selectedDates}
         onDateChange={handleDatesChange}

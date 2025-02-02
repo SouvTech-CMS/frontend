@@ -14,10 +14,12 @@ interface ShopFilterProps {
     newValue: SingleValue<SelectOption>,
     actionMeta: ActionMeta<SelectOption>,
   ) => void
+  isFullWidth?: boolean
 }
 
 export const ShopFilter: FC<ShopFilterProps> = (props) => {
-  const { handleShopSelect } = props
+  const { handleShopSelect, isFullWidth } = props
+
   const { userShops, isLoadingCurrentUser } = useUserContext()
 
   const selectStyles: ChakraStylesConfig<
@@ -37,13 +39,19 @@ export const ShopFilter: FC<ShopFilterProps> = (props) => {
 
   return (
     <Select<SelectOption, false, GroupBase<SelectOption>>
+      chakraStyles={{
+        ...selectStyles,
+        container: (provided) => ({
+          ...provided,
+          width: isFullWidth ? "full" : "fit-content",
+        }),
+      }}
       placeholder="All shops"
       options={userShops?.map((shop) => ({
         value: shop.id,
         label: shop.name,
       }))}
       isClearable
-      chakraStyles={selectStyles}
       useBasicStyles
       onChange={handleShopSelect}
       isLoading={isLoadingCurrentUser}

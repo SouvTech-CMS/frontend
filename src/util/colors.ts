@@ -6,16 +6,16 @@ type Color = BackgroundProps["bgColor"]
 type BgColor = Color
 type BorderColor = Color
 
-const BG_COLOR_ID = 400
+const BG_COLOR_ID = 200
 const BORDER_COLOR_ID = 500
 
-export const getShopColor = (
+export const getColorsForItem = (
   colors: ThemeColors,
-  shopId?: number,
+  id?: number,
 ): [BgColor, BorderColor] => {
   let colorType: Color = "gray"
 
-  switch (shopId) {
+  switch (id) {
     case 1:
       colorType = "red"
       break
@@ -32,7 +32,19 @@ export const getShopColor = (
       colorType = "purple"
       break
     case 6:
+      colorType = "gray"
+      break
+    case 7:
       colorType = "orange"
+      break
+    case 8:
+      colorType = "pink"
+      break
+    case 9:
+      colorType = "teal"
+      break
+    case 10:
+      colorType = "cyan"
       break
   }
 

@@ -1,5 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react"
 import {
+  ArcElement,
   CategoryScale,
   Chart as ChartJS,
   Legend,
@@ -9,18 +10,23 @@ import {
   Title,
   Tooltip,
 } from "chart.js"
-import { Container } from "component/Container"
+import { ChartSection } from "component/chart/ChartSection"
 import { MonthTotalCharts } from "component/chart/MonthTotalCharts"
 import { OrdersPerDayChart } from "component/chart/OrdersPerDayChart"
-import { DatesFilter } from "component/filter/DatesFilter"
+import { SalesCitiesChart } from "component/chart/SalesCitiesChart"
+import { SalesStatesChart } from "component/chart/SalesStatesChart"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
+import { TableContextProvider } from "context/table"
+import { SalesAnalyticsSeachFilter } from "type/analytics/sales"
+import { OrderSearchFilter } from "type/order/order"
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend,
@@ -32,6 +38,7 @@ export const Dashboard = () => {
       <PageHeading title="Dashboard" isSearchHidden />
 
       <Flex w="full" direction="column" gap={10}>
+        {/* Totals Charts Cards */}
         <Flex direction="column" gap={3}>
           <Heading size="lg" fontWeight={300}>
             Monthly Statistics
@@ -41,33 +48,42 @@ export const Dashboard = () => {
         </Flex>
 
         {/* Orders per Days Chart */}
-        <Container>
-          {/* Chart Header */}
-          <Flex
-            w="full"
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            gap={3}
-          >
-            {/* Heading */}
-            <Flex>
-              <Heading size="lg" fontWeight="medium">
-                Orders per Day
-              </Heading>
-            </Flex>
-
-            {/* Filters */}
-            <Flex justifyContent="flex-start" alignItems="center" gap={2}>
-              {/* Date Range Select */}
-              <DatesFilter />
-            </Flex>
-          </Flex>
-
-          <Flex w="full">
+        <TableContextProvider<OrderSearchFilter>>
+          <ChartSection title="Orders per Day" withDatesFilter>
             <OrdersPerDayChart />
+          </ChartSection>
+        </TableContextProvider>
+
+        {/* States Sales Chart */}
+        <Flex w="full" justifyContent="space-between" gap={10}>
+          <Flex w="full">
+            <TableContextProvider<SalesAnalyticsSeachFilter>>
+              <ChartSection
+                title="Sales - States"
+                withShopFilter
+                withCountryFilter
+                withDatesFilter
+              >
+                <SalesStatesChart />
+              </ChartSection>
+            </TableContextProvider>
           </Flex>
-        </Container>
+
+          {/* Cities Sales Chart */}
+          <Flex w="full">
+            <TableContextProvider<SalesAnalyticsSeachFilter>>
+              <ChartSection
+                title="Sales - Cities"
+                withShopFilter
+                withDatesFilter
+                withCountryFilter
+                withStateFilter
+              >
+                <SalesCitiesChart />
+              </ChartSection>
+            </TableContextProvider>
+          </Flex>
+        </Flex>
       </Flex>
     </Page>
   )
