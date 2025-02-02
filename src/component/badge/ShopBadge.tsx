@@ -4,11 +4,15 @@ import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 
 interface ShopBadgeProps {
-  shop: WithId<Shop>
+  shop?: WithId<Shop>
 }
 
 export const ShopBadge: FC<ShopBadgeProps> = (props) => {
   const { shop } = props
+
+  if (!shop) {
+    return <></>
+  }
 
   return (
     <Badge w="fit-content" colorScheme="teal">

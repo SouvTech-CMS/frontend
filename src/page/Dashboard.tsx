@@ -70,6 +70,7 @@ export const Dashboard = () => {
           </Flex>
 
           {/* Cities Sales Chart */}
+          {/* TODO: check states request by country id */}
           <Flex w="full">
             <TableContextProvider<SalesAnalyticsSeachFilter>>
               <ChartSection

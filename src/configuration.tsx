@@ -2,6 +2,8 @@ import { Permission } from "constant/permissions"
 import { TableContextProvider } from "context/table"
 import { Auth } from "page/Auth"
 import { AuthorizedDevices } from "page/AuthorizedDevices"
+import { ClientDetails } from "page/ClientDetails"
+import { Clients } from "page/Clients"
 import { Dashboard } from "page/Dashboard"
 import { DetailedReports } from "page/DetailedReports"
 import { Engravers } from "page/Engravers"
@@ -35,8 +37,10 @@ import {
   FiShoppingBag,
   FiShoppingCart,
   FiTruck,
+  FiUser,
   FiUsers,
 } from "react-icons/fi"
+import { ClientSearchFilter } from "type/client/client"
 import { GoodSearchFilter } from "type/order/good"
 import { OrderSearchFilter } from "type/order/order"
 import { ProductionInfoSearchFilter } from "type/productionInfo/productionInfo"
@@ -114,6 +118,27 @@ export const configuration = {
           <Goods guideNotionPageId="439359fa5d974bd8a28d613099f95af1" />
         </TableContextProvider>
       ),
+    },
+    // Clients
+    {
+      type: "main",
+      icon: FiUser,
+      name: "Clients",
+      path: "/clients",
+      permissions: [],
+      component: (
+        <TableContextProvider<ClientSearchFilter>>
+          <Clients />
+        </TableContextProvider>
+      ),
+    },
+    // Client Details
+    {
+      type: "child",
+      name: "Client Details",
+      path: "/client/:id",
+      permissions: [],
+      component: <ClientDetails />,
     },
     // Purchases
     {

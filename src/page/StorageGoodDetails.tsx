@@ -13,14 +13,14 @@ import { useParams } from "react-router-dom"
 import { PageProps } from "type/page/page"
 import { FullStorageGood } from "type/storage/storageGood"
 
-type StorageGoodDetailsParams = {
+type Params = {
   id: string
 }
 
 export const StorageGoodDetails = (props: PageProps) => {
   const { guideNotionPageId } = props
 
-  const { id } = useParams<StorageGoodDetailsParams>()
+  const { id } = useParams<Params>()
   const storageGoodId = Number(id)
 
   const { data: storageGood, isLoading } = useQuery<FullStorageGood>(
