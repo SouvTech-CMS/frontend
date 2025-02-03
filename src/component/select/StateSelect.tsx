@@ -6,7 +6,7 @@ import {
   Select,
   SingleValue,
 } from "chakra-react-select"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { useQuery } from "react-query"
 import { State } from "type/client/state"
 import { WithId } from "type/withId"
@@ -43,9 +43,13 @@ export const StateSelect: FC<StateSelectProps> = (props) => {
     isFullWidth,
   } = props
 
-  const { data: statesList, isLoading: isStatesListLoading } = useQuery<
-    WithId<State>[]
-  >("statesList", () => getAllStatesByCountryId(countryId))
+  const {
+    data: statesList,
+    isLoading: isStatesListLoading,
+    refetch,
+  } = useQuery<WithId<State>[]>("statesList", () =>
+    getAllStatesByCountryId(countryId),
+  )
 
   const handleSelect = (
     newValue: SingleValue<SelectOption>,
@@ -62,6 +66,10 @@ export const StateSelect: FC<StateSelectProps> = (props) => {
   const isSelectedStateInvalid = isRequired && !selectedId
 
   const isLoading = isDisabled || isStatesListLoading
+
+  useEffect(() => {
+    refetch()
+  }, [refetch, countryId])
 
   return (
     <Select<SelectOption, false, GroupBase<SelectOption>>
