@@ -14,6 +14,8 @@ export type Order = {
   full_fee: number
   profit: number
   shop?: WithId<Shop>
+  receipt_shipping_id?: string
+  tracking_code?: string
 }
 
 export type OrderWithGoods = {

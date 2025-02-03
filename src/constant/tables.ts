@@ -83,6 +83,25 @@ export const GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
   null,
 ]
 
+export const CLIENTS_TABLE_COLUMNS: (TableColumn | null)[] = [
+  { name: "ID", param: "id", isSearchable: true, isSortable: true },
+  { name: "Name", param: "name", isSearchable: true, isSortable: false },
+  // { name: "Email", param: "email", isSearchable: true, isSortable: false },
+  {
+    name: "Orders Count",
+    param: "orders_count",
+    isSearchable: false,
+    isSortable: true,
+  },
+  {
+    name: "Marketplace",
+    param: "marketplace",
+    isSearchable: false,
+    isSortable: false,
+  },
+  null,
+]
+
 export const DETAILED_REPORT_TABLE_COLUMNS = [
   "ID",
   "Name",

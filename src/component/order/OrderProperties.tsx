@@ -1,15 +1,15 @@
-import { Flex, Grid, Text, Tooltip } from "@chakra-ui/react"
+import { Flex, Text } from "@chakra-ui/react"
 import { getShopById } from "api/shop"
 import { MarketplaceAvatar } from "component/marketplace/MarketplaceAvatar"
-import { OrderPropertyRow } from "component/order/OrderPropertyRow"
+import { MarketplaceOrderLink } from "component/order/MarketplaceOrderLink"
+import { PropertiesList } from "component/property/PropertiesList"
 import { FC } from "react"
 import { useQuery } from "react-query"
-import { Link } from "react-router-dom"
 import { Order } from "type/order/order"
+import { Property } from "type/property"
 import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 import { numberWithCurrency, roundNumber, stringToDate } from "util/formatting"
-import { getEtsyOrderUrl } from "util/urls"
 
 interface OrderPropertiesProps {
   order: WithId<Order>
@@ -18,41 +18,25 @@ interface OrderPropertiesProps {
 export const OrderProperties: FC<OrderPropertiesProps> = (props) => {
   const { order } = props
 
+  const orderDate = stringToDate(order.date)
   const shopId = order.shop_id
-  const { data: shop, isLoading } = useQuery<WithId<Shop>>(
-    ["shop", order.shop_id],
-    () => getShopById(shopId!),
-    {
-      enabled: !!shopId,
-    },
+
+  const { data: shop } = useQuery<WithId<Shop>>(["shop", shopId], () =>
+    getShopById(shopId!),
   )
 
-  const orderUrl = getEtsyOrderUrl(order.order_id)
-  const orderDate = stringToDate(order.date)?.toDateString()
-
-  const orderPropertiesList = [
+  const propertiesList: Property[] = [
     // Order Id on Marketplace
     {
       name: "Order ID on Marketplace",
-      value: (
-        <Flex>
-          <Tooltip label="Open on Etsy">
-            <Link to={orderUrl} target="_blank">
-              <Text textDecoration="underline">#{order.order_id}</Text>
-            </Link>
-          </Tooltip>
-        </Flex>
-      ),
+      value: <MarketplaceOrderLink marketplaceOrderId={order.order_id} />,
     },
     // Shop
     {
       name: "Shop",
       value: (
         <Flex alignItems="center" gap={2}>
-          <MarketplaceAvatar
-            marketplace={shop?.marketplace}
-            isLoading={isLoading}
-          />
+          <MarketplaceAvatar marketplace={shop?.marketplace} />
           <Text>{shop?.name}</Text>
         </Flex>
       ),
@@ -60,7 +44,7 @@ export const OrderProperties: FC<OrderPropertiesProps> = (props) => {
     // Date
     {
       name: "Date",
-      value: orderDate,
+      value: orderDate?.toDateString(),
     },
     // Quantity
     {
@@ -95,11 +79,5 @@ export const OrderProperties: FC<OrderPropertiesProps> = (props) => {
     },
   ]
 
-  return (
-    <Grid w="fit-content" templateColumns="repeat(2, 1fr)" gap={5}>
-      {orderPropertiesList.map(({ name, value }, index) => (
-        <OrderPropertyRow key={index} name={name} value={value} />
-      ))}
-    </Grid>
-  )
+  return <PropertiesList propertiesList={propertiesList} />
 }

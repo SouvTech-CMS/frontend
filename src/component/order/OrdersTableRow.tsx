@@ -1,13 +1,13 @@
 import { Flex, IconButton, Td, Text, Tooltip, Tr } from "@chakra-ui/react"
 import { OrderStatusBadge } from "component/badge/OrderStatusBadge"
 import { MarketplaceAvatar } from "component/marketplace/MarketplaceAvatar"
+import { MarketplaceOrderLink } from "component/order/MarketplaceOrderLink"
 import { FC } from "react"
 import { FiExternalLink } from "react-icons/fi"
 import { Link } from "react-router-dom"
 import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 import { numberWithCurrency, roundNumber, stringToDate } from "util/formatting"
-import { getEtsyOrderUrl } from "util/urls"
 
 interface OrdersTableRowProps {
   order: WithId<Order>
@@ -19,20 +19,13 @@ export const OrdersTableRow: FC<OrdersTableRowProps> = (props) => {
 
   const shop = order.shop
 
-  const orderUrl = getEtsyOrderUrl(order.order_id)
   const orderDate = stringToDate(order.date)?.toDateString()
 
   return (
     <Tr position="relative">
       {/* Order Id on Marketplace */}
       <Td>
-        <Flex>
-          <Tooltip label="Open on Etsy">
-            <Link to={orderUrl} target="_blank">
-              <Text textDecoration="underline">#{order.order_id}</Text>
-            </Link>
-          </Tooltip>
-        </Flex>
+        <MarketplaceOrderLink marketplaceOrderId={order.order_id} />
       </Td>
 
       {/* Shop */}

@@ -1,25 +1,25 @@
 import { GridItem, Text } from "@chakra-ui/react"
 import { FC } from "react"
+import { Property } from "type/property"
 
-interface OrderPropertyRowProps {
-  name: string
-  value?: string | number | JSX.Element
+interface PropertyRowProps {
+  property: Property
 }
 
-export const OrderPropertyRow: FC<OrderPropertyRowProps> = (props) => {
-  const { name, value } = props
+export const PropertyRow: FC<PropertyRowProps> = (props) => {
+  const { property } = props
 
   return (
     <>
       {/* Property Name */}
       <GridItem>
         <Text fontWeight="light" color="gray">
-          {name}
+          {property.name}
         </Text>
       </GridItem>
 
       {/* Value */}
-      <GridItem>{value}</GridItem>
+      <GridItem>{property.value}</GridItem>
     </>
   )
 }
