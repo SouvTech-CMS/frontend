@@ -42,7 +42,7 @@ export const WebSocketContextProvider: FCC = (props) => {
 
           case "supplier":
           case "supplier_manager":
-            queryClient.invalidateQueries("suppliersWithManagersList")
+            queryClient.invalidateQueries("suppliersList")
             break
 
           case "file":

@@ -14,6 +14,7 @@ export type Good = {
 export type GoodInOrder = Good & {
   quantity: number
   amount: number
+  prime_cost: number
 }
 
 export type GoodSearchFilter = WithId<Good>

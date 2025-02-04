@@ -1,40 +1,89 @@
-import { Flex, Grid, Heading } from "@chakra-ui/react"
-import { ChartCard } from "component/dashboard/ChartCard"
+import { Flex, Heading } from "@chakra-ui/react"
+import {
+  ArcElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+} from "chart.js"
+import { ChartSection } from "component/chart/ChartSection"
+import { MonthTotalCharts } from "component/chart/MonthTotalCharts"
+import { OrdersPerDayChart } from "component/chart/OrdersPerDayChart"
+import { SalesCitiesChart } from "component/chart/SalesCitiesChart"
+import { SalesStatesChart } from "component/chart/SalesStatesChart"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
-import { FiBarChart2, FiDollarSign } from "react-icons/fi"
+import { TableContextProvider } from "context/table"
+import { SalesAnalyticsSeachFilter } from "type/analytics/sales"
+import { OrderSearchFilter } from "type/order/order"
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
+)
 
 export const Dashboard = () => {
   return (
     <Page>
       <PageHeading title="Dashboard" isSearchHidden />
 
-      <Flex direction="column" gap={2}>
-        <Heading size="lg" fontWeight={300}>
-          Monthly Statistics
-        </Heading>
+      <Flex w="full" direction="column" gap={10}>
+        {/* Totals Charts Cards */}
+        <Flex direction="column" gap={3}>
+          <Heading size="lg" fontWeight={300}>
+            Monthly Statistics
+          </Heading>
 
-        <Grid templateColumns="repeat(3, 1fr)" gap={5}>
-          <ChartCard
-            icon={FiBarChart2}
-            color="green"
-            title="Total Income"
-            value="$7256.95"
-          />
-          <ChartCard
-            icon={FiDollarSign}
-            color="orange"
-            title="Expenses"
-            value="$33.95"
-          />
-          <ChartCard
-            // icon={FiShoppingCart}
-            color="blue"
-            title="Orders"
-            value="512"
-            isIconHidden
-          />
-        </Grid>
+          <MonthTotalCharts />
+        </Flex>
+
+        {/* Orders per Days Chart */}
+        <TableContextProvider<OrderSearchFilter>>
+          <ChartSection title="Orders per Day" withDatesFilter>
+            <OrdersPerDayChart />
+          </ChartSection>
+        </TableContextProvider>
+
+        {/* States Sales Chart */}
+        <Flex w="full" justifyContent="space-between" gap={10}>
+          <Flex w="full">
+            <TableContextProvider<SalesAnalyticsSeachFilter>>
+              <ChartSection
+                title="Sales - States"
+                withShopFilter
+                withCountryFilter
+                withDatesFilter
+              >
+                <SalesStatesChart />
+              </ChartSection>
+            </TableContextProvider>
+          </Flex>
+
+          {/* Cities Sales Chart */}
+          <Flex w="full">
+            <TableContextProvider<SalesAnalyticsSeachFilter>>
+              <ChartSection
+                title="Sales - Cities"
+                withShopFilter
+                withDatesFilter
+                withCountryFilter
+                withStateFilter
+              >
+                <SalesCitiesChart />
+              </ChartSection>
+            </TableContextProvider>
+          </Flex>
+        </Flex>
       </Flex>
     </Page>
   )

@@ -9,12 +9,12 @@ import {
 import { FC } from "react"
 import { FiEdit, FiMoreVertical, FiTrash2 } from "react-icons/fi"
 
-interface CardMenuProps {
+interface UserCardMenuProps {
   onEdit: () => void
   onDelete: () => void
 }
 
-export const CardMenu: FC<CardMenuProps> = (props) => {
+export const UserCardMenu: FC<UserCardMenuProps> = (props) => {
   const { onEdit, onDelete } = props
 
   return (

@@ -1,26 +1,34 @@
-export const stringToDate = (dateString: string): Date => {
+export const stringToDate = (dateString?: string) => {
+  if (!dateString) {
+    return
+  }
+
   const [day, month, year] = dateString.split(".").map(Number)
   const date = new Date(year, month - 1, day)
   return date
 }
 
-export const roundNumber = (
-  num: number = 0,
-  fractionDigits: number = 2,
-): number => {
-  if (num > 0) {
-    const roundedNum = parseFloat(num.toFixed(fractionDigits))
-    return roundedNum
+export const roundNumber = (num?: number, fractionDigits: number = 2) => {
+  if (!num) {
+    return 0
   }
 
-  return 0
+  const roundedNum = parseFloat(num.toFixed(fractionDigits))
+  return roundedNum
 }
 
 export const numberWithCurrency = (
-  num: number = 0,
+  num?: number,
   currencyChar: string = "$",
 ) => {
-  return `${currencyChar}${num}`
+  if (!num) {
+    return
+  }
+
+  if (num > 0) {
+    return `${currencyChar}${num}`
+  }
+  return `-${currencyChar}${Math.abs(num)}`
 }
 
 export const timestampToDate = (timestamp: number = 0) => {
@@ -47,4 +55,63 @@ export const dateToDateAsString = (date: Date) => {
   const dateAsString = `${day}.${month}.${year}`
 
   return dateAsString
+}
+
+export const dateAsStringToDate = (dateAsString?: string) => {
+  if (!dateAsString) {
+    return
+  }
+
+  const date = new Date(dateAsString)
+  return date
+}
+
+export const formatDate = (date?: Date) => {
+  if (!date) {
+    return
+  }
+
+  const formatedDate = date
+    .toLocaleString(undefined, {
+      weekday: "short",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+    // Remove ","
+    .replaceAll(",", "")
+  return formatedDate
+}
+
+export const getShortTime = (timeString?: string) => {
+  if (!timeString) {
+    return
+  }
+
+  // Extract hours and minutes from the time string
+  const [hours, minutes] = timeString.split(":")
+
+  const time = `${hours}:${minutes}`
+  return time
+}
+
+export const formatTime = (timeString?: string) => {
+  if (!timeString) {
+    return
+  }
+
+  // Extract hours and minutes from the time string
+  const [hours, minutes] = timeString.split(":")
+
+  // Create a Date object using the current date and the extracted time
+  const date = new Date()
+  date.setHours(parseInt(hours, 10))
+  date.setMinutes(parseInt(minutes, 10))
+
+  // Format the time in local format
+  const formatedTime = date.toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+  return formatedTime
 }

@@ -2,6 +2,8 @@ import {
   theme as baseTheme,
   defineStyleConfig,
   extendTheme,
+  Theme,
+  useTheme,
 } from "@chakra-ui/react"
 import "@fontsource-variable/dm-sans"
 
@@ -89,3 +91,8 @@ export const appTheme = extendTheme({
     }),
   },
 })
+
+export const useCustomTheme = (): Theme => {
+  const theme = useTheme() as Theme
+  return theme
+}

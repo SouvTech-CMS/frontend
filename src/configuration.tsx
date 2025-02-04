@@ -1,8 +1,12 @@
 import { Permission } from "constant/permissions"
 import { TableContextProvider } from "context/table"
 import { Auth } from "page/Auth"
+import { AuthorizedDevices } from "page/AuthorizedDevices"
+import { ClientDetails } from "page/ClientDetails"
+import { Clients } from "page/Clients"
 import { Dashboard } from "page/Dashboard"
 import { DetailedReports } from "page/DetailedReports"
+import { Engravers } from "page/Engravers"
 import { Goods } from "page/Goods"
 import { Guides } from "page/Guides"
 import { Maintenance } from "page/Maintenance"
@@ -13,13 +17,14 @@ import { ProductionInfo } from "page/ProductionInfo"
 import { Purchases } from "page/Purchases"
 import { PurchasesHistory } from "page/PurchasesHistory"
 import { Roles } from "page/Roles"
-import { Shelfs } from "page/Shelfs"
+import { Shelves } from "page/Shelves"
 import { Storage } from "page/Storage"
 import { StorageGoodDetails } from "page/StorageGoodDetails"
 import { Suppliers } from "page/Suppliers"
 import { Users } from "page/Users"
 import { IconType } from "react-icons"
 import {
+  FiCpu,
   FiFeather,
   FiFileText,
   FiGlobe,
@@ -27,12 +32,15 @@ import {
   FiHome,
   FiMap,
   FiPackage,
+  FiPenTool,
   FiPocket,
   FiShoppingBag,
   FiShoppingCart,
   FiTruck,
+  FiUser,
   FiUsers,
 } from "react-icons/fi"
+import { ClientSearchFilter } from "type/client/client"
 import { GoodSearchFilter } from "type/order/good"
 import { OrderSearchFilter } from "type/order/order"
 import { ProductionInfoSearchFilter } from "type/productionInfo/productionInfo"
@@ -65,7 +73,6 @@ export const configuration = {
       path: "/",
       permissions: [],
       component: <Dashboard />,
-      isDisabled: true,
     },
     // Reports
     {
@@ -111,6 +118,27 @@ export const configuration = {
           <Goods guideNotionPageId="439359fa5d974bd8a28d613099f95af1" />
         </TableContextProvider>
       ),
+    },
+    // Clients
+    {
+      type: "main",
+      icon: FiUser,
+      name: "Clients",
+      path: "/clients",
+      permissions: [],
+      component: (
+        <TableContextProvider<ClientSearchFilter>>
+          <Clients />
+        </TableContextProvider>
+      ),
+    },
+    // Client Details
+    {
+      type: "child",
+      name: "Client Details",
+      path: "/client/:id",
+      permissions: [],
+      component: <ClientDetails />,
     },
     // Purchases
     {
@@ -180,14 +208,35 @@ export const configuration = {
         </TableContextProvider>
       ),
     },
-    // Shelfs
+    // Shelves
     {
       type: "main",
       icon: FiHash,
-      name: "Shelfs",
-      path: "/shelfs",
+      name: "Shelves",
+      path: "/shelves",
       permissions: [Permission.STORAGE_READ],
-      component: <Shelfs />,
+      component: <Shelves />,
+    },
+    // Authorized Devices
+    {
+      type: "main",
+      icon: FiCpu,
+      name: "Devices",
+      path: "/authorized-devices",
+      permissions: [],
+      // TODO: add guide page url
+      component: <AuthorizedDevices />,
+      isDisabled: true,
+    },
+    // Engravers
+    {
+      type: "main",
+      icon: FiPenTool,
+      name: "Engravers",
+      path: "/engravers",
+      permissions: [],
+      // TODO: add guide page url
+      component: <Engravers />,
     },
     // Employees
     {

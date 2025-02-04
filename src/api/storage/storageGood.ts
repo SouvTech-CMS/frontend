@@ -2,8 +2,7 @@ import { axiosClient } from "api/axiosClient"
 import { ApiRequest } from "type/api/apiRequest"
 import { ApiResponse } from "type/api/apiResponse"
 import {
-  GoodWithShops,
-  GoodWithStorages,
+  FullStorageGood,
   StorageGood,
   StorageGoodCreate,
   StorageGoodSearchFilter,
@@ -14,7 +13,7 @@ import { beautifyBody } from "util/apiRequestBody"
 
 export const getAllStorageGoods = async (
   body: ApiRequest<StorageGoodSearchFilter>,
-): Promise<ApiResponse<GoodWithShops[]>> => {
+): Promise<ApiResponse<WithId<FullStorageGood>[]>> => {
   const { data: storageGoodsList } = await axiosClient.post(
     "/storage/good/all/",
     beautifyBody(body),
@@ -41,7 +40,7 @@ export const getFullStorageGoodsList = async (
 
 export const getGoodWithStoragesById = async (
   storageGoodId: number,
-): Promise<GoodWithStorages> => {
+): Promise<FullStorageGood> => {
   const { data: goodWithStorages } = await axiosClient.get(
     `/storage/good/id/${storageGoodId}`,
   )

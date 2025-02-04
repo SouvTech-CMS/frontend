@@ -1,5 +1,5 @@
 import { Avatar, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react"
-import { CommingSoonTooltip } from "component/CommingSoonTooltip"
+import { ComingSoonTooltip } from "component/ComingSoonTooltip"
 import { useAuthContext } from "context/auth"
 import { useUserContext } from "context/user"
 import { FC } from "react"
@@ -20,7 +20,7 @@ export const ProfileMenu: FC = () => {
       </MenuButton>
 
       <MenuList>
-        <CommingSoonTooltip>
+        <ComingSoonTooltip>
           <MenuItem
             icon={<FiUser />}
             isDisabled
@@ -29,9 +29,9 @@ export const ProfileMenu: FC = () => {
           >
             Profile
           </MenuItem>
-        </CommingSoonTooltip>
+        </ComingSoonTooltip>
 
-        <CommingSoonTooltip>
+        <ComingSoonTooltip>
           <MenuItem
             icon={<FiSettings />}
             isDisabled
@@ -40,7 +40,7 @@ export const ProfileMenu: FC = () => {
           >
             Settings
           </MenuItem>
-        </CommingSoonTooltip>
+        </ComingSoonTooltip>
 
         <MenuItem
           icon={<FiLogOut />}

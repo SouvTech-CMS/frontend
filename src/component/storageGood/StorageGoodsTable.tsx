@@ -3,10 +3,11 @@ import { CustomTh } from "component/customTable/CustomTh"
 import { StorageGoodRow } from "component/storageGood/StorageGoodRow"
 import { STORAGE_GOODS_TABLE_COLUMNS } from "constant/tables"
 import { FC } from "react"
-import { GoodWithShops } from "type/storage/storageGood"
+import { FullStorageGood } from "type/storage/storageGood"
+import { WithId } from "type/withId"
 
 interface StorageGoodsTableProps {
-  storageGoodsList: GoodWithShops[]
+  storageGoodsList: WithId<FullStorageGood>[]
   selectedShopId: number
   resetCurrentPage?: () => void
 }

@@ -10,42 +10,19 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react"
-import { getFullStorageGoodsList } from "api/storage/storageGood"
-import {
-  ActionMeta,
-  ChakraStylesConfig,
-  GroupBase,
-  Select,
-  SingleValue,
-} from "chakra-react-select"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { ProductionInfoModalInput } from "component/productionInfo/ProductionInfoModalInput"
+import { StorageGoodSelect } from "component/select/StorageGoodSelect"
 import { FC, useEffect, useState } from "react"
-import { useQuery } from "react-query"
 import { useProductionInfoCreateMutation } from "service/productionInfo/productionInfo"
-import { ApiResponse } from "type/api/apiResponse"
 import { ModalProps } from "type/modalProps"
 import {
   GoodProductionInfo,
   ProductionInfo,
 } from "type/productionInfo/productionInfo"
-import { SelectOption } from "type/selectOption"
-import { StorageGood } from "type/storage/storageGood"
-import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
 interface NewProductionInfoModalProps extends ModalProps {}
-
-const selectStyles: ChakraStylesConfig<
-  SelectOption,
-  false,
-  GroupBase<SelectOption>
-> = {
-  container: (provided) => ({
-    ...provided,
-    width: "full",
-  }),
-}
 
 export const NewProductionInfoModal: FC<NewProductionInfoModalProps> = (
   props,
@@ -55,18 +32,11 @@ export const NewProductionInfoModal: FC<NewProductionInfoModalProps> = (
   const [goodId, setGoodId] = useState<number>(0)
   const [productionInfo, setProductionInfo] = useState<ProductionInfo>()
 
-  const { data: storageGoodsResponse, isLoading: isStorageGoodsLoading } =
-    useQuery<ApiResponse<WithId<StorageGood>[]>>("storageGoodsFullList", () =>
-      getFullStorageGoodsList(false),
-    )
-  const storageGoodsList = storageGoodsResponse?.result
-
   const productionInfoCreateMutation = useProductionInfoCreateMutation()
 
   const isSelectedStorageGoodInvalid = goodId === 0
 
-  const isLoading =
-    productionInfoCreateMutation.isLoading || isStorageGoodsLoading
+  const isLoading = productionInfoCreateMutation.isLoading
 
   const isSaveBtnDisabled = isLoading || isSelectedStorageGoodInvalid
 
@@ -75,15 +45,6 @@ export const NewProductionInfoModal: FC<NewProductionInfoModalProps> = (
       ...prevProductionInfo,
       [param]: value,
     }))
-  }
-
-  const handleStorageGoodSelect = (
-    newValue: SingleValue<SelectOption>,
-    _: ActionMeta<SelectOption>,
-  ) => {
-    const selectedOption = newValue as SelectOption
-    const storageGoodId = Number(selectedOption.value)
-    setGoodId(storageGoodId)
   }
 
   const handleProductionInfoUpdate = async () => {
@@ -115,24 +76,11 @@ export const NewProductionInfoModal: FC<NewProductionInfoModalProps> = (
           <Flex direction="column" gap={5}>
             {/* Good Name & SKU */}
             <Divider />
-            <Select<SelectOption, false, GroupBase<SelectOption>>
-              chakraStyles={selectStyles}
-              placeholder="Select storage good"
-              options={storageGoodsList?.map((storageGood) => ({
-                value: storageGood.id,
-                // TODO: try to show SKU badge instead of just text
-                // label: (
-                //   <Flex direction="row" alignItems="center" gap={1}>
-                //     <SKUBadge sku={storageGood.uniquename} />
-                //     <Text>{storageGood.name}</Text>
-                //   </Flex>
-                // ),
-                label: `${storageGood.uniquename} - ${storageGood.name}`,
-              }))}
-              onChange={handleStorageGoodSelect}
-              isSearchable
-              isInvalid={isSelectedStorageGoodInvalid}
-              isDisabled={isStorageGoodsLoading}
+            <StorageGoodSelect
+              selectedId={goodId}
+              onSelect={setGoodId}
+              // Goods without Production Info
+              hasProductionInfo={false}
             />
             <Divider />
 

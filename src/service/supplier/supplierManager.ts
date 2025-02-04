@@ -9,7 +9,7 @@ import { useMutation } from "react-query"
 export const useSupplierManagerCreateMutation = () => {
   return useMutation(createSupplierManager, {
     onSuccess: () => {
-      queryClient.invalidateQueries("suppliersWithManagersList")
+      queryClient.invalidateQueries("suppliersList")
     },
   })
 }
@@ -17,7 +17,7 @@ export const useSupplierManagerCreateMutation = () => {
 export const useSupplierManagerUpdateMutation = () => {
   return useMutation(updateSupplierManager, {
     onSuccess: () => {
-      queryClient.invalidateQueries("suppliersWithManagersList")
+      queryClient.invalidateQueries("suppliersList")
     },
   })
 }
@@ -25,7 +25,7 @@ export const useSupplierManagerUpdateMutation = () => {
 export const useSupplierManagerDeleteMutation = () => {
   return useMutation(deleteSupplierManager, {
     onSuccess: () => {
-      queryClient.invalidateQueries("suppliersWithManagersList")
+      queryClient.invalidateQueries("suppliersList")
     },
   })
 }

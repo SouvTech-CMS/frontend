@@ -20,6 +20,7 @@ import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
 import { ProductionInfoSearchFilter } from "type/productionInfo/productionInfo"
 import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
+import { WithId } from "type/withId"
 
 export const ProductionInfo = (props: PageProps) => {
   const { guideNotionPageId } = props
@@ -35,7 +36,7 @@ export const ProductionInfo = (props: PageProps) => {
     isLoading,
     refetch,
     isRefetching,
-  } = useQuery<ApiResponse<StorageGoodWithProductionInfo[]>>(
+  } = useQuery<ApiResponse<WithId<StorageGoodWithProductionInfo>[]>>(
     "goodsWithProductionInfoList",
     () =>
       getStorageGoodsWithProductionInfo({

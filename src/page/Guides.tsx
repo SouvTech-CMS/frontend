@@ -38,7 +38,7 @@ export const Guides = () => {
     ? getPageTitle(guideId, guideContent)
     : ""
 
-  // TODO: set darkMode to NotionRenderer when we add dakr mode for all frontend
+  // TODO: set darkMode to NotionRenderer when we add dark mode for all frontend
 
   return (
     <Page>

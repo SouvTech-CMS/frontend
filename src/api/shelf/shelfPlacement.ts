@@ -1,13 +1,13 @@
 import { axiosClient } from "api/axiosClient"
 import { ApiResponse } from "type/api/apiResponse"
 import {
-  PlacementWithShelfsWithStorageGoods,
+  PlacementWithShelvesWithStorageGoods,
   ShelfPlacement,
 } from "type/shelf/shelfPlacement"
 import { WithId } from "type/withId"
 
 export const getAllPlacements = async (): Promise<
-  ApiResponse<PlacementWithShelfsWithStorageGoods[]>
+  ApiResponse<PlacementWithShelvesWithStorageGoods[]>
 > => {
   const { data: placementsList } = await axiosClient.post(
     "/shelf/placement/storage_good/",

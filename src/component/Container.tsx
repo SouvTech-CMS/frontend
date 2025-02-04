@@ -1,4 +1,4 @@
-import { Flex, FlexboxProps, LayoutProps } from "@chakra-ui/react"
+import { Flex, FlexboxProps, LayoutProps, SpaceProps } from "@chakra-ui/react"
 import { CSSProperties } from "react"
 import { FCC } from "type/fcc"
 
@@ -7,6 +7,7 @@ interface ContainerProps {
   justifyContent?: FlexboxProps["justifyContent"]
   alignItems?: FlexboxProps["alignItems"]
   alignSelf?: FlexboxProps["alignSelf"]
+  p?: SpaceProps["p"]
   gap?: FlexboxProps["gap"]
   style?: CSSProperties
 }
@@ -18,6 +19,7 @@ export const Container: FCC<ContainerProps> = (props) => {
     justifyContent = "flex-start",
     alignItems = "flex-start",
     alignSelf = "flex-start",
+    p = 5,
     gap = 10,
     style,
   } = props
@@ -31,7 +33,7 @@ export const Container: FCC<ContainerProps> = (props) => {
       alignItems={alignItems}
       alignSelf={alignSelf}
       bgColor="white"
-      p={5}
+      p={p}
       borderRadius={20}
       gap={gap}
     >

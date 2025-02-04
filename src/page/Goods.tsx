@@ -80,6 +80,8 @@ export const Goods = (props: PageProps) => {
     isActual,
   ])
 
+  // TODO: show storage goods for each good
+
   return (
     <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Goods" isSearchHidden />

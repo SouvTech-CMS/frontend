@@ -1,5 +1,5 @@
 import { Button, Icon, Text } from "@chakra-ui/react"
-import { CommingSoonTooltip } from "component/CommingSoonTooltip"
+import { ComingSoonTooltip } from "component/ComingSoonTooltip"
 import { FC } from "react"
 import { IconType } from "react-icons"
 import { Link } from "react-router-dom"
@@ -19,7 +19,7 @@ export const SidebarListItem: FC<SidebarListItemProps> = (props) => {
 
   if (isDisabled) {
     return (
-      <CommingSoonTooltip>
+      <ComingSoonTooltip>
         <Button
           w="full"
           variant="ghost"
@@ -32,7 +32,7 @@ export const SidebarListItem: FC<SidebarListItemProps> = (props) => {
 
           {!isCollapsed && <Text>{label}</Text>}
         </Button>
-      </CommingSoonTooltip>
+      </ComingSoonTooltip>
     )
   }
 

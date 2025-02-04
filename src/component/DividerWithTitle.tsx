@@ -1,19 +1,37 @@
-import { AbsoluteCenter, Divider, Flex, Text } from "@chakra-ui/react"
-import { FC } from "react"
+import {
+  AbsoluteCenter,
+  Divider,
+  Flex,
+  Text,
+  TypographyProps,
+} from "@chakra-ui/react"
+import { FC, ReactNode } from "react"
 
 interface DividerWithTitleProps {
-  title: string
+  title: string | ReactNode
+  fontSize?: TypographyProps["fontSize"]
 }
 
 export const DividerWithTitle: FC<DividerWithTitleProps> = (props) => {
-  const { title } = props
+  const { title, fontSize } = props
 
   return (
-    <Flex position="relative">
+    <Flex position="relative" w="full">
       <Divider />
 
-      <AbsoluteCenter bgColor="white" px={3}>
-        <Text fontWeight="medium">{title}</Text>
+      <AbsoluteCenter w="full">
+        <Flex w="full" direction="row" justifyContent="center">
+          <Text
+            w="fit-content"
+            bgColor="white"
+            fontWeight="medium"
+            fontSize={fontSize}
+            textAlign="center"
+            px={3}
+          >
+            {title}
+          </Text>
+        </Flex>
       </AbsoluteCenter>
     </Flex>
   )
