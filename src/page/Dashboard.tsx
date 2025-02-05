@@ -18,6 +18,7 @@ import { SalesStatesChart } from "component/chart/SalesStatesChart"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { TableContextProvider } from "context/table"
+import { useUserContext } from "context/user"
 import { SalesAnalyticsSeachFilter } from "type/analytics/sales"
 import { OrderSearchFilter } from "type/order/order"
 
@@ -33,6 +34,12 @@ ChartJS.register(
 )
 
 export const Dashboard = () => {
+  const { isUserAdmin } = useUserContext()
+
+  if (!isUserAdmin) {
+    return <></>
+  }
+
   return (
     <Page>
       <PageHeading title="Dashboard" isSearchHidden />
