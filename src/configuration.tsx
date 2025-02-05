@@ -71,7 +71,6 @@ export const configuration = {
       icon: FiHome,
       name: "Dashboard",
       path: "/",
-      permissions: [],
       component: <Dashboard />,
     },
     // Reports
