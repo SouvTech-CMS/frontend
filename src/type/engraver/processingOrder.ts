@@ -1,5 +1,5 @@
 import { Engraver } from "type/engraver/engraver"
-import { Order } from "type/order/order"
+import { OrderWithDetailedGoods } from "type/order/order"
 import { WithId } from "type/withId"
 
 export type ProcessingOrder = {
@@ -9,7 +9,7 @@ export type ProcessingOrder = {
   started_at: string
   finished_at: string
   engraver: WithId<Engraver>
-  order: WithId<Order>
+  order: WithId<OrderWithDetailedGoods>
 }
 
 export type ProcessingOrderCreate = {

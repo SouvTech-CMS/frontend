@@ -1,5 +1,5 @@
 import { Flex, Heading, Text } from "@chakra-ui/react"
-import { getOrderByMarketplaceId } from "api/processingOrder/processingOrder"
+import { getOrderByMarketplaceId } from "api/engraver/processingOrder"
 import { OrderIdSearchInput } from "component/orderProcessing/OrderIdSearchInput"
 import { OrderToEngravingCard } from "component/orderProcessing/OrderToEngravingCard"
 import { LoadingPage } from "component/page/LoadingPage"
@@ -10,7 +10,7 @@ import { useAuthorizedDevice } from "hook/useAuthorizedDevice"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { Navigate } from "react-router-dom"
-import { OrderWithDetailedGoods } from "type/order/order"
+import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 
 export const OrdersForEngraving = () => {
@@ -19,7 +19,7 @@ export const OrdersForEngraving = () => {
 
   const [marketplaceOrderId, setMarketplaceOrderId] = useState<string>("")
 
-  const { data: order, refetch } = useQuery<WithId<OrderWithDetailedGoods>>(
+  const { data: order, refetch } = useQuery<WithId<Order>>(
     ["order", marketplaceOrderId],
     () => getOrderByMarketplaceId(marketplaceOrderId!),
     {
