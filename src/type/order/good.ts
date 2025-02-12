@@ -22,7 +22,7 @@ export type GoodDetails = {
   good_id: number
   amount: number
   // JSON-string (need to be parsed to JSON object)
-  engraving_info: string
+  engraving_info?: string
   order_id: number
   prime_cost: number
 }

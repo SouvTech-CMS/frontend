@@ -78,6 +78,14 @@ export const appTheme = extendTheme({
             color: baseTheme.colors.white,
           },
         },
+        warning: {
+          bgColor: baseTheme.colors.yellow["500"],
+          color: baseTheme.colors.white,
+          _hover: {
+            bgColor: baseTheme.colors.yellow["600"],
+            color: baseTheme.colors.white,
+          },
+        },
         danger: {
           bgColor: baseTheme.colors.red["500"],
           color: baseTheme.colors.white,
