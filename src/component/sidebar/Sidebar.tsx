@@ -13,6 +13,10 @@ export const Sidebar: FC = () => {
 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false)
 
+  //! If 'permissions' param not set (undefined) to route
+  //! it available to everybody
+  //* If 'permissions' param set as empty list
+  //* it available only for Admin
   const sideBarRoutes = configuration.sidebarItems.filter(
     ({ type, component, permissions }) =>
       type === "main" &&
@@ -20,7 +24,8 @@ export const Sidebar: FC = () => {
       (isUserAdmin ||
         permissions?.some((permission) =>
           userPermissions?.includes(permission),
-        )),
+        ) ||
+        !permissions),
   )
 
   const handleCollapse = () => {

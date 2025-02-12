@@ -3,6 +3,7 @@ import { getCurrentUser } from "api/user"
 import { ADMIN_ROLE, Role } from "constant/roles"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
+import { Engraver } from "type/engraver/engraver"
 import { FCC } from "type/fcc"
 import { Shop } from "type/shop"
 import { TableWithAccessList } from "type/tableAccess/tableAccess"
@@ -11,12 +12,14 @@ import { WithId } from "type/withId"
 
 interface UserContextProps {
   currentUser?: WithId<User>
+  currentEngraver?: WithId<Engraver>
   userRoles?: string[]
   userPermissions?: string[]
   userShops?: WithId<Shop>[]
   userTableAccessList?: TableWithAccessList[]
   isUserAdmin?: boolean
   isUserManager?: boolean
+  isUserEngraver?: boolean
   isLoadingCurrentUser: boolean
 }
 
@@ -30,6 +33,8 @@ export const UserContextProvider: FCC = (props) => {
   const [userRoles, setUserRoles] = useState<string[]>([])
   const [userShops, setUserShops] = useState<WithId<Shop>[]>([])
   const [userPermissions, setUserPermissions] = useState<string[]>([])
+
+  const [currentEngraver, setCurrentEngraver] = useState<WithId<Engraver>>()
 
   const [isLoadingRoles, setIsLoadingRoles] = useState<boolean>(true)
   const [isLoadingShops, setIsLoadingShops] = useState<boolean>(true)
@@ -57,13 +62,16 @@ export const UserContextProvider: FCC = (props) => {
     isTableAccessListLoading
 
   const isUserAdmin = userRoles.includes(ADMIN_ROLE)
-  const isUserManager = !isUserAdmin && userRoles.includes(Role.MANAGER)
+  const isUserManager = isUserAdmin || userRoles.includes(Role.MANAGER)
+  const isUserEngraver = isUserAdmin || userRoles.includes(Role.ENGRAVER)
 
   useEffect(() => {
     if (currentUser) {
       const roles = currentUser.roles.map((role) => role.name.toLowerCase())
       setUserRoles(roles)
       setIsLoadingRoles(false)
+
+      setCurrentEngraver(currentUser.engraver)
 
       const permissionsList = currentUser.roles.flatMap(
         (role) => role.permissions,
@@ -83,12 +91,14 @@ export const UserContextProvider: FCC = (props) => {
     <UserContext.Provider
       value={{
         currentUser,
+        currentEngraver,
         userRoles,
         userPermissions,
         userShops,
         userTableAccessList,
         isUserAdmin,
         isUserManager,
+        isUserEngraver,
         isLoadingCurrentUser: isLoading,
       }}
     >
