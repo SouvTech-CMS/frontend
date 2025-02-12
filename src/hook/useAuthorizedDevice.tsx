@@ -5,7 +5,7 @@ import { useQuery } from "react-query"
 export const useAuthorizedDevice = () => {
   const [isDeviceAuthorized, setIsDeviceAuthorized] = useState<boolean>(false)
 
-  useQuery("currentDevice", checkDevice, {
+  const { isLoading } = useQuery("currentDevice", checkDevice, {
     onSuccess: () => {
       setIsDeviceAuthorized(true)
     },
@@ -17,5 +17,6 @@ export const useAuthorizedDevice = () => {
 
   return {
     isDeviceAuthorized,
+    isCheckingDevice: isLoading,
   }
 }
