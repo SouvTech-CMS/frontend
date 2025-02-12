@@ -1,15 +1,15 @@
 import { axiosClient } from "api/axiosClient"
-import { OrderWithDetailedGoods } from "type/order/order"
 import {
   ProcessingOrder,
   ProcessingOrderCreate,
   ProcessingOrderStatusUpdate,
-} from "type/processingOrder/processingOrder"
+} from "type/engraver/processingOrder"
+import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 
 export const getOrderByMarketplaceId = async (
   marketplaceOrderId: string,
-): Promise<WithId<OrderWithDetailedGoods>> => {
+): Promise<WithId<Order>> => {
   const { data: order } = await axiosClient.get(
     `/order/processing/ready_to_processing/${marketplaceOrderId}`,
   )

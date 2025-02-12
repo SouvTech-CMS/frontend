@@ -1,12 +1,12 @@
 import { Flex } from "@chakra-ui/react"
-import { getProcessingOrderById } from "api/processingOrder/processingOrder"
+import { getProcessingOrderById } from "api/engraver/processingOrder"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
+import { ProcessingOrder } from "type/engraver/processingOrder"
 import { PageProps } from "type/page/page"
-import { ProcessingOrder } from "type/processingOrder/processingOrder"
 import { WithId } from "type/withId"
 
 type Params = {

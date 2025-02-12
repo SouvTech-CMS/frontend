@@ -11,14 +11,14 @@ import {
 import { useUserContext } from "context/user"
 import { FC } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { useProcessingOrderCreateMutation } from "service/processingOrder/processingOrder"
-import { OrderWithDetailedGoods } from "type/order/order"
-import { ProcessingOrderCreate } from "type/processingOrder/processingOrder"
+import { useProcessingOrderCreateMutation } from "service/engraver/processingOrder"
+import { ProcessingOrderCreate } from "type/engraver/processingOrder"
+import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 import { formatDate, stringToDate } from "util/formatting"
 
 interface OrderToEngravingCardProps {
-  order?: WithId<OrderWithDetailedGoods>
+  order?: WithId<Order>
 }
 
 export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
