@@ -70,6 +70,14 @@ export const appTheme = extendTheme({
             color: "bodyText",
           },
         },
+        success: {
+          bgColor: baseTheme.colors.green["500"],
+          color: baseTheme.colors.white,
+          _hover: {
+            bgColor: baseTheme.colors.green["600"],
+            color: baseTheme.colors.white,
+          },
+        },
         danger: {
           bgColor: baseTheme.colors.red["500"],
           color: baseTheme.colors.white,
