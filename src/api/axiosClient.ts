@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from "axios"
 import { getDeviceToken } from "util/authorizedDevice"
 import { getApiBaseUrl } from "util/urls"
-import { getUserToken } from "util/userToken"
+import { clearUserToken, getUserToken } from "util/userToken"
 
 export const axiosClient: AxiosInstance = axios.create({
   baseURL: getApiBaseUrl(),
@@ -29,9 +29,10 @@ axiosClient.interceptors.response.use(
       console.error(responseData.detail)
     }
 
-    // if (error.response?.status === 401) {
-    //   clearUserToken()
-    // }
+    // TODO: check if this create bugs with engraver or other
+    if (error.response?.status === 401) {
+      clearUserToken()
+    }
 
     throw error
   },
