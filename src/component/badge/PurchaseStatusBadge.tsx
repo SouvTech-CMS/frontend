@@ -10,7 +10,7 @@ export const PurchaseStatusBadge: FC<PurchaseStatusBadgeProps> = (props) => {
   const { size = "sm", status } = props
 
   return (
-    <Badge fontSize={size} colorScheme="green">
+    <Badge h="fit-content" w="fit-content" fontSize={size} colorScheme="green">
       {status}
     </Badge>
   )

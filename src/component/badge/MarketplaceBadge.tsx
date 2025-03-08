@@ -13,7 +13,7 @@ export const MarketplaceBadge: FC<MarketplaceBadgeProps> = (props) => {
   const { name } = marketplace
 
   return (
-    <Badge w="fit-content" fontSize={size} colorScheme="orange">
+    <Badge h="fit-content" w="fit-content" fontSize={size} colorScheme="orange">
       {name}
     </Badge>
   )

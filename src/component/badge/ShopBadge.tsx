@@ -15,7 +15,7 @@ export const ShopBadge: FC<ShopBadgeProps> = (props) => {
   }
 
   return (
-    <Badge w="fit-content" colorScheme="teal">
+    <Badge h="fit-content" w="fit-content" colorScheme="teal">
       {shop.name}
     </Badge>
   )
