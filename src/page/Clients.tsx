@@ -1,5 +1,6 @@
-import { Flex } from "@chakra-ui/react"
+import { Flex, SimpleGrid } from "@chakra-ui/react"
 import { getAllClients } from "api/client/client"
+import { ClientTypeCard } from "component/client/analytics/ClientTypeCard"
 import { ClientsTable } from "component/client/ClientsTable"
 import { Container } from "component/Container"
 import { SearchFiltersClearBtn } from "component/customTable/SearchFiltersClearBtn"
@@ -8,6 +9,7 @@ import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
+import { ClientType } from "constant/clients"
 import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
@@ -18,6 +20,8 @@ import { ApiResponse } from "type/api/apiResponse"
 import { ClientSearchFilter, FullClient } from "type/client/client"
 import { PageProps } from "type/page/page"
 import { WithId } from "type/withId"
+
+const CLIENTS_TYPE_LIST = Object.values(ClientType)
 
 export const Clients = (props: PageProps) => {
   const { guideNotionPageId } = props
@@ -74,6 +78,21 @@ export const Clients = (props: PageProps) => {
     <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Clients" isSearchHidden />
 
+      {/* Analytics */}
+      <SimpleGrid
+        columns={{
+          sm: 1,
+          lg: CLIENTS_TYPE_LIST.length,
+        }}
+        spacing={5}
+        mb={5}
+      >
+        {CLIENTS_TYPE_LIST.map((type, index) => (
+          <ClientTypeCard key={index} type={type} />
+        ))}
+      </SimpleGrid>
+
+      {/* Table with Filters */}
       <Container gap={3}>
         <Flex w="full" direction="row" justifyContent="flex-end">
           <Flex direction="row" alignItems="center" gap={2}>
