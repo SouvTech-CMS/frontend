@@ -1,3 +1,4 @@
+import { Engraver } from "type/engraver/engraver"
 import { RoleWithPermissions } from "type/role/role"
 import { Shop } from "type/shop"
 import { WithId } from "type/withId"
@@ -15,6 +16,7 @@ export type User = {
 export type UserWithRolesAndShops = WithId<User> & {
   roles: RoleWithPermissions[]
   shops: WithId<Shop>[]
+  engraver?: WithId<Engraver>
 }
 
 export type UserWithShops = User & {
