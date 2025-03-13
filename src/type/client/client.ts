@@ -7,7 +7,6 @@ export type Client = {
   name: string
   email?: string
   marketplace_id?: number
-  orders_count?: number
   marketplace: WithId<Marketplace>
 }
 

@@ -1,4 +1,4 @@
-import { MarketplaceBadge } from "component/marketplace/MarketplaceBadge"
+import { MarketplaceNameWithAvatar } from "component/marketplace/MarketplaceNameWithAvatar"
 import { PropertiesList } from "component/property/PropertiesList"
 import { FC } from "react"
 import { FullClient } from "type/client/client"
@@ -27,7 +27,7 @@ export const ClientProperties: FC<ClientPropertiesProps> = (props) => {
     },
     {
       name: "Marketplace",
-      value: <MarketplaceBadge marketplace={marketplace} />,
+      value: <MarketplaceNameWithAvatar marketplace={marketplace} />,
     },
   ]
 
