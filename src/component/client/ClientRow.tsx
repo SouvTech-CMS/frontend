@@ -1,5 +1,5 @@
 import { Flex, IconButton, Td, Text, Tooltip, Tr } from "@chakra-ui/react"
-import { MarketplaceBadge } from "component/marketplace/MarketplaceBadge"
+import { MarketplaceNameWithAvatar } from "component/marketplace/MarketplaceNameWithAvatar"
 import { FC } from "react"
 import { FiExternalLink } from "react-icons/fi"
 import { Link } from "react-router-dom"
@@ -38,7 +38,7 @@ export const ClientRow: FC<ClientRowProps> = (props) => {
 
         {/* Marketplace */}
         <Td>
-          <MarketplaceBadge marketplace={marketplace} />
+          <MarketplaceNameWithAvatar marketplace={marketplace} />
         </Td>
 
         {/* Btns */}

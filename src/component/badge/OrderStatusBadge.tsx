@@ -27,7 +27,12 @@ export const OrderStatusBadge: FC<OrderStatusBadgeProps> = (props) => {
   }
 
   return (
-    <Badge fontSize={size} colorScheme={colorScheme}>
+    <Badge
+      h="fit-content"
+      w="fit-content"
+      fontSize={size}
+      colorScheme={colorScheme}
+    >
       {status}
     </Badge>
   )
