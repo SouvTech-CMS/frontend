@@ -37,3 +37,14 @@ export type StorageGoodSearchFilter = WithId<StorageGood>
 export type FullStorageGoodWithProductionInfo = FullStorageGood & {
   production_info?: ProductionInfo
 }
+
+export type StorageGoodWithProductionInfo = StorageGood & {
+  production_info: ProductionInfo
+}
+
+export type StorageGoodInGood = {
+  storage_good_id: number
+  good_id: number
+  in_good_quantity: number
+  storage_good: StorageGoodWithProductionInfo
+}

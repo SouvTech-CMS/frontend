@@ -1,4 +1,5 @@
 import { Shop } from "type/shop"
+import { StorageGoodInGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
 export type Good = {
@@ -28,3 +29,7 @@ export type GoodDetails = {
 }
 
 export type GoodSearchFilter = WithId<Good>
+
+export type GoodWithDetailedStorageGoods = Good & {
+  storage_goods?: StorageGoodInGood[]
+}
