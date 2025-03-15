@@ -8,8 +8,8 @@ export type ProcessingOrder = {
   status: string
   started_at: string
   finished_at: string
-  engraver: WithId<Engraver>
-  order: WithId<OrderWithDetailedGoods>
+  engraver?: WithId<Engraver>
+  order?: WithId<OrderWithDetailedGoods>
 }
 
 export type ProcessingOrderCreate = {
