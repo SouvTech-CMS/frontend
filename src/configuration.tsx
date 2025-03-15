@@ -1,4 +1,5 @@
 import { Permission } from "constant/permissions"
+import { EngravingContextProvider } from "context/engraving"
 import { TableContextProvider } from "context/table"
 import { Auth } from "page/Auth"
 import { AuthorizedDevices } from "page/AuthorizedDevices"
@@ -82,7 +83,11 @@ export const configuration = {
       name: "Engraving",
       path: "/engraving",
       // TODO: set permissions
-      component: <OrdersForEngraving />,
+      component: (
+        <EngravingContextProvider>
+          <OrdersForEngraving />
+        </EngravingContextProvider>
+      ),
     },
     // Order Engraving
     {
@@ -90,7 +95,11 @@ export const configuration = {
       name: "Order Engraving :id",
       path: "/engraving/:id",
       // TODO: set permissions
-      component: <Engraving />,
+      component: (
+        <EngravingContextProvider>
+          <Engraving />
+        </EngravingContextProvider>
+      ),
     },
     // Reports
     {
