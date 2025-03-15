@@ -39,7 +39,7 @@ export const Engraving = (props: PageProps) => {
       {isLoading && <LoadingPage />}
 
       {isProcessingOrderExists && (
-        <Flex h="full" w="full" direction="row" gap={5}>
+        <Flex h="full" w="full" direction="row" overflow="hidden" gap={5}>
           <ProcessingOrderDetails processingOrder={processingOrder} />
 
           <ProcessingOrderButtons />
