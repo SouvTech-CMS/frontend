@@ -17,9 +17,12 @@ import { WithId } from "type/withId"
 export const OrdersForEngraving = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const { currentProcessingOrder, isCurrentProcessingOrderExists } =
-    useEngravingContext()
 
+  const {
+    currentProcessingOrder,
+    isCurrentProcessingOrderExists,
+    isProcessingOrdersListLoading,
+  } = useEngravingContext()
   const { isUserEngraver, isLoadingCurrentUser } = useUserContext()
   const { isDeviceAuthorized, isCheckingDevice } = useAuthorizedDevice()
 
@@ -54,7 +57,11 @@ export const OrdersForEngraving = () => {
     }
   }, [refetch, isInvalid])
 
-  if (isLoadingCurrentUser || isCheckingDevice) {
+  if (
+    isLoadingCurrentUser ||
+    isCheckingDevice ||
+    isProcessingOrdersListLoading
+  ) {
     return <LoadingPage />
   }
 
