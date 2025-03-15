@@ -5,17 +5,34 @@ import { OrderToEngravingCard } from "component/orderProcessing/OrderToEngraving
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
+import { useEngravingContext } from "context/engraving"
 import { useUserContext } from "context/user"
 import { useAuthorizedDevice } from "hook/useAuthorizedDevice"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { Navigate } from "react-router-dom"
+import { Navigate, useLocation, useNavigate } from "react-router-dom"
 import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 
 export const OrdersForEngraving = () => {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const { currentProcessingOrder, isCurrentProcessingOrderExists } =
+    useEngravingContext()
+
   const { isUserEngraver, isLoadingCurrentUser } = useUserContext()
   const { isDeviceAuthorized, isCheckingDevice } = useAuthorizedDevice()
+
+  // Redirect engraver to already processing order
+  if (isCurrentProcessingOrderExists) {
+    const processingOrderId = currentProcessingOrder?.id
+
+    if (processingOrderId) {
+      navigate(`/engraving/${processingOrderId}`, {
+        state: { from: location },
+      })
+    }
+  }
 
   const [marketplaceOrderId, setMarketplaceOrderId] = useState<string>("")
 
