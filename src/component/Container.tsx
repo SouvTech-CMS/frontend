@@ -7,6 +7,7 @@ interface ContainerProps {
   w?: LayoutProps["w"]
   minW?: LayoutProps["minW"]
   maxW?: LayoutProps["maxW"]
+  maxH?: LayoutProps["maxH"]
   justifyContent?: FlexboxProps["justifyContent"]
   alignItems?: FlexboxProps["alignItems"]
   alignSelf?: FlexboxProps["alignSelf"]
@@ -22,6 +23,7 @@ export const Container: FCC<ContainerProps> = (props) => {
     w = "full",
     minW,
     maxW,
+    maxH,
     justifyContent = "flex-start",
     alignItems = "flex-start",
     alignSelf = "flex-start",
@@ -35,6 +37,7 @@ export const Container: FCC<ContainerProps> = (props) => {
       style={style}
       h={h}
       w={w}
+      maxH={maxH}
       minW={minW}
       maxW={maxW}
       direction="column"
