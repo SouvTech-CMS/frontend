@@ -45,6 +45,7 @@ export const Sidebar: FC = () => {
       borderRightWidth={1}
       gap={5}
       overflowY="auto"
+      overflowX="hidden"
     >
       <Logo isCollapsed={isCollapsed} />
 
@@ -69,19 +70,19 @@ export const Sidebar: FC = () => {
       )}
 
       {/* Site Version */}
-      <Flex w="full" direction="column" alignItems="center" mt="auto" gap={2}>
+      <Flex w="full" direction="column" alignItems="center" mt="auto" gap={3}>
         {!isCollapsed && (
-          <>
+          <Flex w="full" direction="column" alignItems="center" gap={1}>
             {/* Site Version */}
-            <Text fontWeight="light" color="gray">
+            <Text fontWeight="light" color="gray.400">
               {`Site Version: ${configuration.version}`}
             </Text>
 
             {/* Copyrights */}
-            <Text fontWeight="light" color="gray">
+            <Text fontWeight="light" color="gray.400">
               © RedBread
             </Text>
-          </>
+          </Flex>
         )}
 
         {/* Collapse Btn */}
