@@ -11,14 +11,14 @@ import { FC, useEffect } from "react"
 import { useQuery } from "react-query"
 import { ProductionInfo } from "type/productionInfo/productionInfo"
 import { StorageActualInfo } from "type/storage/storage"
-import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
+import { FullStorageGoodWithProductionInfo } from "type/storage/storageGood"
 import { TableColumn } from "type/tableColumn"
 import { WithId } from "type/withId"
 import { numberWithCurrency, roundNumber } from "util/formatting"
 
 interface ProductionInfoTableRowProps {
   accessibleColumns: (TableColumn | null)[]
-  goodWithProductionInfo: WithId<StorageGoodWithProductionInfo>
+  goodWithProductionInfo: WithId<FullStorageGoodWithProductionInfo>
   selectedShopId: number
 }
 
