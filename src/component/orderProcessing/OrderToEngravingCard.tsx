@@ -16,6 +16,7 @@ import { ProcessingOrderCreate } from "type/engraver/processingOrder"
 import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 import { formatDate, stringToDate } from "util/formatting"
+import { notify } from "util/toasts"
 
 interface OrderToEngravingCardProps {
   order?: WithId<Order>
@@ -45,7 +46,13 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
   }
 
   const handleClick = async () => {
-    if (!currentEngraver || !orderId) {
+    if (!currentEngraver) {
+      notify("Your're not engraver", "error")
+      return
+    }
+
+    if (!orderId) {
+      notify("Order with this ID does not exists", "error")
       return
     }
 
