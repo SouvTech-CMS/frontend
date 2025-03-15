@@ -1,6 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react"
 import { Container } from "component/Container"
-import { ProcessingGoodCard } from "component/orderProcessing/ProcessingGoodCard"
+import { ProcessingGood } from "component/orderProcessing/ProcessingGood"
 import { FC } from "react"
 import { ProcessingOrder } from "type/engraver/processingOrder"
 import { WithId } from "type/withId"
@@ -23,19 +23,26 @@ export const ProcessingOrderDetails: FC<ProcessingOrderDetailsProps> = (
   const isGoodsDetailsExist = !!goodsDetailesList
 
   return (
-    <Container h="full">
+    <Container h="full" gap={5}>
       <Flex w="full">
         <Heading>Order #{marketplaceOrderId}</Heading>
       </Flex>
 
-      <Flex w="full" direction="column" fontSize="xl" gap={2}>
+      <Flex
+        w="full"
+        direction="column"
+        fontSize="xl"
+        overflowY="auto"
+        overflowX="hidden"
+        gap={5}
+      >
         {isGoodsExist && isGoodsDetailsExist && (
           <>
             {goodsDetailesList?.map((details, index) => (
-              <ProcessingGoodCard
+              <ProcessingGood
                 key={index}
-                goodDetails={details}
                 goodsList={goodsList}
+                goodDetails={details}
               />
             ))}
           </>
