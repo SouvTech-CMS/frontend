@@ -15,7 +15,10 @@ export const useProcessingOrderCreateMutation = () => {
 
 export const useProcessingOrderStatusUpdateMutation = () => {
   return useMutation(updateProcessingOrderStatus, {
-    onSuccess: (_, body) => {
+    onSuccess: (response, body) => {
+      const engraverId = response.engraver_id
+      queryClient.invalidateQueries(["processingOrdersList", engraverId])
+
       const processingOrderId = body.processing_order_id
       queryClient.invalidateQueries(["processingOrder", processingOrderId])
     },
