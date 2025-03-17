@@ -1,5 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react"
 import { getOrderByMarketplaceId } from "api/engraver/processingOrder"
+import { AxiosError } from "axios"
 import { OrderIdSearchInput } from "component/orderProcessing/OrderIdSearchInput"
 import { OrderToEngravingCard } from "component/orderProcessing/OrderToEngravingCard"
 import { LoadingPage } from "component/page/LoadingPage"
@@ -10,46 +11,47 @@ import { useUserContext } from "context/user"
 import { useAuthorizedDevice } from "hook/useAuthorizedDevice"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { Navigate, useLocation, useNavigate } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import { Order } from "type/order/order"
 import { WithId } from "type/withId"
+import { notify } from "util/toasts"
 
 export const OrdersForEngraving = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
-
-  const {
-    currentProcessingOrder,
-    isCurrentProcessingOrderExists,
-    isProcessingOrdersListLoading,
-  } = useEngravingContext()
+  const { isProcessingOrdersListLoading } = useEngravingContext()
   const { isUserEngraver, isLoadingCurrentUser } = useUserContext()
   const { isDeviceAuthorized, isCheckingDevice } = useAuthorizedDevice()
 
-  // Redirect engraver to already processing order
-  if (isCurrentProcessingOrderExists) {
-    const processingOrderId = currentProcessingOrder?.id
-
-    if (processingOrderId) {
-      navigate(`/engraving/${processingOrderId}`, {
-        state: { from: location },
-      })
-    }
-  }
-
   const [marketplaceOrderId, setMarketplaceOrderId] = useState<string>("")
+  const [order, setOrder] = useState<WithId<Order>>()
 
-  const { data: order, refetch } = useQuery<WithId<Order>>(
+  const isInvalid = !marketplaceOrderId || marketplaceOrderId.length < 10
+
+  const { isLoading: isOrderLoading, refetch } = useQuery<WithId<Order>>(
     ["order", marketplaceOrderId],
     () => getOrderByMarketplaceId(marketplaceOrderId!),
     {
       enabled: false,
       retry: false,
+      onSuccess: (response) => {
+        setOrder(response)
+      },
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          const statusCode = error.response?.status
+
+          if (statusCode === 404) {
+            setOrder(undefined)
+          } else {
+            notify("Some error occurred", "error")
+          }
+        }
+      },
     },
   )
   const isOrderExists = !!order
 
-  const isInvalid = !marketplaceOrderId || marketplaceOrderId.length < 10
+  const isLoading =
+    isLoadingCurrentUser || isCheckingDevice || isProcessingOrdersListLoading
 
   useEffect(() => {
     if (!isInvalid) {
@@ -57,11 +59,7 @@ export const OrdersForEngraving = () => {
     }
   }, [refetch, isInvalid])
 
-  if (
-    isLoadingCurrentUser ||
-    isCheckingDevice ||
-    isProcessingOrdersListLoading
-  ) {
+  if (isLoading) {
     return <LoadingPage />
   }
 
@@ -94,7 +92,7 @@ export const OrdersForEngraving = () => {
           />
         </Flex>
 
-        {/* Not Found Order text */}
+        {/* Invalid Order ID text */}
         {isInvalid && (
           <Flex
             w="full"
@@ -111,7 +109,11 @@ export const OrdersForEngraving = () => {
           </Flex>
         )}
 
-        {!isInvalid && !isOrderExists && (
+        {/* Order Loading */}
+        {isOrderLoading && <LoadingPage />}
+
+        {/* Order not found */}
+        {!isOrderLoading && !isInvalid && !isOrderExists && (
           <Flex
             w="full"
             justifyContent="center"
