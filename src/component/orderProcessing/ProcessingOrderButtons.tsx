@@ -32,22 +32,31 @@ export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
     })
   }
 
-  const handlePauseClick = async () => {
+  const updateStatus = async (newStatus: ProcessingOrderStatus) => {
     if (!processingOrderId) {
       return
     }
 
     const body: ProcessingOrderStatusUpdate = {
       processing_order_id: processingOrderId,
-      new_status: ProcessingOrderStatus.PAUSED,
+      new_status: newStatus,
     }
 
     await processingOrderStatusUpdateMutation.mutateAsync(body)
+  }
+
+  const handlePauseClick = async () => {
+    await updateStatus(ProcessingOrderStatus.PAUSED)
 
     navigateToOrdersForEngravingPage()
   }
 
-  // TODO: Finish order request
+  const handleFinishClick = async () => {
+    await updateStatus(ProcessingOrderStatus.FINISHED)
+
+    navigateToOrdersForEngravingPage()
+  }
+
   // TODO: Take Break request
 
   return (
@@ -66,6 +75,7 @@ export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
           size="lg"
           py={8}
           px={10}
+          onClick={handleFinishClick}
           isLoading={isLoading}
         >
           Finish
