@@ -5,11 +5,11 @@ import { GOODS_PRODUCTION_INFO_TABLE } from "constant/tables"
 import { useUserContext } from "context/user"
 import { useUserTableAccess } from "hook/useUserTableAccess"
 import { FC } from "react"
-import { StorageGoodWithProductionInfo } from "type/storage/storageGood"
+import { FullStorageGoodWithProductionInfo } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
 interface ProductionInfoTableProps {
-  goodsWithProductionInfoList: WithId<StorageGoodWithProductionInfo>[]
+  goodsWithProductionInfoList: WithId<FullStorageGoodWithProductionInfo>[]
   selectedShopId: number
 }
 

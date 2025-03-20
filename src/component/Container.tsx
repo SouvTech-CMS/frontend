@@ -3,7 +3,11 @@ import { CSSProperties } from "react"
 import { FCC } from "type/fcc"
 
 interface ContainerProps {
+  h?: LayoutProps["h"]
   w?: LayoutProps["w"]
+  minW?: LayoutProps["minW"]
+  maxW?: LayoutProps["maxW"]
+  maxH?: LayoutProps["maxH"]
   justifyContent?: FlexboxProps["justifyContent"]
   alignItems?: FlexboxProps["alignItems"]
   alignSelf?: FlexboxProps["alignSelf"]
@@ -15,7 +19,11 @@ interface ContainerProps {
 export const Container: FCC<ContainerProps> = (props) => {
   const {
     children,
+    h,
     w = "full",
+    minW,
+    maxW,
+    maxH,
     justifyContent = "flex-start",
     alignItems = "flex-start",
     alignSelf = "flex-start",
@@ -27,7 +35,11 @@ export const Container: FCC<ContainerProps> = (props) => {
   return (
     <Flex
       style={style}
+      h={h}
       w={w}
+      maxH={maxH}
+      minW={minW}
+      maxW={maxW}
       direction="column"
       justifyContent={justifyContent}
       alignItems={alignItems}

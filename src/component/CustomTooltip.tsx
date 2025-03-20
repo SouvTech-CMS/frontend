@@ -1,5 +1,6 @@
 import {
   BorderProps,
+  ColorProps,
   PlacementWithLogical,
   SpaceProps,
   Text,
@@ -13,6 +14,7 @@ interface CustomTooltipProps {
   label?: string
   fontWeight?: TypographyProps["fontWeight"]
   fontStyle?: TypographyProps["fontStyle"]
+  color?: ColorProps["color"]
   p?: SpaceProps["p"]
   px?: SpaceProps["px"]
   py?: SpaceProps["py"]
@@ -25,6 +27,7 @@ export const CustomTooltip: FCC<CustomTooltipProps> = (props) => {
     label,
     fontWeight = "semibold",
     fontStyle = "italic",
+    color = "whitesmoke",
     p,
     px,
     py,
@@ -39,6 +42,7 @@ export const CustomTooltip: FCC<CustomTooltipProps> = (props) => {
           whiteSpace="pre-line"
           fontWeight={fontWeight}
           fontStyle={fontStyle}
+          color={color}
           p={p}
           px={px}
           py={py}
@@ -50,7 +54,7 @@ export const CustomTooltip: FCC<CustomTooltipProps> = (props) => {
       placement={placement}
       hasArrow
     >
-      {/* Wrap in Text to fix positioning */}
+      {/*//! Wrap in Text to fix positioning */}
       <Text>{children}</Text>
     </Tooltip>
   )

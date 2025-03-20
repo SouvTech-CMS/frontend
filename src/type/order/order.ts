@@ -1,4 +1,8 @@
-import { GoodInOrder } from "type/order/good"
+import {
+  GoodDetails,
+  GoodInOrder,
+  GoodWithDetailedStorageGoods,
+} from "type/order/good"
 import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 
@@ -22,6 +26,11 @@ export type OrderWithGoods = {
   order: WithId<Order>
   goods_count: number
   order_goods: WithId<GoodInOrder>[]
+}
+
+export type OrderWithDetailedGoods = Order & {
+  goods: WithId<GoodWithDetailedStorageGoods>[]
+  goods_in_order: WithId<GoodDetails>[]
 }
 
 export type OrderSearchFilter = WithId<Order> & {
