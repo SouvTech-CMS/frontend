@@ -3,7 +3,7 @@ import { HeadingBtns } from "component/page/HeadingBtns"
 import { FC } from "react"
 
 interface PageHeadingProps {
-  title: string
+  title?: string
   isSearchHidden?: boolean
   isSearchDisabled?: boolean
 }
