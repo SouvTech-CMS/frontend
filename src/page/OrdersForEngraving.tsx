@@ -6,6 +6,7 @@ import { OrderToEngravingCard } from "component/orderProcessing/OrderToEngraving
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
+import { WorkShiftFinishBtn } from "component/workShift/WorkShiftFinishBtn"
 import { useEngravingContext } from "context/engraving"
 import { useUserContext } from "context/user"
 import { useAuthorizedDevice } from "hook/useAuthorizedDevice"
@@ -76,6 +77,7 @@ export const OrdersForEngraving = () => {
       <PageHeading title="Order Processing" isSearchHidden />
 
       <Flex
+        h="full"
         w="full"
         direction="column"
         justifyContent="center"
@@ -129,6 +131,8 @@ export const OrdersForEngraving = () => {
 
         {/* Order found by entered ID */}
         {isOrderExists && <OrderToEngravingCard order={order} />}
+
+        <WorkShiftFinishBtn />
       </Flex>
     </Page>
   )

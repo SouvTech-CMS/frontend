@@ -1,14 +1,19 @@
 import { getProcessingOrdersByEngraverId } from "api/engraver/processingOrder"
+import { getEngraverActiveWorkShift } from "api/engraver/workShift"
+import { WorkShiftStart } from "component/workShift/WorkShiftStart"
 import { ProcessingOrderStatus } from "constant/orderStatus"
 import { useUserContext } from "context/user"
 import { createContext, useContext, useEffect } from "react"
 import { useQuery } from "react-query"
 import { useLocation, useNavigate } from "react-router-dom"
 import { ProcessingOrder } from "type/engraver/processingOrder"
+import { WorkShiftWithBreaks } from "type/engraver/workShift"
 import { FCC } from "type/fcc"
 import { WithId } from "type/withId"
 
 interface EngravingContextProps {
+  activeWorkShift?: WithId<WorkShiftWithBreaks>
+  isActiveWorkShiftLoading: boolean
   currentProcessingOrder?: WithId<ProcessingOrder>
   isCurrentProcessingOrderExists: boolean
   processingOrdersList?: WithId<ProcessingOrder>[]
@@ -32,15 +37,32 @@ export const EngravingContextProvider: FCC = (props) => {
   const {
     data: processingOrdersList,
     isLoading: isProcessingOrdersListLoading,
-    isRefetching,
-    refetch,
+    isRefetching: isProcessingOrdersListRefetching,
+    refetch: refetchProcessingOrdersList,
   } = useQuery<WithId<ProcessingOrder>[]>(
     ["processingOrdersList", engraverId],
     () => getProcessingOrdersByEngraverId(engraverId!),
   )
 
+  const {
+    data: activeWorkShift,
+    isLoading: isActiveWorkShiftLoading,
+    isRefetching: isActiveWorkShiftRefetching,
+    refetch: refetchActiveWorkShift,
+  } = useQuery<WithId<WorkShiftWithBreaks> | undefined>(
+    ["activeWorkShift", engraverId],
+    () => getEngraverActiveWorkShift(engraverId!),
+  )
+  const isActiveWorkShiftExists = !!activeWorkShift
+
+  const isRefetching =
+    isProcessingOrdersListRefetching || isActiveWorkShiftRefetching
   const isLoading =
-    isProcessingOrdersListLoading || isLoadingCurrentUser || isRefetching
+    isRefetching ||
+    isProcessingOrdersListLoading ||
+    isLoadingCurrentUser ||
+    isProcessingOrdersListLoading ||
+    isActiveWorkShiftLoading
 
   const currentProcessingOrder = processingOrdersList?.find(
     (processingOrder) =>
@@ -50,44 +72,53 @@ export const EngravingContextProvider: FCC = (props) => {
 
   useEffect(() => {
     if (!!engraverId) {
-      refetch()
+      refetchProcessingOrdersList()
+      refetchActiveWorkShift()
     }
-  }, [refetch, engraverId])
+  }, [refetchProcessingOrdersList, refetchActiveWorkShift, engraverId])
 
-  useEffect(() => {
-    if (isLoading) {
-      return
-    }
-
-    // Redirect engraver to already processing order
-    if (isCurrentProcessingOrderExists) {
-      const processingOrderId = currentProcessingOrder?.id
-      if (!processingOrderId) {
+  useEffect(
+    () => {
+      if (isLoading) {
         return
       }
 
-      navigate(`/engraving/${processingOrderId}`, {
-        state: { from: location },
-      })
-    }
-    // Redirect engraver to "find order for engraving" page
-    else {
-      navigate("/engraving", {
-        state: { from: location },
-      })
-    }
-  }, [currentProcessingOrder])
+      // Redirect engraver to already processing order
+      if (isCurrentProcessingOrderExists) {
+        const processingOrderId = currentProcessingOrder?.id
+        if (!processingOrderId) {
+          return
+        }
+
+        navigate(`/engraving/${processingOrderId}`, {
+          state: { from: location },
+        })
+      }
+      // Redirect engraver to "find order for engraving" page
+      else {
+        navigate("/engraving", {
+          state: { from: location },
+        })
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentProcessingOrder, isLoading],
+  )
 
   return (
     <EngravingContext.Provider
       value={{
+        activeWorkShift,
+        isActiveWorkShiftLoading,
         currentProcessingOrder,
         isCurrentProcessingOrderExists,
         processingOrdersList,
         isProcessingOrdersListLoading,
       }}
     >
-      {children}
+      {!isActiveWorkShiftExists && <WorkShiftStart />}
+
+      {isActiveWorkShiftExists && children}
     </EngravingContext.Provider>
   )
 }
