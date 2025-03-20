@@ -39,7 +39,7 @@ export const appTheme = extendTheme({
   },
   styles: {
     global: {
-      "div, p, span, h1, h2, h3, h4, h5, h6": {
+      "div, p, h1, h2, h3, h4, h5, h6": {
         color: "bodyText",
       },
     },
