@@ -13,9 +13,7 @@ import { notify } from "util/toasts"
 export const WorkShiftStart: FC = () => {
   // const [animate, setAnimate] = useState<boolean>()
 
-  const { currentEngraver, isLoadingCurrentUser } = useUserContext()
-
-  const engraverId = currentEngraver?.id
+  const { engraverId, isLoadingCurrentUser } = useUserContext()
 
   const randomInterestingText =
     WORK_SHIFT_WELCOME_TEXTS[

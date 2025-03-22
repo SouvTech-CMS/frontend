@@ -12,6 +12,7 @@ import { FCC } from "type/fcc"
 import { WithId } from "type/withId"
 
 interface EngravingContextProps {
+  workShiftId?: number
   activeWorkShift?: WithId<WorkShiftWithBreaks>
   isActiveWorkShiftLoading: boolean
   currentProcessingOrder?: WithId<ProcessingOrder>
@@ -30,9 +31,7 @@ export const EngravingContextProvider: FCC = (props) => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const { currentEngraver, isLoadingCurrentUser } = useUserContext()
-
-  const engraverId = currentEngraver?.id
+  const { engraverId, isLoadingCurrentUser } = useUserContext()
 
   const {
     data: processingOrdersList,

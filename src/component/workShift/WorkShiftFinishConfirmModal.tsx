@@ -27,9 +27,7 @@ export const WorkShiftFinishConfirmModal: FC<
   const { isOpen, onClose } = props
 
   const { activeWorkShift, isActiveWorkShiftLoading } = useEngravingContext()
-  const { currentEngraver, isLoadingCurrentUser } = useUserContext()
-
-  const engraverId = currentEngraver?.id
+  const { engraverId, isLoadingCurrentUser } = useUserContext()
 
   const workShiftUpdateMutation = useWorkShiftUpdateMutation()
 

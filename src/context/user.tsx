@@ -11,7 +11,9 @@ import { User, UserWithRolesAndShops } from "type/user"
 import { WithId } from "type/withId"
 
 interface UserContextProps {
+  userId?: number
   currentUser?: WithId<User>
+  engraverId?: number
   currentEngraver?: WithId<Engraver>
   userRoles?: string[]
   userPermissions?: string[]
@@ -65,6 +67,9 @@ export const UserContextProvider: FCC = (props) => {
   const isUserManager = isUserAdmin || userRoles.includes(Role.MANAGER)
   const isUserEngraver = isUserAdmin || userRoles.includes(Role.ENGRAVER)
 
+  const userId = currentUser?.id
+  const engraverId = currentEngraver?.id
+
   useEffect(() => {
     if (currentUser) {
       const roles = currentUser.roles.map((role) => role.name.toLowerCase())
@@ -90,7 +95,9 @@ export const UserContextProvider: FCC = (props) => {
   return (
     <UserContext.Provider
       value={{
+        userId,
         currentUser,
+        engraverId,
         currentEngraver,
         userRoles,
         userPermissions,

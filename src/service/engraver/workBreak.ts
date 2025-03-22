@@ -1,11 +1,11 @@
-import { createWorkShift, updateWorkShift } from "api/engraver/workShift"
+import { finishWorkBreak, startWorkBreak } from "api/engraver/workBreak"
 import { queryClient } from "api/queryClient"
 import { AxiosError } from "axios"
 import { useMutation } from "react-query"
 import { notify } from "util/toasts"
 
-export const useWorkShiftCreateMutation = () => {
-  return useMutation(createWorkShift, {
+export const useWorkBreakStartMutation = () => {
+  return useMutation(startWorkBreak, {
     onSuccess: (_, body) => {
       const engraverId = body.engraver_id
       queryClient.invalidateQueries(["activeWorkShift", engraverId])
@@ -20,8 +20,8 @@ export const useWorkShiftCreateMutation = () => {
   })
 }
 
-export const useWorkShiftUpdateMutation = () => {
-  return useMutation(updateWorkShift, {
+export const useWorkBreakFinishMutation = () => {
+  return useMutation(finishWorkBreak, {
     onSuccess: (_, body) => {
       const engraverId = body.engraver_id
       queryClient.invalidateQueries(["activeWorkShift", engraverId])
