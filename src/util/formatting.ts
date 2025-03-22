@@ -8,6 +8,17 @@ export const stringToDate = (dateString?: string) => {
   return date
 }
 
+export const stringToTime = (timeString?: string) => {
+  if (!timeString) {
+    return
+  }
+
+  const [hours, minutes, seconds] = timeString.split(":").map(Number)
+  const date = new Date()
+  date.setHours(hours, minutes, seconds, 0)
+  return date
+}
+
 export const roundNumber = (num?: number, fractionDigits: number = 2) => {
   if (!num) {
     return 0

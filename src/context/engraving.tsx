@@ -1,5 +1,8 @@
+import { useDisclosure } from "@chakra-ui/react"
 import { getProcessingOrdersByEngraverId } from "api/engraver/processingOrder"
+import { getEngraverScheduledBreaks } from "api/engraver/scheduledBreaks"
 import { getEngraverActiveWorkShift } from "api/engraver/workShift"
+import { ActiveScheduledBreakModal } from "component/workBreak/ActiveScheduledBreakModal"
 import { WorkShiftStart } from "component/workShift/WorkShiftStart"
 import { ProcessingOrderStatus } from "constant/orderStatus"
 import { useUserContext } from "context/user"
@@ -7,6 +10,7 @@ import { createContext, useContext, useEffect } from "react"
 import { useQuery } from "react-query"
 import { useLocation, useNavigate } from "react-router-dom"
 import { ProcessingOrder } from "type/engraver/processingOrder"
+import { ScheduledBreak } from "type/engraver/scheduledBreak"
 import { WorkShiftWithBreaks } from "type/engraver/workShift"
 import { FCC } from "type/fcc"
 import { WithId } from "type/withId"
@@ -22,6 +26,9 @@ interface EngravingContextProps {
   processingOrdersList?: WithId<ProcessingOrder>[]
   isProcessingOrdersListLoading: boolean
 }
+
+// 1 minute
+const SCHEDULED_BREAK_REFETCH_INTERVAL_IN_MS = 10 * 1000
 
 export const EngravingContext = createContext<
   EngravingContextProps | undefined
@@ -56,14 +63,32 @@ export const EngravingContextProvider: FCC = (props) => {
   )
   const isActiveWorkShiftExists = !!activeWorkShift
 
+  const {
+    data: activeScheduledBreak,
+    isLoading: isActiveScheduledBreakLoading,
+    isRefetching: isActiveScheduledBreakRefetching,
+    refetch: refetchScheduledBreaks,
+  } = useQuery<WithId<ScheduledBreak>>(
+    ["scheduledBreaks", engraverId],
+    () => getEngraverScheduledBreaks(engraverId!),
+    {
+      refetchInterval: SCHEDULED_BREAK_REFETCH_INTERVAL_IN_MS,
+    },
+  )
+  const isActiveScheduledBreakExists = !!activeScheduledBreak
+
   const isRefetching =
-    isProcessingOrdersListRefetching || isActiveWorkShiftRefetching
+    isProcessingOrdersListRefetching ||
+    isActiveWorkShiftRefetching ||
+    isActiveScheduledBreakRefetching
+
   const isLoading =
     isRefetching ||
     isProcessingOrdersListLoading ||
     isLoadingCurrentUser ||
     isProcessingOrdersListLoading ||
-    isActiveWorkShiftLoading
+    isActiveWorkShiftLoading ||
+    isActiveScheduledBreakLoading
 
   const currentProcessingOrder = processingOrdersList?.find(
     (processingOrder) =>
@@ -80,13 +105,27 @@ export const EngravingContextProvider: FCC = (props) => {
 
   const workShiftId = activeWorkShift?.id
 
+  const {
+    isOpen: isActiveScheduledBreakModalOpen,
+    onOpen: onActiveScheduledBreakModalOpen,
+    onClose: onActiveScheduledBreakModalClose,
+  } = useDisclosure()
+
+  // * Refetches
   useEffect(() => {
     if (!!engraverId) {
       refetchProcessingOrdersList()
       refetchActiveWorkShift()
+      refetchScheduledBreaks()
     }
-  }, [refetchProcessingOrdersList, refetchActiveWorkShift, engraverId])
+  }, [
+    refetchProcessingOrdersList,
+    refetchActiveWorkShift,
+    refetchScheduledBreaks,
+    engraverId,
+  ])
 
+  // * Redirects between "Order Processing" & "Search Order" pages
   useEffect(
     () => {
       if (isLoading) {
@@ -115,6 +154,12 @@ export const EngravingContextProvider: FCC = (props) => {
     [currentProcessingOrder, isLoading],
   )
 
+  useEffect(() => {
+    if (isActiveScheduledBreakExists) {
+      onActiveScheduledBreakModalOpen()
+    }
+  }, [onActiveScheduledBreakModalOpen, isActiveScheduledBreakExists])
+
   return (
     <EngravingContext.Provider
       value={{
@@ -132,6 +177,14 @@ export const EngravingContextProvider: FCC = (props) => {
       {!isActiveWorkShiftExists && <WorkShiftStart />}
 
       {isActiveWorkShiftExists && children}
+
+      {isActiveScheduledBreakExists && (
+        <ActiveScheduledBreakModal
+          scheduledBreak={activeScheduledBreak}
+          isOpen={isActiveScheduledBreakModalOpen}
+          onClose={onActiveScheduledBreakModalClose}
+        />
+      )}
     </EngravingContext.Provider>
   )
 }
