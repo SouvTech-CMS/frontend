@@ -18,7 +18,11 @@ import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
 export const OrdersForEngraving = () => {
-  const { isProcessingOrdersListLoading } = useEngravingContext()
+  const {
+    isProcessingOrdersListLoading,
+    recentlyProcessingOrders,
+    isRecentlyProcessingOrderExists,
+  } = useEngravingContext()
   const { isUserEngraver, isLoadingCurrentUser } = useUserContext()
   const { isDeviceAuthorized, isCheckingDevice } = useAuthorizedDevice()
 
@@ -132,7 +136,29 @@ export const OrdersForEngraving = () => {
         {/* Order found by entered ID */}
         {isOrderExists && <OrderToEngravingCard order={order} />}
 
-        <WorkShiftFinishBtn />
+        <Flex w="full" direction="column" mt="auto" gap={3}>
+          {/* Recently Processing Orders */}
+          {isRecentlyProcessingOrderExists && (
+            <>
+              <Heading>Your recent Orders</Heading>
+
+              <Flex w="full" direction="row" alignItems="center" gap={3}>
+                {recentlyProcessingOrders?.map(
+                  ({ order, ...processingOrder }, index) => (
+                    <OrderToEngravingCard
+                      key={index}
+                      order={order}
+                      processingOrder={processingOrder}
+                    />
+                  ),
+                )}
+              </Flex>
+            </>
+          )}
+
+          {/* Finish Work Shift Btn */}
+          <WorkShiftFinishBtn />
+        </Flex>
       </Flex>
     </Page>
   )

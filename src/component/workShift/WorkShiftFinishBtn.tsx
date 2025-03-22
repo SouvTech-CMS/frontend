@@ -16,7 +16,6 @@ export const WorkShiftFinishBtn: FC = () => {
         direction="column"
         justifyContent="center"
         alignItems="flex-end"
-        mt="auto"
       >
         <Button variant="danger" onClick={onWorkShiftFinishModalOpen}>
           Finish Work Shift

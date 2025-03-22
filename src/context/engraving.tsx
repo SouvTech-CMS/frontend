@@ -17,6 +17,8 @@ interface EngravingContextProps {
   isActiveWorkShiftLoading: boolean
   currentProcessingOrder?: WithId<ProcessingOrder>
   isCurrentProcessingOrderExists: boolean
+  recentlyProcessingOrders?: WithId<ProcessingOrder>[]
+  isRecentlyProcessingOrderExists: boolean
   processingOrdersList?: WithId<ProcessingOrder>[]
   isProcessingOrdersListLoading: boolean
 }
@@ -69,6 +71,15 @@ export const EngravingContextProvider: FCC = (props) => {
   )
   const isCurrentProcessingOrderExists = !!currentProcessingOrder
 
+  const recentlyProcessingOrders = processingOrdersList?.filter(
+    (processingOrder) =>
+      processingOrder.status === ProcessingOrderStatus.PAUSED,
+  )
+  const isRecentlyProcessingOrderExists =
+    !!recentlyProcessingOrders && recentlyProcessingOrders.length > 0
+
+  const workShiftId = activeWorkShift?.id
+
   useEffect(() => {
     if (!!engraverId) {
       refetchProcessingOrdersList()
@@ -107,10 +118,13 @@ export const EngravingContextProvider: FCC = (props) => {
   return (
     <EngravingContext.Provider
       value={{
+        workShiftId,
         activeWorkShift,
         isActiveWorkShiftLoading,
         currentProcessingOrder,
         isCurrentProcessingOrderExists,
+        recentlyProcessingOrders,
+        isRecentlyProcessingOrderExists,
         processingOrdersList,
         isProcessingOrdersListLoading,
       }}

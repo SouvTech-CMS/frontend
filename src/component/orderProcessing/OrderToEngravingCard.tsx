@@ -8,11 +8,15 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react"
+import { ProcessingOrderStatus } from "constant/orderStatus"
 import { useUserContext } from "context/user"
 import { FC } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useProcessingOrderCreateMutation } from "service/engraver/processingOrder"
-import { ProcessingOrderCreate } from "type/engraver/processingOrder"
+import {
+  ProcessingOrder,
+  ProcessingOrderCreate,
+} from "type/engraver/processingOrder"
 import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 import { formatDate, stringToDate } from "util/formatting"
@@ -20,10 +24,11 @@ import { notify } from "util/toasts"
 
 interface OrderToEngravingCardProps {
   order?: WithId<Order>
+  processingOrder?: WithId<ProcessingOrder>
 }
 
 export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
-  const { order } = props
+  const { order, processingOrder } = props
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -43,6 +48,18 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
     navigate(`/engraving/${processingOrderId}`, {
       state: { from: location },
     })
+  }
+
+  const getBtnTextByStatus = (status?: string) => {
+    if (!!status) {
+      switch (status) {
+        case ProcessingOrderStatus.PAUSED:
+        case ProcessingOrderStatus.IN_PROGRESS:
+          return "Continue engraving"
+      }
+    }
+
+    return "Take it for engraving"
   }
 
   const handleClick = async () => {
@@ -66,6 +83,9 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
 
     navigateToEngravingPage(processingOrderId)
   }
+
+  const processingStatus = processingOrder?.status
+  const btnText = getBtnTextByStatus(processingStatus)
 
   return (
     <Card w="fit-content" variant="card">
@@ -95,7 +115,7 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
             isLoading={isLoading}
             isDisabled={isLoading}
           >
-            Take it for engraving
+            {btnText}
           </Button>
         </Flex>
       </CardFooter>
