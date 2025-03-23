@@ -3,7 +3,7 @@ import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { WORK_SHIFT_WELCOME_TEXTS } from "constant/workShiftTexts"
 import { useUserContext } from "context/user"
-import { FC } from "react"
+import { FC, useMemo } from "react"
 import { useWorkShiftCreateMutation } from "service/engraver/workShift"
 import { WorkShift } from "type/engraver/workShift"
 import { notify } from "util/toasts"
@@ -15,10 +15,13 @@ export const WorkShiftStart: FC = () => {
 
   const { engraverId, isLoadingCurrentUser } = useUserContext()
 
-  const randomInterestingText =
-    WORK_SHIFT_WELCOME_TEXTS[
-      Math.floor(Math.random() * WORK_SHIFT_WELCOME_TEXTS.length)
-    ]
+  const randomInterestingText = useMemo(
+    () =>
+      WORK_SHIFT_WELCOME_TEXTS[
+        Math.floor(Math.random() * WORK_SHIFT_WELCOME_TEXTS.length)
+      ],
+    [],
+  )
 
   const workShiftCreateMutation = useWorkShiftCreateMutation()
 
