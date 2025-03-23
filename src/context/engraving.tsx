@@ -14,6 +14,7 @@ import { ScheduledBreak } from "type/engraver/scheduledBreak"
 import { WorkShiftWithBreaks } from "type/engraver/workShift"
 import { FCC } from "type/fcc"
 import { WithId } from "type/withId"
+import { getUserTimezone } from "util/dates"
 
 interface EngravingContextProps {
   workShiftId?: number
@@ -27,7 +28,7 @@ interface EngravingContextProps {
   isProcessingOrdersListLoading: boolean
 }
 
-// 1 minute
+// 10 seconds
 const SCHEDULED_BREAK_REFETCH_INTERVAL_IN_MS = 10 * 1000
 
 export const EngravingContext = createContext<
@@ -63,6 +64,8 @@ export const EngravingContextProvider: FCC = (props) => {
   )
   const isActiveWorkShiftExists = !!activeWorkShift
 
+  const userTimezone = getUserTimezone()
+
   const {
     data: activeScheduledBreak,
     isLoading: isActiveScheduledBreakLoading,
@@ -70,9 +73,12 @@ export const EngravingContextProvider: FCC = (props) => {
     refetch: refetchScheduledBreaks,
   } = useQuery<WithId<ScheduledBreak>>(
     ["scheduledBreaks", engraverId],
-    () => getEngraverScheduledBreaks(engraverId!),
+    () => getEngraverScheduledBreaks(engraverId!, userTimezone),
     {
-      refetchInterval: SCHEDULED_BREAK_REFETCH_INTERVAL_IN_MS,
+      enabled: isActiveWorkShiftExists,
+      refetchInterval: isActiveWorkShiftExists
+        ? SCHEDULED_BREAK_REFETCH_INTERVAL_IN_MS
+        : undefined,
     },
   )
   const isActiveScheduledBreakExists = !!activeScheduledBreak
@@ -116,13 +122,17 @@ export const EngravingContextProvider: FCC = (props) => {
     if (!!engraverId) {
       refetchProcessingOrdersList()
       refetchActiveWorkShift()
-      refetchScheduledBreaks()
+
+      if (isActiveWorkShiftExists) {
+        refetchScheduledBreaks()
+      }
     }
   }, [
     refetchProcessingOrdersList,
     refetchActiveWorkShift,
     refetchScheduledBreaks,
     engraverId,
+    isActiveWorkShiftExists,
   ])
 
   // * Redirects between "Order Processing" & "Search Order" pages
