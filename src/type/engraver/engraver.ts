@@ -1,4 +1,5 @@
 import { EngraverDocument } from "type/engraver/engraverDocument"
+import { ProcessingOrder } from "type/engraver/processingOrder"
 import { ScheduledBreak } from "type/engraver/scheduledBreak"
 import { WorkShiftWithBreaks } from "type/engraver/workShift"
 import { User, UserWithShops } from "type/user"
@@ -9,6 +10,7 @@ export type Engraver = {
   scheduled_breaks: ScheduledBreak[]
   work_shifts: WorkShiftWithBreaks[]
   documents: WithId<EngraverDocument>[]
+  processing_orders?: WithId<ProcessingOrder>[]
   user_id?: number
   is_blocked?: boolean
   blocked_at?: string
