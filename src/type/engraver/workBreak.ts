@@ -4,3 +4,8 @@ export type WorkBreak = {
   finished_at?: string
   is_system?: boolean
 }
+
+export type WorkBreakUpdate = {
+  work_shift_id: number
+  engraver_id: number
+}

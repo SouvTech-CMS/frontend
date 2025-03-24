@@ -43,3 +43,8 @@ export const getLastCurrentMonthDateString = () => {
   const currentDate = new Date().getDate()
   return `${currentDate}.${currentMonth}.${currentYear}`
 }
+
+export const getUserTimezone = () => {
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+  return userTimezone
+}

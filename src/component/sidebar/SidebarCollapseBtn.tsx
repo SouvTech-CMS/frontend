@@ -1,4 +1,4 @@
-import { Button, Text } from "@chakra-ui/react"
+import { Button, Flex, Text } from "@chakra-ui/react"
 import { FC } from "react"
 import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi"
 
@@ -14,9 +14,18 @@ export const SidebarCollapseBtn: FC<SidebarCollapseBtnProps> = (props) => {
 
   return (
     <Button w="full" variant="ghost" colorScheme="blue" onClick={onClick}>
-      <Icon />
+      <Flex
+        h="fit-content"
+        w="full"
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        gap={1}
+      >
+        <Icon />
 
-      {!isCollapsed && <Text>Collapse</Text>}
+        {!isCollapsed && <Text>Collapse</Text>}
+      </Flex>
     </Button>
   )
 }

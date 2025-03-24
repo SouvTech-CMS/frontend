@@ -1,4 +1,5 @@
 import { Permission } from "constant/permissions"
+import { EngravingContextProvider } from "context/engraving"
 import { TableContextProvider } from "context/table"
 import { Auth } from "page/Auth"
 import { AuthorizedDevices } from "page/AuthorizedDevices"
@@ -7,12 +8,14 @@ import { Clients } from "page/Clients"
 import { Dashboard } from "page/Dashboard"
 import { DetailedReports } from "page/DetailedReports"
 import { Engravers } from "page/Engravers"
+import { Engraving } from "page/Engraving"
 import { Goods } from "page/Goods"
 import { Guides } from "page/Guides"
 import { Maintenance } from "page/Maintenance"
 import { NoAccess } from "page/NoAccess"
 import { OrderInfo } from "page/OrderInfo"
 import { Orders } from "page/Orders"
+import { OrdersForEngraving } from "page/OrdersForEngraving"
 import { ProductionInfo } from "page/ProductionInfo"
 import { Purchases } from "page/Purchases"
 import { PurchasesHistory } from "page/PurchasesHistory"
@@ -72,6 +75,31 @@ export const configuration = {
       name: "Dashboard",
       path: "/",
       component: <Dashboard />,
+    },
+    // Find Order for Engraving
+    {
+      type: "main",
+      icon: FiPenTool,
+      name: "Engraving",
+      path: "/engraving",
+      // TODO: set permissions
+      component: (
+        <EngravingContextProvider>
+          <OrdersForEngraving />
+        </EngravingContextProvider>
+      ),
+    },
+    // Order Engraving
+    {
+      type: "child",
+      name: "Order Engraving :id",
+      path: "/engraving/:id",
+      // TODO: set permissions
+      component: (
+        <EngravingContextProvider>
+          <Engraving />
+        </EngravingContextProvider>
+      ),
     },
     // Reports
     {
@@ -225,12 +253,12 @@ export const configuration = {
       permissions: [],
       // TODO: add guide page url
       component: <AuthorizedDevices />,
-      isDisabled: true,
+      // isDisabled: true,
     },
     // Engravers
     {
       type: "main",
-      icon: FiPenTool,
+      icon: FiUsers,
       name: "Engravers",
       path: "/engravers",
       permissions: [],

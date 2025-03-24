@@ -9,7 +9,8 @@ import "@fontsource-variable/dm-sans"
 
 export const appTheme = extendTheme({
   colors: {
-    bodyText: "#1B254B",
+    // bodyText: "#1B254B",
+    bodyText: "#1D3557",
     sidebar: baseTheme.colors.white,
     appLayout: baseTheme.colors.gray["100"],
     thinBorder: baseTheme.colors.gray["200"],
@@ -38,7 +39,7 @@ export const appTheme = extendTheme({
   },
   styles: {
     global: {
-      div: {
+      "div, p, h1, h2, h3, h4, h5, h6": {
         color: "bodyText",
       },
     },
@@ -68,6 +69,22 @@ export const appTheme = extendTheme({
           _hover: {
             bgColor: baseTheme.colors.gray["300"],
             color: "bodyText",
+          },
+        },
+        success: {
+          bgColor: baseTheme.colors.green["500"],
+          color: baseTheme.colors.white,
+          _hover: {
+            bgColor: baseTheme.colors.green["600"],
+            color: baseTheme.colors.white,
+          },
+        },
+        warning: {
+          bgColor: baseTheme.colors.yellow["500"],
+          color: baseTheme.colors.white,
+          _hover: {
+            bgColor: baseTheme.colors.yellow["600"],
+            color: baseTheme.colors.white,
           },
         },
         danger: {
