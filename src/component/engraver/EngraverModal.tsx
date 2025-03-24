@@ -162,6 +162,7 @@ export const EngraverModal: FC<EngraverModalProps> = (props) => {
         scheduled_breaks,
         work_shifts,
         documents,
+        processing_orders,
         ...updatedEngraver
       } = prevEngraver
 
