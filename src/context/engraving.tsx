@@ -51,6 +51,9 @@ export const EngravingContextProvider: FCC = (props) => {
   } = useQuery<WithId<ProcessingOrder>[]>(
     ["processingOrdersList", engraverId],
     () => getProcessingOrdersByEngraverId(engraverId!),
+    {
+      enabled: !!engraverId,
+    },
   )
 
   const {
@@ -61,6 +64,9 @@ export const EngravingContextProvider: FCC = (props) => {
   } = useQuery<WithId<WorkShiftWithBreaks> | undefined>(
     ["activeWorkShift", engraverId],
     () => getEngraverActiveWorkShift(engraverId!),
+    {
+      enabled: !!engraverId,
+    },
   )
   const isActiveWorkShiftExists = !!activeWorkShift
 
@@ -75,7 +81,7 @@ export const EngravingContextProvider: FCC = (props) => {
     ["scheduledBreaks", engraverId],
     () => getEngraverScheduledBreaks(engraverId!, userTimezone),
     {
-      enabled: isActiveWorkShiftExists,
+      enabled: !!engraverId && isActiveWorkShiftExists,
       refetchInterval: isActiveWorkShiftExists
         ? SCHEDULED_BREAK_REFETCH_INTERVAL_IN_MS
         : undefined,
