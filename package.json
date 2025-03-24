@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "chakra:theme-tokens": "chakra-cli tokens src/theme.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@chakra-ui/cli": "^3.13.0",
     "@types/node": "^20.14.2",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",

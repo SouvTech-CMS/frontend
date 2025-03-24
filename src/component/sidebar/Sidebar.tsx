@@ -13,6 +13,10 @@ export const Sidebar: FC = () => {
 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false)
 
+  //! If 'permissions' param not set (undefined) to route
+  //! it available to everybody
+  //* If 'permissions' param set as empty list
+  //* it available only for Admin
   const sideBarRoutes = configuration.sidebarItems.filter(
     ({ type, component, permissions }) =>
       type === "main" &&
@@ -20,7 +24,8 @@ export const Sidebar: FC = () => {
       (isUserAdmin ||
         permissions?.some((permission) =>
           userPermissions?.includes(permission),
-        )),
+        ) ||
+        !permissions),
   )
 
   const handleCollapse = () => {
@@ -40,6 +45,7 @@ export const Sidebar: FC = () => {
       borderRightWidth={1}
       gap={5}
       overflowY="auto"
+      overflowX="hidden"
     >
       <Logo isCollapsed={isCollapsed} />
 
@@ -64,19 +70,19 @@ export const Sidebar: FC = () => {
       )}
 
       {/* Site Version */}
-      <Flex w="full" direction="column" alignItems="center" mt="auto" gap={2}>
+      <Flex w="full" direction="column" alignItems="center" mt="auto" gap={3}>
         {!isCollapsed && (
-          <>
+          <Flex w="full" direction="column" alignItems="center" gap={1}>
             {/* Site Version */}
-            <Text fontWeight="light" color="gray">
+            <Text fontWeight="light" color="gray.400">
               {`Site Version: ${configuration.version}`}
             </Text>
 
             {/* Copyrights */}
-            <Text fontWeight="light" color="gray">
+            <Text fontWeight="light" color="gray.400">
               © RedBread
             </Text>
-          </>
+          </Flex>
         )}
 
         {/* Collapse Btn */}

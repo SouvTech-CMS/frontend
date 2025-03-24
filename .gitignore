@@ -13,3 +13,8 @@ build/
 # IDEA
 .idea/
 .vscode/
+.vscode/
+*.code-workspace
+
+# TO-DO files
+**/*[Tt][Oo][Dd][Oo]*
