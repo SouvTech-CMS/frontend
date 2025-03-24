@@ -164,11 +164,16 @@ export const EngravingContextProvider: FCC = (props) => {
     [currentProcessingOrder, isLoading],
   )
 
+  // * Engraver Scheduled Breaks Modal Triggering
   useEffect(() => {
-    if (isActiveScheduledBreakExists) {
+    if (isActiveScheduledBreakExists && !isCurrentProcessingOrderExists) {
       onActiveScheduledBreakModalOpen()
     }
-  }, [onActiveScheduledBreakModalOpen, isActiveScheduledBreakExists])
+  }, [
+    onActiveScheduledBreakModalOpen,
+    isActiveScheduledBreakExists,
+    isCurrentProcessingOrderExists,
+  ])
 
   return (
     <EngravingContext.Provider
