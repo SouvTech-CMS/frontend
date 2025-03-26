@@ -83,10 +83,10 @@ export const ShelfWithGoodsCard: FC<ShelfWithGoodsCardProps> = (props) => {
                 </Text>
               </Flex>
 
-              {/* Free Badge */}
+              {/* Empty Badge */}
               {isQuantityZero && (
                 <Badge w="fit-content" colorScheme="green">
-                  Free
+                  Empty
                 </Badge>
               )}
 

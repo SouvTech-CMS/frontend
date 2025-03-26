@@ -1,3 +1,5 @@
+import { Flex } from "@chakra-ui/react"
+import { ShopBadge } from "component/badge/ShopBadge"
 import { MarketplaceNameWithAvatar } from "component/marketplace/MarketplaceNameWithAvatar"
 import { PropertiesList } from "component/property/PropertiesList"
 import { FC } from "react"
@@ -15,6 +17,7 @@ export const ClientProperties: FC<ClientPropertiesProps> = (props) => {
   const name = client.name
   const ordersCount = client.orders_count
   const marketplace = client.marketplace
+  const shopsList = client.shops
 
   const propertiesList: Property[] = [
     {
@@ -28,6 +31,16 @@ export const ClientProperties: FC<ClientPropertiesProps> = (props) => {
     {
       name: "Marketplace",
       value: <MarketplaceNameWithAvatar marketplace={marketplace} />,
+    },
+    {
+      name: "Shops",
+      value: (
+        <Flex direction="column" gap={1}>
+          {shopsList?.map((shop, index) => (
+            <ShopBadge key={index} shop={shop} />
+          ))}
+        </Flex>
+      ),
     },
   ]
 

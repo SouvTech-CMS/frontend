@@ -94,6 +94,12 @@ export const CLIENTS_TABLE_COLUMNS: (TableColumn | null)[] = [
     isSortable: true,
   },
   {
+    name: "Shops",
+    param: "shops",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
     name: "Marketplace",
     param: "marketplace",
     isSearchable: false,

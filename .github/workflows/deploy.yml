@@ -9,24 +9,31 @@ jobs:
     name: Update server by ssh
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repo
+      - name: Checkout the repository
         uses: actions/checkout@v3
 
-      - name: Connect and run script
+      - name: Deploy application via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           port: ${{ secrets.DEPLOY_PORT }}
           username: ${{ secrets.DEPLOY_USER_NAME }}
           password: ${{ secrets.DEPLOY_USER_PASSWORD }}
-          script_stop: true
           script: |
-            cd ~/${{ github.event.repository.name }}/
+            REPO_DIR=~/${{ github.event.repository.name }}
+
+            echo "Open repository dir: $REPO_DIR"
+            cd $REPO_DIR
+
+            echo "Pull changes"
             git checkout main
             git pull
 
             echo "Stop all containers"
             docker compose stop
 
-            echo "Run updated container"
+            echo "Clear docker cache"
+            docker system prune -f
+
+            echo "Run updated containers"
             docker compose up -d --build

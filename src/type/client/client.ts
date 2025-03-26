@@ -1,5 +1,6 @@
 import { Marketplace } from "type/client/marketplace"
 import { Order } from "type/order/order"
+import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 
 export type Client = {
@@ -12,6 +13,7 @@ export type Client = {
 
 export type FullClient = Client & {
   orders_count: number
+  shops: WithId<Shop>[]
 }
 
 export type ClientWithOrders = FullClient & {
