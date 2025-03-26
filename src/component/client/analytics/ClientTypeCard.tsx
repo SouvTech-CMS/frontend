@@ -72,10 +72,10 @@ export const ClientTypeCard: FC<ClientTypeCardProps> = (props) => {
           </Flex>
         </Flex>
 
-        <Flex w="full" direction="column" color="gray" gap={1}>
+        <Flex w="full" direction="column" gap={1}>
           {/* Description */}
           <Flex w="full">
-            <Text color="gray">{description}</Text>
+            <Text>{description}</Text>
           </Flex>
 
           {/* Conditions Btn */}
@@ -87,11 +87,9 @@ export const ClientTypeCard: FC<ClientTypeCardProps> = (props) => {
               onClick={handleClick}
               cursor="pointer"
             >
-              <Icon as={icon} color="gray" />
+              <Icon as={icon} />
 
-              <Text color="gray" _hover={{ textDecoration: "underline" }}>
-                Conditions
-              </Text>
+              <Text _hover={{ textDecoration: "underline" }}>Conditions</Text>
             </Flex>
 
             {/* Conditions List */}
