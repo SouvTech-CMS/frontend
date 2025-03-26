@@ -4,6 +4,7 @@ import { ClientTypeCard } from "component/client/analytics/ClientTypeCard"
 import { ClientsTable } from "component/client/ClientsTable"
 import { Container } from "component/Container"
 import { SearchFiltersClearBtn } from "component/customTable/SearchFiltersClearBtn"
+import { ShopFilter } from "component/filter/ShopFilter"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
@@ -29,7 +30,7 @@ export const Clients = (props: PageProps) => {
   const { currentPage, setCurrentPage, resetCurrentPage, offset, setOffset } =
     usePagination()
   const { rowsPerPageCount } = usePaginationContext()
-  const { selectedShopId } = useShopFilter()
+  const { selectedShopId, handleShopSelect } = useShopFilter()
   const { sortDirection, sortField, searchFilter } =
     useTableContext<ClientSearchFilter>()
 
@@ -94,7 +95,9 @@ export const Clients = (props: PageProps) => {
 
       {/* Table with Filters */}
       <Container gap={3}>
-        <Flex w="full" direction="row" justifyContent="flex-end">
+        <Flex w="full" direction="row" justifyContent="space-between">
+          <ShopFilter handleShopSelect={handleShopSelect} />
+
           <Flex direction="row" alignItems="center" gap={2}>
             <SearchFiltersClearBtn isLoading={isLoading || isRefetching} />
 

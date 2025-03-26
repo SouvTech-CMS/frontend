@@ -17,8 +17,8 @@ export const ClientTypeConditionsList: FC<ClientTypeConditionsListProps> = (
   return (
     <UnorderedList w="full" pl={pl}>
       {conditions.map((condition, index) => (
-        <ListItem key={index}>
-          <Text>{condition}</Text>
+        <ListItem key={index} color="gray">
+          <Text color="gray">{condition}</Text>
         </ListItem>
       ))}
     </UnorderedList>
