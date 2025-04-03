@@ -11,6 +11,7 @@ import { getStorageActualInfoByGoodId } from "api/storage/storage"
 import { SKUBadge } from "component/badge/SKUBadge"
 import { ShelfBadge } from "component/badge/ShelfBadge"
 import { TableTdSkeleton } from "component/customTable/TableTdSkeleton"
+import { QuantityColor } from "component/storageGood/QuantityColor"
 import { StorageGoodModal } from "component/storageGood/StorageGoodModal"
 import { StorageGoodRowMenu } from "component/storageGood/StorageGoodRowMenu"
 import { FC, useEffect } from "react"
@@ -94,9 +95,14 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   return (
     <>
       <Tr>
-        {/* ID  */}
         <Td>
-          <Text>{goodId}</Text>
+          <Flex w="full" direction="row" alignItems="center" gap={3}>
+            {/* Quantity Color  */}
+            <QuantityColor color={storageGood.quantity_color} />
+
+            {/* ID */}
+            <Text>{goodId}</Text>
+          </Flex>
         </Td>
 
         {/* SKU Segment Badge  */}

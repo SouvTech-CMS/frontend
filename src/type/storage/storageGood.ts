@@ -9,6 +9,7 @@ export type StorageGood = {
   uniquename: string
   name: string
   quantity: number
+  quantity_color?: string
   description?: string
   is_actual?: boolean
 }
