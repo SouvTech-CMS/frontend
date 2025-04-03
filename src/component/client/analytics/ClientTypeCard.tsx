@@ -72,23 +72,22 @@ export const ClientTypeCard: FC<ClientTypeCardProps> = (props) => {
           </Flex>
         </Flex>
 
-        <Flex w="full" direction="column" color="gray" gap={1}>
+        <Flex w="full" direction="column" gap={1}>
           {/* Description */}
-          <Flex w="full" color="inherit">
+          <Flex w="full">
             <Text>{description}</Text>
           </Flex>
 
           {/* Conditions Btn */}
-          <Flex w="full" direction="column" color="inherit">
+          <Flex w="full" direction="column">
             <Flex
               w="fit-content"
               direction="row"
               alignItems="center"
-              color="inherit"
               onClick={handleClick}
               cursor="pointer"
             >
-              <Icon as={icon} color="gray" />
+              <Icon as={icon} />
 
               <Text _hover={{ textDecoration: "underline" }}>Conditions</Text>
             </Flex>
