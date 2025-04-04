@@ -1,5 +1,6 @@
 import { getTablesAccessListByRolesIds } from "api/tableAccess/tableAccess"
 import { getCurrentUser } from "api/user"
+import { InactivityModal } from "component/engraver/InactivityModal"
 import { ADMIN_ROLE, Role } from "constant/roles"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useQuery } from "react-query"
@@ -65,7 +66,8 @@ export const UserContextProvider: FCC = (props) => {
 
   const isUserAdmin = userRoles.includes(ADMIN_ROLE)
   const isUserManager = isUserAdmin || userRoles.includes(Role.MANAGER)
-  const isUserEngraver = isUserAdmin || userRoles.includes(Role.ENGRAVER)
+  const isUserEngraver =
+    isUserAdmin || (userRoles.includes(Role.ENGRAVER) && !!currentEngraver)
 
   const userId = currentUser?.id
   const engraverId = currentEngraver?.id
@@ -110,6 +112,8 @@ export const UserContextProvider: FCC = (props) => {
       }}
     >
       {children}
+
+      {isUserEngraver && <InactivityModal />}
     </UserContext.Provider>
   )
 }
