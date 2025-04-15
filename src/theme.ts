@@ -5,6 +5,7 @@ import {
   Theme,
   useTheme,
 } from "@chakra-ui/react"
+
 import "@fontsource-variable/dm-sans"
 
 export const appTheme = extendTheme({
