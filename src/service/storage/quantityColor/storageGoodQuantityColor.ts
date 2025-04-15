@@ -4,7 +4,7 @@ import { AxiosError } from "axios"
 import { useMutation } from "react-query"
 import { notify } from "util/toasts"
 
-export const useStorageGoodQuantityColorsMutation = () => {
+export const useStorageGoodQuantityColorsUpdateMutation = () => {
   return useMutation(updateStorageGoodQuantityColors, {
     onSuccess: (_, body) => {
       const goodId = body.storage_good_id

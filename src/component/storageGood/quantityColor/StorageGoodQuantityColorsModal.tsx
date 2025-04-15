@@ -16,7 +16,7 @@ import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { StorageGoodQuantityColorItem } from "component/storageGood/quantityColor/StorageGoodQuantityColorItem"
 import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { useStorageGoodQuantityColorsMutation } from "service/storage/quantityColor/storageGoodQuantityColor"
+import { useStorageGoodQuantityColorsUpdateMutation } from "service/storage/quantityColor/storageGoodQuantityColor"
 import { ModalProps } from "type/modalProps"
 import { QuantityColor } from "type/storage/quantityColor/quantityColor"
 import {
@@ -56,13 +56,13 @@ export const StorageGoodQuantityColorsModal: FC<
       getAllQuantityColors,
     )
 
-  const storageGoodQuantityColorsMutation =
-    useStorageGoodQuantityColorsMutation()
+  const storageGoodQuantityColorsUpdateMutation =
+    useStorageGoodQuantityColorsUpdateMutation()
 
   const isLoading = isQuantityColorsLoading
 
   const isSaveBtnDisabled =
-    isLoading || storageGoodQuantityColorsMutation.isLoading
+    isLoading || storageGoodQuantityColorsUpdateMutation.isLoading
 
   const handleUpdate = async () => {
     const body: StorageGoodQuantityColorUpdate = {
@@ -70,7 +70,7 @@ export const StorageGoodQuantityColorsModal: FC<
       quantity_colors: storageGoodQuantityColorsList,
     }
 
-    await storageGoodQuantityColorsMutation.mutateAsync(body)
+    await storageGoodQuantityColorsUpdateMutation.mutateAsync(body)
 
     notify(
       `Quantity Colors for Storage Good #${goodId} was updated successfully`,
