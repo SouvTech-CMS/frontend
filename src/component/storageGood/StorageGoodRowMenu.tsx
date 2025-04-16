@@ -7,16 +7,23 @@ import {
 } from "@chakra-ui/react"
 import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
-import { FiEdit, FiEye, FiEyeOff, FiMoreVertical } from "react-icons/fi"
+import {
+  FiAlertCircle,
+  FiEdit,
+  FiEye,
+  FiEyeOff,
+  FiMoreVertical,
+} from "react-icons/fi"
 
 interface StorageGoodRowMenuProps {
   isGoodHidden?: boolean
   onEdit: () => void
+  onQuantityColors: () => void
   onToggleIsHidden: () => void
 }
 
 export const StorageGoodRowMenu: FC<StorageGoodRowMenuProps> = (props) => {
-  const { isGoodHidden, onEdit, onToggleIsHidden } = props
+  const { isGoodHidden, onEdit, onQuantityColors, onToggleIsHidden } = props
 
   const { canEditStorage } = useUserPermissions()
 
@@ -36,6 +43,14 @@ export const StorageGoodRowMenu: FC<StorageGoodRowMenuProps> = (props) => {
           isDisabled={!canEditStorage}
         >
           Edit
+        </MenuItem>
+
+        <MenuItem
+          icon={<FiAlertCircle />}
+          onClick={onQuantityColors}
+          isDisabled={!canEditStorage}
+        >
+          Quantity Colors
         </MenuItem>
 
         <MenuItem

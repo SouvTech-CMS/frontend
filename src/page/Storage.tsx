@@ -8,6 +8,7 @@ import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { FullStorageTotalAmountLabel } from "component/storage/FullStorageTotalAmountLabel"
+import { QuantityColorsModalBtn } from "component/storageGood/quantityColor/QuantityColorsModalBtn"
 import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
 import { ChooseDefectOrErrorBtn } from "component/storageGoodDefect/ChooseDefectOrErrorBtn"
@@ -89,6 +90,7 @@ export const Storage = (props: PageProps) => {
       <PageHeading title="Storage" isSearchHidden />
 
       <Container gap={3}>
+        {/* Filters */}
         <Flex w="full" direction="row" justifyContent="space-between">
           <StorageGoodsFilters
             handleShopSelect={handleShopSelect}
@@ -114,8 +116,13 @@ export const Storage = (props: PageProps) => {
           {/* Storage Total Amount */}
           <FullStorageTotalAmountLabel />
 
-          {/* Defect or Error */}
-          <ChooseDefectOrErrorBtn />
+          <Flex direction="row" alignItems="center" gap={2}>
+            {/* Defect or Error */}
+            <ChooseDefectOrErrorBtn />
+
+            {/* Quantity Colors */}
+            <QuantityColorsModalBtn />
+          </Flex>
         </Flex>
 
         {!isStorageGoodsExist && isLoading && <LoadingPage />}

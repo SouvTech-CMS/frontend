@@ -8,9 +8,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react"
 import { getStorageActualInfoByGoodId } from "api/storage/storage"
-import { SKUBadge } from "component/badge/SKUBadge"
 import { ShelfBadge } from "component/badge/ShelfBadge"
+import { SKUBadge } from "component/badge/SKUBadge"
 import { TableTdSkeleton } from "component/customTable/TableTdSkeleton"
+import { QuantityColorIcon } from "component/storageGood/quantityColor/QuantityColorIcon"
+import { StorageGoodQuantityColorsModal } from "component/storageGood/quantityColor/StorageGoodQuantityColorsModal"
 import { StorageGoodModal } from "component/storageGood/StorageGoodModal"
 import { StorageGoodRowMenu } from "component/storageGood/StorageGoodRowMenu"
 import { FC, useEffect } from "react"
@@ -45,30 +47,39 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
   const isLoadingActualInfo = isLoading || isRefetching
 
-  const goodTotalQuantity = storageGood.quantity
-  const goodIsActual = storageGood.is_actual
-  const goodsShelvesList = storageGood?.shelf
+  const {
+    shops,
+    storages,
+    shelf: shelves,
+    defects,
+    quantity_color: quantityColor,
+    quantity_colors: quantityColorList,
+    ...good
+  } = storageGood
 
-  const goodPrimeCost = storageActualInfo?.prime_cost
-  const goodBoxesQuantity = storageActualInfo?.box_quantity
+  const name = good.name
+  const sku = good.uniquename
+  const totalQuantity = good.quantity
+  const isActual = good.is_actual
 
-  const goodShopsIds = storageGood.shops?.map((shop) => shop.id)
-  const goodShelvesIds = storageGood.shelf?.map((shelf) => shelf.id)
+  const primeCost = storageActualInfo?.prime_cost
+  const boxesQuantity = storageActualInfo?.box_quantity
+
+  const shopsIds = shops?.map((shop) => shop.id)
+  const shelvesIds = shelves?.map((shelf) => shelf.id)
 
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
 
   const toggleGoodIsHidden = async () => {
-    const { shops, storages, shelf, defects, ...updatedStorageGood } =
-      storageGood
-    const updatedIsActul = !goodIsActual
+    const updatedIsActul = !isActual
 
     const body: StorageGoodUpdate = {
       storage_good: {
-        ...updatedStorageGood,
+        ...good,
         is_actual: updatedIsActul,
       },
-      shops_ids: goodShopsIds,
-      shelf: goodShelvesIds,
+      shops_ids: shopsIds,
+      shelf: shelvesIds,
     }
 
     await storageGoodUpdateMutation.mutateAsync(body)
@@ -81,10 +92,18 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
     )
   }
 
+  // * Good Modal
   const {
     isOpen: isStorageGoodModalOpen,
     onOpen: onStorageGoodModalOpen,
     onClose: onStorageGoodModalClose,
+  } = useDisclosure()
+
+  // * Good Colors Modal
+  const {
+    isOpen: isQuantityColorsModalOpen,
+    onOpen: onQuantityColorsModalOpen,
+    onClose: onQuantityColorsModalClose,
   } = useDisclosure()
 
   useEffect(() => {
@@ -94,44 +113,50 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   return (
     <>
       <Tr>
-        {/* ID  */}
+        {/* ID */}
         <Td>
           <Text>{goodId}</Text>
         </Td>
 
         {/* SKU Segment Badge  */}
         <Td>
-          <SKUBadge sku={storageGood.uniquename} />
+          <SKUBadge sku={sku} />
         </Td>
 
         {/* Name */}
         <Td>
-          <Text whiteSpace="break-spaces">{storageGood.name}</Text>
+          <Text whiteSpace="break-spaces">{name}</Text>
         </Td>
 
         {/* Total Quantity */}
         <Td>
-          <Text>{goodTotalQuantity}</Text>
+          <Flex w="full" direction="row" alignItems="center" gap={2}>
+            <Text>{totalQuantity}</Text>
+
+            {quantityColor && (
+              <QuantityColorIcon quantityColor={quantityColor} />
+            )}
+          </Flex>
         </Td>
 
         {/* Prime Cost */}
         <Td>
           <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Text>{numberWithCurrency(roundNumber(goodPrimeCost))}</Text>
+            <Text>{numberWithCurrency(roundNumber(primeCost))}</Text>
           </TableTdSkeleton>
         </Td>
 
         {/* Boxes Quantity */}
         <Td>
           <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Text>{goodBoxesQuantity}</Text>
+            <Text>{boxesQuantity}</Text>
           </TableTdSkeleton>
         </Td>
 
         {/* Shelves Badges */}
         <Td>
           <Flex flexWrap="wrap" gap={1}>
-            {goodsShelvesList?.map((shelf, index) => (
+            {shelves?.map((shelf, index) => (
               <ShelfBadge key={index} shelf={shelf} />
             ))}
           </Flex>
@@ -154,19 +179,30 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
             {/* Menu Btn */}
             <StorageGoodRowMenu
-              isGoodHidden={!goodIsActual}
+              isGoodHidden={!isActual}
               onEdit={onStorageGoodModalOpen}
+              onQuantityColors={onQuantityColorsModalOpen}
               onToggleIsHidden={toggleGoodIsHidden}
             />
           </Flex>
         </Td>
       </Tr>
 
-      <StorageGoodModal
-        prevGood={storageGood}
-        isOpen={isStorageGoodModalOpen}
-        onClose={onStorageGoodModalClose}
-      />
+      {/* Modals */}
+      <>
+        <StorageGoodModal
+          prevGood={storageGood}
+          isOpen={isStorageGoodModalOpen}
+          onClose={onStorageGoodModalClose}
+        />
+
+        <StorageGoodQuantityColorsModal
+          storageGood={good}
+          quantityColorList={quantityColorList}
+          isOpen={isQuantityColorsModalOpen}
+          onClose={onQuantityColorsModalClose}
+        />
+      </>
     </>
   )
 }
