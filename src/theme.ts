@@ -12,6 +12,7 @@ export const appTheme = extendTheme({
   colors: {
     // bodyText: "#1B254B",
     bodyText: "#1D3557",
+    hint: baseTheme.colors.gray["400"],
     sidebar: baseTheme.colors.white,
     appLayout: baseTheme.colors.gray["100"],
     thinBorder: baseTheme.colors.gray["200"],

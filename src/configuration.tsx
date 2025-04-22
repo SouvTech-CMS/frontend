@@ -1,6 +1,7 @@
 import { Permission } from "constant/permissions"
 import { EngravingContextProvider } from "context/engraving"
 import { TableContextProvider } from "context/table"
+import { TicketsContextProvider } from "context/tickets"
 import { Auth } from "page/Auth"
 import { AuthorizedDevices } from "page/AuthorizedDevices"
 import { ClientDetails } from "page/ClientDetails"
@@ -24,6 +25,7 @@ import { Shelves } from "page/Shelves"
 import { Storage } from "page/Storage"
 import { StorageGoodDetails } from "page/StorageGoodDetails"
 import { Suppliers } from "page/Suppliers"
+import { Tickets } from "page/Tickets"
 import { Users } from "page/Users"
 import { IconType } from "react-icons"
 import {
@@ -34,6 +36,7 @@ import {
   FiHash,
   FiHome,
   FiMap,
+  FiMessageCircle,
   FiPackage,
   FiPenTool,
   FiPocket,
@@ -63,7 +66,7 @@ type Route = {
 }
 
 export const configuration = {
-  version: "v0.6.3",
+  version: "v0.8.1",
   isDevEnv: process.env.NODE_ENV === "development",
   sidebarItems: [
     //* Main pages
@@ -123,6 +126,20 @@ export const configuration = {
         <TableContextProvider<OrderSearchFilter>>
           <Orders guideNotionPageId="212db0fd239248e199af5852cdc2a577" />
         </TableContextProvider>
+      ),
+    },
+    // Tickets
+    {
+      type: "main",
+      icon: FiMessageCircle,
+      name: "Tickets",
+      path: "/tickets",
+      permissions: [Permission.ORDER_READ],
+      component: (
+        // TODO: add guide page url
+        <TicketsContextProvider>
+          <Tickets />
+        </TicketsContextProvider>
       ),
     },
     // Order Info
@@ -253,7 +270,6 @@ export const configuration = {
       permissions: [],
       // TODO: add guide page url
       component: <AuthorizedDevices />,
-      // isDisabled: true,
     },
     // Engravers
     {

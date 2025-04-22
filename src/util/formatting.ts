@@ -68,30 +68,73 @@ export const dateToDateAsString = (date: Date) => {
   return dateAsString
 }
 
-export const dateAsStringToDate = (dateAsString?: string) => {
+export const dateAsStringToDate = (
+  dateAsString?: string,
+  isUTC: boolean = false,
+) => {
   if (!dateAsString) {
     return
   }
 
-  const date = new Date(dateAsString)
+  let date
+  if (isUTC) {
+    // Если строка содержит миллисекунды, обрезаем их до 3 знаков
+    const normalizedDateString = dateAsString.replace(
+      /\.\d+$/,
+      (match) => match.slice(0, 4), // Оставляем только 3 знака после точки
+    )
+
+    // Добавляем суффикс Z, чтобы указать, что это UTC
+    const utcDateString = `${normalizedDateString}Z`
+
+    // Создаем объект Date
+    date = new Date(utcDateString)
+  } else {
+    date = new Date(dateAsString)
+  }
+
   return date
 }
 
-export const formatDate = (date?: Date) => {
+export const formatDate = (
+  date?: Date,
+  isShortDate: boolean = false,
+  withTime: boolean = false,
+  locale?: string,
+) => {
   if (!date) {
     return
   }
 
+  const options: Intl.DateTimeFormatOptions = isShortDate
+    ? { dateStyle: "short" }
+    : {
+        weekday: "short",
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }
+
+  if (withTime) {
+    options.hour = "2-digit"
+    options.minute = "2-digit"
+    options.second = "2-digit"
+  }
+
+  // Format date
   const formatedDate = date
-    .toLocaleString(undefined, {
-      weekday: "short",
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    })
+    .toLocaleString(locale || navigator.language, options)
     // Remove ","
     .replaceAll(",", "")
   return formatedDate
+}
+
+export const formatDateTime = (
+  date?: Date,
+  isShortDate: boolean = false,
+  locale?: string,
+) => {
+  return formatDate(date, isShortDate, true, locale)
 }
 
 export const getShortTime = (timeString?: string) => {
@@ -125,4 +168,33 @@ export const formatTime = (timeString?: string) => {
     minute: "2-digit",
   })
   return formatedTime
+}
+
+export const formatTimeFromDate = (dateWithTime?: Date, locale?: string) => {
+  if (!dateWithTime) {
+    return
+  }
+
+  // Format the time in local format
+  const formatedTime = dateWithTime.toLocaleTimeString(
+    locale || navigator.language,
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+    },
+  )
+  return formatedTime
+}
+
+export const truncateText = (text?: string, length: number = 30) => {
+  if (!text) {
+    return
+  }
+
+  if (text.length <= length) {
+    return text
+  }
+
+  const truncatedText = text.slice(0, length) + "..."
+  return truncatedText
 }

@@ -5,7 +5,7 @@ export type SelectOption = {
   label: string | ReactNode
 }
 
-export type SelectStringOption = {
-  value: string
-  label: string | ReactNode
+export type SelectStringOption<T = string> = {
+  value: T
+  label: T | ReactNode
 }
