@@ -14,6 +14,7 @@ interface CustomTooltipProps {
   label?: string
   fontWeight?: TypographyProps["fontWeight"]
   fontStyle?: TypographyProps["fontStyle"]
+  fontSize?: TypographyProps["fontSize"]
   color?: ColorProps["color"]
   p?: SpaceProps["p"]
   px?: SpaceProps["px"]
@@ -27,6 +28,7 @@ export const CustomTooltip: FCC<CustomTooltipProps> = (props) => {
     label,
     fontWeight = "semibold",
     fontStyle = "italic",
+    fontSize,
     color = "whitesmoke",
     p,
     px,
@@ -42,6 +44,7 @@ export const CustomTooltip: FCC<CustomTooltipProps> = (props) => {
           whiteSpace="pre-line"
           fontWeight={fontWeight}
           fontStyle={fontStyle}
+          fontSize={fontSize}
           color={color}
           p={p}
           px={px}
@@ -55,7 +58,9 @@ export const CustomTooltip: FCC<CustomTooltipProps> = (props) => {
       hasArrow
     >
       {/*//! Wrap in Text to fix positioning */}
-      <Text>{children}</Text>
+      <Text h="fit-content" w="fit-content">
+        {children}
+      </Text>
     </Tooltip>
   )
 }

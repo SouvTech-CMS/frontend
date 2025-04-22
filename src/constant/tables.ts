@@ -5,6 +5,7 @@ export const INITIAL_ROWS_PER_PAGE = 10
 export const ROWS_PER_PAGE_SELECT_VARIANTS = [10, 50, 100]
 
 export const STORAGE_GOODS_TABLE_COLUMNS: (TableColumn | null)[] = [
+  // { name: "", param: "quantity_color", isSearchable: false, isSortable: false },
   { name: "ID", param: "id", isSearchable: true, isSortable: true },
   {
     name: "SKU segment",
