@@ -35,11 +35,11 @@ export const TicketsTabs: FC<TicketsTabsProps> = (props) => {
       </TabList>
 
       <TabPanels px={0}>
-        <TabPanel px={0}>
+        <TabPanel p={0}>
           <TicketsList ticketsList={activeTickets} />
         </TabPanel>
 
-        <TabPanel px={0}>
+        <TabPanel p={0}>
           <TicketsList ticketsList={completedTickets} />
         </TabPanel>
       </TabPanels>

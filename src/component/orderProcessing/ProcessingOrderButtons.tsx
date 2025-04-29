@@ -1,5 +1,4 @@
 import { Button, Flex, useDisclosure } from "@chakra-ui/react"
-import { Container } from "component/Container"
 import { ActiveWorkBreakModal } from "component/workBreak/ActiveWorkBreakModal"
 import { ProcessingOrderStatus } from "constant/orderStatus"
 import { useEngravingContext } from "context/engraving"
@@ -23,10 +22,8 @@ export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
   const navigate = useNavigate()
 
   const { engraverId } = useUserContext()
-  const { currentProcessingOrder } = useEngravingContext()
+  const { processingOrderId } = useEngravingContext()
   const { workShiftId } = useEngravingContext()
-
-  const processingOrderId = currentProcessingOrder?.id
 
   const processingOrderStatusUpdateMutation =
     useProcessingOrderStatusUpdateMutation()
@@ -94,53 +91,51 @@ export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
 
   return (
     <>
-      <Container h="full" maxW="md" alignSelf="flex-end">
-        <Flex
+      <Flex
+        w="full"
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        gap={5}
+      >
+        {/* Finish Btn */}
+        <Button
           w="full"
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          gap={5}
+          variant="success"
+          size="lg"
+          py={8}
+          px={10}
+          onClick={handleFinishClick}
+          isLoading={isLoading}
         >
-          {/* Finish Btn */}
-          <Button
-            w="full"
-            variant="success"
-            size="lg"
-            py={8}
-            px={10}
-            onClick={handleFinishClick}
-            isLoading={isLoading}
-          >
-            Finish
-          </Button>
+          Finish
+        </Button>
 
-          {/* Pause Btn */}
-          <Button
-            w="full"
-            variant="secondary"
-            size="lg"
-            py={8}
-            px={10}
-            onClick={handlePauseClick}
-            isLoading={isLoading}
-          >
-            Pause
-          </Button>
+        {/* Pause Btn */}
+        <Button
+          w="full"
+          variant="secondary"
+          size="lg"
+          py={8}
+          px={10}
+          onClick={handlePauseClick}
+          isLoading={isLoading}
+        >
+          Pause
+        </Button>
 
-          {/* Take Break Btn */}
-          <Button
-            w="full"
-            size="lg"
-            py={8}
-            px={10}
-            onClick={handleTakeBreakClick}
-            isLoading={isLoading}
-          >
-            Take a Break
-          </Button>
-        </Flex>
-      </Container>
+        {/* Take Break Btn */}
+        <Button
+          w="full"
+          size="lg"
+          py={8}
+          px={10}
+          onClick={handleTakeBreakClick}
+          isLoading={isLoading}
+        >
+          Take a Break
+        </Button>
+      </Flex>
 
       {/* Modals */}
       <>

@@ -99,9 +99,11 @@ export const configuration = {
       path: "/engraving/:id",
       // TODO: set permissions
       component: (
-        <EngravingContextProvider>
-          <Engraving />
-        </EngravingContextProvider>
+        <TicketsContextProvider>
+          <EngravingContextProvider>
+            <Engraving />
+          </EngravingContextProvider>
+        </TicketsContextProvider>
       ),
     },
     // Reports

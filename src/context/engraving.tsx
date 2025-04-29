@@ -21,6 +21,7 @@ interface EngravingContextProps {
   activeWorkShift?: WithId<WorkShiftWithBreaks>
   isActiveWorkShiftLoading: boolean
   currentProcessingOrder?: WithId<ProcessingOrder>
+  processingOrderId?: number
   isCurrentProcessingOrderExists: boolean
   recentlyProcessingOrders?: WithId<ProcessingOrder>[]
   isRecentlyProcessingOrderExists: boolean
@@ -43,6 +44,7 @@ export const EngravingContextProvider: FCC = (props) => {
 
   const { engraverId, isLoadingCurrentUser } = useUserContext()
 
+  // * Processing Orders List
   const {
     data: processingOrdersList,
     isLoading: isProcessingOrdersListLoading,
@@ -56,6 +58,7 @@ export const EngravingContextProvider: FCC = (props) => {
     },
   )
 
+  // * Active Work Shift
   const {
     data: activeWorkShift,
     isLoading: isActiveWorkShiftLoading,
@@ -72,6 +75,7 @@ export const EngravingContextProvider: FCC = (props) => {
 
   const userTimezone = getUserTimezone()
 
+  // * Scheduled Breaks
   const {
     data: activeScheduledBreak,
     isLoading: isActiveScheduledBreakLoading,
@@ -106,6 +110,7 @@ export const EngravingContextProvider: FCC = (props) => {
     (processingOrder) =>
       processingOrder.status === ProcessingOrderStatus.IN_PROGRESS,
   )
+  const processingOrderId = currentProcessingOrder?.id
   const isCurrentProcessingOrderExists = !!currentProcessingOrder
 
   const recentlyProcessingOrders = processingOrdersList?.filter(
@@ -117,6 +122,7 @@ export const EngravingContextProvider: FCC = (props) => {
 
   const workShiftId = activeWorkShift?.id
 
+  // * Active Scheduled Work Break
   const {
     isOpen: isActiveScheduledBreakModalOpen,
     onOpen: onActiveScheduledBreakModalOpen,
@@ -150,7 +156,6 @@ export const EngravingContextProvider: FCC = (props) => {
 
       // Redirect engraver to already processing order
       if (isCurrentProcessingOrderExists) {
-        const processingOrderId = currentProcessingOrder?.id
         if (!processingOrderId) {
           return
         }
@@ -188,6 +193,7 @@ export const EngravingContextProvider: FCC = (props) => {
         activeWorkShift,
         isActiveWorkShiftLoading,
         currentProcessingOrder,
+        processingOrderId,
         isCurrentProcessingOrderExists,
         recentlyProcessingOrders,
         isRecentlyProcessingOrderExists,

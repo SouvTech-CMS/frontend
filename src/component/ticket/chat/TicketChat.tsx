@@ -7,10 +7,12 @@ import { FC, useEffect, useRef } from "react"
 import { TicketMessageWithSender } from "type/ticket/ticketMessage"
 import { WithId } from "type/withId"
 
-interface TicketChatProps {}
+interface TicketChatProps {
+  isReadOnly?: boolean
+}
 
 export const TicketChat: FC<TicketChatProps> = (props) => {
-  const {} = props
+  const { isReadOnly } = props
 
   const {
     openedTicket,
@@ -79,7 +81,7 @@ export const TicketChat: FC<TicketChatProps> = (props) => {
         )}
       </Flex>
 
-      <TicketChatMessageInput />
+      {!isReadOnly && <TicketChatMessageInput />}
     </Flex>
   )
 }
