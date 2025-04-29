@@ -66,7 +66,7 @@ type Route = {
 }
 
 export const configuration = {
-  version: "v0.8.1",
+  version: "v0.8.3",
   isDevEnv: import.meta.env.DEV,
   sidebarItems: [
     //* Main pages
