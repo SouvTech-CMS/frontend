@@ -33,29 +33,9 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
     <>
       <Divider />
 
-      <Flex w="full" direction="column" gap={5}>
-        {/* Engraving Info */}
-        <Flex w="full" direction="column" gap={2}>
-          {engravingInfo?.map(([key, value], index) => (
-            <Flex key={index} w="full" direction="column">
-              <Flex
-                key={index}
-                w="full"
-                direction="row"
-                alignItems="center"
-                flexWrap="wrap"
-                gap={2}
-              >
-                <Text fontWeight="bold">{key}:</Text>
-
-                <Text>{value}</Text>
-              </Flex>
-            </Flex>
-          ))}
-        </Flex>
-
+      <Flex w="full" direction="column" gap={2}>
         {/* Good Name & SKU */}
-        <Flex w="full" direction="column" gap={2}>
+        <Flex w="full" direction="column" gap={1}>
           {/* Good SKU & Name with Link to Good Listing */}
           <MarketplaceGoodListingLink goodListingParams={goodListingParams}>
             <Flex
@@ -86,6 +66,26 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
               ))}
             </Flex>
           </ToggleContainer>
+        </Flex>
+
+        {/* Engraving Info */}
+        <Flex w="full" direction="column" gap={2}>
+          {engravingInfo?.map(([key, value], index) => (
+            <Flex key={index} w="full" direction="column">
+              <Flex
+                key={index}
+                w="full"
+                direction="row"
+                alignItems="center"
+                flexWrap="wrap"
+                gap={2}
+              >
+                <Text fontWeight="bold">{key}:</Text>
+
+                <Text>{value}</Text>
+              </Flex>
+            </Flex>
+          ))}
         </Flex>
       </Flex>
     </>
