@@ -37,7 +37,13 @@ export const AuthContextProvider: FCC = (props) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        signIn,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
