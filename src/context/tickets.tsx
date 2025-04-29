@@ -20,6 +20,7 @@ interface TicketsContextProps {
   openedTicket?: WithId<FullTicket>
   openedTicketId?: number
   setOpenedTicket: Dispatch<SetStateAction<WithId<FullTicket> | undefined>>
+  isOpenedTicketExists?: boolean
   openedTicketMessages?: WithId<TicketMessageWithSender>[]
   isMessagesExists?: boolean
   isLoadingMessages?: boolean
@@ -36,6 +37,7 @@ export const TicketsContextProvider: FCC = (props) => {
 
   const [openedTicket, setOpenedTicket] = useState<WithId<FullTicket>>()
 
+  const isOpenedTicketExists = !!openedTicket
   const openedTicketId = openedTicket?.id
   const isTicketIdExists = !!openedTicketId
 
@@ -68,6 +70,7 @@ export const TicketsContextProvider: FCC = (props) => {
         openedTicket,
         openedTicketId,
         setOpenedTicket,
+        isOpenedTicketExists,
         openedTicketMessages,
         isMessagesExists,
         isLoadingMessages,

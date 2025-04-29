@@ -21,3 +21,8 @@ export type FullTicket = Ticket & {
   order: WithId<Order>
   opened_by: WithId<User>
 }
+
+export type TicketCreate = {
+  orderId: number
+  description: string
+}

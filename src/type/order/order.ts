@@ -4,6 +4,7 @@ import {
   GoodWithDetailedStorageGoods,
 } from "type/order/good"
 import { Shop } from "type/shop"
+import { FullTicket } from "type/ticket/ticket"
 import { WithId } from "type/withId"
 
 export type Order = {
@@ -31,6 +32,7 @@ export type OrderWithGoods = {
 export type OrderWithDetailedGoods = Order & {
   goods: WithId<GoodWithDetailedStorageGoods>[]
   goods_in_order: WithId<GoodDetails>[]
+  ticket?: WithId<FullTicket>
 }
 
 export type OrderSearchFilter = WithId<Order> & {

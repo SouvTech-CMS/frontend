@@ -12,15 +12,7 @@ export const Page: FCC<PageProps> = (props) => {
   const isGuideExists = guideNotionPageId?.trim() !== undefined
 
   return (
-    <Flex
-      h="full"
-      w="full"
-      direction="column"
-      py={5}
-      px={5}
-      pb={10}
-      overflow="auto"
-    >
+    <Flex h="full" w="full" direction="column" py={5} px={5} overflow="auto">
       {children}
 
       {isGuideExists && (

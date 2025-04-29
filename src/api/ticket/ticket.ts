@@ -1,7 +1,7 @@
 import { axiosClient } from "api/axiosClient"
 import { ApiRequest } from "type/api/apiRequest"
 import { ApiResponse } from "type/api/apiResponse"
-import { FullTicket, Ticket } from "type/ticket/ticket"
+import { FullTicket, Ticket, TicketCreate } from "type/ticket/ticket"
 import { WithId } from "type/withId"
 import { beautifyBody } from "util/apiRequestBody"
 
@@ -13,6 +13,12 @@ export const getAllTickets = async (
     beautifyBody(body),
   )
   return ticketsList
+}
+
+export const createTicket = async (body: TicketCreate) => {
+  await axiosClient.post(`/tickets/${body.orderId}`, {
+    description: body.description,
+  })
 }
 
 export const updateTicket = async (body: WithId<Ticket>) => {
