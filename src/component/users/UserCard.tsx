@@ -14,6 +14,7 @@ import { UserCardMenu } from "component/users/UserCardMenu"
 import { UserDeleteModal } from "component/users/UserDeleteModal"
 import { UserModal } from "component/users/UserModal"
 import { useCommentInput } from "hook/useCommentInput"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import {
   FiAtSign,
@@ -34,6 +35,8 @@ interface UserCardProps {
 
 export const UserCard: FC<UserCardProps> = (props) => {
   const { user, roles, shops } = props
+
+  const { canEditUsers } = useUserPermissions()
 
   const {
     isOpen: isUserDeleteModalOpen,
@@ -109,10 +112,12 @@ export const UserCard: FC<UserCardProps> = (props) => {
           </Flex>
 
           {/* Actions Menu Button */}
-          <UserCardMenu
-            onEdit={onUserEditModalOpen}
-            onDelete={onUserDeleteModalOpen}
-          />
+          {canEditUsers && (
+            <UserCardMenu
+              onEdit={onUserEditModalOpen}
+              onDelete={onUserDeleteModalOpen}
+            />
+          )}
         </CardHeader>
 
         <CardBody pt={0}>

@@ -12,6 +12,7 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { DocumentCard } from "component/engraver/document/DocumentCard"
 import { NewDocumentCard } from "component/engraver/document/NewDocumentCard"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { EngraverDocument } from "type/engraver/engraverDocument"
 import { ModalProps } from "type/modalProps"
@@ -24,6 +25,8 @@ interface DocumentsModalProps extends ModalProps {
 
 export const DocumentsModal: FC<DocumentsModalProps> = (props) => {
   const { engraverId, documents, isOpen, onClose, isReadOnly } = props
+
+  const { canEditEngraversDocuments } = useUserPermissions()
 
   return (
     <Modal
@@ -41,7 +44,9 @@ export const DocumentsModal: FC<DocumentsModalProps> = (props) => {
 
         <ModalBody>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 3 }} spacing={5}>
-            {!isReadOnly && <NewDocumentCard engraverId={engraverId} />}
+            {!isReadOnly && canEditEngraversDocuments && (
+              <NewDocumentCard engraverId={engraverId} />
+            )}
 
             {documents?.map((document, index) => (
               <DocumentCard key={index} document={document} />

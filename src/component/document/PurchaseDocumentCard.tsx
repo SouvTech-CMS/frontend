@@ -27,7 +27,7 @@ interface PurchaseDocumentCardProps {
 export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
   const { document } = props
 
-  const { canDeleteDocuments } = useUserPermissions()
+  const { canDeletePurchasesDocuments } = useUserPermissions()
 
   const isDeliveryPurchaseDocumnet = document.purchase_id !== undefined
   const documentDate = timestampToDateAsString(document.timestamp!)
@@ -79,7 +79,7 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
               colorScheme="red"
               icon={<FiTrash2 />}
               onClick={onPurchaseFileDeleteModalOpen}
-              isDisabled={!canDeleteDocuments}
+              isDisabled={!canDeletePurchasesDocuments}
             />
           </Flex>
         </CardHeader>

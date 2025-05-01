@@ -3,6 +3,7 @@ import { Container } from "component/Container"
 import { NewPlacementBtn } from "component/shelfPlacement/NewPlacementBtn"
 import { PlacementTab } from "component/shelfPlacement/PlacementTab"
 import { PlacementTabContent } from "component/shelfPlacement/PlacementTabContent"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { PlacementWithShelvesWithStorageGoods } from "type/shelf/shelfPlacement"
 
@@ -14,6 +15,8 @@ export const PlacementsTabsWithShelves: FC<PlacementsTabsWithShelvesProps> = (
   props,
 ) => {
   const { placementsList } = props
+
+  const { canEditShelvesPlacements } = useUserPermissions()
 
   // TODO: useSearchContext for shelves searching
 
@@ -29,7 +32,7 @@ export const PlacementsTabsWithShelves: FC<PlacementsTabsWithShelvesProps> = (
           overflowX="auto"
           gap={2}
         >
-          <NewPlacementBtn />
+          {canEditShelvesPlacements && <NewPlacementBtn />}
 
           {placementsList?.map((placement, index) => (
             <PlacementTab key={index} placement={placement} />

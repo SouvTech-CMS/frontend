@@ -41,7 +41,7 @@ interface EngraverCardProps {
 export const EngraverCard: FC<EngraverCardProps> = (props) => {
   const { engraver } = props
 
-  const { canEditDocuments } = useUserPermissions()
+  const { canEditEngravers } = useUserPermissions()
 
   const engraverId = engraver.id
 
@@ -227,17 +227,21 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
                       </Flex>
                     ))}
 
-                  <Flex w="full" direction="row" justifyContent="center">
-                    {/* Btn to open more breaks */}
-                    <Button
-                      w="full"
-                      variant="ghost"
-                      size="xs"
-                      onClick={onEngraverEditModalOpen}
-                    >
-                      {scheduledBreaks.length > 2 ? "Show more" : "Add breaks"}
-                    </Button>
-                  </Flex>
+                  {canEditEngravers && (
+                    <Flex w="full" direction="row" justifyContent="center">
+                      {/* Btn to open more breaks */}
+                      <Button
+                        w="full"
+                        variant="ghost"
+                        size="xs"
+                        onClick={onEngraverEditModalOpen}
+                      >
+                        {scheduledBreaks.length > 2
+                          ? "Show more"
+                          : "Add breaks"}
+                      </Button>
+                    </Flex>
+                  )}
                 </Flex>
               </Flex>
 
@@ -255,7 +259,6 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
           documents={documents}
           isOpen={isDocumentsModalOpen}
           onClose={onDocumentsModalClose}
-          isReadOnly={!canEditDocuments}
         />
 
         {/* Edit Modal */}

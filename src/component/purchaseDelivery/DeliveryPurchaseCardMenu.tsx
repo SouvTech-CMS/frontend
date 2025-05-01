@@ -27,7 +27,7 @@ export const DeliveryPurchaseCardMenu: FC<DeliveryPurchaseCardMenuProps> = (
 ) => {
   const { onDocuments, onGoods, onServices, onSupplierManager } = props
 
-  const { canReadDocuments, canReadSuppliers, canEditPurchases } =
+  const { canReadPurchasesDocuments, canReadSuppliers, canEditPurchases } =
     useUserPermissions()
 
   return (
@@ -44,7 +44,7 @@ export const DeliveryPurchaseCardMenu: FC<DeliveryPurchaseCardMenuProps> = (
         <MenuItem
           icon={<FiFileText />}
           onClick={onDocuments}
-          isDisabled={!canReadDocuments}
+          isDisabled={!canReadPurchasesDocuments}
         >
           Documents
         </MenuItem>

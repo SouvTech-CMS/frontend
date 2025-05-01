@@ -1,6 +1,5 @@
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react"
 import { NewDocumentModal } from "component/engraver/document/NewDocumentModal"
-import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiUpload } from "react-icons/fi"
 
@@ -11,17 +10,11 @@ interface NewDocumentCardProps {
 export const NewDocumentCard: FC<NewDocumentCardProps> = (props) => {
   const { engraverId } = props
 
-  const { canEditDocuments } = useUserPermissions()
-
   const {
     isOpen: isDocumentCreateModalOpen,
     onOpen: onDocumentCreateModalOpen,
     onClose: onDocumentCreateModalClose,
   } = useDisclosure()
-
-  if (!canEditDocuments) {
-    return <></>
-  }
 
   return (
     <>
