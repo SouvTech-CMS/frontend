@@ -16,7 +16,7 @@ export const withAuthAndPermission =
       const isAllowedPermissionsExist = allowedPermissions !== undefined
 
       const isUserHasPermission = isAllowedPermissionsExist
-        ? allowedPermissions?.some((permission) =>
+        ? allowedPermissions?.every((permission) =>
             userPermissions?.includes(permission),
           )
         : true

@@ -9,7 +9,11 @@ export const isUserHasPermission = (
     return true
   }
 
-  const isHasPermission = userPermissions?.includes(permission)
+  if (!userPermissions || !(userPermissions.length > 0)) {
+    return false
+  }
+
+  const isHasPermission = userPermissions.includes(permission)
 
   return isHasPermission
 }
