@@ -20,7 +20,7 @@ interface EngraverCardMenuProps {
 export const EngraverCardMenu: FC<EngraverCardMenuProps> = (props) => {
   const { onDocuments, onEdit, onBlock, wasBlocked } = props
 
-  const { canReadDocuments } = useUserPermissions()
+  const { canEditEngravers, canReadEngraversDocuments } = useUserPermissions()
 
   return (
     <Flex position="absolute" top={0} right={0}>
@@ -36,16 +36,25 @@ export const EngraverCardMenu: FC<EngraverCardMenuProps> = (props) => {
           <MenuItem
             icon={<FiFileText />}
             onClick={onDocuments}
-            isDisabled={!canReadDocuments}
+            isDisabled={!canReadEngraversDocuments}
           >
             Documents
           </MenuItem>
 
-          <MenuItem icon={<FiEdit />} onClick={onEdit}>
+          <MenuItem
+            icon={<FiEdit />}
+            onClick={onEdit}
+            isDisabled={!canEditEngravers}
+          >
             Edit
           </MenuItem>
 
-          <MenuItem icon={<FiTrash2 />} color="red" onClick={onBlock}>
+          <MenuItem
+            icon={<FiTrash2 />}
+            color="red"
+            onClick={onBlock}
+            isDisabled={!canEditEngravers}
+          >
             {wasBlocked ? "Unblock" : "Block"}
           </MenuItem>
         </MenuList>

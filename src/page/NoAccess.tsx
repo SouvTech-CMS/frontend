@@ -27,7 +27,7 @@ export const NoAccess = () => {
           to="/"
           reloadDocument
         >
-          <Text>Go back</Text>
+          Go back
         </Button>
       </Flex>
     </Flex>

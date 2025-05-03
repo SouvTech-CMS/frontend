@@ -6,6 +6,7 @@ import { PageHeading } from "component/page/PageHeading"
 import { NewUserCard } from "component/users/NewUserCard"
 import { UserCard } from "component/users/UserCard"
 import { useSearchContext } from "context/search"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { useQuery } from "react-query"
 import { PageProps } from "type/page/page"
 import { UserWithRolesAndShops } from "type/user"
@@ -14,6 +15,7 @@ export const Users = (props: PageProps) => {
   const { guideNotionPageId } = props
 
   const { query, isQueryExists } = useSearchContext()
+  const { canEditUsers } = useUserPermissions()
 
   const { data: usersList, isLoading } = useQuery<UserWithRolesAndShops[]>(
     "usersList",
@@ -35,7 +37,7 @@ export const Users = (props: PageProps) => {
 
       {!isLoading ? (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
-          <NewUserCard />
+          {canEditUsers && <NewUserCard />}
 
           {filteredUsersList?.map(
             ({ roles, shops, engraver, ...user }, index) => (

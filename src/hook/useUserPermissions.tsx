@@ -2,142 +2,94 @@ import { Permission } from "constant/permissions"
 import { useUserContext } from "context/user"
 import { isUserHasPermission } from "util/permission"
 
+const PERMISSIONS_MAP = {
+  //* Reports
+  canReadDetailedReports: Permission.REPORT_DETAILED,
+  canReadGeneralReports: Permission.REPORT_GENERAL,
+
+  //* Orders
+  canReadOrders: Permission.ORDER_READ,
+
+  //* Goods
+  canReadGoods: Permission.GOOD_READ,
+  canEditGoods: Permission.GOOD_WRITE,
+
+  //* Clients
+  canReadClients: Permission.CLIENT_READ,
+
+  //* Tickets
+  canReadTickets: Permission.TICKET_READ,
+  canCreateTickets: Permission.TICKET_CREATE,
+  canDecideTickets: Permission.TICKET_DECIDE,
+
+  //* Ticket Messages
+  canReadTicketMessages: Permission.TICKET_MESSAGE_READ,
+  canSendTicketMessages: Permission.TICKET_MESSAGE_SEND,
+
+  //* Purchases
+  canReadPurchases: Permission.PURCHASE_READ,
+  canEditPurchases: Permission.PURCHASE_WRITE,
+
+  //* Suppliers
+  canReadSuppliers: Permission.SUPPLIER_READ,
+  canEditSuppliers: Permission.SUPPLIER_WRITE,
+
+  //* Purchase Documents
+  canReadPurchasesDocuments: Permission.DOCUMENT_READ,
+  canEditPurchasesDocuments: Permission.DOCUMENT_WRITE,
+  canDeletePurchasesDocuments: Permission.DOCUMENT_DELETE,
+
+  //* Storage
+  canReadStorage: Permission.STORAGE_READ,
+  canEditStorage: Permission.STORAGE_WRITE,
+
+  //* Production Info
+  canReadProductionInfo: Permission.PRODUCTION_INFO_READ,
+  canEditProductionInfo: Permission.PRODUCTION_INFO_WRITE,
+
+  //* Shelves
+  canReadShelves: Permission.SHELF_READ,
+  canEditShelves: Permission.SHELF_WRITE,
+
+  //* Shelves Placements
+  canReadShelvesPlacements: Permission.SHELF_PLACEMENT_READ,
+  canEditShelvesPlacements: Permission.SHELF_PLACEMENT_WRITE,
+
+  //* Devices
+  canReadDevices: Permission.DEVICE_READ,
+  canEditDevices: Permission.DEVICE_WRITE,
+
+  //* Users
+  canReadUsers: Permission.USER_READ,
+  canEditUsers: Permission.USER_WRITE,
+
+  //* Roles
+  canReadRoles: Permission.ROLE_READ,
+  canEditRoles: Permission.ROLE_WRITE,
+
+  //* Engravers
+  canReadEngravers: Permission.ENGRAVER_READ,
+  canEditEngravers: Permission.ENGRAVER_WRITE,
+
+  //* Engravers Documents
+  canReadEngraversDocuments: Permission.ENGRAVER_DOCUMENT_READ,
+  canEditEngraversDocuments: Permission.ENGRAVER_DOCUMENT_WRITE,
+
+  //* Engraving
+  canProcessOrders: Permission.PROCESSING_ORDER,
+}
+
+type UserPermission = Record<keyof typeof PERMISSIONS_MAP, boolean>
+
 export const useUserPermissions = () => {
   const { userPermissions, isUserAdmin } = useUserContext()
 
-  //* Goods
-  const canReadGoods = isUserHasPermission(
-    Permission.GOOD_READ,
-    userPermissions,
-    isUserAdmin,
-  )
-  const canEditGoods = isUserHasPermission(
-    Permission.GOOD_WRITE,
-    userPermissions,
-    isUserAdmin,
-  )
+  const userPermissionsResult: UserPermission = Object.fromEntries(
+    Object.entries(PERMISSIONS_MAP).map(([key, permission]) => [
+      key,
+      isUserHasPermission(permission, userPermissions, isUserAdmin),
+    ]),
+  ) as UserPermission
 
-  //* Orders
-  const canReadOrders = isUserHasPermission(
-    Permission.ORDER_READ,
-    userPermissions,
-    isUserAdmin,
-  )
-  const canEditOrders = isUserHasPermission(
-    Permission.ORDER_WRITE,
-    userPermissions,
-    isUserAdmin,
-  )
-
-  //* Reports
-  const canReadDetailedReports = isUserHasPermission(
-    Permission.REPORT_DETAILED,
-    userPermissions,
-    isUserAdmin,
-  )
-  const canReadGeneralReports = isUserHasPermission(
-    Permission.REPORT_GENERAL,
-    userPermissions,
-    isUserAdmin,
-  )
-
-  //* Storage
-  const canReadStorage = isUserHasPermission(
-    Permission.STORAGE_READ,
-    userPermissions,
-    isUserAdmin,
-  )
-  const canEditStorage = isUserHasPermission(
-    Permission.STORAGE_WRITE,
-    userPermissions,
-    isUserAdmin,
-  )
-
-  //* Production Info
-  const canReadProductionInfo = isUserHasPermission(
-    Permission.PRODUCTION_INFO_READ,
-    userPermissions,
-    isUserAdmin,
-  )
-  const canEditProductionInfo = isUserHasPermission(
-    Permission.PRODUCTION_INFO_WRITE,
-    userPermissions,
-    isUserAdmin,
-  )
-
-  //* Suppliers
-  const canReadSuppliers = isUserHasPermission(
-    Permission.SUPPLIER_READ,
-    userPermissions,
-    isUserAdmin,
-  )
-  const canEditSuppliers = isUserHasPermission(
-    Permission.SUPPLIER_WRITE,
-    userPermissions,
-    isUserAdmin,
-  )
-
-  //* Purchases
-  const canReadPurchases = isUserHasPermission(
-    Permission.PURCHASE_READ,
-    userPermissions,
-    isUserAdmin,
-  )
-  const canEditPurchases = isUserHasPermission(
-    Permission.PURCHASE_WRITE,
-    userPermissions,
-    isUserAdmin,
-  )
-
-  //* Purchase Documents
-  const canReadDocuments = isUserHasPermission(
-    Permission.DOCUMENT_READ,
-    userPermissions,
-    isUserAdmin,
-  )
-  const canEditDocuments = isUserHasPermission(
-    Permission.DOCUMENT_WRITE,
-    userPermissions,
-    isUserAdmin,
-  )
-  const canDeleteDocuments = isUserHasPermission(
-    Permission.DOCUMENT_DELETE,
-    userPermissions,
-    isUserAdmin,
-  )
-
-  return {
-    //* Goods
-    canReadGoods,
-    canEditGoods,
-
-    //* Orders
-    canReadOrders,
-    canEditOrders,
-
-    //* Reports
-    canReadDetailedReports,
-    canReadGeneralReports,
-
-    //* Storage
-    canReadStorage,
-    canEditStorage,
-
-    //* Production Info
-    canReadProductionInfo,
-    canEditProductionInfo,
-
-    //* Suppliers
-    canReadSuppliers,
-    canEditSuppliers,
-
-    //* Purchases
-    canReadPurchases,
-    canEditPurchases,
-
-    //* Documents
-    canReadDocuments,
-    canEditDocuments,
-    canDeleteDocuments,
-  }
+  return userPermissionsResult
 }

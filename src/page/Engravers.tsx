@@ -6,6 +6,7 @@ import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { useSearchContext } from "context/search"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { useQuery } from "react-query"
 import { Engraver } from "type/engraver/engraver"
 import { PageProps } from "type/page/page"
@@ -15,6 +16,7 @@ export const Engravers = (props: PageProps) => {
   const { guideNotionPageId } = props
 
   const { query, isQueryExists } = useSearchContext()
+  const { canEditEngravers } = useUserPermissions()
 
   const { data: engraversList, isLoading } = useQuery<WithId<Engraver>[]>(
     "engraversList",
@@ -36,7 +38,7 @@ export const Engravers = (props: PageProps) => {
 
       {!isLoading ? (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
-          <NewEngraverCard />
+          {canEditEngravers && <NewEngraverCard />}
 
           {filteredEngraversList?.map((engraver, index) => (
             <EngraverCard key={index} engraver={engraver} />

@@ -37,7 +37,7 @@ interface DeliveryColumnCardProps {
 export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
   const { status, delivery } = props
 
-  const { canReadDocuments } = useUserPermissions()
+  const { canReadPurchasesDocuments } = useUserPermissions()
 
   const deliveryId = delivery.id
 
@@ -151,7 +151,7 @@ export const DeliveryColumnCard: FC<DeliveryColumnCardProps> = (props) => {
             {isCommentExists && <CommentTooltip comment={comment} />}
 
             {/* Documents */}
-            {canReadDocuments && (
+            {canReadPurchasesDocuments && (
               <IconButton
                 aria-label="documents-icon-btn"
                 size="sm"

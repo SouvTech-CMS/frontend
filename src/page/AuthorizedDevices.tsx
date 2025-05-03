@@ -7,6 +7,7 @@ import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { useSearchContext } from "context/search"
 import { useAuthorizedDevice } from "hook/useAuthorizedDevice"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { useQuery } from "react-query"
 import { AuthorizedDevice } from "type/authorizedDevice/authorizedDevice"
@@ -17,6 +18,7 @@ export const AuthorizedDevices: FC = (props: PageProps) => {
   const { guideNotionPageId } = props
 
   const { query, isQueryExists } = useSearchContext()
+  const { canEditDevices } = useUserPermissions()
   const { isDeviceAuthorized } = useAuthorizedDevice()
 
   const { data: devicesList, isLoading } = useQuery<WithId<AuthorizedDevice>[]>(
@@ -39,7 +41,7 @@ export const AuthorizedDevices: FC = (props: PageProps) => {
           columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 6 }}
           spacing={10}
         >
-          {!isDeviceAuthorized && <NewDeviceCard />}
+          {!isDeviceAuthorized && canEditDevices && <NewDeviceCard />}
 
           {filteredDevicesList?.map((device, index) => (
             <DeviceCard key={index} device={device} />

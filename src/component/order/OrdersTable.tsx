@@ -30,8 +30,9 @@ export const OrdersTable: FC<OrdersTableProps> = (props) => {
         </Thead>
 
         <Tbody>
-          {ordersList.map((order) => (
+          {ordersList.map((order, index) => (
             <OrdersTableRow
+              key={index}
               order={order}
               // isShowShop={isShowShop}
             />

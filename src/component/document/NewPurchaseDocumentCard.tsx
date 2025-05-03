@@ -14,7 +14,7 @@ export const NewPurchaseDocumentCard: FC<NewPurchaseDocumentCardProps> = (
 ) => {
   const { purchaseId, isDelivery = false } = props
 
-  const { canEditDocuments } = useUserPermissions()
+  const { canEditPurchasesDocuments } = useUserPermissions()
 
   const {
     isOpen: isPurchaseFileCreateModalOpen,
@@ -22,7 +22,7 @@ export const NewPurchaseDocumentCard: FC<NewPurchaseDocumentCardProps> = (
     onClose: onPurchaseFileCreateModalClose,
   } = useDisclosure()
 
-  if (!canEditDocuments) {
+  if (!canEditPurchasesDocuments) {
     return <></>
   }
 

@@ -3,6 +3,7 @@ import { LoadingPage } from "component/page/LoadingPage"
 import { TicketChatMessage } from "component/ticket/chat/TicketChatMessage"
 import { TicketChatMessageInput } from "component/ticket/chat/TicketChatMessageInput"
 import { useTicketsContext } from "context/tickets"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC, useEffect, useRef } from "react"
 import { TicketMessageWithSender } from "type/ticket/ticketMessage"
 import { WithId } from "type/withId"
@@ -14,6 +15,7 @@ interface TicketChatProps {
 export const TicketChat: FC<TicketChatProps> = (props) => {
   const { isReadOnly } = props
 
+  const { canSendTicketMessages } = useUserPermissions()
   const {
     openedTicket,
     openedTicketMessages,
@@ -81,7 +83,7 @@ export const TicketChat: FC<TicketChatProps> = (props) => {
         )}
       </Flex>
 
-      {!isReadOnly && <TicketChatMessageInput />}
+      {!isReadOnly && canSendTicketMessages && <TicketChatMessageInput />}
     </Flex>
   )
 }
