@@ -3,10 +3,10 @@ import {
   FiltersPopover,
   FiltersPopoverProps,
 } from "component/chart/FiltersPopover"
-import { Container } from "component/Container"
+import { Container, ContainerProps } from "component/Container"
 import { FCC } from "type/fcc"
 
-interface ChartSectionProps extends FiltersPopoverProps {
+interface ChartSectionProps extends FiltersPopoverProps, ContainerProps {
   title: string
 }
 
@@ -14,7 +14,7 @@ export const ChartSection: FCC<ChartSectionProps> = (props) => {
   const { title, children } = props
 
   return (
-    <Container>
+    <Container {...props}>
       {/* Header */}
       <Flex
         w="full"
