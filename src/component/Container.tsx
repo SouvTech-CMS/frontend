@@ -1,7 +1,7 @@
 import { Flex, FlexProps } from "@chakra-ui/react"
 import { FCC } from "type/fcc"
 
-interface ContainerProps extends FlexProps {}
+export interface ContainerProps extends FlexProps {}
 
 export const Container: FCC<ContainerProps> = (props) => {
   const {

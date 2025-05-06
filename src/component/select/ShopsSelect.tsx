@@ -13,7 +13,7 @@ import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 
 interface ShopsSelectProps {
-  selectedShopsIds: number[]
+  selectedShopsIds?: number[]
   onSelect: (shopsIds: number[]) => void
   isRequired?: boolean
   isDisabled?: boolean
@@ -38,7 +38,7 @@ export const ShopsSelect: FC<ShopsSelectProps> = (props) => {
   >("shopsList", getAllShops)
 
   const selectedShops = shopsList?.filter((shop) =>
-    selectedShopsIds.includes(shop.id),
+    selectedShopsIds?.includes(shop.id),
   )
 
   const handleShopSelectChange = (
@@ -49,7 +49,7 @@ export const ShopsSelect: FC<ShopsSelectProps> = (props) => {
     onSelect(shopsIds)
   }
 
-  const isInvalid = isRequired && selectedShopsIds.length === 0
+  const isInvalid = isRequired && selectedShopsIds?.length === 0
 
   const isLoading = isDisabled || isShopsLoading
 

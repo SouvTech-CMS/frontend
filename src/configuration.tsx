@@ -248,7 +248,11 @@ export const configuration = {
       name: "Storage Good :id",
       path: "/storage-good/:id",
       permissions: [Permission.STORAGE_READ],
-      component: <StorageGoodDetails />,
+      component: (
+        <TableContextProvider<OrderSearchFilter>>
+          <StorageGoodDetails />
+        </TableContextProvider>
+      ),
     },
     // Production Info
     {

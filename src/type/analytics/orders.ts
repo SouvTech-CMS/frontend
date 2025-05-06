@@ -1,14 +1,14 @@
 import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 
-export type OrderInfo = {
+export type DateAndCount = {
   date: string
   count: number
 }
 
 export type ShopOrdersReport = {
   shop: WithId<Shop>
-  report: OrderInfo[]
+  report: DateAndCount[]
 }
 
 export type OrdersAnalyticsRequest = {

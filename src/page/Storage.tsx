@@ -8,6 +8,7 @@ import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { FullStorageTotalAmountLabel } from "component/storage/FullStorageTotalAmountLabel"
+import { PopularityAnalyticsCard } from "component/storageGood/analytics/PopularityAnalyticsCard"
 import { QuantityColorsModalBtn } from "component/storageGood/quantityColor/QuantityColorsModalBtn"
 import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
@@ -89,7 +90,12 @@ export const Storage = (props: PageProps) => {
     <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Storage" isSearchHidden />
 
-      <Container gap={3}>
+      {/* Analytics */}
+      <Flex w="full" direction="row" alignItems="center" gap={5}>
+        <PopularityAnalyticsCard />
+      </Flex>
+
+      <Container mt={5} gap={3}>
         {/* Filters */}
         <Flex w="full" direction="row" justifyContent="space-between">
           <StorageGoodsFilters
@@ -105,6 +111,7 @@ export const Storage = (props: PageProps) => {
           </Flex>
         </Flex>
 
+        {/* Defects & Quantity Colors Btns */}
         <Flex
           w="full"
           direction="row"
@@ -127,6 +134,7 @@ export const Storage = (props: PageProps) => {
 
         {!isStorageGoodsExist && isLoading && <LoadingPage />}
 
+        {/* Table */}
         {isStorageGoodsExist && !isLoading && (
           <>
             <StorageGoodsTable
