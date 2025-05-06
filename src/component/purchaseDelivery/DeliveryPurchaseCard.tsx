@@ -34,7 +34,7 @@ interface DeliveryPurchaseCardProps {
 export const DeliveryPurchaseCard: FC<DeliveryPurchaseCardProps> = (props) => {
   const { purchase } = props
 
-  const { canReadDocuments } = useUserPermissions()
+  const { canReadPurchasesDocuments } = useUserPermissions()
 
   const purchaseId = purchase.id
   const goods = purchase.goods
@@ -127,7 +127,7 @@ export const DeliveryPurchaseCard: FC<DeliveryPurchaseCardProps> = (props) => {
             {isCommentExists && <CommentTooltip comment={comment} />}
 
             {/* Documents */}
-            {canReadDocuments && (
+            {canReadPurchasesDocuments && (
               <IconButton
                 aria-label="documents-icon-btn"
                 size="sm"

@@ -44,9 +44,7 @@ export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
       name: "Shops",
       value: (
         <Flex direction="column" gap={1}>
-          {shops?.map((shop, index) => (
-            <ShopBadge key={index} shop={shop} />
-          ))}
+          {shops?.map((shop, index) => <ShopBadge key={index} shop={shop} />)}
         </Flex>
       ),
     },
@@ -65,6 +63,7 @@ export const StorageGoodProperties: FC<StorageGoodPropertiesProps> = (
 
   return (
     <Grid
+      h="fit-content"
       w="fit-content"
       templateColumns="repeat(2, auto)"
       rowGap={5}

@@ -1,20 +1,7 @@
-import { Flex, FlexboxProps, LayoutProps, SpaceProps } from "@chakra-ui/react"
-import { CSSProperties } from "react"
+import { Flex, FlexProps } from "@chakra-ui/react"
 import { FCC } from "type/fcc"
 
-interface ContainerProps {
-  h?: LayoutProps["h"]
-  w?: LayoutProps["w"]
-  minW?: LayoutProps["minW"]
-  maxW?: LayoutProps["maxW"]
-  maxH?: LayoutProps["maxH"]
-  justifyContent?: FlexboxProps["justifyContent"]
-  alignItems?: FlexboxProps["alignItems"]
-  alignSelf?: FlexboxProps["alignSelf"]
-  p?: SpaceProps["p"]
-  gap?: FlexboxProps["gap"]
-  style?: CSSProperties
-}
+export interface ContainerProps extends FlexProps {}
 
 export const Container: FCC<ContainerProps> = (props) => {
   const {
@@ -24,29 +11,41 @@ export const Container: FCC<ContainerProps> = (props) => {
     minW,
     maxW,
     maxH,
+    flex,
+    direction = "column",
     justifyContent = "flex-start",
     alignItems = "flex-start",
     alignSelf = "flex-start",
+    bgColor = "white",
     p = 5,
+    px,
+    py,
+    mb,
+    borderRadius = 20,
     gap = 10,
     style,
   } = props
 
   return (
     <Flex
+      {...props}
       style={style}
       h={h}
       w={w}
       maxH={maxH}
       minW={minW}
       maxW={maxW}
-      direction="column"
+      flex={flex}
+      direction={direction}
       justifyContent={justifyContent}
       alignItems={alignItems}
       alignSelf={alignSelf}
-      bgColor="white"
+      bgColor={bgColor}
       p={p}
-      borderRadius={20}
+      px={px}
+      py={py}
+      mb={mb}
+      borderRadius={borderRadius}
       gap={gap}
     >
       {children}

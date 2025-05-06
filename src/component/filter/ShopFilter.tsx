@@ -17,30 +17,30 @@ interface ShopFilterProps {
   isFullWidth?: boolean
 }
 
+const styles: ChakraStylesConfig<
+  SelectOption,
+  false,
+  GroupBase<SelectOption>
+> = {
+  container: (provided) => ({
+    ...provided,
+    width: "fit-content",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    width: "fit-content",
+  }),
+}
+
 export const ShopFilter: FC<ShopFilterProps> = (props) => {
   const { handleShopSelect, isFullWidth } = props
 
   const { userShops, isLoadingCurrentUser } = useUserContext()
 
-  const selectStyles: ChakraStylesConfig<
-    SelectOption,
-    false,
-    GroupBase<SelectOption>
-  > = {
-    container: (provided) => ({
-      ...provided,
-      width: "fit-content",
-    }),
-    menu: (provided) => ({
-      ...provided,
-      width: "fit-content",
-    }),
-  }
-
   return (
     <Select<SelectOption, false, GroupBase<SelectOption>>
       chakraStyles={{
-        ...selectStyles,
+        ...styles,
         container: (provided) => ({
           ...provided,
           width: isFullWidth ? "full" : "fit-content",

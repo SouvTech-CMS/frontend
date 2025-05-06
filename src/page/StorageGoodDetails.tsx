@@ -6,6 +6,7 @@ import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { NewStorageCard } from "component/storage/NewStorageCard"
 import { StorageCard } from "component/storage/StorageCard"
+import { StorageGoodAnalyticsChart } from "component/storageGood/analytics/StorageGoodAnalyticsChart"
 import { StorageGoodProperties } from "component/storageGood/StorageGoodProperties"
 import { StorageGoodDefectCard } from "component/storageGoodDefect/StorageGoodDefectCard"
 import { useQuery } from "react-query"
@@ -44,7 +45,11 @@ export const StorageGoodDetails = (props: PageProps) => {
       {isStorageGoodExists && (
         <Flex direction="column" justifyContent="flex-start" gap={10}>
           {/* StorageGood Properties */}
-          <StorageGoodProperties storageGood={storageGood} />
+          <Flex w="full" direction="row" justifyContent="space-between">
+            <StorageGoodProperties storageGood={storageGood} />
+
+            <StorageGoodAnalyticsChart storageGoodId={storageGoodId} />
+          </Flex>
 
           <Divider borderWidth={1} />
 

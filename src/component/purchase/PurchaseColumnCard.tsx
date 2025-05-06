@@ -44,7 +44,7 @@ interface PurchaseColumnCardProps {
 export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
   const { purchase, status } = props
 
-  const { canReadDocuments } = useUserPermissions()
+  const { canReadPurchasesDocuments } = useUserPermissions()
 
   const purchaseId = purchase.id
   const goods = purchase.goods.filter((good) => !isGoodFullInDelivery(good))
@@ -160,7 +160,7 @@ export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
             {isCommentExists && <CommentTooltip comment={comment} />}
 
             {/* Documents */}
-            {canReadDocuments && (
+            {canReadPurchasesDocuments && (
               <IconButton
                 aria-label="documents-icon-btn"
                 size="sm"

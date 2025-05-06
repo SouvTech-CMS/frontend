@@ -15,6 +15,16 @@ export const getAllOrders = async (
   return ordersList
 }
 
+export const getSimilarOrders = async (
+  body: ApiRequest<OrderSearchFilter>,
+): Promise<WithId<Order>[]> => {
+  const { data: ordersList } = await axiosClient.post(
+    "/order/similar/",
+    beautifyBody(body),
+  )
+  return ordersList
+}
+
 export const getAllNoneGoodOrders = async (
   body: ApiRequest<OrderSearchFilter>,
 ): Promise<ApiResponse<WithId<Order>[]>> => {

@@ -12,9 +12,9 @@ import {
 } from "chart.js"
 import { ChartSection } from "component/chart/ChartSection"
 import { MonthTotalCharts } from "component/chart/MonthTotalCharts"
-import { OrdersPerDayChart } from "component/chart/OrdersPerDayChart"
-import { SalesCitiesChart } from "component/chart/SalesCitiesChart"
-import { SalesStatesChart } from "component/chart/SalesStatesChart"
+import { OrdersPerDayChart } from "component/chart/sales/OrdersPerDayChart"
+import { SalesCitiesChart } from "component/chart/sales/SalesCitiesChart"
+import { SalesStatesChart } from "component/chart/sales/SalesStatesChart"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { TableContextProvider } from "context/table"
@@ -61,8 +61,9 @@ export const Dashboard = () => {
           </ChartSection>
         </TableContextProvider>
 
-        {/* States Sales Chart */}
+        {/* States & Cities Chats */}
         <Flex w="full" justifyContent="space-between" gap={10}>
+          {/* States Sales Chart */}
           <Flex w="full">
             <TableContextProvider<SalesAnalyticsSeachFilter>>
               <ChartSection

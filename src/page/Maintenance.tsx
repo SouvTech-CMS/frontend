@@ -40,7 +40,7 @@ export const Maintenance = () => {
             to="/"
             reloadDocument
           >
-            <Text>Try again</Text>
+            Try again
           </Button>
         </Flex>
       </Flex>

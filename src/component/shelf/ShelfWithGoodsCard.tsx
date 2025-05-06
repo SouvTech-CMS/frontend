@@ -11,6 +11,7 @@ import { ShelfCardMenu } from "component/shelf/ShelfCardMenu"
 import { ShelfDeleteModal } from "component/shelf/ShelfDeleteModal"
 import { ShelfGoodsList } from "component/shelf/ShelfGoodsList"
 import { ShelfModal } from "component/shelf/ShelfModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { ShelfWithStorageGoods } from "type/shelf/shelf"
 import { ShelfPlacement } from "type/shelf/shelfPlacement"
@@ -24,6 +25,8 @@ interface ShelfWithGoodsCardProps {
 
 export const ShelfWithGoodsCard: FC<ShelfWithGoodsCardProps> = (props) => {
   const { placement, shelfWithGoods } = props
+
+  const { canEditShelves } = useUserPermissions()
 
   const { shelf_placement, storage_goods, ...shelf } = shelfWithGoods
 
@@ -83,17 +86,19 @@ export const ShelfWithGoodsCard: FC<ShelfWithGoodsCardProps> = (props) => {
                 </Text>
               </Flex>
 
-              {/* Free Badge */}
+              {/* Empty Badge */}
               {isQuantityZero && (
                 <Badge w="fit-content" colorScheme="green">
-                  Free
+                  Empty
                 </Badge>
               )}
 
-              <ShelfCardMenu
-                onEdit={onShelfUpdateModalOpen}
-                onDelete={onShelfDeleteModalOpen}
-              />
+              {canEditShelves && (
+                <ShelfCardMenu
+                  onEdit={onShelfUpdateModalOpen}
+                  onDelete={onShelfDeleteModalOpen}
+                />
+              )}
             </Flex>
 
             {/* Storage Goods List */}

@@ -1,5 +1,6 @@
-import { Avatar, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react"
+import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react"
 import { ComingSoonTooltip } from "component/ComingSoonTooltip"
+import { UserAvatar } from "component/users/UserAvatar"
 import { useAuthContext } from "context/auth"
 import { useUserContext } from "context/user"
 import { FC } from "react"
@@ -12,11 +13,7 @@ export const ProfileMenu: FC = () => {
   return (
     <Menu>
       <MenuButton>
-        <Avatar
-          size="md"
-          bgColor="white"
-          name={currentUser?.fio || currentUser?.username}
-        />
+        <UserAvatar user={currentUser} />
       </MenuButton>
 
       <MenuList>

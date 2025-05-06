@@ -1,4 +1,5 @@
 import { Flex, IconButton, Td, Text, Tooltip, Tr } from "@chakra-ui/react"
+import { ShopBadge } from "component/badge/ShopBadge"
 import { MarketplaceNameWithAvatar } from "component/marketplace/MarketplaceNameWithAvatar"
 import { FC } from "react"
 import { FiExternalLink } from "react-icons/fi"
@@ -17,6 +18,7 @@ export const ClientRow: FC<ClientRowProps> = (props) => {
 
   const ordersCount = client.orders_count
   const marketplace = client.marketplace
+  const shopsList = client.shops
 
   return (
     <>
@@ -34,6 +36,15 @@ export const ClientRow: FC<ClientRowProps> = (props) => {
         {/* Orders Count */}
         <Td>
           <Text>{ordersCount}</Text>
+        </Td>
+
+        {/* Shops */}
+        <Td>
+          <Flex w="full" direction="row" flexWrap="wrap" gap={1}>
+            {shopsList.map((shop, index) => (
+              <ShopBadge key={index} shop={shop} />
+            ))}
+          </Flex>
         </Td>
 
         {/* Marketplace */}

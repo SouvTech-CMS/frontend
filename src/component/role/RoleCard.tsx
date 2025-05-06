@@ -15,6 +15,7 @@ import { RoleDeleteModal } from "component/role/RoleDeleteModal"
 import { RoleModal } from "component/role/RoleModal"
 import { TablesAccessModal } from "component/tableAccess/TablesAccessModal"
 import { ADMIN_ROLE } from "constant/roles"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { RoleWithPermissions } from "type/role/role"
 
@@ -24,6 +25,8 @@ interface RoleCardProps {
 
 export const RoleCard: FC<RoleCardProps> = (props) => {
   const { role } = props
+
+  const { canEditRoles } = useUserPermissions()
 
   const isAdminRole = role.name.toLowerCase().includes(ADMIN_ROLE)
 
@@ -86,33 +89,37 @@ export const RoleCard: FC<RoleCardProps> = (props) => {
           </Flex>
 
           {/* Actions Menu Button */}
-          <RoleCardMenu
-            onEdit={onRoleEditModalOpen}
-            onDelete={onRoleDeleteModalOpen}
-          />
+          {canEditRoles && (
+            <RoleCardMenu
+              onEdit={onRoleEditModalOpen}
+              onDelete={onRoleDeleteModalOpen}
+            />
+          )}
         </CardHeader>
 
-        <CardFooter mt="auto">
-          <Flex w="full" gap={1}>
-            <Button
-              w="full"
-              variant="ghost"
-              colorScheme="blue"
-              onClick={onRoleEditModalOpen}
-            >
-              Permissions
-            </Button>
+        {canEditRoles && (
+          <CardFooter mt="auto">
+            <Flex w="full" gap={1}>
+              <Button
+                w="full"
+                variant="ghost"
+                colorScheme="blue"
+                onClick={onRoleEditModalOpen}
+              >
+                Permissions
+              </Button>
 
-            <Button
-              w="full"
-              variant="ghost"
-              colorScheme="blue"
-              onClick={onTablesAccessModalOpen}
-            >
-              Tables Access
-            </Button>
-          </Flex>
-        </CardFooter>
+              <Button
+                w="full"
+                variant="ghost"
+                colorScheme="blue"
+                onClick={onTablesAccessModalOpen}
+              >
+                Tables Access
+              </Button>
+            </Flex>
+          </CardFooter>
+        )}
       </Card>
 
       {/* Modals */}

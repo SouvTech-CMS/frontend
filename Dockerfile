@@ -1,32 +1,31 @@
-# Stage 1: Сборка фронта
+# Stage 1: Build Frontend
 FROM node:18-alpine as build
 
 WORKDIR /app
 
-COPY package.json yarn.lock /app/
+# Copy only necessary files for dependency installation
+COPY package.json yarn.lock ./
 
-# For running on Mac M1
-RUN apk --update --no-cache --virtual build-dependencies add \
-        python3 \
-        make \
-        g++
+# Install dependencies
+RUN yarn install --frozen-lockfile
 
-RUN yarn install
+# Copy application files
+COPY . .
 
-RUN apk del build-dependencies
-
-COPY . /app/
-
+# Build app
 RUN yarn run build
 
 
-# Stage 2: Запуск Nginx
+# Stage 2: Serve Frontend
 FROM nginx:stable-alpine
 
-COPY ngnix.conf /etc/nginx/conf.d/default.conf
+# Use a more descriptive name for the Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Copy the built frontend from the previous stage
 COPY --from=build /app/build /usr/share/nginx/html
 
-EXPOSE 3003
+# Expose the port and set the default command
+EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]

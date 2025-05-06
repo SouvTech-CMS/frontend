@@ -13,6 +13,7 @@ import {
   getFirstCurrentMonthDateString,
   getLastCurrentMonthDateString,
 } from "util/dates"
+import { dateAsStringToDate, formatDate } from "util/formatting"
 
 type LineChartData = ChartData<"line">
 type LineChartOptions = ChartOptions<"line">
@@ -30,6 +31,13 @@ const options: LineChartOptions = {
       labels: {
         pointStyleWidth: 18,
         usePointStyle: true,
+      },
+    },
+  },
+  scales: {
+    y: {
+      ticks: {
+        stepSize: 1,
       },
     },
   },
@@ -62,7 +70,9 @@ export const OrdersPerDayChart: FC = () => {
   )
 
   const data: LineChartData = {
-    labels: ordersAnalytics?.labels,
+    labels: ordersAnalytics?.labels?.map((label) =>
+      formatDate(dateAsStringToDate(label), true, false),
+    ),
     datasets:
       ordersAnalytics?.data?.map(({ shop, report }) => {
         const [bgColor, borderColor] = getColorsForItem(colors, shop.id)
@@ -88,7 +98,7 @@ export const OrdersPerDayChart: FC = () => {
             ({
               ...prevFilters,
               start_date: firstDate,
-            } as OrderSearchFilter),
+            }) as OrderSearchFilter,
         )
       }
 
@@ -101,7 +111,7 @@ export const OrdersPerDayChart: FC = () => {
             ({
               ...prevFilters,
               end_date: lastDate,
-            } as OrderSearchFilter),
+            }) as OrderSearchFilter,
         )
       }
     },

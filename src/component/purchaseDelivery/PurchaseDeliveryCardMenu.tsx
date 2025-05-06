@@ -43,8 +43,12 @@ export const PurchaseDeliveryCardMenu: FC<PurchaseDeliveryCardMenuProps> = (
     isMoveGoodsToStorageBtnHidden,
   } = props
 
-  const { canReadDocuments, canReadStorage, canEditStorage, canEditPurchases } =
-    useUserPermissions()
+  const {
+    canReadPurchasesDocuments,
+    canReadStorage,
+    canEditStorage,
+    canEditPurchases,
+  } = useUserPermissions()
 
   const canMoveToStorage = canReadStorage && canEditStorage
 
@@ -72,7 +76,7 @@ export const PurchaseDeliveryCardMenu: FC<PurchaseDeliveryCardMenuProps> = (
         <MenuItem
           icon={<FiFileText />}
           onClick={onDocuments}
-          isDisabled={!canReadDocuments}
+          isDisabled={!canReadPurchasesDocuments}
         >
           Documents
         </MenuItem>

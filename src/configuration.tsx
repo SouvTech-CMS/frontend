@@ -1,6 +1,7 @@
 import { Permission } from "constant/permissions"
 import { EngravingContextProvider } from "context/engraving"
 import { TableContextProvider } from "context/table"
+import { TicketsContextProvider } from "context/tickets"
 import { Auth } from "page/Auth"
 import { AuthorizedDevices } from "page/AuthorizedDevices"
 import { ClientDetails } from "page/ClientDetails"
@@ -24,6 +25,7 @@ import { Shelves } from "page/Shelves"
 import { Storage } from "page/Storage"
 import { StorageGoodDetails } from "page/StorageGoodDetails"
 import { Suppliers } from "page/Suppliers"
+import { Tickets } from "page/Tickets"
 import { Users } from "page/Users"
 import { IconType } from "react-icons"
 import {
@@ -34,6 +36,7 @@ import {
   FiHash,
   FiHome,
   FiMap,
+  FiMessageCircle,
   FiPackage,
   FiPenTool,
   FiPocket,
@@ -63,8 +66,8 @@ type Route = {
 }
 
 export const configuration = {
-  version: "v0.6.3",
-  isDevEnv: process.env.NODE_ENV === "development",
+  version: "v0.8.3",
+  isDevEnv: import.meta.env.DEV,
   sidebarItems: [
     //* Main pages
     // Dashboard
@@ -82,7 +85,8 @@ export const configuration = {
       icon: FiPenTool,
       name: "Engraving",
       path: "/engraving",
-      // TODO: set permissions
+      permissions: [Permission.ORDER_READ, Permission.PROCESSING_ORDER],
+      // TODO: add guide page url
       component: (
         <EngravingContextProvider>
           <OrdersForEngraving />
@@ -94,11 +98,14 @@ export const configuration = {
       type: "child",
       name: "Order Engraving :id",
       path: "/engraving/:id",
-      // TODO: set permissions
+      permissions: [Permission.ORDER_READ, Permission.PROCESSING_ORDER],
+      // TODO: add guide page url
       component: (
-        <EngravingContextProvider>
-          <Engraving />
-        </EngravingContextProvider>
+        <TicketsContextProvider>
+          <EngravingContextProvider>
+            <Engraving />
+          </EngravingContextProvider>
+        </TicketsContextProvider>
       ),
     },
     // Reports
@@ -123,6 +130,20 @@ export const configuration = {
         <TableContextProvider<OrderSearchFilter>>
           <Orders guideNotionPageId="212db0fd239248e199af5852cdc2a577" />
         </TableContextProvider>
+      ),
+    },
+    // Tickets
+    {
+      type: "main",
+      icon: FiMessageCircle,
+      name: "Tickets",
+      path: "/tickets",
+      permissions: [Permission.TICKET_READ, Permission.TICKET_MESSAGE_READ],
+      // TODO: add guide page url
+      component: (
+        <TicketsContextProvider>
+          <Tickets />
+        </TicketsContextProvider>
       ),
     },
     // Order Info
@@ -152,7 +173,8 @@ export const configuration = {
       icon: FiUser,
       name: "Clients",
       path: "/clients",
-      permissions: [],
+      permissions: [Permission.ORDER_READ, Permission.CLIENT_READ],
+      // TODO: add guide page url
       component: (
         <TableContextProvider<ClientSearchFilter>>
           <Clients />
@@ -164,7 +186,12 @@ export const configuration = {
       type: "child",
       name: "Client Details",
       path: "/client/:id",
-      permissions: [],
+      permissions: [
+        Permission.ORDER_READ,
+        Permission.GOOD_READ,
+        Permission.CLIENT_READ,
+      ],
+      // TODO: add guide page url
       component: <ClientDetails />,
     },
     // Purchases
@@ -184,6 +211,7 @@ export const configuration = {
       name: "Purchases",
       path: "/purchases/history",
       permissions: [Permission.PURCHASE_READ],
+      // TODO: add guide page url
       component: (
         <TableContextProvider<PurchaseHistorySearchFilter>>
           <PurchasesHistory />
@@ -220,7 +248,11 @@ export const configuration = {
       name: "Storage Good :id",
       path: "/storage-good/:id",
       permissions: [Permission.STORAGE_READ],
-      component: <StorageGoodDetails />,
+      component: (
+        <TableContextProvider<OrderSearchFilter>>
+          <StorageGoodDetails />
+        </TableContextProvider>
+      ),
     },
     // Production Info
     {
@@ -241,7 +273,8 @@ export const configuration = {
       icon: FiHash,
       name: "Shelves",
       path: "/shelves",
-      permissions: [Permission.STORAGE_READ],
+      permissions: [Permission.STORAGE_READ, Permission.SHELF_READ],
+      // TODO: add guide page url
       component: <Shelves />,
     },
     // Authorized Devices
@@ -250,10 +283,9 @@ export const configuration = {
       icon: FiCpu,
       name: "Devices",
       path: "/authorized-devices",
-      permissions: [],
+      permissions: [Permission.DEVICE_READ],
       // TODO: add guide page url
       component: <AuthorizedDevices />,
-      // isDisabled: true,
     },
     // Engravers
     {
@@ -261,7 +293,7 @@ export const configuration = {
       icon: FiUsers,
       name: "Engravers",
       path: "/engravers",
-      permissions: [],
+      permissions: [Permission.ENGRAVER_READ],
       // TODO: add guide page url
       component: <Engravers />,
     },
@@ -271,7 +303,11 @@ export const configuration = {
       icon: FiUsers,
       name: "Employees",
       path: "/users",
-      permissions: [],
+      permissions: [
+        Permission.USER_READ,
+        Permission.ROLE_READ,
+        Permission.ENGRAVER_READ,
+      ],
       component: <Users guideNotionPageId="57b7bd55eab24fd89a2692f2296560c8" />,
     },
     // Roles
@@ -280,7 +316,8 @@ export const configuration = {
       icon: FiPocket,
       name: "Role Access",
       path: "/roles",
-      permissions: [],
+      permissions: [Permission.ROLE_READ],
+      // TODO: add guide page url
       component: <Roles />,
     },
     // Logs

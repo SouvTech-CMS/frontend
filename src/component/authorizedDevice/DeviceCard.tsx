@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react"
 import { DeviceCardMenu } from "component/authorizedDevice/DeviceCardMenu"
 import { DeviceDeleteModal } from "component/authorizedDevice/DeviceDeleteModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiClock } from "react-icons/fi"
 import { AuthorizedDevice } from "type/authorizedDevice/authorizedDevice"
@@ -21,6 +22,8 @@ interface DeviceCardProps {
 
 export const DeviceCard: FC<DeviceCardProps> = (props) => {
   const { device } = props
+
+  const { canEditDevices } = useUserPermissions()
 
   const authorizedAt = dateAsStringToDate(device.authorized_at)
 
@@ -56,7 +59,9 @@ export const DeviceCard: FC<DeviceCardProps> = (props) => {
           </Flex>
 
           {/* Menu Btn */}
-          <DeviceCardMenu onDelete={onDeviceDeleteModalOpen} />
+          {canEditDevices && (
+            <DeviceCardMenu onDelete={onDeviceDeleteModalOpen} />
+          )}
         </CardHeader>
 
         <CardFooter mt="auto">

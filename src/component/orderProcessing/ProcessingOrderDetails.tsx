@@ -23,7 +23,7 @@ export const ProcessingOrderDetails: FC<ProcessingOrderDetailsProps> = (
   const isGoodsDetailsExist = !!goodsDetailesList
 
   return (
-    <Container h="full" gap={5}>
+    <Container h="full" flex={2} gap={5}>
       <Flex w="full">
         <Heading>Order #{marketplaceOrderId}</Heading>
       </Flex>

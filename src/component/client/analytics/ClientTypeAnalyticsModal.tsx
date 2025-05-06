@@ -54,14 +54,14 @@ export const ClientTypeAnalyticsModal: FC<ClientTypeAnalyticsModalProps> = (
             <Flex w="full" direction="column" gap={3}>
               <Divider />
 
-              <Flex w="full" direction="column" color="gray" gap={2}>
+              <Flex w="full" direction="column" gap={2}>
                 {/* Description */}
-                <Flex w="full" direction="column" color="inherit" gap={1}>
+                <Flex w="full" direction="column" gap={1}>
                   <Text>{description}</Text>
                 </Flex>
 
                 {/* Conditions */}
-                <Flex w="full" direction="column" color="inherit" gap={1}>
+                <Flex w="full" direction="column" gap={1}>
                   <Text>Conditions:</Text>
 
                   <ClientTypeConditionsList type={type} pl={2} />

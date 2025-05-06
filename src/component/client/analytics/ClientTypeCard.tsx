@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react"
 import { ClientTypeAnalyticsModal } from "component/client/analytics/ClientTypeAnalyticsModal"
 import { ClientTypeConditionsList } from "component/client/analytics/ClientTypeConditionsList"
+import { Container } from "component/Container"
 import { CLIENTS_TYPES_INFO, ClientType } from "constant/clients"
 import { FC, useState } from "react"
 import { FiChevronDown, FiChevronRight } from "react-icons/fi"
@@ -37,58 +38,24 @@ export const ClientTypeCard: FC<ClientTypeCardProps> = (props) => {
 
   return (
     <>
-      <Flex
-        bgColor="white"
-        w="full"
-        direction="column"
-        alignItems="center"
-        pl={4}
-        pr={2}
-        pt={2}
-        pb={3}
-        borderRadius={10}
-      >
-        <Flex
-          w="full"
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          gap={2}
-        >
-          {/* Name */}
-          <Flex w="full" direction="column">
-            <Heading size="md">{name} Clients</Heading>
-          </Flex>
+      <Container p={4} gap={2}>
+        {/* Name */}
+        <Heading size="md">{name} Clients</Heading>
 
-          {/* Modal Btn */}
-          <Flex direction="column">
-            <Button
-              variant="ghost"
-              colorScheme="blue"
-              onClick={onAnalyticsModalOpen}
-            >
-              View
-            </Button>
-          </Flex>
-        </Flex>
-
-        <Flex w="full" direction="column" color="gray" gap={1}>
+        <Flex w="full" direction="column" gap={1}>
           {/* Description */}
-          <Flex w="full" color="inherit">
-            <Text>{description}</Text>
-          </Flex>
+          <Text>{description}</Text>
 
           {/* Conditions Btn */}
-          <Flex w="full" direction="column" color="inherit">
+          <Flex w="full" direction="column">
             <Flex
               w="fit-content"
               direction="row"
               alignItems="center"
-              color="inherit"
               onClick={handleClick}
               cursor="pointer"
             >
-              <Icon as={icon} color="gray" />
+              <Icon as={icon} />
 
               <Text _hover={{ textDecoration: "underline" }}>Conditions</Text>
             </Flex>
@@ -99,7 +66,17 @@ export const ClientTypeCard: FC<ClientTypeCardProps> = (props) => {
             )}
           </Flex>
         </Flex>
-      </Flex>
+
+        {/* Modal Btn */}
+        <Button
+          w="full"
+          variant="ghost"
+          colorScheme="blue"
+          onClick={onAnalyticsModalOpen}
+        >
+          View
+        </Button>
+      </Container>
 
       {/* Modals */}
       <>
