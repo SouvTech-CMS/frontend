@@ -201,9 +201,11 @@ export const EngravingContextProvider: FCC = (props) => {
         isProcessingOrdersListLoading,
       }}
     >
-      {!isActiveWorkShiftExists && <WorkShiftStart />}
+      {!isActiveWorkShiftLoading && !isActiveWorkShiftExists && (
+        <WorkShiftStart />
+      )}
 
-      {isActiveWorkShiftExists && children}
+      {!isActiveWorkShiftLoading && isActiveWorkShiftExists && children}
 
       {isActiveScheduledBreakExists && (
         <ActiveScheduledBreakModal
