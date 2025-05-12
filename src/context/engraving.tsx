@@ -2,6 +2,7 @@ import { useDisclosure } from "@chakra-ui/react"
 import { getProcessingOrdersByEngraverId } from "api/engraver/processingOrder"
 import { getEngraverScheduledBreaks } from "api/engraver/scheduledBreaks"
 import { getEngraverActiveWorkShift } from "api/engraver/workShift"
+import { InactivityModal } from "component/engraver/InactivityModal"
 import { ActiveScheduledBreakModal } from "component/workBreak/ActiveScheduledBreakModal"
 import { WorkShiftStart } from "component/workShift/WorkShiftStart"
 import { ProcessingOrderStatus } from "constant/orderStatus"
@@ -42,7 +43,7 @@ export const EngravingContextProvider: FCC = (props) => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const { engraverId, isLoadingCurrentUser } = useUserContext()
+  const { engraverId, isUserEngraver, isLoadingCurrentUser } = useUserContext()
 
   // * Processing Orders List
   const {
@@ -214,6 +215,8 @@ export const EngravingContextProvider: FCC = (props) => {
           onClose={onActiveScheduledBreakModalClose}
         />
       )}
+
+      {isUserEngraver && <InactivityModal />}
     </EngravingContext.Provider>
   )
 }
