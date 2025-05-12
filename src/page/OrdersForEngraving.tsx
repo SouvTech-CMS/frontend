@@ -53,7 +53,7 @@ export const OrdersForEngraving = () => {
       },
     },
   )
-  const isOrderExists = !!order
+  const isOrderExists = !!order && !isInvalid
 
   const isLoading =
     isLoadingCurrentUser || isCheckingDevice || isProcessingOrdersListLoading
@@ -119,7 +119,7 @@ export const OrdersForEngraving = () => {
         {isOrderLoading && <LoadingPage />}
 
         {/* Order not found */}
-        {!isOrderLoading && !isInvalid && !isOrderExists && (
+        {!isOrderLoading && !isOrderExists && (
           <Flex
             w="full"
             justifyContent="center"
