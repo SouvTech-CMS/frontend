@@ -24,4 +24,5 @@ export type StorageGoodAnalyticsResponse = {
   storage_good: WithId<StorageGood>
   labels: string[]
   data: DateAndCount[]
+  total_count: number
 }

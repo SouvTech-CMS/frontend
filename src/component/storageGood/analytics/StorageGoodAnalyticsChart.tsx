@@ -80,6 +80,8 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
   const storageGood = storageGoodAnalytics?.storage_good
   const sku = storageGood?.uniquename
 
+  const totalCount = storageGoodAnalytics?.total_count
+
   const [bgColor, borderColor] = getColorsForItem(colors, 2)
 
   const data: LineChartData = {
@@ -140,10 +142,11 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
   return (
     <ChartSection
       w="50%"
+      direction="column"
       title="Sales Analytics"
       withShopFilter
       withDatesFilter
-      gap={2}
+      gap={3}
     >
       {isLoading && <LoadingPage />}
 
@@ -153,7 +156,20 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
         </Flex>
       )}
 
+      {/* Chart */}
       {isAnalyticsExist && !isLoading && <Line options={options} data={data} />}
+
+      {/* Total */}
+      <Flex
+        w="full"
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+      >
+        <Text fontSize="xl" fontWeight="semibold">
+          Total count: {totalCount}
+        </Text>
+      </Flex>
     </ChartSection>
   )
 }
