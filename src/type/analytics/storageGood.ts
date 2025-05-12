@@ -15,6 +15,7 @@ export type StorageGoodPopularity = {
 
 export type StorageGoodAnalyticsRequest = {
   storage_good_id: number
+  shops?: number[]
   start_date: string
   end_date: string
 }

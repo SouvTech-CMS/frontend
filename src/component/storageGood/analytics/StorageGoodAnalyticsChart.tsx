@@ -54,6 +54,7 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
 
   const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
 
+  const shopId = searchFilter?.shop_id
   const startDate = searchFilter?.start_date
   const endDate = searchFilter?.end_date
 
@@ -68,6 +69,7 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
     () =>
       getStorageGoodAnalyticsById({
         storage_good_id: storageGoodId,
+        shops: !!shopId ? [shopId] : undefined,
         start_date: startDate!,
         end_date: endDate!,
       }),
@@ -95,12 +97,14 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
     ],
   }
 
+  // Refetch Analytics
   useEffect(() => {
     if (isRequestEnabled) {
       refetch()
     }
-  }, [refetch, startDate, endDate, storageGoodId])
+  }, [refetch, shopId, startDate, endDate, storageGoodId])
 
+  // Update Search Filter dates
   useEffect(
     () => {
       // Update Start Date
