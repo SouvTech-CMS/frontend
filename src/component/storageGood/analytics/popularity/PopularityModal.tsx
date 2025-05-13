@@ -13,7 +13,7 @@ import { DatesFilter } from "component/filter/DatesFilter"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { LoadingPage } from "component/page/LoadingPage"
 import { ShopsSelect } from "component/select/ShopsSelect"
-import { StorageGoodPopularityCard } from "component/storageGood/analytics/StorageGoodPopularityCard"
+import { StorageGoodPopularityCard } from "component/storageGood/analytics/popularity/StorageGoodPopularityCard"
 import { useTableContext } from "context/table"
 import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
@@ -26,7 +26,7 @@ interface PopularityModalProps extends ModalProps {}
 export const PopularityModal: FC<PopularityModalProps> = (props) => {
   const { isOpen, onClose } = props
 
-  const { searchFilter } = useTableContext<OrderSearchFilter>()
+  const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
 
   const [shopsIds, setShopsIds] = useState<number[]>()
 
@@ -57,6 +57,18 @@ export const PopularityModal: FC<PopularityModalProps> = (props) => {
       refetch()
     }
   }, [refetch, startDate, endDate, shopsIds])
+
+  useEffect(() => {
+    setShopsIds(undefined)
+    setSearchFilter(
+      (prevFilters) =>
+        ({
+          ...prevFilters,
+          start_date: undefined,
+          end_date: undefined,
+        }) as OrderSearchFilter,
+    )
+  }, [isOpen])
 
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>

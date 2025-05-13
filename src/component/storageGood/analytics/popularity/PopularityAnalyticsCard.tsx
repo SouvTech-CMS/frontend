@@ -1,6 +1,6 @@
 import { Button, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { Container } from "component/Container"
-import { PopularityModal } from "component/storageGood/analytics/PopularityModal"
+import { PopularityModal } from "component/storageGood/analytics/popularity/PopularityModal"
 import { TableContextProvider } from "context/table"
 import { FC } from "react"
 import { OrderSearchFilter } from "type/order/order"
