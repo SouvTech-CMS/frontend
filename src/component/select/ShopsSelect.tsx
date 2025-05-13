@@ -1,4 +1,3 @@
-import { getAllShops } from "api/shop"
 import {
   ActionMeta,
   ChakraStylesConfig,
@@ -6,17 +5,16 @@ import {
   MultiValue,
   Select,
 } from "chakra-react-select"
+import { useUserContext } from "context/user"
 import { FC } from "react"
-import { useQuery } from "react-query"
 import { SelectOption } from "type/selectOption"
-import { Shop } from "type/shop"
-import { WithId } from "type/withId"
 
 interface ShopsSelectProps {
   selectedShopsIds?: number[]
   onSelect: (shopsIds: number[]) => void
   isRequired?: boolean
   isDisabled?: boolean
+  isFullWidth?: boolean
 }
 
 const selectStyles: ChakraStylesConfig<
@@ -26,18 +24,21 @@ const selectStyles: ChakraStylesConfig<
 > = {
   container: (provided) => ({
     ...provided,
-    width: "full",
+    width: "fit-content",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    width: "fit-content",
   }),
 }
 
 export const ShopsSelect: FC<ShopsSelectProps> = (props) => {
-  const { selectedShopsIds, onSelect, isRequired, isDisabled } = props
+  const { selectedShopsIds, onSelect, isRequired, isDisabled, isFullWidth } =
+    props
 
-  const { data: shopsList, isLoading: isShopsLoading } = useQuery<
-    WithId<Shop>[]
-  >("shopsList", getAllShops)
+  const { userShops, isLoadingCurrentUser } = useUserContext()
 
-  const selectedShops = shopsList?.filter((shop) =>
+  const selectedShops = userShops?.filter((shop) =>
     selectedShopsIds?.includes(shop.id),
   )
 
@@ -51,14 +52,20 @@ export const ShopsSelect: FC<ShopsSelectProps> = (props) => {
 
   const isInvalid = isRequired && selectedShopsIds?.length === 0
 
-  const isLoading = isDisabled || isShopsLoading
+  const isLoading = isDisabled || isLoadingCurrentUser
 
   return (
     <Select<SelectOption, true, GroupBase<SelectOption>>
-      chakraStyles={selectStyles}
+      chakraStyles={{
+        ...selectStyles,
+        container: (provided) => ({
+          ...provided,
+          width: isFullWidth ? "full" : "fit-content",
+        }),
+      }}
       colorScheme="teal"
       placeholder="Select shops"
-      options={shopsList?.map((shop) => ({
+      options={userShops?.map((shop) => ({
         value: shop.id,
         label: shop.name,
       }))}

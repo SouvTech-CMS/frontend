@@ -360,8 +360,9 @@ export const EngraverModal: FC<EngraverModalProps> = (props) => {
                 <ShopsSelect
                   selectedShopsIds={selectedShopsIds}
                   onSelect={setSelectedShopsIds}
-                  isRequired
                   isDisabled={isLoading}
+                  isRequired
+                  isFullWidth
                 />
               </Flex>
 
