@@ -8,7 +8,8 @@ import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { FullStorageTotalAmountLabel } from "component/storage/FullStorageTotalAmountLabel"
-import { PopularityAnalyticsCard } from "component/storageGood/analytics/PopularityAnalyticsCard"
+import { PopularityAnalyticsCard } from "component/storageGood/analytics/popularity/PopularityAnalyticsCard"
+import { QuantityColorAnalyticsCard } from "component/storageGood/analytics/quantity_color/QuantityColorsAnalyticsCard"
 import { QuantityColorsModalBtn } from "component/storageGood/quantityColor/QuantityColorsModalBtn"
 import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
@@ -93,6 +94,8 @@ export const Storage = (props: PageProps) => {
       {/* Analytics */}
       <Flex w="full" direction="row" alignItems="center" gap={5}>
         <PopularityAnalyticsCard />
+
+        <QuantityColorAnalyticsCard />
       </Flex>
 
       <Container mt={5} gap={3}>
