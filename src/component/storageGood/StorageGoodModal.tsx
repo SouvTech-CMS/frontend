@@ -205,7 +205,11 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
 
             {/* Shops Select */}
             {isUserAdmin && (
-              <ShopsSelect selectedShopsIds={shopsIds} onSelect={setShopsIds} />
+              <ShopsSelect
+                selectedShopsIds={shopsIds}
+                onSelect={setShopsIds}
+                isFullWidth
+              />
             )}
 
             {/* Shelves Select */}

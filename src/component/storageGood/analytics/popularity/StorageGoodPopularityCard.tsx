@@ -27,7 +27,7 @@ export const StorageGoodPopularityCard: FC<StorageGoodPopularityCardProps> = (
       borderRadius={10}
       gap={2}
     >
-      <Flex w="full" direction="row" gap={1}>
+      <Flex w="full" direction="row" alignItems="center" gap={1}>
         <SKUBadge sku={sku} />
 
         <Text fontWeight="medium">{name}</Text>
