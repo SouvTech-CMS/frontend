@@ -12,7 +12,7 @@ export const QuantityColorAnalyticsCard: FC = () => {
 
   return (
     <>
-      <Container w="fit-content" maxW="25%" p={4} gap={2}>
+      <Container w="full" alignSelf="stretch" p={4} gap={2}>
         {/* Heading */}
         <Heading size="md">Quantity Colors Analytics</Heading>
 
@@ -27,6 +27,7 @@ export const QuantityColorAnalyticsCard: FC = () => {
           variant="ghost"
           colorScheme="blue"
           onClick={onModalOpen}
+          mt="auto"
         >
           View
         </Button>
