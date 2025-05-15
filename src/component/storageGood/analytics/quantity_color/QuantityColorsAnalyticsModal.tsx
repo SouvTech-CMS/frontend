@@ -39,7 +39,7 @@ export const QuantityColorsAnalyticsModal: FC<
     isLoading,
     refetch,
   } = useQuery<QuantityColorAnalyticsResponse>(
-    "storageGoodsPopularity",
+    "quantityColorsAnalytics",
     () =>
       getQuantityColorsAnalytics({
         shops: shopsIds,
@@ -97,7 +97,7 @@ export const QuantityColorsAnalyticsModal: FC<
 
             {!isRequestEnabled && !isLoading && (
               <Flex w="full" justifyContent="center" alignItems="center" py={5}>
-                <Text color="hint">
+                <Text color="hint" textAlign="center">
                   Select Quantity Color to see its Storage Goods list
                 </Text>
               </Flex>
