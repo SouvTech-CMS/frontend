@@ -57,3 +57,7 @@ export type StorageGoodInGood = {
   in_good_quantity: number
   storage_good: StorageGoodForProcessing
 }
+
+export type StorageGoodWithQuantityColor = StorageGood & {
+  quantity_color?: WithId<QuantityColor>
+}

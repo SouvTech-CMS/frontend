@@ -91,7 +91,9 @@ export const PopularityModal: FC<PopularityModalProps> = (props) => {
 
             {!isStorageGoodsPopularityExist && !isLoading && (
               <Flex w="full" justifyContent="center" alignItems="center" py={5}>
-                <Text color="hint">Select dates range to see analytics</Text>
+                <Text color="hint" textAlign="center">
+                  Select dates range to see analytics
+                </Text>
               </Flex>
             )}
 

@@ -1,9 +1,9 @@
 import { Button, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { Container } from "component/Container"
-import { QuantityColorsAnalyticsModal } from "component/storageGood/analytics/quantity_color/QuantityColorsAnalyticsModal"
+import { BulkStorageGoodsModal } from "component/storageGood/analytics/bulk/BulkStorageGoodsModal"
 import { FC } from "react"
 
-export const QuantityColorAnalyticsCard: FC = () => {
+export const BulkStorageGoodsCard: FC = () => {
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,
@@ -14,12 +14,10 @@ export const QuantityColorAnalyticsCard: FC = () => {
     <>
       <Container w="full" alignSelf="stretch" p={4} gap={2}>
         {/* Heading */}
-        <Heading size="md">Quantity Colors Analytics</Heading>
+        <Heading size="md">Bulk Storage Goods</Heading>
 
         {/* Description */}
-        <Text color="hint">
-          List of Storage Goods grouped by Quantity Colors to analyze quantities
-        </Text>
+        <Text color="hint">List of Storage Goods from Bulk Orders</Text>
 
         {/* Modal Btn */}
         <Button
@@ -33,10 +31,7 @@ export const QuantityColorAnalyticsCard: FC = () => {
         </Button>
       </Container>
 
-      <QuantityColorsAnalyticsModal
-        isOpen={isModalOpen}
-        onClose={onModalClose}
-      />
+      <BulkStorageGoodsModal isOpen={isModalOpen} onClose={onModalClose} />
     </>
   )
 }
