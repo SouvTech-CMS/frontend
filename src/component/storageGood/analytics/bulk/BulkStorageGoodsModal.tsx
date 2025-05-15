@@ -139,7 +139,7 @@ export const BulkStorageGoodsModal: FC<BulkStorageGoodsModalProps> = (
 
             {isLoading && <LoadingPage />}
 
-            {!isStorageGoodsListExists && !isRequestEnabled && !isLoading && (
+            {!isRequestEnabled && !isLoading && (
               <Flex w="full" justifyContent="center" alignItems="center" py={5}>
                 <Text color="hint" textAlign="center">
                   Select dates range and enter min or max quantity in orders to
