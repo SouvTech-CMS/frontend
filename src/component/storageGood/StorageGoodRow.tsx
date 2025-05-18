@@ -53,7 +53,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
     shelf: shelves,
     defects,
     quantity_color: quantityColor,
-    quantity_colors: quantityColorList,
+    quantity_colors: quantityColorsList,
     ...good
   } = storageGood
 
@@ -198,7 +198,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
         <StorageGoodQuantityColorsModal
           storageGood={good}
-          quantityColorList={quantityColorList}
+          prevStorageGoodQuantityColorsList={quantityColorsList}
           isOpen={isQuantityColorsModalOpen}
           onClose={onQuantityColorsModalClose}
         />
