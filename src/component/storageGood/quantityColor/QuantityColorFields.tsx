@@ -1,5 +1,5 @@
 import {
-  Button,
+  Checkbox,
   Flex,
   IconButton,
   Text,
@@ -7,70 +7,39 @@ import {
   useDisclosure,
 } from "@chakra-ui/react"
 import { ColorPickerPopover } from "component/ColorPickerPopover"
+import { CustomTooltip } from "component/CustomTooltip"
 import { QuantityColorDeleteModal } from "component/storageGood/quantityColor/QuantityColorDeleteModal"
 import { QuantityColorIcon } from "component/storageGood/quantityColor/QuantityColorIcon"
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
+import { FC } from "react"
 import { FiTrash } from "react-icons/fi"
-import {
-  useQuantityColorCreateMutation,
-  useQuantityColorUpdateMutation,
-} from "service/storage/quantityColor/quantityColor"
 import { QuantityColor } from "type/storage/quantityColor/quantityColor"
 import { WithId } from "type/withId"
-import { notify } from "util/toasts"
 
 interface QuantityColorFieldsProps {
   prevQuantityColor: WithId<QuantityColor>
-  setQuantityColorsList: Dispatch<SetStateAction<WithId<QuantityColor>[]>>
+  onChange: (quantityColor: WithId<QuantityColor>) => void
+  onDelete: (quantityColor: WithId<QuantityColor>) => void
 }
 
 export const QuantityColorFields: FC<QuantityColorFieldsProps> = (props) => {
-  const { prevQuantityColor, setQuantityColorsList } = props
+  const { prevQuantityColor, onChange, onDelete } = props
 
-  const [quantityColor, setQuantityColor] =
-    useState<WithId<QuantityColor>>(prevQuantityColor)
+  const quantityColorId = prevQuantityColor.id
 
-  const quantityColorId = quantityColor.id
+  const description = prevQuantityColor.description
+  const color = prevQuantityColor.color
+  const isUseMoreThanCondition = prevQuantityColor.is_use_more_than_condition
 
-  const quantityColorCreateMutation = useQuantityColorCreateMutation()
-  const quantityColorUpdateMutation = useQuantityColorUpdateMutation()
+  const isDescriptionInvalid = !description
 
-  const isLoading =
-    quantityColorCreateMutation.isLoading ||
-    quantityColorUpdateMutation.isLoading
-
-  const isSaveBtnDisabled =
-    !quantityColor.color ||
-    !quantityColor.description ||
-    (prevQuantityColor.color === quantityColor.color &&
-      prevQuantityColor.description === quantityColor.description) ||
-    isLoading
-
-  const handleChange = (param: keyof QuantityColor, value?: string) => {
-    setQuantityColor((prevColor) => ({
-      ...prevColor,
+  const handleChange = (
+    param: keyof QuantityColor,
+    value?: QuantityColor[keyof QuantityColor],
+  ) => {
+    onChange({
+      ...prevQuantityColor,
       [param]: value,
-    }))
-  }
-
-  const handleUpdate = async () => {
-    if (!!quantityColor.id && !isNaN(quantityColor.id)) {
-      const body: WithId<QuantityColor> = {
-        ...quantityColor,
-      }
-
-      await quantityColorUpdateMutation.mutateAsync(body)
-
-      notify("Quantity Color variant was updated successfully", "success")
-    } else {
-      const body: QuantityColor = {
-        ...quantityColor,
-      }
-
-      await quantityColorCreateMutation.mutateAsync(body)
-
-      notify("New Quantity Color variant was created successfully", "success")
-    }
+    })
   }
 
   // * Delete Modal
@@ -81,45 +50,32 @@ export const QuantityColorFields: FC<QuantityColorFieldsProps> = (props) => {
   } = useDisclosure()
 
   const handleDelete = async () => {
-    if (!!quantityColor.id && !isNaN(quantityColor.id)) {
+    if (!!quantityColorId && !isNaN(quantityColorId)) {
       onModalOpen()
     } else {
-      setQuantityColorsList((prevQuantityColors) =>
-        prevQuantityColors.filter(
-          (prevQuantityColor) =>
-            prevQuantityColor.color !== quantityColor.color &&
-            prevQuantityColor.description !== quantityColor.description,
-        ),
-      )
+      onDelete(prevQuantityColor)
     }
   }
-
-  useEffect(() => {
-    setQuantityColor(prevQuantityColor)
-  }, [prevQuantityColor])
 
   return (
     <>
       <Flex w="full" direction="column" gap={2}>
-        <Flex
-          w="full"
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Flex w="full" direction="row" alignItems="center" gap={3}>
           {/* Color */}
           <ColorPickerPopover
-            color={quantityColor.color}
+            color={color}
             onChange={(color) => {
               handleChange("color", color)
             }}
           />
 
+          {/* Delete IconBtn */}
           <IconButton
             aria-label="remove-quantity-color"
             icon={<FiTrash />}
             variant="ghost"
             colorScheme="red"
+            ml="auto"
             onClick={handleDelete}
           />
         </Flex>
@@ -127,11 +83,12 @@ export const QuantityColorFields: FC<QuantityColorFieldsProps> = (props) => {
         {/* Description */}
         <Textarea
           placeholder="Description of color highlight (will be shown when hover on quantity icon)"
-          value={quantityColor.description}
+          value={description}
           onChange={(e) => {
             const value = e.target.value
             handleChange("description", value)
           }}
+          isInvalid={isDescriptionInvalid}
         />
 
         <Flex
@@ -142,21 +99,29 @@ export const QuantityColorFields: FC<QuantityColorFieldsProps> = (props) => {
           gap={2}
         >
           {/* Preview */}
-          <Flex w="full" direction="row" alignItems="center" pl={1} gap={2}>
+          <Flex direction="row" alignItems="center" pl={1} gap={2}>
             <Text fontWeight="medium">Preview:</Text>
 
-            <QuantityColorIcon quantityColor={quantityColor} />
+            <QuantityColorIcon quantityColor={prevQuantityColor} />
           </Flex>
 
-          <Button
-            size="sm"
-            px={5}
-            onClick={handleUpdate}
-            isDisabled={isSaveBtnDisabled}
-            isLoading={isLoading}
+          {/* IsUseMoreThanCondition Checkbox */}
+          <CustomTooltip
+            placement="top"
+            label="Check this if you would like to use this Quantity Color when Storage Good is enough"
+            fontStyle="normal"
+            fontWeight="medium"
           >
-            Save
-          </Button>
+            <Checkbox
+              isChecked={isUseMoreThanCondition}
+              onChange={(e) => {
+                const value = e.target.checked
+                handleChange("is_use_more_than_condition", value)
+              }}
+            >
+              Use when Storage Good is enough
+            </Checkbox>
+          </CustomTooltip>
         </Flex>
       </Flex>
 

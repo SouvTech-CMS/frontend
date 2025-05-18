@@ -44,7 +44,7 @@ export const ColorPickerPopover: FC<ColorPickerPopoverProps> = (props) => {
   }, [isOpen])
 
   return (
-    <Flex w="full" direction="column">
+    <Flex direction="column">
       <Flex
         w="fit-content"
         direction="row"
