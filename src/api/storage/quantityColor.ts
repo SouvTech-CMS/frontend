@@ -11,11 +11,9 @@ export const getAllQuantityColors = async (): Promise<
   return quantityColorsList
 }
 
-export const createQuantityColor = async (body: QuantityColor) => {
-  await axiosClient.post("/quantity_color/", body)
-}
-
-export const updateQuantityColor = async (body: WithId<QuantityColor>) => {
+export const updateQuantityColorsList = async (
+  body: WithId<QuantityColor>[],
+) => {
   await axiosClient.put("/quantity_color/", body)
 }
 
