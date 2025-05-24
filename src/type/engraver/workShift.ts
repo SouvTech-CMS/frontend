@@ -1,4 +1,5 @@
 import { WorkBreak } from "type/engraver/workBreak"
+import { WithId } from "type/withId"
 
 export type WorkShift = {
   engraver_id: number
@@ -7,5 +8,5 @@ export type WorkShift = {
 }
 
 export type WorkShiftWithBreaks = WorkShift & {
-  work_breaks: WorkBreak[]
+  work_breaks: WithId<WorkBreak>[]
 }

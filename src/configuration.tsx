@@ -295,7 +295,11 @@ export const configuration = {
       path: "/engravers",
       permissions: [Permission.ENGRAVER_READ],
       // TODO: add guide page url
-      component: <Engravers />,
+      component: (
+        <TableContextProvider<OrderSearchFilter>>
+          <Engravers />
+        </TableContextProvider>
+      ),
     },
     // Employees
     {

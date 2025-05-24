@@ -43,6 +43,7 @@ import { ModalProps } from "type/modalProps"
 import { Shop } from "type/shop"
 import { User } from "type/user"
 import { WithId } from "type/withId"
+import { getUserTimezone } from "util/dates"
 import { notify } from "util/toasts"
 import { isPasswordValid, isUsernameValid } from "util/validation"
 
@@ -70,6 +71,8 @@ export const EngraverModal: FC<EngraverModalProps> = (props) => {
   const isNewEngraver = !prevEngraverUser || !prevEngraver
   const engraverId = prevEngraver?.id
   const userId = prevEngraverUser?.id
+
+  const userTimezone = getUserTimezone()
 
   const [engraverUser, setEngraverUser] = useState<User>(
     prevEngraverUser || newEngraverUser,
@@ -149,6 +152,7 @@ export const EngraverModal: FC<EngraverModalProps> = (props) => {
         engraver: {},
         scheduled_breaks: scheduledBreaksList,
         shops_ids_list: selectedShopsIds,
+        user_timezone: userTimezone,
       }
 
       const { id: newUserId } = await engraverCreateMutation.mutateAsync(body)
@@ -178,6 +182,7 @@ export const EngraverModal: FC<EngraverModalProps> = (props) => {
         },
         scheduled_breaks: scheduledBreaksList,
         shops_ids_list: selectedShopsIds,
+        user_timezone: userTimezone,
       }
 
       if (!!newPassword.trim() && body.user) {

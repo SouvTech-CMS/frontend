@@ -8,9 +8,16 @@ import {
 } from "@chakra-ui/react"
 import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
-import { FiEdit, FiFileText, FiMoreVertical, FiTrash2 } from "react-icons/fi"
+import {
+  FiClock,
+  FiEdit,
+  FiFileText,
+  FiMoreVertical,
+  FiTrash2,
+} from "react-icons/fi"
 
 interface EngraverCardMenuProps {
+  onWorkTimeAnalytics: () => void
   onDocuments: () => void
   onEdit: () => void
   onBlock: () => void
@@ -18,7 +25,8 @@ interface EngraverCardMenuProps {
 }
 
 export const EngraverCardMenu: FC<EngraverCardMenuProps> = (props) => {
-  const { onDocuments, onEdit, onBlock, wasBlocked } = props
+  const { onWorkTimeAnalytics, onDocuments, onEdit, onBlock, wasBlocked } =
+    props
 
   const { canEditEngravers, canReadEngraversDocuments } = useUserPermissions()
 
@@ -33,6 +41,10 @@ export const EngraverCardMenu: FC<EngraverCardMenuProps> = (props) => {
         />
 
         <MenuList>
+          <MenuItem icon={<FiClock />} onClick={onWorkTimeAnalytics}>
+            Work Time Analytics
+          </MenuItem>
+
           <MenuItem
             icon={<FiFileText />}
             onClick={onDocuments}

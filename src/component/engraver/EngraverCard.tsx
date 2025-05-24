@@ -15,6 +15,7 @@ import {
 import { ShopBadge } from "component/badge/ShopBadge"
 import { CustomTooltip } from "component/CustomTooltip"
 import { DividerWithTitle } from "component/DividerWithTitle"
+import { EngraverWorkTimeModal } from "component/engraver/analytics/workTime/EngraverWorkTimeModal"
 import { DocumentsModal } from "component/engraver/document/DocumentsModal"
 import { EngraverBlockModal } from "component/engraver/EngraverBlockModal"
 import { EngraverCardMenu } from "component/engraver/EngraverCardMenu"
@@ -63,6 +64,13 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
     objectId: engraverId,
   })
   const isCommentExists = !!comment.trim()
+
+  // Work Time
+  const {
+    isOpen: isWorkTimeModalOpen,
+    onOpen: onWorkTimeModalOpen,
+    onClose: onWorkTimeModalClose,
+  } = useDisclosure()
 
   // Documents
   const {
@@ -152,6 +160,7 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
 
           {/* Menu Btn */}
           <EngraverCardMenu
+            onWorkTimeAnalytics={onWorkTimeModalOpen}
             onDocuments={onDocumentsModalOpen}
             onEdit={onEngraverEditModalOpen}
             onBlock={onEngraverBlockModalOpen}
@@ -253,6 +262,13 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
 
       {/* Modals */}
       <>
+        {/* Work Time Modal */}
+        <EngraverWorkTimeModal
+          engraver={engraver}
+          isOpen={isWorkTimeModalOpen}
+          onClose={onWorkTimeModalClose}
+        />
+
         {/* Documents Modal */}
         <DocumentsModal
           engraverId={engraverId}

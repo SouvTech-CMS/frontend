@@ -7,8 +7,8 @@ import { WithId } from "type/withId"
 
 export type Engraver = {
   user: WithId<UserWithShops>
-  scheduled_breaks: ScheduledBreak[]
-  work_shifts: WorkShiftWithBreaks[]
+  scheduled_breaks: WithId<ScheduledBreak>[]
+  work_shifts: WithId<WorkShiftWithBreaks>[]
   documents: WithId<EngraverDocument>[]
   processing_orders?: WithId<ProcessingOrder>[]
   user_id?: number
@@ -25,6 +25,7 @@ export type EngraverCreate = {
   >
   scheduled_breaks: ScheduledBreak[]
   shops_ids_list: number[]
+  user_timezone: string
 }
 
 export type EngraverUpdate = {
@@ -35,4 +36,5 @@ export type EngraverUpdate = {
   >
   scheduled_breaks?: ScheduledBreak[]
   shops_ids_list?: number[]
+  user_timezone: string
 }
