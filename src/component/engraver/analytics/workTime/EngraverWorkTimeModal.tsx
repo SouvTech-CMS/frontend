@@ -13,9 +13,8 @@ import { EngraverWorkTimeTable } from "component/engraver/analytics/workTime/Eng
 import { DatesFilter } from "component/filter/DatesFilter"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { LoadingPage } from "component/page/LoadingPage"
-import { ShopsSelect } from "component/select/ShopsSelect"
 import { useTableContext } from "context/table"
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect } from "react"
 import { useQuery } from "react-query"
 import { EngraverWorkTimeAnalyticsResponse } from "type/analytics/engraver"
 import { Engraver } from "type/engraver/engraver"
@@ -33,8 +32,6 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
 
   const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
 
-  const [shopsIds, setShopsIds] = useState<number[]>([])
-
   const engraverId = engraver.id
 
   const startDate = searchFilter?.start_date
@@ -47,11 +44,10 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
     isLoading,
     refetch,
   } = useQuery<EngraverWorkTimeAnalyticsResponse>(
-    "quantityColorsAnalytics",
+    ["workTimeAnalytics", engraverId],
     () =>
       getEngraverWorkTimeAnalytics({
         engraver_id: engraverId,
-        shops: shopsIds,
         start_date: startDate,
         end_date: endDate,
       }),
@@ -92,13 +88,6 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
           <Flex w="full" direction="column" gap={5}>
             {/* Filters */}
             <Flex w="full" direction="column" gap={2}>
-              <ShopsSelect
-                selectedShopsIds={shopsIds}
-                onSelect={setShopsIds}
-                isDisabled={isLoading}
-                isFullWidth
-              />
-
               <DatesFilter />
             </Flex>
 

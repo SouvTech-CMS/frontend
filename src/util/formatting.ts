@@ -182,13 +182,10 @@ export const formatTimeFromDate = (
   }
 
   // Format the time in local format
-  const formatedTime = dateWithTime.toLocaleTimeString(
-    locale || navigator.language,
-    {
-      hour: "2-digit",
-      minute: "2-digit",
-    },
-  )
+  const formatedTime = dateWithTime.toLocaleTimeString(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
   return formatedTime
 }
 

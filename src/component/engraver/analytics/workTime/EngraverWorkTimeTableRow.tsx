@@ -24,8 +24,8 @@ export const EngraverWorkTimeTableRow: FC<EngraverWorkTimeTableRowProps> = (
   const totalTimeInSeconds = workShift.total_time
   const totalTimeText = durationFromSeconds(totalTimeInSeconds)
 
-  const startedAt = dateAsStringToDate(workShift.started_at, true)
-  const finishedAt = dateAsStringToDate(workShift.finished_at, true)
+  const startedAt = dateAsStringToDate(workShift.started_at)
+  const finishedAt = dateAsStringToDate(workShift.finished_at)
 
   return (
     <Tr>
