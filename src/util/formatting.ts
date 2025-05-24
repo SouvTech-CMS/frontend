@@ -1,3 +1,15 @@
+import { formatDuration, intervalToDuration } from "date-fns"
+
+export const timeStrToDateWithCurrentTimezone = (timeString?: string) => {
+  if (!timeString) {
+    return
+  }
+
+  const date = new Date(`1970-01-01T${timeString}`)
+
+  return date
+}
+
 export const stringToDate = (dateString?: string) => {
   if (!dateString) {
     return
@@ -100,14 +112,18 @@ export const formatDate = (
   date?: Date,
   isShortDate: boolean = false,
   withTime: boolean = false,
-  locale?: string,
+  locale: string = navigator.language,
 ) => {
   if (!date) {
     return
   }
 
   const options: Intl.DateTimeFormatOptions = isShortDate
-    ? { dateStyle: "short" }
+    ? {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }
     : {
         weekday: "short",
         day: "2-digit",
@@ -118,12 +134,11 @@ export const formatDate = (
   if (withTime) {
     options.hour = "2-digit"
     options.minute = "2-digit"
-    options.second = "2-digit"
   }
 
   // Format date
   const formatedDate = date
-    .toLocaleString(locale || navigator.language, options)
+    .toLocaleString(locale, options)
     // Remove ","
     .replaceAll(",", "")
   return formatedDate
@@ -137,53 +152,59 @@ export const formatDateTime = (
   return formatDate(date, isShortDate, true, locale)
 }
 
-export const getShortTime = (timeString?: string) => {
-  if (!timeString) {
+export const formatTime = (
+  timeStr?: string,
+  is12HoursFormat: boolean = true,
+  locale: string = navigator.language,
+) => {
+  if (!timeStr) {
     return
   }
 
-  // Extract hours and minutes from the time string
-  const [hours, minutes] = timeString.split(":")
-
-  const time = `${hours}:${minutes}`
-  return time
-}
-
-export const formatTime = (timeString?: string) => {
-  if (!timeString) {
-    return
-  }
-
-  // Extract hours and minutes from the time string
-  const [hours, minutes] = timeString.split(":")
-
-  // Create a Date object using the current date and the extracted time
-  const date = new Date()
-  date.setHours(parseInt(hours, 10))
-  date.setMinutes(parseInt(minutes, 10))
+  const date = timeStrToDateWithCurrentTimezone(timeStr)
 
   // Format the time in local format
-  const formatedTime = date.toLocaleTimeString(undefined, {
+  const formattedTime = date?.toLocaleTimeString(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: is12HoursFormat,
+  })
+
+  return formattedTime
+}
+
+export const formatTimeFromDate = (
+  dateWithTime?: Date,
+  locale: string = navigator.language,
+) => {
+  if (!dateWithTime) {
+    return
+  }
+
+  // Format the time in local format
+  const formatedTime = dateWithTime.toLocaleTimeString(locale, {
     hour: "2-digit",
     minute: "2-digit",
   })
   return formatedTime
 }
 
-export const formatTimeFromDate = (dateWithTime?: Date, locale?: string) => {
-  if (!dateWithTime) {
+export const durationFromSeconds = (seconds?: number) => {
+  if (!seconds) {
     return
   }
 
-  // Format the time in local format
-  const formatedTime = dateWithTime.toLocaleTimeString(
-    locale || navigator.language,
+  const duration = formatDuration(
+    intervalToDuration({
+      start: 0,
+      end: seconds * 1000,
+    }),
     {
-      hour: "2-digit",
-      minute: "2-digit",
+      format: ["hours", "minutes"],
     },
   )
-  return formatedTime
+
+  return duration
 }
 
 export const truncateText = (text?: string, length: number = 30) => {

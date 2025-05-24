@@ -9,7 +9,14 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react"
+import { useEngravingContext } from "context/engraving"
+import { useUserContext } from "context/user"
 import { FC, useCallback, useEffect, useState } from "react"
+import {
+  useWorkBreakFinishMutation,
+  useWorkBreakStartMutation,
+} from "service/engraver/workBreak"
+import { WorkBreakUpdate } from "type/engraver/workBreak"
 
 // 10 minutes in ms
 const TIMEOUT_IN_MS = 10 * 60 * 1000
@@ -20,6 +27,18 @@ let idleTimer: NodeJS.Timeout
 
 export const InactivityModal: FC = () => {
   const [isIdle, setIsIdle] = useState<boolean>(false)
+
+  const { engraverId } = useUserContext()
+  const { workShiftId } = useEngravingContext()
+
+  const body: WorkBreakUpdate = {
+    engraver_id: engraverId!,
+    work_shift_id: workShiftId!,
+  }
+
+  const workBreakStartMutation = useWorkBreakStartMutation()
+  const workBreakFinishMutation = useWorkBreakFinishMutation()
+
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const resetIdleTimer = useCallback(() => {
@@ -27,8 +46,10 @@ export const InactivityModal: FC = () => {
     idleTimer = setTimeout(() => {
       setIsIdle(true)
       onOpen()
+
+      workBreakStartMutation.mutate(body)
     }, TIMEOUT_IN_MS)
-  }, [onOpen])
+  }, [onOpen, engraverId, workShiftId])
 
   const handleUserActivity = useCallback(() => {
     if (isIdle) {
@@ -37,6 +58,12 @@ export const InactivityModal: FC = () => {
 
     resetIdleTimer()
   }, [isIdle, resetIdleTimer])
+
+  const handleClick = async () => {
+    onClose()
+
+    await workBreakFinishMutation.mutateAsync(body)
+  }
 
   useEffect(
     () => {
@@ -74,7 +101,7 @@ export const InactivityModal: FC = () => {
 
         <ModalFooter>
           <Flex w="full" direction="row" alignItems="center" gap={2}>
-            <Button w="full" variant="success" onClick={onClose}>
+            <Button w="full" variant="success" onClick={handleClick}>
               I'm here
             </Button>
           </Flex>

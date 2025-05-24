@@ -15,7 +15,6 @@ import { ScheduledBreak } from "type/engraver/scheduledBreak"
 import { WorkShiftWithBreaks } from "type/engraver/workShift"
 import { FCC } from "type/fcc"
 import { WithId } from "type/withId"
-import { getUserTimezone } from "util/dates"
 
 interface EngravingContextProps {
   workShiftId?: number
@@ -74,8 +73,6 @@ export const EngravingContextProvider: FCC = (props) => {
   )
   const isActiveWorkShiftExists = !!activeWorkShift
 
-  const userTimezone = getUserTimezone()
-
   // * Scheduled Breaks
   const {
     data: activeScheduledBreak,
@@ -84,7 +81,7 @@ export const EngravingContextProvider: FCC = (props) => {
     refetch: refetchScheduledBreaks,
   } = useQuery<WithId<ScheduledBreak>>(
     ["scheduledBreaks", engraverId],
-    () => getEngraverScheduledBreaks(engraverId!, userTimezone),
+    () => getEngraverScheduledBreaks(engraverId!),
     {
       enabled: !!engraverId && isActiveWorkShiftExists,
       refetchInterval: isActiveWorkShiftExists
