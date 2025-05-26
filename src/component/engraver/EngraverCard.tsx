@@ -15,6 +15,7 @@ import {
 import { ShopBadge } from "component/badge/ShopBadge"
 import { CustomTooltip } from "component/CustomTooltip"
 import { DividerWithTitle } from "component/DividerWithTitle"
+import { EngraversProductivityModal } from "component/engraver/analytics/productivity/EngraversProductivityModal"
 import { EngraverWorkTimeModal } from "component/engraver/analytics/workTime/EngraverWorkTimeModal"
 import { DocumentsModal } from "component/engraver/document/DocumentsModal"
 import { EngraverBlockModal } from "component/engraver/EngraverBlockModal"
@@ -70,6 +71,13 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
     isOpen: isWorkTimeModalOpen,
     onOpen: onWorkTimeModalOpen,
     onClose: onWorkTimeModalClose,
+  } = useDisclosure()
+
+  // Productivity
+  const {
+    isOpen: isProductivityModalOpen,
+    onOpen: onProductivityModalOpen,
+    onClose: onProductivityModalClose,
   } = useDisclosure()
 
   // Documents
@@ -161,6 +169,7 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
           {/* Menu Btn */}
           <EngraverCardMenu
             onWorkTimeAnalytics={onWorkTimeModalOpen}
+            onProductivityAnalytics={onProductivityModalOpen}
             onDocuments={onDocumentsModalOpen}
             onEdit={onEngraverEditModalOpen}
             onBlock={onEngraverBlockModalOpen}
@@ -267,6 +276,13 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
           engraver={engraver}
           isOpen={isWorkTimeModalOpen}
           onClose={onWorkTimeModalClose}
+        />
+
+        {/* Productivity Modal */}
+        <EngraversProductivityModal
+          engraverId={engraverId}
+          isOpen={isProductivityModalOpen}
+          onClose={onProductivityModalClose}
         />
 
         {/* Documents Modal */}

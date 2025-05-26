@@ -1,5 +1,7 @@
 import { axiosClient } from "api/axiosClient"
 import {
+  EngraverProductivityAnalyticsResponse,
+  EngraversProductivityAnalyticsRequestBody,
   EngraverWorkTimeAnalyticsRequestBody,
   EngraverWorkTimeAnalyticsResponse,
 } from "type/analytics/engraver"
@@ -12,4 +14,14 @@ export const getEngraverWorkTimeAnalytics = async (
     body,
   )
   return workTimeAnalytics
+}
+
+export const getEngraversProductivityAnalytics = async (
+  body: EngraversProductivityAnalyticsRequestBody,
+): Promise<EngraverProductivityAnalyticsResponse> => {
+  const { data: productivityAnalytics } = await axiosClient.post(
+    "/analytics/engraver/productivity",
+    body,
+  )
+  return productivityAnalytics
 }

@@ -6,13 +6,11 @@ import { Link } from "react-router-dom"
 import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 
-interface BulkStorageGoodOrderCardProps {
+interface DrawerOrderCardProps {
   order: WithId<Order>
 }
 
-export const BulkStorageGoodOrderCard: FC<BulkStorageGoodOrderCardProps> = (
-  props,
-) => {
+export const DrawerOrderCard: FC<DrawerOrderCardProps> = (props) => {
   const { order } = props
 
   const orderId = order.id

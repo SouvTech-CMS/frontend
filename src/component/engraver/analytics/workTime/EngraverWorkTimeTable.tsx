@@ -7,6 +7,15 @@ interface EngraverWorkTimeTableProps {
   workTimeAnalytics: EngraverWorkTimeAnalyticsResponse
 }
 
+const COLUMNS_NAMES = [
+  "Work Shift ID",
+  "Work Shift Start",
+  "Work Shift End",
+  "Work Breaks",
+  "Scheduled Breaks",
+  "Total Work Time",
+]
+
 export const EngraverWorkTimeTable: FC<EngraverWorkTimeTableProps> = (
   props,
 ) => {
@@ -18,12 +27,9 @@ export const EngraverWorkTimeTable: FC<EngraverWorkTimeTableProps> = (
     <Table variant="simple">
       <Thead>
         <Tr>
-          <Th>Work Shift ID</Th>
-          <Th>Work Shift Start</Th>
-          <Th>Work Shift End</Th>
-          <Th>Work Breaks</Th>
-          <Th>Scheduled Breaks</Th>
-          <Th>Total Work Time</Th>
+          {COLUMNS_NAMES.map((column, index) => (
+            <Th key={index}>{column}</Th>
+          ))}
         </Tr>
       </Thead>
       <Tbody>

@@ -17,6 +17,11 @@ export type Engraver = {
   created_at?: string
 }
 
+export type EngraverWithUser = Omit<
+  Engraver,
+  "scheduled_breaks" | "work_shifts" | "documents" | "processing_orders"
+>
+
 export type EngraverCreate = {
   user: User & { password: string }
   engraver?: Omit<

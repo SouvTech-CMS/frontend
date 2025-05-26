@@ -10,22 +10,20 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { DrawerOrderCard } from "component/order/DrawerOrderCard"
 import { FC } from "react"
+import { EngraverWithUser } from "type/engraver/engraver"
 import { ModalProps } from "type/modalProps"
 import { Order } from "type/order/order"
-import { StorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
-interface BulkStorageGoodOrdersDrawerProps extends ModalProps {
-  storageGood: WithId<StorageGood>
+interface EngraverOrdersDrawerProps extends ModalProps {
+  engraver: WithId<EngraverWithUser>
   ordersList: WithId<Order>[]
 }
 
-export const BulkStorageGoodOrdersDrawer: FC<
-  BulkStorageGoodOrdersDrawerProps
-> = (props) => {
-  const { storageGood, ordersList, isOpen, onClose } = props
+export const EngraverOrdersDrawer: FC<EngraverOrdersDrawerProps> = (props) => {
+  const { engraver, ordersList, isOpen, onClose } = props
 
-  const goodId = storageGood.id
+  const engraverId = engraver.id
 
   return (
     <Drawer size="sm" placement="right" isOpen={isOpen} onClose={onClose}>
@@ -34,7 +32,7 @@ export const BulkStorageGoodOrdersDrawer: FC<
       <DrawerContent>
         <DrawerCloseButton />
 
-        <DrawerHeader>Orders with Storage Good #{goodId}</DrawerHeader>
+        <DrawerHeader>Orders processed by Engraver #{engraverId}</DrawerHeader>
 
         <DrawerBody>
           <Flex w="full" direction="column" gap={5}>

@@ -1,3 +1,6 @@
+import { StorageGood } from "type/storage/storageGood"
+import { WithId } from "type/withId"
+
 export type StorageGoodDefect = {
   storage_good_id: number
   quantity: number
@@ -6,4 +9,8 @@ export type StorageGoodDefect = {
   created_at?: string
   // Just for frontend to identify objects
   index?: number
+}
+
+export type StorageGoodDefectWithStorageGood = StorageGoodDefect & {
+  storage_good: WithId<StorageGood>
 }
