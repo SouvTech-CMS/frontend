@@ -21,6 +21,11 @@ import { Engraver } from "type/engraver/engraver"
 import { ModalProps } from "type/modalProps"
 import { OrderSearchFilter } from "type/order/order"
 import { WithId } from "type/withId"
+import {
+  durationFromSeconds,
+  numberWithCurrency,
+  roundNumber,
+} from "util/formatting"
 
 interface EngraverWorkTimeModalProps extends ModalProps {
   engraver: WithId<Engraver>
@@ -34,6 +39,8 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
   const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
 
   const engraverId = engraver.id
+  const engraverUser = engraver.user
+  const salary = engraverUser.salary || 0
 
   const startDate = searchFilter?.start_date
   const endDate = searchFilter?.end_date
@@ -57,6 +64,16 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
     },
   )
   const isAnalyticsExists = !!workTimeAnalytics && workTimeAnalytics.length > 0
+
+  const totalWorkTimeDurationInSec =
+    workTimeAnalytics?.reduce(
+      (sum, workShift) => sum + workShift.total_time,
+      0,
+    ) || 0
+  const totalWorkTimeText = durationFromSeconds(totalWorkTimeDurationInSec)
+
+  const totalWorkTimeInHours = totalWorkTimeDurationInSec / 60 / 60
+  const totalSalary = salary * totalWorkTimeInHours
 
   // Analytics refetching
   useEffect(() => {
@@ -86,7 +103,7 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
         <ModalCloseButton />
 
         <ModalBody>
-          <Flex w="full" direction="column" gap={5}>
+          <Flex w="full" direction="column" gap={10}>
             {/* Filters */}
             <Flex w="full" direction="column" gap={2}>
               <DatesFilter />
@@ -95,17 +112,32 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
             {isLoading && <LoadingPage />}
 
             {/* Hint */}
-            {!isLoading && !isAnalyticsExists && isRequestEnabled && (
+            {!isLoading && !isRequestEnabled && (
               <Text color="hint" textAlign="center">
-                Cannot find Engraver for these filters
-                <br />
-                Try to change them
+                Select dates range to see Engraver #{engraverId} Work Time
+                Analytics
               </Text>
             )}
 
             {/* Analytics */}
             {!isLoading && isAnalyticsExists && isRequestEnabled && (
-              <EngraverWorkTimeTable workTimeAnalytics={workTimeAnalytics} />
+              <>
+                <EngraverWorkTimeTable workTimeAnalytics={workTimeAnalytics} />
+
+                <Flex w="full" direction="column" gap={2}>
+                  <Text fontWeight="medium">
+                    Total Work Time: {totalWorkTimeText}
+                  </Text>
+
+                  <Text fontWeight="medium">
+                    Current Salary: {numberWithCurrency(salary)}
+                  </Text>
+
+                  <Text fontWeight="semibold">
+                    Total Salary: {numberWithCurrency(roundNumber(totalSalary))}
+                  </Text>
+                </Flex>
+              </>
             )}
           </Flex>
         </ModalBody>
