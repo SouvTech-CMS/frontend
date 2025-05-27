@@ -105,7 +105,7 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
             {/* Hint */}
             {!isLoading && !isRequestEnabled && (
               <Text color="hint" textAlign="center">
-                Select dates range and to see Engravers productivity analytics
+                Select dates range to see Engravers productivity analytics
               </Text>
             )}
 

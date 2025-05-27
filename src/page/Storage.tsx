@@ -108,13 +108,15 @@ export const Storage = (props: PageProps) => {
       <Container mt={5} gap={3}>
         {/* Filters */}
         <Flex w="full" direction="row" justifyContent="space-between">
-          {canEditStorage && <NewStorageGoodBtn />}
+          <Flex w="fit-content" direction="row" alignItems="center" gap={5}>
+            {canEditStorage && <NewStorageGoodBtn />}
 
-          <StorageGoodsFilters
-            handleShopSelect={handleShopSelect}
-            isActual={isActual}
-            toggleIsActual={toggleIsActual}
-          />
+            <StorageGoodsFilters
+              handleShopSelect={handleShopSelect}
+              isActual={isActual}
+              toggleIsActual={toggleIsActual}
+            />
+          </Flex>
 
           <Flex direction="row" alignItems="center" gap={2}>
             <SearchFiltersClearBtn isLoading={isLoading || isRefetching} />
