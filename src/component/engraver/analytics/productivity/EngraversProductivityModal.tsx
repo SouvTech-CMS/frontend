@@ -8,65 +8,68 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react"
-import { getEngraverWorkTimeAnalytics } from "api/analytics/engraver"
-import { EngraverWorkTimeTable } from "component/engraver/analytics/workTime/EngraverWorkTimeTable"
+import { getEngraversProductivityAnalytics } from "api/analytics/engraver"
+import { EngraversProductivityTable } from "component/engraver/analytics/productivity/EngraversProductivityTable"
 import { DatesFilter } from "component/filter/DatesFilter"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { LoadingPage } from "component/page/LoadingPage"
+import { ShopsSelect } from "component/select/ShopsSelect"
 import { useTableContext } from "context/table"
-import { FC, useEffect } from "react"
+import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
-import { EngraverWorkTimeAnalyticsResponse } from "type/analytics/engraver"
-import { Engraver } from "type/engraver/engraver"
+import { EngraverProductivityAnalyticsResponse } from "type/analytics/engraver"
 import { ModalProps } from "type/modalProps"
 import { OrderSearchFilter } from "type/order/order"
-import { WithId } from "type/withId"
 
-interface EngraverWorkTimeModalProps extends ModalProps {
-  engraver: WithId<Engraver>
+interface EngraversProductivityModalProps extends ModalProps {
+  engraverId: number
 }
 
-export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
+export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
   props,
 ) => {
-  const { engraver, isOpen, onClose } = props
+  const { engraverId, isOpen, onClose } = props
 
   const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
 
-  const engraverId = engraver.id
+  const [shopsIds, setShopsIds] = useState<number[]>()
+  const prevEngraversList = [engraverId]
+  const [engraversIds, setEngraversIds] = useState<number[]>(prevEngraversList)
 
   const startDate = searchFilter?.start_date
   const endDate = searchFilter?.end_date
 
-  const isRequestEnabled = !!startDate && !!endDate && !!engraverId
+  const isRequestEnabled = !!startDate && !!endDate && !!engraversIds
 
   const {
-    data: workTimeAnalytics,
+    data: productivityAnalytics,
     isLoading,
     refetch,
-  } = useQuery<EngraverWorkTimeAnalyticsResponse>(
-    ["workTimeAnalytics", engraverId],
+  } = useQuery<EngraverProductivityAnalyticsResponse>(
+    "productivityAnalytics",
     () =>
-      getEngraverWorkTimeAnalytics({
-        engraver_id: engraverId,
+      getEngraversProductivityAnalytics({
+        shops: shopsIds,
         start_date: startDate,
         end_date: endDate,
+        engravers_ids: engraversIds,
       }),
     {
       enabled: !!isRequestEnabled,
     },
   )
-  const isAnalyticsExists = !!workTimeAnalytics && workTimeAnalytics.length > 0
+  const isAnalyticsExists = !!productivityAnalytics
 
   // Analytics refetching
   useEffect(() => {
     if (isRequestEnabled) {
       refetch()
     }
-  }, [refetch, isRequestEnabled])
+  }, [refetch, isRequestEnabled, shopsIds, engraversIds])
 
-  // Dates Clearing
+  // Clear states
   useEffect(() => {
+    // Dates Clearing
     setSearchFilter(
       (prevSearchFilter) =>
         ({
@@ -75,6 +78,9 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
           end_date: undefined,
         }) as OrderSearchFilter,
     )
+
+    // Update Engravers IDs
+    setEngraversIds(prevEngraversList)
   }, [isOpen])
 
   return (
@@ -82,30 +88,34 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>Engraver #{engraverId} Work Time</ModalHeader>
+        <ModalHeader>Engravers Productivity Analytics</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <Flex w="full" direction="column" gap={5}>
             {/* Filters */}
             <Flex w="full" direction="column" gap={2}>
+              <ShopsSelect selectedShopsIds={shopsIds} onSelect={setShopsIds} />
+
               <DatesFilter />
             </Flex>
 
             {isLoading && <LoadingPage />}
 
             {/* Hint */}
-            {!isLoading && !isAnalyticsExists && isRequestEnabled && (
+            {!isLoading && !isRequestEnabled && (
               <Text color="hint" textAlign="center">
-                Cannot find Engraver for these filters
-                <br />
-                Try to change them
+                Select dates range and to see Engravers productivity analytics
               </Text>
             )}
 
             {/* Analytics */}
             {!isLoading && isAnalyticsExists && isRequestEnabled && (
-              <EngraverWorkTimeTable workTimeAnalytics={workTimeAnalytics} />
+              <EngraversProductivityTable
+                productivityAnalytics={productivityAnalytics}
+                selectedEngraversIds={engraversIds}
+                setEngraversIds={setEngraversIds}
+              />
             )}
           </Flex>
         </ModalBody>

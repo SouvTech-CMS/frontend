@@ -14,10 +14,12 @@ import {
   FiFileText,
   FiMoreVertical,
   FiTrash2,
+  FiTrendingUp,
 } from "react-icons/fi"
 
 interface EngraverCardMenuProps {
   onWorkTimeAnalytics: () => void
+  onProductivityAnalytics: () => void
   onDocuments: () => void
   onEdit: () => void
   onBlock: () => void
@@ -25,8 +27,14 @@ interface EngraverCardMenuProps {
 }
 
 export const EngraverCardMenu: FC<EngraverCardMenuProps> = (props) => {
-  const { onWorkTimeAnalytics, onDocuments, onEdit, onBlock, wasBlocked } =
-    props
+  const {
+    onWorkTimeAnalytics,
+    onProductivityAnalytics,
+    onDocuments,
+    onEdit,
+    onBlock,
+    wasBlocked,
+  } = props
 
   const { canEditEngravers, canReadEngraversDocuments } = useUserPermissions()
 
@@ -43,6 +51,10 @@ export const EngraverCardMenu: FC<EngraverCardMenuProps> = (props) => {
         <MenuList>
           <MenuItem icon={<FiClock />} onClick={onWorkTimeAnalytics}>
             Work Time Analytics
+          </MenuItem>
+
+          <MenuItem icon={<FiTrendingUp />} onClick={onProductivityAnalytics}>
+            Productivity Analytics
           </MenuItem>
 
           <MenuItem

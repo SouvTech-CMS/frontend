@@ -1,4 +1,8 @@
-import { formatDuration, intervalToDuration } from "date-fns"
+import {
+  formatDuration,
+  FormatDurationOptions,
+  intervalToDuration,
+} from "date-fns"
 
 export const timeStrToDateWithCurrentTimezone = (timeString?: string) => {
   if (!timeString) {
@@ -189,7 +193,10 @@ export const formatTimeFromDate = (
   return formatedTime
 }
 
-export const durationFromSeconds = (seconds?: number) => {
+export const durationFromSeconds = (
+  seconds?: number,
+  format: FormatDurationOptions["format"] = ["hours", "minutes"],
+) => {
   if (!seconds) {
     return
   }
@@ -200,7 +207,7 @@ export const durationFromSeconds = (seconds?: number) => {
       end: seconds * 1000,
     }),
     {
-      format: ["hours", "minutes"],
+      format: format,
     },
   )
 

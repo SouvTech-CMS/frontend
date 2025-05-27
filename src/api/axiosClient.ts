@@ -29,7 +29,6 @@ axiosClient.interceptors.response.use(
       console.error(responseData.detail)
     }
 
-    // TODO: check if this create bugs with engraver or other
     if (error.response?.status === 401) {
       clearUserToken()
     }
