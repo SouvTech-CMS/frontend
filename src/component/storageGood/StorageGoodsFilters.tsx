@@ -1,7 +1,6 @@
 import { Checkbox, Flex } from "@chakra-ui/react"
 import { ActionMeta, SingleValue } from "chakra-react-select"
 import { ShopFilter } from "component/filter/ShopFilter"
-import { NewStorageGoodBtn } from "component/storageGood/NewStorageGoodBtn"
 import { FC } from "react"
 import { SelectOption } from "type/selectOption"
 
@@ -19,8 +18,6 @@ export const StorageGoodsFilters: FC<StorageGoodsFiltersProps> = (props) => {
 
   return (
     <Flex justifyContent="flex-start" alignItems="center" gap={5}>
-      <NewStorageGoodBtn />
-
       <ShopFilter handleShopSelect={handleShopSelect} />
 
       {/* Show-Hide Goods Checkbox */}

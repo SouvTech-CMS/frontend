@@ -61,6 +61,10 @@ type Route = {
   name: string
   path: string
   component?: JSX.Element
+  //! If 'permissions' param not set (undefined) to route
+  //! it available to everybody
+  //* If 'permissions' param set as empty list
+  //* it available only for Admin
   permissions?: Permission[]
   isDisabled?: boolean
 }

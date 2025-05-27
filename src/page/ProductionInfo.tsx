@@ -14,6 +14,7 @@ import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { useEffect } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
@@ -24,6 +25,8 @@ import { WithId } from "type/withId"
 
 export const ProductionInfo = (props: PageProps) => {
   const { guideNotionPageId } = props
+
+  const { canEditProductionInfo } = useUserPermissions()
 
   const { currentPage, setCurrentPage, offset, setOffset } = usePagination()
   const { rowsPerPageCount } = usePaginationContext()
@@ -80,7 +83,7 @@ export const ProductionInfo = (props: PageProps) => {
         <Container>
           <Flex w="full" justifyContent="space-between">
             <Flex alignItems="center" gap={5}>
-              <NewProductionInfoBtn />
+              {canEditProductionInfo && <NewProductionInfoBtn />}
 
               <ShopFilter handleShopSelect={handleShopSelect} />
             </Flex>

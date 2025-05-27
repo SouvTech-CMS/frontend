@@ -2,6 +2,7 @@ import { LoadingPage } from "component/page/LoadingPage"
 import { Permission } from "constant/permissions"
 import { useUserContext } from "context/user"
 import { Navigate } from "react-router-dom"
+import { isUserHasPermissions } from "util/permission"
 
 export const withAuthAndPermission =
   (allowedPermissions?: Permission[]) => (WrappedComponent: JSX.Element) => {
@@ -15,13 +16,9 @@ export const withAuthAndPermission =
 
       const isAllowedPermissionsExist = allowedPermissions !== undefined
 
-      const isUserHasPermission = isAllowedPermissionsExist
-        ? allowedPermissions?.every((permission) =>
-            userPermissions?.includes(permission),
-          )
+      const isUserHasAccess = isAllowedPermissionsExist
+        ? isUserHasPermissions(allowedPermissions, userPermissions, isUserAdmin)
         : true
-
-      const isUserHasAccess = isUserAdmin || isUserHasPermission
 
       if (!isUserHasAccess) {
         return <Navigate to="/noaccess" />

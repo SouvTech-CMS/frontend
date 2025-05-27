@@ -11,6 +11,7 @@ import { FullStorageTotalAmountLabel } from "component/storage/FullStorageTotalA
 import { BulkStorageGoodsCard } from "component/storageGood/analytics/bulk/BulkStorageGoodsCard"
 import { PopularityAnalyticsCard } from "component/storageGood/analytics/popularity/PopularityAnalyticsCard"
 import { QuantityColorAnalyticsCard } from "component/storageGood/analytics/quantity_color/QuantityColorsAnalyticsCard"
+import { NewStorageGoodBtn } from "component/storageGood/NewStorageGoodBtn"
 import { QuantityColorsModalBtn } from "component/storageGood/quantityColor/QuantityColorsModalBtn"
 import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
@@ -19,6 +20,7 @@ import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
@@ -31,6 +33,8 @@ import { WithId } from "type/withId"
 
 export const Storage = (props: PageProps) => {
   const { guideNotionPageId } = props
+
+  const { canEditStorage } = useUserPermissions()
 
   const { currentPage, setCurrentPage, resetCurrentPage, offset, setOffset } =
     usePagination()
@@ -104,6 +108,8 @@ export const Storage = (props: PageProps) => {
       <Container mt={5} gap={3}>
         {/* Filters */}
         <Flex w="full" direction="row" justifyContent="space-between">
+          {canEditStorage && <NewStorageGoodBtn />}
+
           <StorageGoodsFilters
             handleShopSelect={handleShopSelect}
             isActual={isActual}
@@ -129,13 +135,16 @@ export const Storage = (props: PageProps) => {
           {/* Storage Total Amount */}
           <FullStorageTotalAmountLabel />
 
-          <Flex direction="row" alignItems="center" gap={2}>
-            {/* Defect or Error */}
-            <ChooseDefectOrErrorBtn />
+          {/* Workshop Admin Btns */}
+          {canEditStorage && (
+            <Flex direction="row" alignItems="center" gap={2}>
+              {/* Defect or Error */}
+              <ChooseDefectOrErrorBtn />
 
-            {/* Quantity Colors */}
-            <QuantityColorsModalBtn />
-          </Flex>
+              {/* Quantity Colors */}
+              <QuantityColorsModalBtn />
+            </Flex>
+          )}
         </Flex>
 
         {!isStorageGoodsExist && isLoading && <LoadingPage />}

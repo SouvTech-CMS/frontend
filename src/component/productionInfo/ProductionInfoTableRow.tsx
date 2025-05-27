@@ -137,6 +137,7 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
 
       <ProductionInfoModal
         good={good}
+        accessibleColumns={accessibleParamColumns}
         prevProductionInfo={productionInfo}
         isOpen={isProductionInfoUpdateModalOpen}
         onClose={onProductionInfoUpdateModalClose}
