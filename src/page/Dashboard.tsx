@@ -36,7 +36,7 @@ ChartJS.register(
 export const Dashboard = () => {
   const { isUserAdmin, isUserManager } = useUserContext()
 
-  if (!isUserAdmin || !isUserManager) {
+  if (!isUserAdmin && !isUserManager) {
     return <></>
   }
 
