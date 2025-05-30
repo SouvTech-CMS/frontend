@@ -13,7 +13,7 @@ import { DatesFilter } from "component/filter/DatesFilter"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { LoadingPage } from "component/page/LoadingPage"
 import { ShopsSelect } from "component/select/ShopsSelect"
-import { StorageGoodPopularityCard } from "component/storageGood/analytics/StorageGoodPopularityCard"
+import { StorageGoodPopularityCard } from "component/storageGood/analytics/popularity/StorageGoodPopularityCard"
 import { useTableContext } from "context/table"
 import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
@@ -26,7 +26,7 @@ interface PopularityModalProps extends ModalProps {}
 export const PopularityModal: FC<PopularityModalProps> = (props) => {
   const { isOpen, onClose } = props
 
-  const { searchFilter } = useTableContext<OrderSearchFilter>()
+  const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
 
   const [shopsIds, setShopsIds] = useState<number[]>()
 
@@ -58,6 +58,18 @@ export const PopularityModal: FC<PopularityModalProps> = (props) => {
     }
   }, [refetch, startDate, endDate, shopsIds])
 
+  useEffect(() => {
+    setShopsIds(undefined)
+    setSearchFilter(
+      (prevFilters) =>
+        ({
+          ...prevFilters,
+          start_date: undefined,
+          end_date: undefined,
+        }) as OrderSearchFilter,
+    )
+  }, [isOpen])
+
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalBackgroundBlur />
@@ -79,7 +91,9 @@ export const PopularityModal: FC<PopularityModalProps> = (props) => {
 
             {!isStorageGoodsPopularityExist && !isLoading && (
               <Flex w="full" justifyContent="center" alignItems="center" py={5}>
-                <Text color="hint">Select dates range to see analytics</Text>
+                <Text color="hint" textAlign="center">
+                  Select dates range to see analytics
+                </Text>
               </Flex>
             )}
 

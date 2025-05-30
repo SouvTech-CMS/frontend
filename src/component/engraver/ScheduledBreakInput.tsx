@@ -8,7 +8,7 @@ import {
   useState,
 } from "react"
 import { ScheduledBreak } from "type/engraver/scheduledBreak"
-import { getShortTime } from "util/formatting"
+import { formatTime, timeStrToDateWithCurrentTimezone } from "util/formatting"
 
 interface ScheduledBreakInputProps {
   prevScheduledBreak: ScheduledBreak
@@ -22,13 +22,17 @@ export const ScheduledBreakInput: FC<ScheduledBreakInputProps> = (props) => {
   const [scheduledBreak, setScheduledBreak] =
     useState<ScheduledBreak>(prevScheduledBreak)
 
-  const isStartedAtInvalid = !scheduledBreak.started_at
-  const isFinishedAtInvalid = !scheduledBreak.finished_at
+  const startedAt = scheduledBreak.started_at
+  const finishedAt = scheduledBreak.finished_at
 
-  const handleChange = (
-    param: keyof ScheduledBreak,
-    value: number | string,
-  ) => {
+  const isStartedAtInvalid = !startedAt
+  const isFinishedAtInvalid = !finishedAt
+
+  const handleChange = (param: keyof ScheduledBreak, timeStr: string) => {
+    const date = timeStrToDateWithCurrentTimezone(timeStr)
+    const dateISO = date?.toISOString()
+    const value = dateISO?.split("T")[1]
+
     setScheduledBreak((prevBreak) => ({
       ...prevBreak,
       [param]: value,
@@ -81,7 +85,7 @@ export const ScheduledBreakInput: FC<ScheduledBreakInputProps> = (props) => {
       <InputGroup>
         <Input
           placeholder="Set start time"
-          value={getShortTime(scheduledBreak.started_at)}
+          value={formatTime(startedAt, false)}
           type="time"
           onChange={(e) => {
             const value = e.target.value
@@ -96,7 +100,7 @@ export const ScheduledBreakInput: FC<ScheduledBreakInputProps> = (props) => {
       <InputGroup>
         <Input
           placeholder="Set end time"
-          value={getShortTime(scheduledBreak.finished_at)}
+          value={formatTime(finishedAt, false)}
           type="time"
           onChange={(e) => {
             const value = e.target.value

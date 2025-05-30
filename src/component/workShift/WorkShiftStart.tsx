@@ -29,7 +29,7 @@ export const WorkShiftStart: FC = () => {
 
   const handleWorkShiftCreate = async () => {
     if (!engraverId) {
-      notify("Cannot start work shift", "error")
+      notify("Cannot start work shift, you're not engraver", "error")
       return
     }
 

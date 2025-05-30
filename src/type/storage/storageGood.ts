@@ -46,9 +46,18 @@ export type StorageGoodWithProductionInfo = StorageGood & {
   production_info: ProductionInfo
 }
 
+export type StorageGoodForProcessing = StorageGood & {
+  production_info: ProductionInfo
+  shelf?: ShelfWithPlacement[]
+}
+
 export type StorageGoodInGood = {
   storage_good_id: number
   good_id: number
   in_good_quantity: number
-  storage_good: StorageGoodWithProductionInfo
+  storage_good: StorageGoodForProcessing
+}
+
+export type StorageGoodWithQuantityColor = StorageGood & {
+  quantity_color?: WithId<QuantityColor>
 }

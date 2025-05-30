@@ -15,6 +15,7 @@ import { WithId } from "type/withId"
 interface EngraverSelectProps {
   selectedId?: number
   onSelect: (selectedId: number) => void
+  excludedIds?: number[]
   isRequired?: boolean
   isDisabled?: boolean
 }
@@ -31,7 +32,7 @@ const selectStyles: ChakraStylesConfig<
 }
 
 export const EngraverSelect: FC<EngraverSelectProps> = (props) => {
-  const { selectedId, onSelect, isRequired, isDisabled } = props
+  const { selectedId, onSelect, excludedIds, isRequired, isDisabled } = props
 
   const { data: engraversList, isLoading: isEngraversListLoading } = useQuery<
     WithId<Engraver>[]
@@ -46,7 +47,11 @@ export const EngraverSelect: FC<EngraverSelectProps> = (props) => {
     onSelect(engraverId)
   }
 
-  const selectedEngraver = engraversList?.find(
+  const filteredEngraversList = engraversList?.filter(
+    (engraver) => !excludedIds?.includes(engraver.id),
+  )
+
+  const selectedEngraver = filteredEngraversList?.find(
     (engraver) => engraver.id === selectedId,
   )
   const isSelectedEngraverExists = !!selectedEngraver
@@ -59,7 +64,7 @@ export const EngraverSelect: FC<EngraverSelectProps> = (props) => {
     <Select<SelectOption, false, GroupBase<SelectOption>>
       chakraStyles={selectStyles}
       placeholder="Select engraver"
-      options={engraversList?.map((engraver) => ({
+      options={filteredEngraversList?.map((engraver) => ({
         value: engraver.id,
         label: engraver.user.fio,
       }))}

@@ -1,11 +1,9 @@
 import { Button, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { Container } from "component/Container"
-import { PopularityModal } from "component/storageGood/analytics/PopularityModal"
-import { TableContextProvider } from "context/table"
+import { QuantityColorsAnalyticsModal } from "component/storageGood/analytics/quantity_color/QuantityColorsAnalyticsModal"
 import { FC } from "react"
-import { OrderSearchFilter } from "type/order/order"
 
-export const PopularityAnalyticsCard: FC = () => {
+export const QuantityColorAnalyticsCard: FC = () => {
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,
@@ -14,13 +12,13 @@ export const PopularityAnalyticsCard: FC = () => {
 
   return (
     <>
-      <Container w="fit-content" maxW="25%" p={4} gap={2}>
+      <Container w="full" alignSelf="stretch" p={4} gap={2}>
         {/* Heading */}
-        <Heading size="md">Popularity</Heading>
+        <Heading size="md">Quantity Colors Analytics</Heading>
 
         {/* Description */}
         <Text color="hint">
-          Analytics of the most popular storage goods based on sales.
+          List of Storage Goods grouped by Quantity Colors to analyze quantities
         </Text>
 
         {/* Modal Btn */}
@@ -29,14 +27,16 @@ export const PopularityAnalyticsCard: FC = () => {
           variant="ghost"
           colorScheme="blue"
           onClick={onModalOpen}
+          mt="auto"
         >
           View
         </Button>
       </Container>
 
-      <TableContextProvider<OrderSearchFilter>>
-        <PopularityModal isOpen={isModalOpen} onClose={onModalClose} />
-      </TableContextProvider>
+      <QuantityColorsAnalyticsModal
+        isOpen={isModalOpen}
+        onClose={onModalClose}
+      />
     </>
   )
 }

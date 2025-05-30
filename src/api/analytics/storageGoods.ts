@@ -1,5 +1,7 @@
 import { axiosClient } from "api/axiosClient"
 import {
+  BulkStorageGoodsRequest,
+  BulkStorageGoodsResponse,
   StorageGoodAnalyticsRequest,
   StorageGoodAnalyticsResponse,
   StorageGoodPopularity,
@@ -14,6 +16,16 @@ export const getStorageGoodsPopularity = async (
     body,
   )
   return storageGoodsPopularity
+}
+
+export const getBulkStorageGoods = async (
+  body: BulkStorageGoodsRequest,
+): Promise<BulkStorageGoodsResponse> => {
+  const { data: bulkStorageGoods } = await axiosClient.post(
+    "/analytics/storage/goods/bulk",
+    body,
+  )
+  return bulkStorageGoods
 }
 
 export const getStorageGoodAnalyticsById = async (

@@ -376,6 +376,11 @@ export const UserModal: FC<UserModalProps> = (props) => {
                 >
                   <Flex direction={"column"}>
                     {rolesList?.map((role) => {
+                      // ! Skip engraver role
+                      if (role.name === "engraver") {
+                        return <></>
+                      }
+
                       const isAdminRoleCheckboxDisabled =
                         isUserIsCurrent &&
                         role.name.toLowerCase() === ADMIN_ROLE.toLowerCase()

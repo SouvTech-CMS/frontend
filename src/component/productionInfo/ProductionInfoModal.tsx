@@ -22,19 +22,23 @@ import {
   ProductionInfo,
 } from "type/productionInfo/productionInfo"
 import { StorageGood } from "type/storage/storageGood"
+import { TableColumn } from "type/tableColumn"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
 interface ProductionInfoModalProps extends ModalProps {
   good: WithId<StorageGood>
   prevProductionInfo?: ProductionInfo
+  accessibleColumns: (TableColumn | null)[]
 }
 
 export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
-  const { good, prevProductionInfo, isOpen, onClose } = props
+  const { good, prevProductionInfo, accessibleColumns, isOpen, onClose } = props
 
   const goodId = good.id
   const isNewProductionInfo = !prevProductionInfo
+
+  const accessibleParams = accessibleColumns.map((column) => column?.param)
 
   const [productionInfo, setProductionInfo] = useState<
     ProductionInfo | undefined
@@ -64,6 +68,11 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
     onClose()
   }
 
+  const isFieldAvailable = (paramName: keyof ProductionInfo) => {
+    const isAvailable = accessibleParams.includes(paramName)
+    return isAvailable
+  }
+
   useEffect(() => {
     if (isNewProductionInfo) {
       setProductionInfo(undefined)
@@ -73,7 +82,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
   }, [isOpen, isNewProductionInfo, prevProductionInfo])
 
   return (
-    <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
+    <Modal size="2xl" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalBackgroundBlur />
 
       <ModalContent>
@@ -99,147 +108,160 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
 
             <Grid templateColumns="repeat(2, 1fr)" gap={5}>
               {/* Power */}
-              <ProductionInfoModalInput
-                placeholder="Power"
-                value={productionInfo?.power}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("power", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("power") && (
+                <ProductionInfoModalInput
+                  placeholder="Power"
+                  value={productionInfo?.power}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("power", value)
+                  }}
+                />
+              )}
 
               {/* Speed */}
-              <ProductionInfoModalInput
-                placeholder="Speed"
-                value={productionInfo?.speed}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("speed", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("speed") && (
+                <ProductionInfoModalInput
+                  placeholder="Speed"
+                  value={productionInfo?.speed}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("speed", value)
+                  }}
+                />
+              )}
 
               {/* Penetration Step */}
-              <ProductionInfoModalInput
-                placeholder="Penetration Step"
-                value={productionInfo?.penetration_step}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("penetration_step", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("penetration_step") && (
+                <ProductionInfoModalInput
+                  placeholder="Penetration Step"
+                  value={productionInfo?.penetration_step}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("penetration_step", value)
+                  }}
+                />
+              )}
 
               {/* Engraving Width Max */}
-              <ProductionInfoModalInput
-                placeholder="Engraving Width Max"
-                value={productionInfo?.engraving_width_max}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("engraving_width_max", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("engraving_width_max") && (
+                <ProductionInfoModalInput
+                  placeholder="Engraving Width Max"
+                  value={productionInfo?.engraving_width_max}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("engraving_width_max", value)
+                  }}
+                />
+              )}
 
               {/* Engraving Height Max */}
-              <ProductionInfoModalInput
-                placeholder="Engraving Height Max"
-                value={productionInfo?.engraving_height_max}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("engraving_height_max", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("engraving_height_max") && (
+                <ProductionInfoModalInput
+                  placeholder="Engraving Height Max"
+                  value={productionInfo?.engraving_height_max}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("engraving_height_max", value)
+                  }}
+                />
+              )}
 
               {/* Length Inch */}
-              <ProductionInfoModalInput
-                placeholder="Length Inch"
-                value={productionInfo?.length_inch}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("length_inch", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("length_inch") && (
+                <ProductionInfoModalInput
+                  placeholder="Length Inch"
+                  value={productionInfo?.length_inch}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("length_inch", value)
+                  }}
+                />
+              )}
 
               {/* Width Inch */}
-              <ProductionInfoModalInput
-                placeholder="Width Inch"
-                value={productionInfo?.width_inch}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("width_inch", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("width_inch") && (
+                <ProductionInfoModalInput
+                  placeholder="Width Inch"
+                  value={productionInfo?.width_inch}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("width_inch", value)
+                  }}
+                />
+              )}
 
               {/* Thickness Inch */}
-              <ProductionInfoModalInput
-                placeholder="Thickness Inch"
-                value={productionInfo?.thickness_inch}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("thickness_inch", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("thickness_inch") && (
+                <ProductionInfoModalInput
+                  placeholder="Thickness Inch"
+                  value={productionInfo?.thickness_inch}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("thickness_inch", value)
+                  }}
+                />
+              )}
 
               {/* Package Size Max */}
-              <ProductionInfoModalInput
-                placeholder="Package Size Max"
-                value={productionInfo?.package_size_max}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("package_size_max", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("package_size_max") && (
+                <ProductionInfoModalInput
+                  placeholder="Package Size Max"
+                  value={productionInfo?.package_size_max}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("package_size_max", value)
+                  }}
+                />
+              )}
 
               {/* Weight Oz */}
-              <ProductionInfoModalInput
-                placeholder="Weight Oz"
-                value={productionInfo?.weight_oz}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("weight_oz", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("weight_oz") && (
+                <ProductionInfoModalInput
+                  placeholder="Weight Oz"
+                  value={productionInfo?.weight_oz}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("weight_oz", value)
+                  }}
+                />
+              )}
 
               {/* Production Time */}
-              <ProductionInfoModalInput
-                placeholder="Production Time"
-                value={productionInfo?.production_time}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("production_time", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("production_time") && (
+                <ProductionInfoModalInput
+                  placeholder="Production Time"
+                  value={productionInfo?.production_time}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("production_time", value)
+                  }}
+                />
+              )}
 
               {/* Cost Of Good */}
-              <ProductionInfoModalInput
-                placeholder="Cost Of Good"
-                value={productionInfo?.cost_of_good}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("cost_of_good", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("cost_of_good") && (
+                <ProductionInfoModalInput
+                  placeholder="Cost Of Good"
+                  value={productionInfo?.cost_of_good}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("cost_of_good", value)
+                  }}
+                />
+              )}
 
               {/* Competitive Price */}
-              <ProductionInfoModalInput
-                placeholder="Competitive Price"
-                value={productionInfo?.competitive_price}
-                onChange={(e) => {
-                  const value = e.target.value
-                  handleChange("competitive_price", value)
-                }}
-                isDisabled={false}
-              />
+              {isFieldAvailable("competitive_price") && (
+                <ProductionInfoModalInput
+                  placeholder="Competitive Price"
+                  value={productionInfo?.competitive_price}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    handleChange("competitive_price", value)
+                  }}
+                />
+              )}
             </Grid>
           </Flex>
         </ModalBody>

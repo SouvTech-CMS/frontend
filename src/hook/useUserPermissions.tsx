@@ -1,6 +1,6 @@
 import { Permission } from "constant/permissions"
 import { useUserContext } from "context/user"
-import { isUserHasPermission } from "util/permission"
+import { isUserHasPermissions } from "util/permission"
 
 const PERMISSIONS_MAP = {
   //* Reports
@@ -87,7 +87,7 @@ export const useUserPermissions = () => {
   const userPermissionsResult: UserPermission = Object.fromEntries(
     Object.entries(PERMISSIONS_MAP).map(([key, permission]) => [
       key,
-      isUserHasPermission(permission, userPermissions, isUserAdmin),
+      isUserHasPermissions([permission], userPermissions, isUserAdmin),
     ]),
   ) as UserPermission
 

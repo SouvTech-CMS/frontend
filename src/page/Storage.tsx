@@ -8,7 +8,10 @@ import { PageHeading } from "component/page/PageHeading"
 import { Pagination } from "component/page/Pagination"
 import { RowsPerPageSelect } from "component/page/RowsPerPageSelect"
 import { FullStorageTotalAmountLabel } from "component/storage/FullStorageTotalAmountLabel"
-import { PopularityAnalyticsCard } from "component/storageGood/analytics/PopularityAnalyticsCard"
+import { BulkStorageGoodsCard } from "component/storageGood/analytics/bulk/BulkStorageGoodsCard"
+import { PopularityAnalyticsCard } from "component/storageGood/analytics/popularity/PopularityAnalyticsCard"
+import { QuantityColorAnalyticsCard } from "component/storageGood/analytics/quantity_color/QuantityColorsAnalyticsCard"
+import { NewStorageGoodBtn } from "component/storageGood/NewStorageGoodBtn"
 import { QuantityColorsModalBtn } from "component/storageGood/quantityColor/QuantityColorsModalBtn"
 import { StorageGoodsFilters } from "component/storageGood/StorageGoodsFilters"
 import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
@@ -17,6 +20,7 @@ import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
 import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
@@ -29,6 +33,8 @@ import { WithId } from "type/withId"
 
 export const Storage = (props: PageProps) => {
   const { guideNotionPageId } = props
+
+  const { canEditStorage } = useUserPermissions()
 
   const { currentPage, setCurrentPage, resetCurrentPage, offset, setOffset } =
     usePagination()
@@ -93,16 +99,24 @@ export const Storage = (props: PageProps) => {
       {/* Analytics */}
       <Flex w="full" direction="row" alignItems="center" gap={5}>
         <PopularityAnalyticsCard />
+
+        <QuantityColorAnalyticsCard />
+
+        <BulkStorageGoodsCard />
       </Flex>
 
       <Container mt={5} gap={3}>
         {/* Filters */}
         <Flex w="full" direction="row" justifyContent="space-between">
-          <StorageGoodsFilters
-            handleShopSelect={handleShopSelect}
-            isActual={isActual}
-            toggleIsActual={toggleIsActual}
-          />
+          <Flex w="fit-content" direction="row" alignItems="center" gap={5}>
+            {canEditStorage && <NewStorageGoodBtn />}
+
+            <StorageGoodsFilters
+              handleShopSelect={handleShopSelect}
+              isActual={isActual}
+              toggleIsActual={toggleIsActual}
+            />
+          </Flex>
 
           <Flex direction="row" alignItems="center" gap={2}>
             <SearchFiltersClearBtn isLoading={isLoading || isRefetching} />
@@ -123,13 +137,16 @@ export const Storage = (props: PageProps) => {
           {/* Storage Total Amount */}
           <FullStorageTotalAmountLabel />
 
-          <Flex direction="row" alignItems="center" gap={2}>
-            {/* Defect or Error */}
-            <ChooseDefectOrErrorBtn />
+          {/* Workshop Admin Btns */}
+          {canEditStorage && (
+            <Flex direction="row" alignItems="center" gap={2}>
+              {/* Defect or Error */}
+              <ChooseDefectOrErrorBtn />
 
-            {/* Quantity Colors */}
-            <QuantityColorsModalBtn />
-          </Flex>
+              {/* Quantity Colors */}
+              <QuantityColorsModalBtn />
+            </Flex>
+          )}
         </Flex>
 
         {!isStorageGoodsExist && isLoading && <LoadingPage />}

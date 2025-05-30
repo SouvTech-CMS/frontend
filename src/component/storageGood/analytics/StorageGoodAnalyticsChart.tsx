@@ -54,6 +54,7 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
 
   const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
 
+  const shopId = searchFilter?.shop_id
   const startDate = searchFilter?.start_date
   const endDate = searchFilter?.end_date
 
@@ -68,6 +69,7 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
     () =>
       getStorageGoodAnalyticsById({
         storage_good_id: storageGoodId,
+        shops: !!shopId ? [shopId] : undefined,
         start_date: startDate!,
         end_date: endDate!,
       }),
@@ -77,6 +79,8 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
 
   const storageGood = storageGoodAnalytics?.storage_good
   const sku = storageGood?.uniquename
+
+  const totalCount = storageGoodAnalytics?.total_count
 
   const [bgColor, borderColor] = getColorsForItem(colors, 2)
 
@@ -95,12 +99,14 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
     ],
   }
 
+  // Refetch Analytics
   useEffect(() => {
     if (isRequestEnabled) {
       refetch()
     }
-  }, [refetch, startDate, endDate, storageGoodId])
+  }, [refetch, shopId, startDate, endDate, storageGoodId])
 
+  // Update Search Filter dates
   useEffect(
     () => {
       // Update Start Date
@@ -136,10 +142,11 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
   return (
     <ChartSection
       w="50%"
+      direction="column"
       title="Sales Analytics"
       withShopFilter
       withDatesFilter
-      gap={2}
+      gap={3}
     >
       {isLoading && <LoadingPage />}
 
@@ -149,7 +156,20 @@ export const StorageGoodAnalyticsChart: FC<StorageGoodAnalyticsChartProps> = (
         </Flex>
       )}
 
+      {/* Chart */}
       {isAnalyticsExist && !isLoading && <Line options={options} data={data} />}
+
+      {/* Total */}
+      <Flex
+        w="full"
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+      >
+        <Text fontSize="xl" fontWeight="semibold">
+          Total count: {totalCount}
+        </Text>
+      </Flex>
     </ChartSection>
   )
 }

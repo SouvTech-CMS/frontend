@@ -30,24 +30,27 @@ import { notify } from "util/toasts"
 
 interface StorageGoodQuantityColorsModalProps extends ModalProps {
   storageGood: WithId<StorageGood>
-  quantityColorList: WithId<StorageGoodQuantityColor>[]
+  prevStorageGoodQuantityColorsList: WithId<StorageGoodQuantityColor>[]
 }
 
 export const StorageGoodQuantityColorsModal: FC<
   StorageGoodQuantityColorsModalProps
 > = (props) => {
-  const { storageGood, quantityColorList, isOpen, onClose } = props
+  const { storageGood, prevStorageGoodQuantityColorsList, isOpen, onClose } =
+    props
 
   const goodId = storageGood.id
   const sku = storageGood.uniquename
   const name = storageGood.name
 
-  const prevQuantityColorList = quantityColorList.map((goodQuantityColor) => ({
-    quantity_color_id: goodQuantityColor.quantity_color_id,
-    quantity: goodQuantityColor.quantity,
-  }))
+  const prevQuantityColorsList = prevStorageGoodQuantityColorsList.map(
+    (goodQuantityColor) => ({
+      quantity_color_id: goodQuantityColor.quantity_color_id,
+      quantity: goodQuantityColor.quantity,
+    }),
+  )
   const [storageGoodQuantityColorsList, setStorageGoodQuantityColorsList] =
-    useState<QuantityColorItem[]>(prevQuantityColorList)
+    useState<QuantityColorItem[]>(prevQuantityColorsList)
 
   // * All Quantity Colors
   const { data: quantityColorsList, isLoading: isQuantityColorsLoading } =
@@ -55,6 +58,8 @@ export const StorageGoodQuantityColorsModal: FC<
       "quantityColorsList",
       getAllQuantityColors,
     )
+  const isQuantityColorsListExists =
+    !!quantityColorsList && quantityColorsList.length > 0
 
   const storageGoodQuantityColorsUpdateMutation =
     useStorageGoodQuantityColorsUpdateMutation()
@@ -63,6 +68,67 @@ export const StorageGoodQuantityColorsModal: FC<
 
   const isSaveBtnDisabled =
     isLoading || storageGoodQuantityColorsUpdateMutation.isLoading
+
+  const handleChange = (storageGoodQuantityColor: QuantityColorItem) => {
+    setStorageGoodQuantityColorsList((prevStorageGoodQuantityColorsList) => {
+      const index = prevStorageGoodQuantityColorsList.findIndex(
+        (prevStorageGoodQuantityColor) =>
+          prevStorageGoodQuantityColor.quantity_color_id ===
+          storageGoodQuantityColor.quantity_color_id,
+      )
+
+      if (index === -1) {
+        return [...prevStorageGoodQuantityColorsList, storageGoodQuantityColor]
+      } else {
+        const updatedList = [...prevStorageGoodQuantityColorsList]
+        updatedList[index] = storageGoodQuantityColor
+
+        // Find Quantity Color ("moreThan" Quantity Color)
+        // with "is_use_more_than_condition" set to true
+        // and update its quantity to max
+        if (isQuantityColorsListExists) {
+          // Find "moreThan" Quantity Color
+          const moreThanQuantityColor = quantityColorsList.find(
+            (quantityColor) => quantityColor.is_use_more_than_condition,
+          )
+          if (moreThanQuantityColor) {
+            // Get "moreThan" Item in list
+            const moreThanQuantityColorId = moreThanQuantityColor.id
+            const moreThanItemIndex = updatedList.findIndex(
+              (item) => item.quantity_color_id === moreThanQuantityColorId,
+            )
+
+            // Get max quantity in items list
+            // excluding "moreThan" item
+            const maxQuantity: number | undefined = Math.max(
+              ...updatedList
+                // Exclude "moreThan" item
+                .filter(
+                  (item) => item.quantity_color_id !== moreThanQuantityColorId,
+                )
+                // Get list of quantities
+                .map((item) => item.quantity)
+                // Filter NaN's, undefineds and others
+                .filter((quantity) => !!quantity)
+                .map(Number),
+            )
+            if (moreThanItemIndex !== -1) {
+              // Set max quantity to "moreThan" item
+              updatedList[moreThanItemIndex].quantity = maxQuantity
+            } else {
+              // Add "moreThan" item if not exists
+              updatedList.push({
+                quantity_color_id: moreThanQuantityColorId,
+                quantity: maxQuantity,
+              })
+            }
+          }
+        }
+
+        return updatedList
+      }
+    })
+  }
 
   const handleUpdate = async () => {
     const body: StorageGoodQuantityColorUpdate = {
@@ -82,7 +148,7 @@ export const StorageGoodQuantityColorsModal: FC<
 
   useEffect(
     () => {
-      setStorageGoodQuantityColorsList(prevQuantityColorList)
+      setStorageGoodQuantityColorsList(prevQuantityColorsList)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [isOpen],
@@ -120,9 +186,7 @@ export const StorageGoodQuantityColorsModal: FC<
                   storageGoodId={goodId}
                   storageGoodQuantityColorsList={storageGoodQuantityColorsList}
                   quantityColor={quantityColor}
-                  setStorageGoodQuantityColorsList={
-                    setStorageGoodQuantityColorsList
-                  }
+                  onChange={handleChange}
                   isDisabled={isLoading}
                 />
               ))}

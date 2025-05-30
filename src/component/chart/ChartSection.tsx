@@ -35,7 +35,7 @@ export const ChartSection: FCC<ChartSectionProps> = (props) => {
       </Flex>
 
       {/* Chart */}
-      <Flex w="full">{children}</Flex>
+      {children}
     </Container>
   )
 }

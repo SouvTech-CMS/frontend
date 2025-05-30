@@ -57,7 +57,7 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
             fontWeight="bold"
             defaultExpanded
           >
-            <Flex w="full" direction="column" ml={10} gap={1}>
+            <Flex w="full" direction="column" ml={10} gap={2}>
               {storage_goods?.map((storageGoodDetails, index) => (
                 <ProcessingStorageGood
                   key={index}

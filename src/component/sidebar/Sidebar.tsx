@@ -6,6 +6,7 @@ import { SidebarListItem } from "component/sidebar/SidebarListItem"
 import { configuration } from "configuration"
 import { useUserContext } from "context/user"
 import { FC, useState } from "react"
+import { isUserHasPermissions } from "util/permission"
 
 export const Sidebar: FC = () => {
   const { userPermissions, isUserAdmin, isLoadingCurrentUser } =
@@ -13,19 +14,11 @@ export const Sidebar: FC = () => {
 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false)
 
-  //! If 'permissions' param not set (undefined) to route
-  //! it available to everybody
-  //* If 'permissions' param set as empty list
-  //* it available only for Admin
   const sideBarRoutes = configuration.sidebarItems.filter(
     ({ type, component, permissions }) =>
       type === "main" &&
       component &&
-      (isUserAdmin ||
-        permissions?.some((permission) =>
-          userPermissions?.includes(permission),
-        ) ||
-        !permissions),
+      isUserHasPermissions(permissions, userPermissions, isUserAdmin),
   )
 
   const handleCollapse = () => {
