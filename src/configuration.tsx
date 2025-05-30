@@ -89,7 +89,7 @@ export const configuration = {
       icon: FiPenTool,
       name: "Engraving",
       path: "/engraving",
-      permissions: [Permission.ORDER_READ, Permission.PROCESSING_ORDER],
+      permissions: [Permission.PROCESSING_ORDER],
       // TODO: add guide page url
       component: (
         <EngravingContextProvider>
@@ -102,7 +102,7 @@ export const configuration = {
       type: "child",
       name: "Order Engraving :id",
       path: "/engraving/:id",
-      permissions: [Permission.ORDER_READ, Permission.PROCESSING_ORDER],
+      permissions: [Permission.PROCESSING_ORDER],
       // TODO: add guide page url
       component: (
         <TicketsContextProvider>
