@@ -93,8 +93,15 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
       notify(`Storage Good #${good?.name} was created successfully`, "success")
     } else {
       // Remove additional info from good
-      const { shops, storages, shelf, defects, ...updatedGood } =
-        good as FullStorageGood
+      const {
+        shops,
+        storages,
+        shelf,
+        defects,
+        quantity_color,
+        quantity_colors,
+        ...updatedGood
+      } = good as FullStorageGood
 
       const body: StorageGoodUpdate = {
         storage_good: {
