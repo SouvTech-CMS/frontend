@@ -1,6 +1,8 @@
 import {
+  Button,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
   Flex,
   Heading,
@@ -11,6 +13,7 @@ import { StorageCardMenu } from "component/storage/StorageCardMenu"
 import { StorageDeleteModal } from "component/storage/StorageDeleteModal"
 import { StorageModal } from "component/storage/StorageModal"
 import { FC } from "react"
+import { Link } from "react-router-dom"
 import { Storage } from "type/storage/storage"
 import { WithId } from "type/withId"
 import {
@@ -28,16 +31,15 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
 
   const storageId = storage.id
   const storageGoodId = storage.storage_good_id
+  const deliveryId = storage.purchase_delivery_id
 
-  const isFromDelivery = !!storage.purchase_delivery_id
+  const isFromDelivery = !!deliveryId
 
   const isCreatedAtExists = storage.created_at !== undefined
   const storageDate = timestampToDate(storage.created_at)
 
   const isPrimeCostExists = storage.prime_cost !== undefined
   const isItemPriceExists = storage.cost_per_item !== undefined
-
-  // const shelvesList = parseShelves(storage.shelf)
 
   const {
     isOpen: isStorageUpdateModalOpen,
@@ -129,6 +131,17 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
             </Flex>
           </Flex>
         </CardBody>
+
+        <CardFooter>
+          {/* Details Page Btn */}
+          {isFromDelivery && (
+            <Link to={`/delivery/${deliveryId}`} target="_blank">
+              <Button w="full" variant="ghost" colorScheme="blue">
+                View Purchase & Delivery
+              </Button>
+            </Link>
+          )}
+        </CardFooter>
       </Card>
 
       {/* Modals */}

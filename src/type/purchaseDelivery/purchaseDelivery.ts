@@ -22,6 +22,7 @@ export type PurchaseDelivery = {
 
 export type FullPurchaseDelivery = WithId<PurchaseDelivery> & {
   goods: WithId<PurchaseDeliveryGood>[]
+  services: WithId<PurchaseService>[]
   files: WithId<PurchaseFile>[]
   purchases: Omit<FullPurchase, "goods">[]
 }
