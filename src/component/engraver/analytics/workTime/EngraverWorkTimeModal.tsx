@@ -80,7 +80,7 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
     if (isRequestEnabled) {
       refetch()
     }
-  }, [refetch, isRequestEnabled])
+  }, [refetch, startDate, endDate, engraverId])
 
   // Dates Clearing
   useEffect(() => {
