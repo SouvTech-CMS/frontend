@@ -46,7 +46,7 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
     isLoading,
     refetch,
   } = useQuery<EngraverProductivityAnalyticsResponse>(
-    "productivityAnalytics",
+    ["productivityAnalytics", engraversIds],
     () =>
       getEngraversProductivityAnalytics({
         shops: shopsIds,
@@ -82,6 +82,8 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
     // Update Engravers IDs
     setEngraversIds(prevEngraversList)
   }, [isOpen])
+
+  console.log(engraversIds)
 
   return (
     <Modal size="full" isOpen={isOpen} onClose={onClose} isCentered>
