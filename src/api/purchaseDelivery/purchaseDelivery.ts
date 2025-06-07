@@ -15,6 +15,15 @@ export const getAllPurchaseDeliveries = async (): Promise<
   return deliveriesList
 }
 
+export const getDeliveryById = async (
+  deliveryId: number,
+): Promise<WithId<FullPurchaseDelivery>> => {
+  const { data: delivery } = await axiosClient.get(
+    `/purchase/delivery/id/${deliveryId}`,
+  )
+  return delivery
+}
+
 export const createPurchaseDelivery = async (
   body: PurchaseDeliveryCreate,
 ): Promise<FullPurchaseDelivery> => {
