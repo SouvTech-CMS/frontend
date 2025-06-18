@@ -50,6 +50,7 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
   const isNewGood = !prevGood
 
   const [good, setGood] = useState<StorageGood>(prevGood || newGood)
+  const prevGoodQuantity = prevGood?.quantity
 
   const prevShopsIds = prevGood?.shops?.map((shop) => shop.id)
   const [shopsIds, setShopsIds] = useState<number[]>(prevShopsIds || [])
@@ -69,9 +70,11 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
 
   const isNameInvalid = !good.name?.trim()
 
-  const isQuantityInvalid = !good.quantity
+  const isQuantityInvalid =
+    !good.quantity || (!!prevGoodQuantity && prevGoodQuantity < good.quantity)
 
-  const isSaveBtnDisabled = isLoading || isUniqueNameInvalid || isNameInvalid
+  const isSaveBtnDisabled =
+    isLoading || isUniqueNameInvalid || isNameInvalid || isQuantityInvalid
 
   const handleStorageGoodChange = (param: string, value: number | string) => {
     setGood((prevGood) => ({
