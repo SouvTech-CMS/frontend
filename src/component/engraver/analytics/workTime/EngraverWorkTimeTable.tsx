@@ -9,8 +9,9 @@ interface EngraverWorkTimeTableProps {
 
 const COLUMNS_NAMES = [
   "Work Shift ID",
-  "Work Shift Start",
-  "Work Shift End",
+  "Date",
+  "Start Time",
+  "End Time",
   "Work Breaks",
   "Scheduled Breaks",
   "Total Work Time",
@@ -28,7 +29,9 @@ export const EngraverWorkTimeTable: FC<EngraverWorkTimeTableProps> = (
       <Thead>
         <Tr>
           {COLUMNS_NAMES.map((column, index) => (
-            <Th key={index}>{column}</Th>
+            <Th key={index} whiteSpace="break-spaces">
+              {column}
+            </Th>
           ))}
         </Tr>
       </Thead>
