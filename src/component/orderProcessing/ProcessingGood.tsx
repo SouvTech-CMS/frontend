@@ -81,13 +81,13 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
                 key={index}
                 w="full"
                 direction="row"
-                alignItems="center"
+                alignItems="flex-start"
                 flexWrap="wrap"
                 gap={2}
               >
                 <Text fontWeight="bold">{key}:</Text>
 
-                <Text>{value}</Text>
+                <Text whiteSpace="pre-wrap">{value}</Text>
               </Flex>
             </Flex>
           ))}
