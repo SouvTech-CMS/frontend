@@ -83,8 +83,6 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
     setEngraversIds(prevEngraversList)
   }, [isOpen])
 
-  console.log(engraversIds)
-
   return (
     <Modal size="full" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalBackgroundBlur />

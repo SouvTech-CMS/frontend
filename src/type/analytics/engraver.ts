@@ -9,6 +9,7 @@ export type EngraverWorkTimeAnalyticsRequestBody = {
   start_date?: string
   end_date?: string
   engraver_id: number
+  timezone: string
 }
 
 export type EngraverWorkTimeAnalyticsItem = WithId<WorkShiftWithBreaks> & {

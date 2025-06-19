@@ -21,6 +21,7 @@ import { Engraver } from "type/engraver/engraver"
 import { ModalProps } from "type/modalProps"
 import { OrderSearchFilter } from "type/order/order"
 import { WithId } from "type/withId"
+import { getUserTimezone } from "util/dates"
 import {
   durationFromSeconds,
   numberWithCurrency,
@@ -47,6 +48,8 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
 
   const isRequestEnabled = !!startDate && !!endDate && !!engraverId
 
+  const userTimezone = getUserTimezone()
+
   const {
     data: workTimeAnalytics,
     isLoading,
@@ -58,6 +61,7 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
         engraver_id: engraverId,
         start_date: startDate,
         end_date: endDate,
+        timezone: userTimezone,
       }),
     {
       enabled: !!isRequestEnabled,
