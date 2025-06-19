@@ -2,6 +2,7 @@ import { PurchaseFile } from "type/purchase/purchaseFile"
 import { PurchaseGood } from "type/purchase/purchaseGood"
 import { PurchaseManager } from "type/purchase/purchaseManager"
 import { PurchaseService } from "type/purchase/purchaseService"
+import { FullPurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
 
 import { WithId } from "type/withId"
 
@@ -17,8 +18,13 @@ export type Purchase = {
 
 export type FullPurchase = WithId<Purchase> & {
   goods: WithId<PurchaseGood>[]
+  services: WithId<PurchaseService>[]
   manager?: WithId<PurchaseManager>
   files: WithId<PurchaseFile>[]
+}
+
+export type FullPurchaseWithDeliveries = FullPurchase & {
+  deliveries: WithId<FullPurchaseDelivery>[]
 }
 
 export type PurchaseWithManager = Purchase & { supplier_manager_id?: number }
