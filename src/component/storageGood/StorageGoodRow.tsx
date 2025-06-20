@@ -28,7 +28,7 @@ import { notify } from "util/toasts"
 
 interface StorageGoodRowProps {
   storageGood: WithId<FullStorageGood>
-  selectedShopId: number
+  selectedShopId?: number
 }
 
 export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
@@ -108,7 +108,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
   useEffect(() => {
     refetch()
-  }, [refetch, selectedShopId])
+  }, [refetch, selectedShopId, storageGood])
 
   return (
     <>

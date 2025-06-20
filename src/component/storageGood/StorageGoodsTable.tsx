@@ -8,7 +8,7 @@ import { WithId } from "type/withId"
 
 interface StorageGoodsTableProps {
   storageGoodsList: WithId<FullStorageGood>[]
-  selectedShopId: number
+  selectedShopId?: number
   resetCurrentPage?: () => void
 }
 

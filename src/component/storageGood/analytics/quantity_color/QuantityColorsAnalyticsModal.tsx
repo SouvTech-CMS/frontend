@@ -13,12 +13,13 @@ import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { LoadingPage } from "component/page/LoadingPage"
 import { QuantityColorSelect } from "component/select/QuantityColorSelect"
 import { ShopsSelect } from "component/select/ShopsSelect"
-import { StorageGoodQuantityColorCard } from "component/storageGood/analytics/quantity_color/StorageGoodQuantityColorCard"
+import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
 import { FC, useEffect, useState } from "react"
 import { useQuery } from "react-query"
 import { QuantityColorAnalyticsResponse } from "type/analytics/quantityColor"
 import { ModalProps } from "type/modalProps"
 import { QuantityColor } from "type/storage/quantityColor/quantityColor"
+import { FullStorageGood } from "type/storage/storageGood"
 import { WithId } from "type/withId"
 
 interface QuantityColorsAnalyticsModalProps extends ModalProps {}
@@ -64,7 +65,7 @@ export const QuantityColorsAnalyticsModal: FC<
   }, [isOpen])
 
   return (
-    <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal size="full" isOpen={isOpen} onClose={onClose} isCentered>
       <ModalBackgroundBlur />
 
       <ModalContent>
@@ -120,7 +121,7 @@ export const QuantityColorsAnalyticsModal: FC<
               )}
 
             {/* Storage Goods List */}
-            {isQuantityColorsAnalyticsExists &&
+            {/* {isQuantityColorsAnalyticsExists &&
               isRequestEnabled &&
               !isLoading && (
                 <Flex w="full" direction="column" gap={2}>
@@ -132,6 +133,16 @@ export const QuantityColorsAnalyticsModal: FC<
                     />
                   ))}
                 </Flex>
+              )} */}
+            {isQuantityColorsAnalyticsExists &&
+              isStorageGoodsExist &&
+              isRequestEnabled &&
+              !isLoading && (
+                <StorageGoodsTable
+                  storageGoodsList={
+                    storageGoodsList as WithId<FullStorageGood>[]
+                  }
+                />
               )}
           </Flex>
         </ModalBody>
