@@ -24,8 +24,8 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
   }
 
   const { storage_goods, ...good } = foundGood
+  const sku = good.uniquename
   const description = good.description
-  const additionalInfo = description?.split("#").slice(1).join("\n")
 
   const { engravingInfo, goodListingParams } = parseEngravingInfoStr(
     goodDetails.engraving_info,
@@ -47,11 +47,9 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
               flexWrap="wrap"
               gap={2}
             >
-              <SKUBadge sku={good.uniquename} size="lg" />
+              <SKUBadge sku={description || sku} size="lg" />
 
               <Text fontWeight="bold">{good.name}</Text>
-
-              <Text fontSize="md">{additionalInfo}</Text>
             </Flex>
           </MarketplaceGoodListingLink>
 
