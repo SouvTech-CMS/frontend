@@ -52,8 +52,9 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
 
   const {
     data: workTimeAnalytics,
-    isLoading,
+    isLoading: isWorkTimeAnalyticsLoading,
     refetch,
+    isRefetching: isWorkTimeAnalyticsRefetching,
   } = useQuery<EngraverWorkTimeAnalyticsResponse>(
     ["workTimeAnalytics", engraverId],
     () =>
@@ -68,6 +69,8 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
     },
   )
   const isAnalyticsExists = !!workTimeAnalytics && workTimeAnalytics.length > 0
+
+  const isLoading = isWorkTimeAnalyticsLoading || isWorkTimeAnalyticsRefetching
 
   const totalWorkTimeDurationInSec =
     workTimeAnalytics?.reduce(

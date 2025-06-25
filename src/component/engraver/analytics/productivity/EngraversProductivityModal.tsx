@@ -43,8 +43,9 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
 
   const {
     data: productivityAnalytics,
-    isLoading,
+    isLoading: isProductivityAnalyticsLoading,
     refetch,
+    isRefetching: isProductivityAnalyticsRefetching,
   } = useQuery<EngraverProductivityAnalyticsResponse>(
     ["productivityAnalytics", engraversIds],
     () =>
@@ -59,6 +60,9 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
     },
   )
   const isAnalyticsExists = !!productivityAnalytics
+
+  const isLoading =
+    isProductivityAnalyticsLoading || isProductivityAnalyticsRefetching
 
   // Analytics refetching
   useEffect(() => {
