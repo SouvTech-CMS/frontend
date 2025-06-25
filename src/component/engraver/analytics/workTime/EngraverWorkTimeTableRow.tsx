@@ -6,7 +6,8 @@ import { EngraverWorkTimeAnalyticsItem } from "type/analytics/engraver"
 import {
   dateAsStringToDate,
   durationFromSeconds,
-  formatDateTime,
+  formatDate,
+  formatTimeFromDate,
 } from "util/formatting"
 
 interface EngraverWorkTimeTableRowProps {
@@ -29,9 +30,19 @@ export const EngraverWorkTimeTableRow: FC<EngraverWorkTimeTableRowProps> = (
 
   return (
     <Tr>
+      {/* ID */}
       <Td>{workShiftId}</Td>
-      <Td>{formatDateTime(startedAt, true)}</Td>
-      <Td>{formatDateTime(finishedAt, true)}</Td>
+
+      {/* Date */}
+      <Td>{formatDate(startedAt)}</Td>
+
+      {/* Started At */}
+      <Td>{formatTimeFromDate(startedAt)}</Td>
+
+      {/* Finished At */}
+      <Td>{formatTimeFromDate(finishedAt)}</Td>
+
+      {/* Work Breaks */}
       <Td>
         <Flex direction="column" gap={1}>
           {workShift.work_breaks.map((workBreak, index) => (
@@ -39,6 +50,8 @@ export const EngraverWorkTimeTableRow: FC<EngraverWorkTimeTableRowProps> = (
           ))}
         </Flex>
       </Td>
+
+      {/* Scheduled Breaks */}
       <Td>
         <Flex direction="column" gap={1}>
           {scheduledBreaksList.map((scheduledBreak, index) => (

@@ -18,6 +18,7 @@ import { StorageGoodsTable } from "component/storageGood/StorageGoodsTable"
 import { ChooseDefectOrErrorBtn } from "component/storageGoodDefect/ChooseDefectOrErrorBtn"
 import { usePaginationContext } from "context/pagination"
 import { useTableContext } from "context/table"
+import { useUserContext } from "context/user"
 import { usePagination } from "hook/usePagination"
 import { useShopFilter } from "hook/useShopFilter"
 import { useUserPermissions } from "hook/useUserPermissions"
@@ -34,6 +35,7 @@ import { WithId } from "type/withId"
 export const Storage = (props: PageProps) => {
   const { guideNotionPageId } = props
 
+  const { isUserAdmin } = useUserContext()
   const { canEditStorage } = useUserPermissions()
 
   const { currentPage, setCurrentPage, resetCurrentPage, offset, setOffset } =
@@ -135,7 +137,7 @@ export const Storage = (props: PageProps) => {
           px={1}
         >
           {/* Storage Total Amount */}
-          <FullStorageTotalAmountLabel />
+          {isUserAdmin && <FullStorageTotalAmountLabel />}
 
           {/* Workshop Admin Btns */}
           {canEditStorage && (

@@ -195,7 +195,14 @@ export const formatTimeFromDate = (
 
 export const durationFromSeconds = (
   seconds?: number,
-  format: FormatDurationOptions["format"] = ["hours", "minutes"],
+  format: FormatDurationOptions["format"] = [
+    "years",
+    "months",
+    "weeks",
+    "days",
+    "hours",
+    "minutes",
+  ],
 ) => {
   if (!seconds) {
     return

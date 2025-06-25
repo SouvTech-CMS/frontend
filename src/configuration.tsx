@@ -7,6 +7,7 @@ import { AuthorizedDevices } from "page/AuthorizedDevices"
 import { ClientDetails } from "page/ClientDetails"
 import { Clients } from "page/Clients"
 import { Dashboard } from "page/Dashboard"
+import { DeliveryDetails } from "page/DeliveryDetails"
 import { DetailedReports } from "page/DetailedReports"
 import { Engravers } from "page/Engravers"
 import { Engraving } from "page/Engraving"
@@ -18,6 +19,7 @@ import { OrderInfo } from "page/OrderInfo"
 import { Orders } from "page/Orders"
 import { OrdersForEngraving } from "page/OrdersForEngraving"
 import { ProductionInfo } from "page/ProductionInfo"
+import { PurchaseDetails } from "page/PurchaseDetails"
 import { Purchases } from "page/Purchases"
 import { PurchasesHistory } from "page/PurchasesHistory"
 import { Roles } from "page/Roles"
@@ -221,6 +223,22 @@ export const configuration = {
           <PurchasesHistory />
         </TableContextProvider>
       ),
+    },
+    // Purchases Details
+    {
+      type: "child",
+      name: "Purchase Details",
+      path: "/purchase/:id",
+      permissions: [Permission.PURCHASE_READ],
+      component: <PurchaseDetails />,
+    },
+    // Purchases Details
+    {
+      type: "child",
+      name: "Delivery Details",
+      path: "/delivery/:id",
+      permissions: [Permission.PURCHASE_READ],
+      component: <DeliveryDetails />,
     },
     // Suppliers
     {

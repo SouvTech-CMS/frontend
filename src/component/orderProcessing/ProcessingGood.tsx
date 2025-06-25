@@ -24,6 +24,8 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
   }
 
   const { storage_goods, ...good } = foundGood
+  const sku = good.uniquename
+  const description = good.description
 
   const { engravingInfo, goodListingParams } = parseEngravingInfoStr(
     goodDetails.engraving_info,
@@ -45,16 +47,17 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
               flexWrap="wrap"
               gap={2}
             >
-              <SKUBadge sku={good.uniquename} size="lg" />
+              <SKUBadge sku={description || sku} size="lg" />
 
-              <Text>{good.name}</Text>
+              <Text fontWeight="bold">{good.name}</Text>
             </Flex>
           </MarketplaceGoodListingLink>
 
           {/* Storage Goods Toggle */}
           <ToggleContainer
             title="Required Storage Goods"
-            fontWeight="bold"
+            fontSize="lg"
+            fontWeight="medium"
             defaultExpanded
           >
             <Flex w="full" direction="column" ml={10} gap={2}>
@@ -76,13 +79,13 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
                 key={index}
                 w="full"
                 direction="row"
-                alignItems="center"
+                alignItems="flex-start"
                 flexWrap="wrap"
                 gap={2}
               >
                 <Text fontWeight="bold">{key}:</Text>
 
-                <Text>{value}</Text>
+                <Text whiteSpace="pre-wrap">{value}</Text>
               </Flex>
             </Flex>
           ))}

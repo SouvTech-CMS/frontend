@@ -48,7 +48,7 @@ export const PurchasesTableStatusColumn: FC<PurchasesTableStatusColumnProps> = (
         <Flex w="full" direction="column" gap={2}>
           {filteredPurchasesList.map((purchase, index) => (
             <AccordionItem key={index} w="full" border="none">
-              <PurchaseColumnCard purchase={purchase} status={status} />
+              <PurchaseColumnCard purchase={purchase} />
             </AccordionItem>
           ))}
         </Flex>

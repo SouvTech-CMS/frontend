@@ -46,7 +46,7 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
     isLoading,
     refetch,
   } = useQuery<EngraverProductivityAnalyticsResponse>(
-    "productivityAnalytics",
+    ["productivityAnalytics", engraversIds],
     () =>
       getEngraversProductivityAnalytics({
         shops: shopsIds,
@@ -65,7 +65,7 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
     if (isRequestEnabled) {
       refetch()
     }
-  }, [refetch, isRequestEnabled, shopsIds, engraversIds])
+  }, [refetch, startDate, endDate, shopsIds, engraversIds])
 
   // Clear states
   useEffect(() => {

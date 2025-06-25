@@ -38,15 +38,15 @@ import { isGoodFullInDelivery } from "util/purchaseGood"
 
 interface PurchaseColumnCardProps {
   purchase: FullPurchase
-  status: string
 }
 
 export const PurchaseColumnCard: FC<PurchaseColumnCardProps> = (props) => {
-  const { purchase, status } = props
+  const { purchase } = props
 
   const { canReadPurchasesDocuments } = useUserPermissions()
 
   const purchaseId = purchase.id
+  const status = purchase.status
   const goods = purchase.goods.filter((good) => !isGoodFullInDelivery(good))
   const manager = purchase.manager
   const managerId = manager?.id
