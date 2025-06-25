@@ -135,9 +135,13 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
         <CardFooter>
           {/* Details Page Btn */}
           {isFromDelivery && (
-            <Link to={`/delivery/${deliveryId}`} target="_blank">
+            <Link
+              to={`/delivery/${deliveryId}`}
+              target="_blank"
+              style={{ width: "100%" }}
+            >
               <Button w="full" variant="ghost" colorScheme="blue">
-                View Purchase & Delivery
+                View Order & Delivery
               </Button>
             </Link>
           )}
