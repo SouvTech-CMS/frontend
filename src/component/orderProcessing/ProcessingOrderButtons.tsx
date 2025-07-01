@@ -1,15 +1,13 @@
-import { Button, Flex, useDisclosure } from "@chakra-ui/react"
-import { ActiveWorkBreakModal } from "component/workBreak/ActiveWorkBreakModal"
+import { Flex } from "@chakra-ui/react"
+import { FinishBtn } from "component/orderProcessing/buttons/FinishBtn"
+import { PauseBtn } from "component/orderProcessing/buttons/PauseBtn"
+import { TakeBreakBtn } from "component/orderProcessing/buttons/TakeBreakBtn"
 import { ProcessingOrderStatus } from "constant/orderStatus"
 import { useEngravingContext } from "context/engraving"
-import { useUserContext } from "context/user"
 import { FC } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useProcessingOrderStatusUpdateMutation } from "service/engraver/processingOrder"
-import { useWorkBreakStartMutation } from "service/engraver/workBreak"
 import { ProcessingOrderStatusUpdate } from "type/engraver/processingOrder"
-import { WorkBreakUpdate } from "type/engraver/workBreak"
-import { notify } from "util/toasts"
 
 interface ProcessingOrderButtonsProps {}
 
@@ -21,17 +19,12 @@ export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
   const location = useLocation()
   const navigate = useNavigate()
 
-  const { engraverId } = useUserContext()
   const { processingOrderId } = useEngravingContext()
-  const { workShiftId } = useEngravingContext()
 
   const processingOrderStatusUpdateMutation =
     useProcessingOrderStatusUpdateMutation()
-  const workBreakStartMutation = useWorkBreakStartMutation()
 
-  const isLoading =
-    processingOrderStatusUpdateMutation.isLoading ||
-    workBreakStartMutation.isLoading
+  const isLoading = processingOrderStatusUpdateMutation.isLoading
 
   const navigateToOrdersForEngravingPage = () => {
     navigate("/engraving", {
@@ -64,31 +57,6 @@ export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
     navigateToOrdersForEngravingPage()
   }
 
-  const handleBreakStart = async () => {
-    if (!workShiftId || !engraverId) {
-      notify("Cannot start your break", "error")
-      return
-    }
-
-    const body: WorkBreakUpdate = {
-      work_shift_id: workShiftId,
-      engraver_id: engraverId,
-    }
-
-    await workBreakStartMutation.mutateAsync(body)
-  }
-
-  const handleTakeBreakClick = async () => {
-    onActiveWorkBreakModalOpen()
-    await handleBreakStart()
-  }
-
-  const {
-    isOpen: isActiveWorkBreakModalOpen,
-    onOpen: onActiveWorkBreakModalOpen,
-    onClose: onActiveWorkBreakModalClose,
-  } = useDisclosure()
-
   return (
     <>
       <Flex
@@ -98,52 +66,12 @@ export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
         alignItems="center"
         gap={5}
       >
-        {/* Finish Btn */}
-        <Button
-          w="full"
-          variant="success"
-          size="lg"
-          py={8}
-          px={10}
-          onClick={handleFinishClick}
-          isLoading={isLoading}
-        >
-          Finish
-        </Button>
+        <FinishBtn onClick={handleFinishClick} isLoading={isLoading} />
 
-        {/* Pause Btn */}
-        <Button
-          w="full"
-          variant="secondary"
-          size="lg"
-          py={8}
-          px={10}
-          onClick={handlePauseClick}
-          isLoading={isLoading}
-        >
-          Pause
-        </Button>
+        <PauseBtn onClick={handlePauseClick} isLoading={isLoading} />
 
-        {/* Take Break Btn */}
-        <Button
-          w="full"
-          size="lg"
-          py={8}
-          px={10}
-          onClick={handleTakeBreakClick}
-          isLoading={isLoading}
-        >
-          Take a Break
-        </Button>
+        <TakeBreakBtn w="full" size="lg" py={8} px={10} />
       </Flex>
-
-      {/* Modals */}
-      <>
-        <ActiveWorkBreakModal
-          isOpen={isActiveWorkBreakModalOpen}
-          onClose={onActiveWorkBreakModalClose}
-        />
-      </>
     </>
   )
 }
