@@ -25,10 +25,11 @@ import { notify } from "util/toasts"
 interface OrderToEngravingCardProps {
   order?: WithId<Order>
   processingOrder?: WithId<ProcessingOrder>
+  isReadOnly?: boolean
 }
 
 export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
-  const { order, processingOrder } = props
+  const { order, processingOrder, isReadOnly } = props
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -44,9 +45,17 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
   const date = stringToDate(order?.date)
   const quantity = order?.quantity
 
-  const navigateToEngravingPage = (processingOrderId: number) => {
+  const prevProcessingOrderId = processingOrder?.id
+  const processingStatus = processingOrder?.status
+  const isOrderFinished = processingStatus === ProcessingOrderStatus.FINISHED
+  const isViewOnlyMode = isReadOnly || isOrderFinished
+
+  const navigateToEngravingPage = (
+    processingOrderId?: number,
+    isViewOnlyMode?: boolean,
+  ) => {
     navigate(`/engraving/${processingOrderId}`, {
-      state: { from: location },
+      state: { from: location, isViewOnlyMode },
     })
   }
 
@@ -56,6 +65,9 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
         case ProcessingOrderStatus.PAUSED:
         case ProcessingOrderStatus.IN_PROGRESS:
           return "Continue engraving"
+
+        case ProcessingOrderStatus.FINISHED:
+          return "View order"
       }
     }
 
@@ -73,6 +85,11 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
       return
     }
 
+    if (isViewOnlyMode) {
+      navigateToEngravingPage(prevProcessingOrderId, isViewOnlyMode)
+      return
+    }
+
     const body: ProcessingOrderCreate = {
       engraver_id: currentEngraver.id,
       order_id: orderId,
@@ -84,11 +101,10 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
     navigateToEngravingPage(processingOrderId)
   }
 
-  const processingStatus = processingOrder?.status
   const btnText = getBtnTextByStatus(processingStatus)
 
   return (
-    <Card w="fit-content" variant="card">
+    <Card bgColor="appLayout" w="full" variant="card">
       <CardHeader>
         <Flex w="full" direction="column" gap={1}>
           <Heading size="lg">Order #{marketplaceOrderId}</Heading>
@@ -100,8 +116,6 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
           <Text>Date: {formatDate(date)}</Text>
 
           <Text>Items Quantity: {quantity}</Text>
-
-          <Text></Text>
         </Flex>
       </CardBody>
 

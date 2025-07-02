@@ -41,6 +41,7 @@ export const EngravingContextProvider: FCC = (props) => {
 
   const location = useLocation()
   const navigate = useNavigate()
+  const isViewOnlyMode = location.state?.isViewOnlyMode ?? false
 
   const { engraverId, isUserEngraver, isLoadingCurrentUser } = useUserContext()
 
@@ -164,6 +165,10 @@ export const EngravingContextProvider: FCC = (props) => {
       }
       // Redirect engraver to "find order for engraving" page
       else {
+        if (isViewOnlyMode) {
+          return
+        }
+
         navigate("/engraving", {
           state: { from: location },
         })
