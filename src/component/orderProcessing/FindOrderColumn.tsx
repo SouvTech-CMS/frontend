@@ -1,5 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react"
-import { getOrderByMarketplaceId } from "api/engraver/processingOrder"
+import { getReadyToProcessingOrderByMarketplaceId } from "api/engraver/processingOrder"
+import { getOrderInProcessingByMarketplaceOrderId } from "api/order/order"
 import { AxiosError } from "axios"
 import { Container } from "component/Container"
 import { OrderIdSearchInput } from "component/orderProcessing/OrderIdSearchInput"
@@ -11,19 +12,28 @@ import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 import { notify } from "util/toasts"
 
-interface FindOrderColumnProps {}
+interface FindOrderColumnProps {
+  isReadyToProcessing?: boolean
+  isReadOnly?: boolean
+}
 
 export const FindOrderColumn: FC<FindOrderColumnProps> = (props) => {
-  const {} = props
+  const { isReadyToProcessing, isReadOnly } = props
 
   const [marketplaceOrderId, setMarketplaceOrderId] = useState<string>("")
   const [order, setOrder] = useState<WithId<Order>>()
 
   const isInvalid = !marketplaceOrderId || marketplaceOrderId.length < 10
 
+  const processingOrder = order?.processing_order
+
+  const getOrderFunc = isReadyToProcessing
+    ? getReadyToProcessingOrderByMarketplaceId
+    : getOrderInProcessingByMarketplaceOrderId
+
   const { isLoading: isOrderLoading, refetch } = useQuery<WithId<Order>>(
     ["order", marketplaceOrderId],
-    () => getOrderByMarketplaceId(marketplaceOrderId!),
+    () => getOrderFunc(marketplaceOrderId!),
     {
       enabled: false,
       retry: false,
@@ -97,7 +107,11 @@ export const FindOrderColumn: FC<FindOrderColumnProps> = (props) => {
 
       {/* Order found by entered ID */}
       {!isInvalid && !isOrderLoading && isOrderExists && (
-        <OrderToEngravingCard order={order} />
+        <OrderToEngravingCard
+          order={order}
+          processingOrder={processingOrder}
+          isReadOnly={isReadOnly}
+        />
       )}
     </Container>
   )

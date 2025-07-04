@@ -1,4 +1,5 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react"
+import { Button, Flex, Heading, Text, useDisclosure } from "@chakra-ui/react"
+import { FindOrderDrawer } from "component/orderProcessing/FindOrderDrawer"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
 import { WORK_SHIFT_WELCOME_TEXTS } from "constant/workShiftTexts"
@@ -8,11 +9,7 @@ import { useWorkShiftCreateMutation } from "service/engraver/workShift"
 import { WorkShift } from "type/engraver/workShift"
 import { notify } from "util/toasts"
 
-// const MotionBox = motion(Box)
-
 export const WorkShiftStart: FC = () => {
-  // const [animate, setAnimate] = useState<boolean>()
-
   const { engraverId, isLoadingCurrentUser } = useUserContext()
 
   const randomInterestingText = useMemo(
@@ -42,48 +39,56 @@ export const WorkShiftStart: FC = () => {
     await workShiftCreateMutation.mutateAsync(body)
   }
 
-  // useEffect(() => {
-  //   if (!animate && animate !== undefined) {
-  //     setAnimate(true)
-  //   }
-  // }, [animate])
+  const {
+    isOpen: isFindOrderDrawerOpen,
+    onOpen: onFindOrderDrawerOpen,
+    onClose: onFindOrderDrawerClose,
+  } = useDisclosure()
 
   return (
-    <Page>
-      <PageHeading isSearchHidden />
+    <>
+      <Page>
+        <PageHeading isSearchHidden />
 
-      <Flex
-        h="full"
-        w="full"
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        textAlign="center"
-        gap={10}
-      >
-        <Heading>Start Work Shift to Process Orders</Heading>
-
-        <Text w="40%" fontSize="lg">
-          {randomInterestingText}
-        </Text>
-
-        {/* <MotionBox
-          // key={animate ? "animate1" : "animate2"}
-          initial={{ scale: 1 }}
-          animate={
-            animate ? { scale: [1, 1.5, 1], rotate: [0, 10, -10, 0] } : {}
-          }
-          transition={{ duration: 0.5 }}
-        > */}
-        <Button
-          variant="success"
-          onClick={handleWorkShiftCreate}
-          isLoading={isLoading}
+        <Flex
+          h="full"
+          w="full"
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          textAlign="center"
+          gap={10}
         >
-          Start Work Shift
-        </Button>
-        {/* </MotionBox> */}
-      </Flex>
-    </Page>
+          <Heading>Start Work Shift to Process Orders</Heading>
+
+          <Text w="40%" fontSize="lg">
+            {randomInterestingText}
+          </Text>
+
+          <Flex direction="column" gap={3}>
+            <Button
+              variant="success"
+              onClick={handleWorkShiftCreate}
+              isLoading={isLoading}
+            >
+              Start Work Shift
+            </Button>
+
+            <Button
+              variant="secondary"
+              onClick={onFindOrderDrawerOpen}
+              isLoading={isLoading}
+            >
+              Just View Orders
+            </Button>
+          </Flex>
+        </Flex>
+      </Page>
+
+      <FindOrderDrawer
+        isOpen={isFindOrderDrawerOpen}
+        onClose={onFindOrderDrawerClose}
+      />
+    </>
   )
 }

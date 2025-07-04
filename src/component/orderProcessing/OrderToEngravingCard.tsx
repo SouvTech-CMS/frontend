@@ -8,7 +8,10 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react"
-import { ProcessingOrderStatus } from "constant/orderStatus"
+import {
+  CONTINUE_PROCESSING_STATUSES,
+  PROCESSING_FINISHED_STATUSES,
+} from "constant/orderStatus"
 import { useUserContext } from "context/user"
 import { FC } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -46,9 +49,14 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
   const quantity = order?.quantity
 
   const prevProcessingOrderId = processingOrder?.id
-  const processingStatus = processingOrder?.status
-  const isOrderFinished = processingStatus === ProcessingOrderStatus.FINISHED
-  const isViewOnlyMode = isReadOnly || isOrderFinished
+  const status = processingOrder?.status
+  const isStatusExists = !!status
+
+  const isContinueOrder =
+    isStatusExists && CONTINUE_PROCESSING_STATUSES.includes(status)
+  const isViewOnlyMode =
+    (isStatusExists && PROCESSING_FINISHED_STATUSES.includes(status)) ||
+    isReadOnly
 
   const navigateToEngravingPage = (
     processingOrderId?: number,
@@ -59,16 +67,13 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
     })
   }
 
-  const getBtnTextByStatus = (status?: string) => {
-    if (!!status) {
-      switch (status) {
-        case ProcessingOrderStatus.PAUSED:
-        case ProcessingOrderStatus.IN_PROGRESS:
-          return "Continue engraving"
+  const getBtnTextByStatus = () => {
+    if (isContinueOrder) {
+      return "Continue engraving"
+    }
 
-        case ProcessingOrderStatus.FINISHED:
-          return "View order"
-      }
+    if (isViewOnlyMode) {
+      return "View order"
     }
 
     return "Take it for engraving"
@@ -101,17 +106,15 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
     navigateToEngravingPage(processingOrderId)
   }
 
-  const btnText = getBtnTextByStatus(processingStatus)
+  const btnText = getBtnTextByStatus()
 
   return (
     <Card bgColor="appLayout" w="full" variant="card">
       <CardHeader>
-        <Flex w="full" direction="column" gap={1}>
-          <Heading size="lg">Order #{marketplaceOrderId}</Heading>
-        </Flex>
+        <Heading size="lg">Order #{marketplaceOrderId}</Heading>
       </CardHeader>
 
-      <CardBody py={0} pr={24}>
+      <CardBody py={0}>
         <Flex w="full" direction="column" fontSize="lg" gap={2}>
           <Text>Date: {formatDate(date)}</Text>
 

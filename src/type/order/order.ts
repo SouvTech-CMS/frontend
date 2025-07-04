@@ -1,3 +1,4 @@
+import { ProcessingOrder } from "type/engraver/processingOrder"
 import {
   GoodDetails,
   GoodInOrder,
@@ -18,9 +19,11 @@ export type Order = {
   shipping: number
   full_fee: number
   profit: number
-  shop?: WithId<Shop>
   receipt_shipping_id?: string
   tracking_code?: string
+
+  shop?: WithId<Shop>
+  processing_order?: WithId<ProcessingOrder>
 }
 
 export type OrderWithGoods = {
