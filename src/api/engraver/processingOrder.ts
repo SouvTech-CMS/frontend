@@ -7,7 +7,7 @@ import {
 import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 
-export const getOrderByMarketplaceId = async (
+export const getReadyToProcessingOrderByMarketplaceId = async (
   marketplaceOrderId: string,
 ): Promise<WithId<Order>> => {
   const { data: order } = await axiosClient.get(

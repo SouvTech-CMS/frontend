@@ -20,7 +20,7 @@ export const OrderIdSearchInput: FC<OrderIdSearchInputProps> = (props) => {
     <InputGroup w="full">
       <Input
         w="full"
-        bgColor="white"
+        bgColor="gray.100"
         placeholder="Enter Order ID"
         value={orderId}
         type="text"
