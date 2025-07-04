@@ -1,4 +1,4 @@
-import { Button, Flex, useDisclosure } from "@chakra-ui/react"
+import { Button, useDisclosure } from "@chakra-ui/react"
 import { WorkShiftFinishConfirmModal } from "component/workShift/WorkShiftFinishConfirmModal"
 import { FC } from "react"
 
@@ -11,16 +11,9 @@ export const WorkShiftFinishBtn: FC = () => {
 
   return (
     <>
-      <Flex
-        w="full"
-        direction="column"
-        justifyContent="center"
-        alignItems="flex-end"
-      >
-        <Button variant="danger" onClick={onWorkShiftFinishModalOpen}>
-          Finish Work Shift
-        </Button>
-      </Flex>
+      <Button variant="danger" onClick={onWorkShiftFinishModalOpen}>
+        Finish Work Shift
+      </Button>
 
       <WorkShiftFinishConfirmModal
         isOpen={isWorkShiftFinishModalOpen}
