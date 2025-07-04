@@ -20,8 +20,14 @@ export const ALL_PROCESSING_ORDER_STATUSES_LIST = Object.values(
 )
 
 // When can start processing order
-export const ORDER_READY_TO_PROCESS_STATUSES = [
+export const READY_TO_PROCESS_STATUSES = [
   ProcessingOrderStatus.NOT_STARTED,
+  ProcessingOrderStatus.PAUSED,
+]
+
+// When can continue processing order
+export const CONTINUE_PROCESSING_STATUSES = [
+  ProcessingOrderStatus.IN_PROGRESS,
   ProcessingOrderStatus.PAUSED,
 ]
 
