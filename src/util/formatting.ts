@@ -4,12 +4,31 @@ import {
   intervalToDuration,
 } from "date-fns"
 
-export const timeStrToDateWithCurrentTimezone = (timeString?: string) => {
-  if (!timeString) {
+export const timeStrToDateWithCurrentTimezone = (timeStr?: string) => {
+  if (!timeStr) {
     return
   }
 
-  const date = new Date(`1970-01-01T${timeString}`)
+  const isISO = timeStr.toLowerCase().includes("z")
+  if (isISO) {
+    const currentDate = new Date().toISOString().split("T")[0]
+    const isoDateStr = `${currentDate}T${timeStr}`
+    const date = new Date(isoDateStr)
+
+    return date
+  }
+
+  const date = new Date()
+  const timeParts = timeStr.split(":").map(Number)
+
+  date.setHours(timeParts[0])
+  date.setMinutes(timeParts[1])
+
+  if (timeParts.length > 2) {
+    date.setSeconds(timeParts[2])
+  } else {
+    date.setSeconds(0)
+  }
 
   return date
 }
