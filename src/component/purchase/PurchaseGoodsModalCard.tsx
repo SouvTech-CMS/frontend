@@ -57,7 +57,7 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
         <CardHeader>
           <Flex direction="column" gap={2}>
             {/* Good Info */}
-            <Flex justifyContent="space-between">
+            <Flex justifyContent="space-between" gap={2}>
               <Flex direction="column" gap={2}>
                 {/* ID & Name */}
                 <Flex alignItems="center" gap={5}>

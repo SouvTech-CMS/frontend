@@ -1,4 +1,12 @@
-import { Button, Card, CardFooter, CardHeader, Heading } from "@chakra-ui/react"
+import {
+  Button,
+  Card,
+  CardFooter,
+  CardHeader,
+  Flex,
+  Heading,
+  Text,
+} from "@chakra-ui/react"
 import { FC } from "react"
 import { Link } from "react-router-dom"
 import { PurchaseDelivery } from "type/purchaseDelivery/purchaseDelivery"
@@ -16,9 +24,17 @@ export const DeliveryCard: FC<DeliveryCardProps> = (props) => {
   const createdAt = timestampToDate(delivery.created_at)
 
   return (
-    <Card borderRadius={12}>
+    <Card size="md" borderRadius={10}>
       <CardHeader>
-        <Heading size="md">Delivery from {formatDate(createdAt)}</Heading>
+        <Flex w="full" direction="column">
+          {/* Order ID */}
+          <Heading size="md">Delivery #{deliveryId}</Heading>
+
+          {/* Created At */}
+          <Text size="sm" color="hint">
+            From {formatDate(createdAt)}
+          </Text>
+        </Flex>
       </CardHeader>
 
       <CardFooter pt={0}>

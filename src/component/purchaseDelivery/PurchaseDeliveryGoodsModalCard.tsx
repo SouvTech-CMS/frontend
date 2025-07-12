@@ -28,7 +28,7 @@ export const PurchaseDeliveryGoodsModalCard: FC<
       <CardHeader>
         <Flex direction="column" gap={2}>
           {/* Good Info */}
-          <Flex justifyContent="space-between">
+          <Flex justifyContent="space-between" gap={2}>
             <Flex direction="column" gap={2}>
               {/* Purchase ID Badge */}
               <Flex>

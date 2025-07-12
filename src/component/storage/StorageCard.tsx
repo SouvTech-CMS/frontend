@@ -141,7 +141,7 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
               style={{ width: "100%" }}
             >
               <Button w="full" variant="ghost" colorScheme="blue">
-                View Order & Delivery
+                View Delivery
               </Button>
             </Link>
           )}

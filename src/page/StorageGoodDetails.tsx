@@ -4,6 +4,7 @@ import { CollapsibleCardsGrid } from "component/CollapsibleCardsGrid"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
+import { PurchaseCard } from "component/purchase/PurchaseCard"
 import { NewStorageCard } from "component/storage/NewStorageCard"
 import { StorageCard } from "component/storage/StorageCard"
 import { StorageGoodAnalyticsChart } from "component/storageGood/analytics/StorageGoodAnalyticsChart"
@@ -35,6 +36,7 @@ export const StorageGoodDetails = (props: PageProps) => {
 
   const storagesList = storageGood?.storages
   const defectsList = storageGood?.defects
+  const purchasesList = storageGood?.purchases
 
   return (
     <Page guideNotionPageId={guideNotionPageId}>
@@ -77,6 +79,17 @@ export const StorageGoodDetails = (props: PageProps) => {
 
             {defectsList?.map((defect, index) => (
               <StorageGoodDefectCard key={index} defect={defect} />
+            ))}
+          </CollapsibleCardsGrid>
+
+          {/* Purchases Cards Grid */}
+          <CollapsibleCardsGrid
+            heading="Orders"
+            defaultExpanded
+            isDisabled={isLoading}
+          >
+            {purchasesList?.map((purchase, index) => (
+              <PurchaseCard key={index} purchase={purchase} />
             ))}
           </CollapsibleCardsGrid>
         </Flex>

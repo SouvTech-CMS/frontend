@@ -1,4 +1,4 @@
-import { Divider, Flex } from "@chakra-ui/react"
+import { Divider, Flex, Heading } from "@chakra-ui/react"
 import { getPurchaseById } from "api/purchase/purchase"
 import { CollapsibleCardsGrid } from "component/CollapsibleCardsGrid"
 import { PurchaseDocumentCard } from "component/document/PurchaseDocumentCard"
@@ -62,7 +62,8 @@ export const PurchaseDetails: FC = (props: PageProps) => {
 
           {/* Manager Card */}
           {!!manager && (
-            <Flex>
+            <Flex w="fit-content" direction="column" gap={2}>
+              <Heading size="lg">Manager</Heading>
               <ManagerCard manager={manager} />
             </Flex>
           )}
@@ -106,7 +107,7 @@ export const PurchaseDetails: FC = (props: PageProps) => {
           {/* Deliveries Cards Grid */}
           <CollapsibleCardsGrid
             heading="Deliveries"
-            columns={GRID_COLUMNS}
+            // columns={GRID_COLUMNS}
             defaultExpanded
             isDisabled={isLoading}
           >
