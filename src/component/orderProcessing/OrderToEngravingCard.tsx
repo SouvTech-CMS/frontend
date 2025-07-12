@@ -48,15 +48,16 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
   const date = stringToDate(order?.date)
   const quantity = order?.quantity
 
+  const isProcessingOrderExists = !!processingOrder
   const prevProcessingOrderId = processingOrder?.id
   const status = processingOrder?.status
   const isStatusExists = !!status
 
   const isContinueOrder =
     isStatusExists && CONTINUE_PROCESSING_STATUSES.includes(status)
-  const isViewOnlyMode =
-    (isStatusExists && PROCESSING_FINISHED_STATUSES.includes(status)) ||
-    isReadOnly
+  const isRedoOrder =
+    isStatusExists && PROCESSING_FINISHED_STATUSES.includes(status)
+  const isViewOnlyMode = isReadOnly
 
   const navigateToEngravingPage = (
     processingOrderId?: number,
@@ -68,18 +69,26 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
   }
 
   const getBtnTextByStatus = () => {
+    if (isViewOnlyMode) {
+      return "View order"
+    }
+
     if (isContinueOrder) {
       return "Continue engraving"
     }
 
-    if (isViewOnlyMode) {
-      return "View order"
+    if (isRedoOrder) {
+      return "Redo order"
     }
 
     return "Take it for engraving"
   }
 
-  const handleClick = async () => {
+  const handleViewOrderClick = () => {
+    navigateToEngravingPage(prevProcessingOrderId, true)
+  }
+
+  const handleEngravingClick = async () => {
     if (!currentEngraver) {
       notify("Your're not engraver", "error")
       return
@@ -91,7 +100,7 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
     }
 
     if (isViewOnlyMode) {
-      navigateToEngravingPage(prevProcessingOrderId, isViewOnlyMode)
+      handleViewOrderClick()
       return
     }
 
@@ -124,16 +133,32 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
 
       {/* Buttons */}
       <CardFooter>
-        <Flex w="full" direction="row" gap={2}>
-          <Button
-            w="full"
-            variant="success"
-            onClick={handleClick}
-            isLoading={isLoading}
-            isDisabled={isLoading}
-          >
-            {btnText}
-          </Button>
+        <Flex w="full" direction="column" gap={2}>
+          {/* Engraving Btn */}
+          {!isViewOnlyMode && (
+            <Button
+              w="full"
+              variant="success"
+              onClick={handleEngravingClick}
+              isLoading={isLoading}
+              isDisabled={isLoading}
+            >
+              {btnText}
+            </Button>
+          )}
+
+          {/* View Order Btn */}
+          {isProcessingOrderExists && (
+            <Button
+              w="full"
+              variant="secondary"
+              onClick={handleViewOrderClick}
+              isLoading={isLoading}
+              isDisabled={isLoading}
+            >
+              View Order
+            </Button>
+          )}
         </Flex>
       </CardFooter>
     </Card>

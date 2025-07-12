@@ -79,7 +79,6 @@ export const FindOrderColumn: FC<FindOrderColumnProps> = (props) => {
           w="full"
           justifyContent="center"
           alignItems="center"
-          py={10}
           textAlign="center"
         >
           <Text fontSize="lg" color="hint">
@@ -96,7 +95,6 @@ export const FindOrderColumn: FC<FindOrderColumnProps> = (props) => {
           w="full"
           justifyContent="center"
           alignItems="center"
-          py={10}
           textAlign="center"
         >
           <Text fontSize="lg" color="hint">
