@@ -41,6 +41,8 @@ export const EngravingContextProvider: FCC = (props) => {
 
   const location = useLocation()
   const navigate = useNavigate()
+  const isViewOnlyMode = location.state?.isViewOnlyMode ?? false
+  const isEngravingPage = /^\/engraving\/\d+$/.test(location.pathname)
 
   const { engraverId, isUserEngraver, isLoadingCurrentUser } = useUserContext()
 
@@ -159,13 +161,17 @@ export const EngravingContextProvider: FCC = (props) => {
         }
 
         navigate(`/engraving/${processingOrderId}`, {
-          state: { from: location },
+          state: { from: location, isViewOnlyMode },
         })
       }
       // Redirect engraver to "find order for engraving" page
       else {
+        if (isViewOnlyMode) {
+          return
+        }
+
         navigate("/engraving", {
-          state: { from: location },
+          state: { from: location, isViewOnlyMode },
         })
       }
     },
@@ -199,11 +205,13 @@ export const EngravingContextProvider: FCC = (props) => {
         isProcessingOrdersListLoading,
       }}
     >
-      {!isActiveWorkShiftLoading && !isActiveWorkShiftExists && (
-        <WorkShiftStart />
-      )}
+      {!isActiveWorkShiftLoading &&
+        !isActiveWorkShiftExists &&
+        !isEngravingPage && <WorkShiftStart />}
 
-      {!isActiveWorkShiftLoading && isActiveWorkShiftExists && children}
+      {!isActiveWorkShiftLoading &&
+        (isActiveWorkShiftExists || isEngravingPage) &&
+        children}
 
       {isActiveScheduledBreakExists && (
         <ActiveScheduledBreakModal

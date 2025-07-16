@@ -1,4 +1,5 @@
 import { ProductionInfo } from "type/productionInfo/productionInfo"
+import { Purchase } from "type/purchase/purchase"
 import { ShelfWithPlacement } from "type/shelf/shelf"
 import { Shop } from "type/shop"
 import { QuantityColor } from "type/storage/quantityColor/quantityColor"
@@ -22,6 +23,7 @@ export type FullStorageGood = StorageGood & {
   defects?: WithId<StorageGoodDefect>[]
   quantity_color?: WithId<QuantityColor>
   quantity_colors: WithId<StorageGoodQuantityColor>[]
+  purchases?: WithId<Purchase>[]
 }
 
 export type StorageGoodCreate = {

@@ -32,7 +32,7 @@ interface ManagerModalProps extends ModalProps {
 }
 
 export const ManagerModal: FC<ManagerModalProps> = (props) => {
-  const { supplierId, isOpen, onClose, prevManager, managerId } = props
+  const { supplierId, managerId, prevManager, isOpen, onClose } = props
 
   const isManagerExists = managerId !== undefined && prevManager !== undefined
 
@@ -103,7 +103,9 @@ export const ManagerModal: FC<ManagerModalProps> = (props) => {
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>New manager</ModalHeader>
+        <ModalHeader>
+          {isManagerExists ? `Manager #${managerId}` : "New manager"}
+        </ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>

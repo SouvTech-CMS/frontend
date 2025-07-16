@@ -17,18 +17,19 @@ export const OrderIdSearchInput: FC<OrderIdSearchInputProps> = (props) => {
   }
 
   return (
-    <InputGroup>
+    <InputGroup w="full">
       <Input
-        bgColor="white"
-        placeholder="Order ID"
+        w="full"
+        bgColor="gray.100"
+        placeholder="Enter Order ID"
         value={orderId}
         type="text"
-        py={6}
-        pl={6}
-        pr={16}
+        py={5}
+        pl={5}
+        pr={15}
         fontSize="lg"
         border="none"
-        borderRadius={50}
+        borderRadius={10}
         onChange={handleChange}
         isInvalid={isInvalid}
       />

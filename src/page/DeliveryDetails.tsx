@@ -97,7 +97,7 @@ export const DeliveryDetails: FC = (props: PageProps) => {
           {/* Purchases Cards Grid */}
           <CollapsibleCardsGrid
             heading="Orders"
-            columns={GRID_COLUMNS}
+            // columns={GRID_COLUMNS}
             defaultExpanded
             isDisabled={isLoading}
           >
