@@ -9,7 +9,7 @@ export const getAllTickets = async (
   body: ApiRequest<Ticket>,
 ): Promise<ApiResponse<WithId<FullTicket>[]>> => {
   const { data: ticketsList } = await axiosClient.post(
-    "/tickets/",
+    "/tickets",
     beautifyBody(body),
   )
   return ticketsList
@@ -22,5 +22,5 @@ export const createTicket = async (body: TicketCreate) => {
 }
 
 export const updateTicket = async (body: WithId<Ticket>) => {
-  await axiosClient.put("/tickets/", body)
+  await axiosClient.put("/tickets", body)
 }
