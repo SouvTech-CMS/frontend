@@ -13,14 +13,14 @@ export const getMessagesByTicketId = async (
   body: ApiRequest<WithId<TicketMessageWithSender>>,
 ): Promise<ApiResponse<WithId<TicketMessageWithSender>[]>> => {
   const { data: messagesList } = await axiosClient.post(
-    `/tickets/${ticketId}/messages/`,
+    `/tickets/${ticketId}/messages`,
     beautifyBody(body),
   )
   return messagesList
 }
 
 export const sendTicketMessage = async (body: TicketMessageSend) => {
-  await axiosClient.post(`/tickets/${body.ticketId}/message_send/`, {
+  await axiosClient.post(`/tickets/${body.ticketId}/message_send`, {
     content: body.content,
   })
 }
