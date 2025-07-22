@@ -13,7 +13,7 @@ import { WithId } from "type/withId"
 interface UserContextProps {
   userId?: number
   currentUser?: WithId<User>
-  engraverId?: number
+  currentEngraverId?: number
   currentEngraver?: WithId<Engraver>
   userRoles?: string[]
   userPermissions?: string[]
@@ -69,7 +69,7 @@ export const UserContextProvider: FCC = (props) => {
     isUserAdmin || (userRoles.includes(Role.ENGRAVER) && !!currentEngraver)
 
   const userId = currentUser?.id
-  const engraverId = currentEngraver?.id
+  const currentEngraverId = currentEngraver?.id
 
   useEffect(() => {
     if (currentUser) {
@@ -98,7 +98,7 @@ export const UserContextProvider: FCC = (props) => {
       value={{
         userId,
         currentUser,
-        engraverId,
+        currentEngraverId,
         currentEngraver,
         userRoles,
         userPermissions,

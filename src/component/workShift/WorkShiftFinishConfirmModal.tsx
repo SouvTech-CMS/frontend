@@ -27,14 +27,14 @@ export const WorkShiftFinishConfirmModal: FC<
   const { isOpen, onClose } = props
 
   const { activeWorkShift, isActiveWorkShiftLoading } = useEngravingContext()
-  const { engraverId, isLoadingCurrentUser } = useUserContext()
+  const { currentEngraverId, isLoadingCurrentUser } = useUserContext()
 
   const workShiftUpdateMutation = useWorkShiftUpdateMutation()
 
   const isLoading = isLoadingCurrentUser || isActiveWorkShiftLoading
 
   const onConfirm = async () => {
-    if (!activeWorkShift || !engraverId) {
+    if (!activeWorkShift || !currentEngraverId) {
       notify("Cannot load current work shift", "error")
       return
     }

@@ -22,7 +22,7 @@ interface ActiveWorkBreakModalProps extends ModalProps {}
 export const ActiveWorkBreakModal: FC<ActiveWorkBreakModalProps> = (props) => {
   const { isOpen, onClose } = props
 
-  const { engraverId } = useUserContext()
+  const { currentEngraverId } = useUserContext()
   const { workShiftId } = useEngravingContext()
 
   const workBreakFinishMutation = useWorkBreakFinishMutation()
@@ -30,14 +30,14 @@ export const ActiveWorkBreakModal: FC<ActiveWorkBreakModalProps> = (props) => {
   const isLoading = workBreakFinishMutation.isLoading
 
   const handleBreakFinish = async () => {
-    if (!workShiftId || !engraverId) {
+    if (!workShiftId || !currentEngraverId) {
       notify("Cannot finish your break", "error")
       return
     }
 
     const body: WorkBreakUpdate = {
       work_shift_id: workShiftId,
-      engraver_id: engraverId,
+      engraver_id: currentEngraverId,
     }
 
     await workBreakFinishMutation.mutateAsync(body)

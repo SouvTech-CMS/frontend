@@ -18,8 +18,9 @@ export type ProcessingOrderWithOrder = Omit<ProcessingOrder, "order"> & {
 }
 
 export type ProcessingOrderCreate = {
-  engraver_id: number
   order_id: number
+  engraver_id?: number
+  is_for_view_mode?: boolean
 }
 
 export type ProcessingOrderStatusUpdate = {

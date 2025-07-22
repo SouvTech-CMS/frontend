@@ -28,11 +28,11 @@ let idleTimer: NodeJS.Timeout
 export const InactivityModal: FC = () => {
   const [isIdle, setIsIdle] = useState<boolean>(false)
 
-  const { engraverId } = useUserContext()
+  const { currentEngraverId } = useUserContext()
   const { workShiftId } = useEngravingContext()
 
   const body: WorkBreakUpdate = {
-    engraver_id: engraverId!,
+    engraver_id: currentEngraverId!,
     work_shift_id: workShiftId!,
   }
 
@@ -49,7 +49,7 @@ export const InactivityModal: FC = () => {
 
       workBreakStartMutation.mutate(body)
     }, TIMEOUT_IN_MS)
-  }, [onOpen, engraverId, workShiftId])
+  }, [onOpen, currentEngraverId, workShiftId])
 
   const handleUserActivity = useCallback(() => {
     if (isIdle) {

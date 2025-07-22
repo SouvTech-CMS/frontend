@@ -38,7 +38,7 @@ export const createProcessingOrder = async (
   body: ProcessingOrderCreate,
 ): Promise<WithId<ProcessingOrder>> => {
   const { data: processingOrder } = await axiosClient.post(
-    "/order/processing/",
+    "/order/processing",
     body,
   )
   return processingOrder
