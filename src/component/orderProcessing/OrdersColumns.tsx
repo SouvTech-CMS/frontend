@@ -15,7 +15,7 @@ export const OrdersColumns: FC<OrdersColumnsProps> = (props) => {
 
   return (
     <Flex h="full" w="full" direction="row" gap={10}>
-      <FindOrderColumn isReadyToProcessing />
+      <FindOrderColumn />
 
       <OrdersStatusColumn
         title="Paused"
