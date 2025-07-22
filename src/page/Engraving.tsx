@@ -1,7 +1,6 @@
-import { Flex } from "@chakra-ui/react"
+import { Flex, Text } from "@chakra-ui/react"
 import { getProcessingOrderById } from "api/engraver/processingOrder"
 import { EngravingPanel } from "component/orderProcessing/EngravingPanel"
-import { ProcessingOrderDetails } from "component/orderProcessing/ProcessingOrderDetails"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
@@ -54,15 +53,20 @@ export const Engraving = (props: PageProps) => {
 
       {isLoading && <LoadingPage />}
 
-      {isProcessingOrderExists && (
-        <Flex h="full" w="full" direction="row" overflow="hidden" gap={5}>
-          <ProcessingOrderDetails processingOrder={processingOrder} />
-
-          <EngravingPanel
-            isOrderHasTicket={isOrderHasTicket}
-            isViewOnlyMode={isViewOnlyMode}
-          />
+      {!isProcessingOrderExists && !isLoading && (
+        <Flex h="full" w="full" justifyContent="center" alignItems="center">
+          <Text fontSize="xl" color="hint">
+            Cannot find Order in processing with ID #{processingOrderId}
+          </Text>
         </Flex>
+      )}
+
+      {isProcessingOrderExists && !isLoading && (
+        <EngravingPanel
+          processingOrder={processingOrder}
+          isOrderHasTicket={isOrderHasTicket}
+          isViewOnlyMode={isViewOnlyMode}
+        />
       )}
     </Page>
   )

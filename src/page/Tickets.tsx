@@ -1,15 +1,11 @@
-import { Flex } from "@chakra-ui/react"
+import { Flex, Text } from "@chakra-ui/react"
 import { getAllTickets } from "api/ticket/ticket"
-import { Container } from "component/Container"
+import { EngravingPanel } from "component/orderProcessing/EngravingPanel"
 import { LoadingPage } from "component/page/LoadingPage"
 import { Page } from "component/page/Page"
 import { PageHeading } from "component/page/PageHeading"
-import { TicketChat } from "component/ticket/chat/TicketChat"
-import { TicketCreateBtn } from "component/ticket/TicketCreateBtn"
-import { TicketsTabs } from "component/ticket/TicketsTabs"
-import { TicketSummary } from "component/ticket/TicketSummary"
+import { TicketsPanel } from "component/ticket/TicketsPanel"
 import { useTicketsContext } from "context/tickets"
-import { useUserPermissions } from "hook/useUserPermissions"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
 import { PageProps } from "type/page/page"
@@ -19,54 +15,52 @@ import { WithId } from "type/withId"
 export const Tickets = (props: PageProps) => {
   const { guideNotionPageId } = props
 
-  const { canCreateTickets, canReadTicketMessages } = useUserPermissions()
-  const { isOpenedTicketExists } = useTicketsContext()
+  const {
+    isOpenedTicketExists,
+    openedTicketProcessingOrder,
+    isOpenedTicketProcessingOrderExists,
+    isProcessingOrderLoading,
+  } = useTicketsContext()
 
   const { data: ticketsResponse, isLoading } = useQuery<
     ApiResponse<WithId<FullTicket>[]>
   >("ticketsList", () => getAllTickets({}))
   const ticketsList = ticketsResponse?.result
 
-  const isTicketsExist = ticketsList !== undefined
-
   return (
     <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Tickets" isSearchHidden />
 
       <Flex h="full" w="full" direction="row" overflow="hidden" gap={2}>
-        <Container
-          h="full"
-          flex={2}
-          direction="column"
-          p={0}
-          borderRadius="md"
-          gap={2}
-        >
-          {!isTicketsExist && isLoading && <LoadingPage />}
+        {/* Tabs */}
+        <Flex flex={1}>
+          <TicketsPanel ticketsList={ticketsList} isLoading={isLoading} />
+        </Flex>
 
-          {/* Tabs */}
-          {isTicketsExist && !isLoading && (
-            <TicketsTabs ticketsList={ticketsList} />
-          )}
+        <Flex flex={3}>
+          {isProcessingOrderLoading && <LoadingPage />}
 
-          {/* Create Btn */}
-          {canCreateTickets && (
-            <Flex
-              w="full"
-              justifyContent="center"
-              alignItems="center"
-              mt="auto"
-              px={2}
-              py={2}
-              gap={2}
-            >
-              <TicketCreateBtn />
+          {!isOpenedTicketExists && !isProcessingOrderLoading && (
+            <Flex h="full" w="full" justifyContent="center" alignItems="center">
+              <Text fontSize="xl" color="hint">
+                Select ticket to view Order details and messages
+              </Text>
             </Flex>
           )}
-        </Container>
+
+          {isOpenedTicketExists &&
+            isOpenedTicketProcessingOrderExists &&
+            !isProcessingOrderLoading && (
+              <EngravingPanel
+                processingOrder={openedTicketProcessingOrder!}
+                isOrderHasTicket={isOpenedTicketExists}
+                isViewOnlyMode
+              />
+            )}
+        </Flex>
 
         {/* Chat */}
-        {canReadTicketMessages && (
+        {/* {canReadTicketMessages && (
           <Container
             h="full"
             flex={5}
@@ -76,14 +70,14 @@ export const Tickets = (props: PageProps) => {
           >
             <TicketChat />
           </Container>
-        )}
+        )} */}
 
         {/* Summary */}
-        {isOpenedTicketExists && (
+        {/* {isOpenedTicketExists && (
           <Container h="full" flex={2} px={3} py={4} borderRadius="md">
             <TicketSummary />
           </Container>
-        )}
+        )} */}
       </Flex>
     </Page>
   )

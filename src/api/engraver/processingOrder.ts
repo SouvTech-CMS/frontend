@@ -25,6 +25,15 @@ export const getProcessingOrderById = async (
   return processingOrder
 }
 
+export const getProcessingOrderByOrderId = async (
+  orderId: number,
+): Promise<WithId<ProcessingOrder>> => {
+  const { data: processingOrder } = await axiosClient.get(
+    `/order/processing/order_id/${orderId}`,
+  )
+  return processingOrder
+}
+
 export const getProcessingOrdersByEngraverId = async (
   engraverId: number,
 ): Promise<WithId<ProcessingOrder>[]> => {
