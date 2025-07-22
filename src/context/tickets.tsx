@@ -1,3 +1,4 @@
+import { getProcessingOrderByOrderId } from "api/engraver/processingOrder"
 import { getMessagesByTicketId } from "api/ticket/ticketMessage"
 import {
   Dispatch,
@@ -9,6 +10,7 @@ import {
 } from "react"
 import { useQuery } from "react-query"
 import { ApiResponse } from "type/api/apiResponse"
+import { ProcessingOrder } from "type/engraver/processingOrder"
 import { FCC } from "type/fcc"
 import { FullTicket } from "type/ticket/ticket"
 import { TicketMessageWithSender } from "type/ticket/ticketMessage"
@@ -24,6 +26,9 @@ interface TicketsContextProps {
   openedTicketMessages?: WithId<TicketMessageWithSender>[]
   isMessagesExists?: boolean
   isLoadingMessages?: boolean
+  openedTicketProcessingOrder?: WithId<ProcessingOrder>
+  isOpenedTicketProcessingOrderExists?: boolean
+  isProcessingOrderLoading?: boolean
 }
 
 export const TicketsContext = createContext<TicketsContextProps | undefined>(
@@ -56,6 +61,19 @@ export const TicketsContextProvider: FCC = (props) => {
   const isMessagesExists =
     !!openedTicketMessages && openedTicketMessages.length > 0
 
+  const orderId = openedTicket?.order_id
+  const {
+    data: openedTicketProcessingOrder,
+    isLoading: isProcessingOrderLoading,
+  } = useQuery<WithId<ProcessingOrder>>(
+    ["processingOrderByOrderId", orderId],
+    () => getProcessingOrderByOrderId(orderId!),
+    {
+      enabled: !!orderId,
+    },
+  )
+  const isOpenedTicketProcessingOrderExists = !!openedTicketProcessingOrder
+
   useEffect(() => {
     if (isTicketIdExists) {
       refetchTicketMessages()
@@ -74,6 +92,9 @@ export const TicketsContextProvider: FCC = (props) => {
         openedTicketMessages,
         isMessagesExists,
         isLoadingMessages,
+        openedTicketProcessingOrder,
+        isOpenedTicketProcessingOrderExists,
+        isProcessingOrderLoading,
       }}
     >
       {children}
