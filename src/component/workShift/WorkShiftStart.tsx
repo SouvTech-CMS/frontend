@@ -10,7 +10,7 @@ import { WorkShift } from "type/engraver/workShift"
 import { notify } from "util/toasts"
 
 export const WorkShiftStart: FC = () => {
-  const { engraverId, isLoadingCurrentUser } = useUserContext()
+  const { currentEngraverId, isLoadingCurrentUser } = useUserContext()
 
   const randomInterestingText = useMemo(
     () =>
@@ -25,14 +25,14 @@ export const WorkShiftStart: FC = () => {
   const isLoading = isLoadingCurrentUser || workShiftCreateMutation.isLoading
 
   const handleWorkShiftCreate = async () => {
-    if (!engraverId) {
+    if (!currentEngraverId) {
       notify("Cannot start work shift, you're not engraver", "error")
       return
     }
 
     const now = new Date()
     const body: WorkShift = {
-      engraver_id: engraverId!,
+      engraver_id: currentEngraverId,
       started_at: now.toISOString(),
     }
 
