@@ -44,7 +44,8 @@ export const EngravingContextProvider: FCC = (props) => {
   const isViewOnlyMode = location.state?.isViewOnlyMode ?? false
   const isEngravingPage = /^\/engraving\/\d+$/.test(location.pathname)
 
-  const { engraverId, isUserEngraver, isLoadingCurrentUser } = useUserContext()
+  const { currentEngraverId, isUserEngraver, isLoadingCurrentUser } =
+    useUserContext()
 
   // * Processing Orders List
   const {
@@ -53,10 +54,10 @@ export const EngravingContextProvider: FCC = (props) => {
     isRefetching: isProcessingOrdersListRefetching,
     refetch: refetchProcessingOrdersList,
   } = useQuery<WithId<ProcessingOrder>[]>(
-    ["processingOrdersList", engraverId],
-    () => getProcessingOrdersByEngraverId(engraverId!),
+    ["processingOrdersList", currentEngraverId],
+    () => getProcessingOrdersByEngraverId(currentEngraverId!),
     {
-      enabled: !!engraverId,
+      enabled: !!currentEngraverId,
     },
   )
 
@@ -67,10 +68,10 @@ export const EngravingContextProvider: FCC = (props) => {
     isRefetching: isActiveWorkShiftRefetching,
     refetch: refetchActiveWorkShift,
   } = useQuery<WithId<WorkShiftWithBreaks> | undefined>(
-    ["activeWorkShift", engraverId],
-    () => getEngraverActiveWorkShift(engraverId!),
+    ["activeWorkShift", currentEngraverId],
+    () => getEngraverActiveWorkShift(currentEngraverId!),
     {
-      enabled: !!engraverId,
+      enabled: !!currentEngraverId,
     },
   )
   const isActiveWorkShiftExists = !!activeWorkShift
@@ -82,10 +83,10 @@ export const EngravingContextProvider: FCC = (props) => {
     isRefetching: isActiveScheduledBreakRefetching,
     refetch: refetchScheduledBreaks,
   } = useQuery<WithId<ScheduledBreak>>(
-    ["scheduledBreaks", engraverId],
-    () => getEngraverScheduledBreaks(engraverId!),
+    ["scheduledBreaks", currentEngraverId],
+    () => getEngraverScheduledBreaks(currentEngraverId!),
     {
-      enabled: !!engraverId && isActiveWorkShiftExists,
+      enabled: !!currentEngraverId && isActiveWorkShiftExists,
       refetchInterval: isActiveWorkShiftExists
         ? SCHEDULED_BREAK_REFETCH_INTERVAL_IN_MS
         : undefined,
@@ -131,7 +132,7 @@ export const EngravingContextProvider: FCC = (props) => {
 
   // * Refetches
   useEffect(() => {
-    if (!!engraverId) {
+    if (!!currentEngraverId) {
       refetchProcessingOrdersList()
       refetchActiveWorkShift()
 
@@ -143,7 +144,7 @@ export const EngravingContextProvider: FCC = (props) => {
     refetchProcessingOrdersList,
     refetchActiveWorkShift,
     refetchScheduledBreaks,
-    engraverId,
+    currentEngraverId,
     isActiveWorkShiftExists,
   ])
 

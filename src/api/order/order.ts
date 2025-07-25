@@ -42,6 +42,15 @@ export const getOrderById = async (
   return order
 }
 
+export const getOrderByMarketplaceOrderId = async (
+  marketplaceOrderId: string,
+): Promise<WithId<Order>> => {
+  const { data: order } = await axiosClient.get(
+    `/order/marketplace_order_id/${marketplaceOrderId}`,
+  )
+  return order
+}
+
 export const getOrderInProcessingByMarketplaceOrderId = async (
   marketplaceOrderId: string,
 ): Promise<WithId<Order>> => {

@@ -18,8 +18,8 @@ export type Ticket = {
 }
 
 export type FullTicket = Ticket & {
-  order: WithId<Order>
   opened_by: WithId<User>
+  order: WithId<Order>
 }
 
 export type TicketCreate = {

@@ -10,7 +10,7 @@ import { notify } from "util/toasts"
 interface TakeBreakBtnProps extends ButtonProps {}
 
 export const TakeBreakBtn: FC<TakeBreakBtnProps> = (props) => {
-  const { engraverId } = useUserContext()
+  const { currentEngraverId } = useUserContext()
   const { workShiftId } = useEngravingContext()
 
   const workBreakStartMutation = useWorkBreakStartMutation()
@@ -18,14 +18,14 @@ export const TakeBreakBtn: FC<TakeBreakBtnProps> = (props) => {
   const isLoading = workBreakStartMutation.isLoading
 
   const handleBreakStart = async () => {
-    if (!workShiftId || !engraverId) {
+    if (!workShiftId || !currentEngraverId) {
       notify("Cannot start your break", "error")
       return
     }
 
     const body: WorkBreakUpdate = {
       work_shift_id: workShiftId,
-      engraver_id: engraverId,
+      engraver_id: currentEngraverId,
     }
 
     await workBreakStartMutation.mutateAsync(body)

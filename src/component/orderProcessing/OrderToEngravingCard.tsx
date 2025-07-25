@@ -37,7 +37,7 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const { currentEngraver } = useUserContext()
+  const { currentEngraverId } = useUserContext()
 
   const processingOrderCreateMutation = useProcessingOrderCreateMutation()
 
@@ -48,8 +48,6 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
   const date = stringToDate(order?.date)
   const quantity = order?.quantity
 
-  const isProcessingOrderExists = !!processingOrder
-  const prevProcessingOrderId = processingOrder?.id
   const status = processingOrder?.status
   const isStatusExists = !!status
 
@@ -84,28 +82,45 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
     return "Take it for engraving"
   }
 
-  const handleViewOrderClick = () => {
-    navigateToEngravingPage(prevProcessingOrderId, true)
+  const notifyOrderNotExists = () => {
+    notify("Order with this ID does not exists", "error")
+  }
+
+  const handleViewClick = async () => {
+    if (!orderId) {
+      notifyOrderNotExists()
+      return
+    }
+
+    const body: ProcessingOrderCreate = {
+      order_id: orderId,
+      is_for_view_mode: true,
+    }
+
+    const { id: processingOrderId } =
+      await processingOrderCreateMutation.mutateAsync(body)
+
+    navigateToEngravingPage(processingOrderId, true)
   }
 
   const handleEngravingClick = async () => {
-    if (!currentEngraver) {
+    if (isViewOnlyMode) {
+      handleViewClick()
+      return
+    }
+
+    if (!currentEngraverId) {
       notify("Your're not engraver", "error")
       return
     }
 
     if (!orderId) {
-      notify("Order with this ID does not exists", "error")
-      return
-    }
-
-    if (isViewOnlyMode) {
-      handleViewOrderClick()
+      notifyOrderNotExists()
       return
     }
 
     const body: ProcessingOrderCreate = {
-      engraver_id: currentEngraver.id,
+      engraver_id: currentEngraverId,
       order_id: orderId,
     }
 
@@ -148,17 +163,15 @@ export const OrderToEngravingCard: FC<OrderToEngravingCardProps> = (props) => {
           )}
 
           {/* View Order Btn */}
-          {isProcessingOrderExists && (
-            <Button
-              w="full"
-              variant="secondary"
-              onClick={handleViewOrderClick}
-              isLoading={isLoading}
-              isDisabled={isLoading}
-            >
-              View Order
-            </Button>
-          )}
+          <Button
+            w="full"
+            variant="secondary"
+            onClick={handleViewClick}
+            isLoading={isLoading}
+            isDisabled={isLoading}
+          >
+            View Order
+          </Button>
         </Flex>
       </CardFooter>
     </Card>
