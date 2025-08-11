@@ -58,7 +58,6 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
             title="Required Storage Goods"
             fontSize="lg"
             fontWeight="medium"
-            defaultExpanded
           >
             <Flex w="full" direction="column" ml={10} gap={2}>
               {storage_goods?.map((storageGoodDetails, index) => (
