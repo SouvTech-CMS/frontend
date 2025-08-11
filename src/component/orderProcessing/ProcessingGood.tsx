@@ -27,6 +27,8 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
   const sku = good.uniquename
   const description = good.description
 
+  const quantityForEngraving = goodDetails.quantity
+
   const { engravingInfo, goodListingParams } = parseEngravingInfoStr(
     goodDetails.engraving_info,
   )
@@ -52,6 +54,9 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
               <Text fontWeight="bold">{good.name}</Text>
             </Flex>
           </MarketplaceGoodListingLink>
+
+          {/* Quantity */}
+          <Text fontWeight="semibold">Quantity: {quantityForEngraving}</Text>
 
           {/* Storage Goods Toggle */}
           <ToggleContainer
