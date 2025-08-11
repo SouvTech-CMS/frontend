@@ -69,6 +69,7 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
                 <ProcessingStorageGood
                   key={index}
                   storageGoodDetails={storageGoodDetails}
+                  goodDetails={goodDetails}
                 />
               ))}
             </Flex>
