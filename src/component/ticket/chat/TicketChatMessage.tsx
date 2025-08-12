@@ -25,7 +25,7 @@ export const TicketChatMessage: FC<TicketChatMessageProps> = (props) => {
 
   return (
     <Flex
-      maxW="80%"
+      maxW="full"
       direction={isCurrentUserSender ? "row-reverse" : "row"}
       alignItems="flex-start"
       alignSelf={isCurrentUserSender ? "flex-end" : "flex-start"}
