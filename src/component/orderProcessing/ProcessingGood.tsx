@@ -25,13 +25,14 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
 
   const { storage_goods, ...good } = foundGood
   const sku = good.uniquename
-  const description = good.description
 
   const quantityForEngraving = goodDetails.quantity
 
   const { engravingInfo, goodListingParams } = parseEngravingInfoStr(
     goodDetails.engraving_info,
   )
+
+  const originalGoodSKU = goodListingParams?.OriginalSKU
 
   return (
     <>
@@ -49,7 +50,7 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
               flexWrap="wrap"
               gap={2}
             >
-              <SKUBadge sku={description || sku} size="lg" />
+              <SKUBadge sku={originalGoodSKU || sku} size="lg" />
 
               <Text fontWeight="bold">{good.name}</Text>
             </Flex>

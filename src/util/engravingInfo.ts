@@ -4,6 +4,7 @@ const PARAMS_TO_EXCLUDE_FROM_ENGRAVING_INFO = [
   "listing_id",
   "product_id",
   "transaction_type",
+  "OriginalSKU",
 ]
 
 export const getEtsyGoodListingUrl = (
