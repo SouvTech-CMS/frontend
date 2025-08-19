@@ -41,7 +41,10 @@ export const TicketChatMessage: FC<TicketChatMessageProps> = (props) => {
         py={2}
         borderRadius="md"
       >
-        <Text pr={4}>{text}</Text>
+        {/* Message Content */}
+        <Text pr={4} whiteSpace="pre-wrap">
+          {text}
+        </Text>
 
         <Flex alignSelf="flex-end">
           <CustomTooltip
