@@ -29,9 +29,9 @@ export const parseEngravingInfoStr = (engravingInfoStr?: string) => {
   const engravingInfo = Object.entries<string>(engravingInfoJSON)
 
   // Exclude params from Engraving Info
-  const filteredEngravingInfo = engravingInfo.filter(
-    ([key]) => !PARAMS_TO_EXCLUDE_FROM_ENGRAVING_INFO.includes(key),
-  )
+  const filteredEngravingInfo = engravingInfo
+    .filter(([key]) => !PARAMS_TO_EXCLUDE_FROM_ENGRAVING_INFO.includes(key))
+    .sort((a, b) => a[0].localeCompare(b[0]))
 
   const goodListingParams: GoodListingParams = Object.fromEntries(
     engravingInfo.filter(([key]) =>
