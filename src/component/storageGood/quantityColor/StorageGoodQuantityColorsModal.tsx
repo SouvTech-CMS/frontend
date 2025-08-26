@@ -58,8 +58,11 @@ export const StorageGoodQuantityColorsModal: FC<
       "quantityColorsList",
       getAllQuantityColors,
     )
+  const filteredQuantityColorsList = quantityColorsList?.filter(
+    (quantityColor) => !quantityColor.is_use_for_out_of_production,
+  )
   const isQuantityColorsListExists =
-    !!quantityColorsList && quantityColorsList.length > 0
+    !!filteredQuantityColorsList && filteredQuantityColorsList.length > 0
 
   const storageGoodQuantityColorsUpdateMutation =
     useStorageGoodQuantityColorsUpdateMutation()
@@ -88,7 +91,7 @@ export const StorageGoodQuantityColorsModal: FC<
         // and update its quantity to max
         if (isQuantityColorsListExists) {
           // Find "moreThan" Quantity Color
-          const moreThanQuantityColor = quantityColorsList.find(
+          const moreThanQuantityColor = filteredQuantityColorsList.find(
             (quantityColor) => quantityColor.is_use_more_than_condition,
           )
           if (moreThanQuantityColor) {
@@ -180,7 +183,7 @@ export const StorageGoodQuantityColorsModal: FC<
             <Divider />
 
             <Flex w="full" direction="column" gap={2}>
-              {quantityColorsList?.map((quantityColor, index) => (
+              {filteredQuantityColorsList?.map((quantityColor, index) => (
                 <StorageGoodQuantityColorItem
                   key={index}
                   storageGoodId={goodId}

@@ -14,6 +14,7 @@ export type StorageGood = {
   quantity: number
   description?: string
   is_actual?: boolean
+  is_out_of_production?: boolean
 }
 
 export type FullStorageGood = StorageGood & {

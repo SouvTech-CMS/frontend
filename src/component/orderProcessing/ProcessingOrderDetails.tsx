@@ -1,4 +1,5 @@
 import { Flex, Heading } from "@chakra-ui/react"
+import { ShopBadge } from "component/badge/ShopBadge"
 import { Container } from "component/Container"
 import { ProcessingGood } from "component/orderProcessing/ProcessingGood"
 import { FC } from "react"
@@ -15,6 +16,7 @@ export const ProcessingOrderDetails: FC<ProcessingOrderDetailsProps> = (
   const { processingOrder } = props
 
   const order = processingOrder.order
+  const shop = order?.shop
   const marketplaceOrderId = order?.order_id
 
   const goodsList = order?.goods
@@ -24,7 +26,9 @@ export const ProcessingOrderDetails: FC<ProcessingOrderDetailsProps> = (
 
   return (
     <Container h="full" flex={2} gap={5}>
-      <Flex w="full">
+      <Flex w="full" direction="column" gap={2}>
+        <ShopBadge shop={shop} fontSize="md" />
+
         <Heading>Order #{marketplaceOrderId}</Heading>
       </Flex>
 

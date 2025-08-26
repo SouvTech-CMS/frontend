@@ -1,9 +1,9 @@
-import { Badge } from "@chakra-ui/react"
+import { Badge, BadgeProps } from "@chakra-ui/react"
 import { FC } from "react"
 import { Shop } from "type/shop"
 import { WithId } from "type/withId"
 
-interface ShopBadgeProps {
+interface ShopBadgeProps extends BadgeProps {
   shop?: WithId<Shop>
 }
 
@@ -15,7 +15,7 @@ export const ShopBadge: FC<ShopBadgeProps> = (props) => {
   }
 
   return (
-    <Badge h="fit-content" w="fit-content" colorScheme="teal">
+    <Badge h="fit-content" w="fit-content" colorScheme="teal" {...props}>
       {shop.name}
     </Badge>
   )

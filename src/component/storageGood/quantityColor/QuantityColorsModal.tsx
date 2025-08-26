@@ -74,19 +74,30 @@ export const QuantityColorsModal: FC<QuantityColorsModalProps> = (props) => {
   }
 
   const handleChange = (quantityColor: WithId<QuantityColor>) => {
-    setQuantityColorsList((prevQuantityColorsList) =>
-      prevQuantityColorsList.map((prevQuantityColor) =>
-        prevQuantityColor.index === quantityColor.index
-          ? quantityColor
-          : {
-              ...prevQuantityColor,
-              is_use_more_than_condition:
-                quantityColor.is_use_more_than_condition
-                  ? false
-                  : prevQuantityColor.is_use_more_than_condition,
-            },
-      ),
-    )
+    setQuantityColorsList((prevQuantityColorsList) => {
+      // Check if unique flags were set
+      const isSetMoreThan = !!quantityColor.is_use_more_than_condition
+      const isSetOutOfProduction = !!quantityColor.is_use_for_out_of_production
+
+      return prevQuantityColorsList.map((prevQuantityColor) => {
+        // If quantityColor was changed, just update it
+        if (prevQuantityColor.index === quantityColor.index) {
+          return quantityColor
+        }
+
+        // For other quantityColors, reset unique flags
+        // if they were set in changed quantityColor
+        return {
+          ...prevQuantityColor,
+          is_use_more_than_condition: isSetMoreThan
+            ? false
+            : prevQuantityColor.is_use_more_than_condition,
+          is_use_for_out_of_production: isSetOutOfProduction
+            ? false
+            : prevQuantityColor.is_use_for_out_of_production,
+        }
+      })
+    })
   }
 
   const handleDelete = (quantityColor: WithId<QuantityColor>) => {
@@ -123,6 +134,7 @@ export const QuantityColorsModal: FC<QuantityColorsModalProps> = (props) => {
 
         <ModalBody>
           <Flex w="full" direction="column" gap={5}>
+            {/* Description */}
             <Flex w="full" direction="column" gap={1}>
               <Text color="hint">
                 This is list of Quantity Colors that you will be able to
@@ -143,12 +155,16 @@ export const QuantityColorsModal: FC<QuantityColorsModalProps> = (props) => {
             {!isQuantityColorsLoading && isQuantityColorsListExist && (
               <Flex direction="column" gap={5}>
                 {quantityColorsList?.map((quantityColor, index) => (
-                  <QuantityColorFields
-                    key={index}
-                    prevQuantityColor={quantityColor}
-                    onChange={handleChange}
-                    onDelete={handleDelete}
-                  />
+                  <>
+                    <QuantityColorFields
+                      key={index}
+                      prevQuantityColor={quantityColor}
+                      onChange={handleChange}
+                      onDelete={handleDelete}
+                    />
+
+                    <Divider />
+                  </>
                 ))}
               </Flex>
             )}

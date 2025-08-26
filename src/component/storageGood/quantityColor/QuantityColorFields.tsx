@@ -29,6 +29,7 @@ export const QuantityColorFields: FC<QuantityColorFieldsProps> = (props) => {
   const description = prevQuantityColor.description
   const color = prevQuantityColor.color
   const isUseMoreThanCondition = prevQuantityColor.is_use_more_than_condition
+  const isUseForOutOfProduction = prevQuantityColor.is_use_for_out_of_production
 
   const isDescriptionInvalid = !description
 
@@ -91,21 +92,15 @@ export const QuantityColorFields: FC<QuantityColorFieldsProps> = (props) => {
           isInvalid={isDescriptionInvalid}
         />
 
-        <Flex
-          w="full"
-          direction="row"
-          justifyContent="space-between"
-          alignItems="flex-start"
-          gap={2}
-        >
+        <Flex w="full" direction="column" pl={1} gap={1}>
           {/* Preview */}
-          <Flex direction="row" alignItems="center" pl={1} gap={2}>
+          <Flex direction="row" alignItems="center" gap={2}>
             <Text fontWeight="medium">Preview:</Text>
 
             <QuantityColorIcon quantityColor={prevQuantityColor} />
           </Flex>
 
-          {/* IsUseMoreThanCondition Checkbox */}
+          {/* More-Than-Condition Checkbox */}
           <CustomTooltip
             placement="top"
             label="Check this if you would like to use this Quantity Color when Storage Good is enough"
@@ -120,6 +115,24 @@ export const QuantityColorFields: FC<QuantityColorFieldsProps> = (props) => {
               }}
             >
               Use when Storage Good is enough
+            </Checkbox>
+          </CustomTooltip>
+
+          {/* Out-of-Production Checkbox */}
+          <CustomTooltip
+            placement="top"
+            label="Check this if you would like to use this Quantity Color when Storage Good is out of production"
+            fontStyle="normal"
+            fontWeight="medium"
+          >
+            <Checkbox
+              isChecked={isUseForOutOfProduction}
+              onChange={(e) => {
+                const value = e.target.checked
+                handleChange("is_use_for_out_of_production", value)
+              }}
+            >
+              Use when Storage Good is out of production
             </Checkbox>
           </CustomTooltip>
         </Flex>

@@ -13,17 +13,28 @@ import {
   FiEye,
   FiEyeOff,
   FiMoreVertical,
+  FiRotateCcw,
+  FiSlash,
 } from "react-icons/fi"
 
 interface StorageGoodRowMenuProps {
   isGoodHidden?: boolean
+  isGoodOutOfProduction?: boolean
   onEdit: () => void
   onQuantityColors: () => void
   onToggleIsHidden: () => void
+  onToggleIsOutOfProduction: () => void
 }
 
 export const StorageGoodRowMenu: FC<StorageGoodRowMenuProps> = (props) => {
-  const { isGoodHidden, onEdit, onQuantityColors, onToggleIsHidden } = props
+  const {
+    isGoodHidden,
+    isGoodOutOfProduction,
+    onEdit,
+    onQuantityColors,
+    onToggleIsHidden,
+    onToggleIsOutOfProduction,
+  } = props
 
   const { canEditStorage } = useUserPermissions()
 
@@ -59,6 +70,16 @@ export const StorageGoodRowMenu: FC<StorageGoodRowMenuProps> = (props) => {
           isDisabled={!canEditStorage}
         >
           {isGoodHidden ? "Show" : "Hide"}
+        </MenuItem>
+
+        <MenuItem
+          icon={isGoodOutOfProduction ? <FiRotateCcw /> : <FiSlash />}
+          onClick={onToggleIsOutOfProduction}
+          isDisabled={!canEditStorage}
+        >
+          {isGoodOutOfProduction
+            ? "Unmark as Out of Production"
+            : "Mark as Out of Production"}
         </MenuItem>
       </MenuList>
     </Menu>

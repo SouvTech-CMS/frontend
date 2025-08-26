@@ -61,6 +61,7 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   const sku = good.uniquename
   const totalQuantity = good.quantity
   const isActual = good.is_actual
+  const isOutOfProduction = good.is_out_of_production
 
   const primeCost = storageActualInfo?.prime_cost
   const boxesQuantity = storageActualInfo?.box_quantity
@@ -71,12 +72,12 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   const storageGoodUpdateMutation = useStorageGoodUpdateMutation()
 
   const toggleGoodIsHidden = async () => {
-    const updatedIsActul = !isActual
+    const updatedIsActual = !isActual
 
     const body: StorageGoodUpdate = {
       storage_good: {
         ...good,
-        is_actual: updatedIsActul,
+        is_actual: updatedIsActual,
       },
       shops_ids: shopsIds,
       shelf: shelvesIds,
@@ -86,8 +87,30 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
 
     notify(
       `Storage Good #${goodId} was successfully ${
-        updatedIsActul ? "shown" : "hidden"
+        updatedIsActual ? "shown" : "hidden"
       }`,
+      "success",
+    )
+  }
+
+  const toggleIsOutOfProduction = async () => {
+    const updatedIsOutOfProduction = !isOutOfProduction
+
+    const body: StorageGoodUpdate = {
+      storage_good: {
+        ...good,
+        is_out_of_production: updatedIsOutOfProduction,
+      },
+      shops_ids: shopsIds,
+      shelf: shelvesIds,
+    }
+
+    await storageGoodUpdateMutation.mutateAsync(body)
+
+    notify(
+      `Storage Good #${goodId} was successfully ${
+        updatedIsOutOfProduction ? "" : "un"
+      }marked as out of production`,
       "success",
     )
   }
@@ -180,9 +203,11 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
             {/* Menu Btn */}
             <StorageGoodRowMenu
               isGoodHidden={!isActual}
+              isGoodOutOfProduction={isOutOfProduction}
               onEdit={onStorageGoodModalOpen}
               onQuantityColors={onQuantityColorsModalOpen}
               onToggleIsHidden={toggleGoodIsHidden}
+              onToggleIsOutOfProduction={toggleIsOutOfProduction}
             />
           </Flex>
         </Td>
