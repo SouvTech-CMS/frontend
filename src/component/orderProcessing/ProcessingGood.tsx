@@ -3,6 +3,7 @@ import { SKUBadge } from "component/badge/SKUBadge"
 import { MarketplaceGoodListingLink } from "component/good/MarketplaceGoodListingLink"
 import { ProcessingStorageGood } from "component/orderProcessing/ProcessingStorageGood"
 import { ToggleContainer } from "component/ToggleContainer"
+import { decode } from "he"
 import { FC } from "react"
 import { GoodDetails, GoodWithDetailedStorageGoods } from "type/order/good"
 import { WithId } from "type/withId"
@@ -50,7 +51,11 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
               flexWrap="wrap"
               gap={2}
             >
-              <SKUBadge sku={originalGoodSKU || sku} size="lg" />
+              <SKUBadge
+                sku={originalGoodSKU || sku}
+                size="lg"
+                textTransform="none"
+              />
 
               <Text fontWeight="bold">{good.name}</Text>
             </Flex>
@@ -89,9 +94,9 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
                 flexWrap="wrap"
                 gap={2}
               >
-                <Text fontWeight="bold">{key}:</Text>
+                <Text fontWeight="bold">{decode(key)}:</Text>
 
-                <Text whiteSpace="pre-wrap">{value}</Text>
+                <Text whiteSpace="pre-wrap">{decode(value)}</Text>
               </Flex>
             </Flex>
           ))}
