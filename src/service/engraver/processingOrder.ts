@@ -9,8 +9,12 @@ import { notifyApiError } from "util/toasts"
 
 export const useProcessingOrderCreateMutation = () => {
   return useMutation(createProcessingOrder, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("processingOrder")
+    onSuccess: (response) => {
+      const engraverId = response.engraver_id
+      queryClient.invalidateQueries(["processingOrdersList", engraverId])
+
+      const processingOrderId = response.id
+      queryClient.invalidateQueries(["processingOrder", processingOrderId])
     },
     onError: (error: AxiosError) => {
       notifyApiError(error)
