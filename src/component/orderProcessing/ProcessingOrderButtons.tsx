@@ -8,6 +8,7 @@ import { FC } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useProcessingOrderStatusUpdateMutation } from "service/engraver/processingOrder"
 import { ProcessingOrderStatusUpdate } from "type/engraver/processingOrder"
+import { notify } from "util/toasts"
 
 interface ProcessingOrderButtonsProps {}
 
@@ -34,6 +35,7 @@ export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
 
   const updateStatus = async (newStatus: ProcessingOrderStatus) => {
     if (!processingOrderId) {
+      notify("You have no active Order", "error")
       return
     }
 
