@@ -102,7 +102,7 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
   }, [isOpen])
 
   return (
-    <Modal size="full" isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal size="full" isOpen={isOpen} onClose={onClose}>
       <ModalBackgroundBlur />
 
       <ModalContent>
