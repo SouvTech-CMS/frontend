@@ -88,7 +88,7 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
   }, [isOpen])
 
   return (
-    <Modal size="full" isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal size="full" isOpen={isOpen} onClose={onClose}>
       <ModalBackgroundBlur />
 
       <ModalContent>
