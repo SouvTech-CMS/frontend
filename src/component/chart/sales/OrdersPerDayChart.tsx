@@ -1,8 +1,9 @@
+import { Flex, Text } from "@chakra-ui/react"
 import { getOrdersAnalytics } from "api/analytics/orders"
 import { ChartData, ChartOptions } from "chart.js"
 import { LoadingPage } from "component/page/LoadingPage"
 import { useTableContext } from "context/table"
-import { FC, useEffect } from "react"
+import { FC, useEffect, useMemo } from "react"
 import { Line } from "react-chartjs-2"
 import { useQuery } from "react-query"
 import { useCustomTheme } from "theme"
@@ -21,7 +22,7 @@ type LineChartOptions = ChartOptions<"line">
 const options: LineChartOptions = {
   responsive: true,
   interaction: {
-    mode: "nearest",
+    mode: "index",
     intersect: false,
   },
   plugins: {
@@ -69,10 +70,29 @@ export const OrdersPerDayChart: FC = () => {
     },
   )
 
+  // Calculate per-shop and total order counts
+  const { shopOrderCounts, totalOrders } = useMemo(() => {
+    if (!ordersAnalytics?.data) {
+      return { shopOrderCounts: [], totalOrders: 0 }
+    }
+    const shopOrderCounts = ordersAnalytics.data.map(({ shop, report }) => ({
+      shop,
+      count: report.reduce((sum, r) => sum + (r.count || 0), 0),
+    }))
+    const totalOrders = shopOrderCounts.reduce((sum, s) => sum + s.count, 0)
+    return { shopOrderCounts, totalOrders }
+  }, [ordersAnalytics])
+
   const data: LineChartData = {
-    labels: ordersAnalytics?.labels?.map((label) =>
-      formatDate(dateAsStringToDate(label), true, false),
-    ),
+    labels: ordersAnalytics?.labels?.map((label, idx) => {
+      // Суммарное количество заказов за этот день
+      const sumForDay =
+        ordersAnalytics?.data?.reduce(
+          (sum, { report }) => sum + (report[idx]?.count || 0),
+          0,
+        ) || 0
+      return `${formatDate(dateAsStringToDate(label), true, false)} | Total: ${sumForDay}`
+    }),
     datasets:
       ordersAnalytics?.data?.map(({ shop, report }) => {
         const [bgColor, borderColor] = getColorsForItem(colors, shop.id)
@@ -127,5 +147,47 @@ export const OrdersPerDayChart: FC = () => {
     return <LoadingPage />
   }
 
-  return <Line options={options} data={data} />
+  return (
+    <>
+      <Line options={options} data={data} />
+
+      <Flex w="full" direction="column" ml={5} gap={2}>
+        {/* Title */}
+        <Text fontSize="lg" fontWeight="semibold">
+          By Shops for specified period
+        </Text>
+
+        {/* Shop Orders Counts */}
+        <Flex w="full" direction="column" gap={2}>
+          {shopOrderCounts.map(({ shop, count }, index) => (
+            <Flex
+              key={index}
+              w="full"
+              direction="row"
+              alignItems="center"
+              gap={2}
+            >
+              <Flex
+                h={4}
+                w={4}
+                borderRadius="full"
+                bg={getColorsForItem(colors, shop.id)[0]}
+              />
+
+              <Text fontWeight="medium">
+                {shop.name}: {count}
+              </Text>
+            </Flex>
+          ))}
+
+          {/* Total Orders from All Shops */}
+          <Flex w="full">
+            <Text fontSize="lg" fontWeight="semibold">
+              Total: {totalOrders}
+            </Text>
+          </Flex>
+        </Flex>
+      </Flex>
+    </>
+  )
 }
