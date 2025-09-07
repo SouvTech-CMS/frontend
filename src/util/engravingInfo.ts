@@ -7,6 +7,8 @@ const PARAMS_TO_EXCLUDE_FROM_ENGRAVING_INFO = [
   "OriginalSKU",
 ]
 
+export const PERSONALIZATION_PARAM = "Personalization"
+
 export const getEtsyGoodListingUrl = (
   listingId?: number,
   productId?: number,
