@@ -7,7 +7,10 @@ import { decode } from "he"
 import { FC } from "react"
 import { GoodDetails, GoodWithDetailedStorageGoods } from "type/order/good"
 import { WithId } from "type/withId"
-import { parseEngravingInfoStr } from "util/engravingInfo"
+import {
+  parseEngravingInfoStr,
+  PERSONALIZATION_PARAM,
+} from "util/engravingInfo"
 
 interface ProcessingGoodProps {
   goodsList: WithId<GoodWithDetailedStorageGoods>[]
@@ -31,6 +34,16 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
 
   const { engravingInfo, goodListingParams } = parseEngravingInfoStr(
     goodDetails.engraving_info,
+  )
+  const engravingPersonalization = engravingInfo?.find(
+    ([key]) => key === PERSONALIZATION_PARAM,
+  )
+  const isEngravingPersonalizationExists =
+    !!engravingPersonalization && engravingPersonalization.length === 2
+
+  // Exclude personalization from engravingInfo for display
+  const filteredEngravingInfo = engravingInfo?.filter(
+    ([key]) => key !== PERSONALIZATION_PARAM,
   )
 
   const originalGoodSKU = goodListingParams?.OriginalSKU
@@ -84,22 +97,41 @@ export const ProcessingGood: FC<ProcessingGoodProps> = (props) => {
 
         {/* Engraving Info */}
         <Flex w="full" direction="column" gap={2}>
-          {engravingInfo?.map(([key, value], index) => (
-            <Flex key={index} w="full" direction="column">
-              <Flex
-                key={index}
-                w="full"
-                direction="row"
-                alignItems="flex-start"
-                flexWrap="wrap"
-                gap={2}
-              >
-                <Text fontWeight="bold">{decode(key)}:</Text>
+          {filteredEngravingInfo?.map(([key, value], index) => (
+            <Flex
+              key={index}
+              w="full"
+              direction="row"
+              alignItems="flex-start"
+              flexWrap="wrap"
+              gap={2}
+            >
+              <Text fontWeight="bold">{decode(key)}:</Text>
 
-                <Text whiteSpace="pre-wrap">{decode(value)}</Text>
-              </Flex>
+              <Text whiteSpace="pre-wrap">{decode(value)}</Text>
             </Flex>
           ))}
+
+          {/* Engraving Personalization */}
+          {isEngravingPersonalizationExists && (
+            <Flex w="full" direction="column" gap={1}>
+              <Text fontWeight="bold">
+                {decode(engravingPersonalization[0])}:
+              </Text>
+
+              <Flex
+                bgColor="appLayout"
+                w="fit-content"
+                px={3}
+                py={2}
+                borderRadius="md"
+              >
+                <Text whiteSpace="pre-wrap">
+                  {decode(engravingPersonalization[1])}
+                </Text>
+              </Flex>
+            </Flex>
+          )}
         </Flex>
       </Flex>
     </>
