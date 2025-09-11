@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { OrderSelect } from "component/select/OrderSelect"
+import { useTicketsContext } from "context/tickets"
 import { ChangeEvent, FC, useEffect, useState } from "react"
 import { useTicketCreateMutation } from "service/ticket/ticket"
 import { ModalProps } from "type/modalProps"
@@ -23,6 +24,8 @@ interface TicketModalProps extends ModalProps {}
 
 export const TicketModal: FC<TicketModalProps> = (props) => {
   const { isOpen, onClose } = props
+
+  const { setOpenedTicket } = useTicketsContext()
 
   const [order, setOrder] = useState<WithId<Order>>()
   const [description, setDescription] = useState<string>()
@@ -58,7 +61,9 @@ export const TicketModal: FC<TicketModalProps> = (props) => {
       description: description,
     }
 
-    await ticketCreateMutation.mutateAsync(body)
+    const ticket = await ticketCreateMutation.mutateAsync(body)
+
+    setOpenedTicket(ticket)
 
     notify(
       `Ticket for Order #${marketplaceOrderId} was created successfully`,

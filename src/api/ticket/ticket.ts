@@ -15,10 +15,13 @@ export const getAllTickets = async (
   return ticketsList
 }
 
-export const createTicket = async (body: TicketCreate) => {
-  await axiosClient.post(`/tickets/${body.orderId}`, {
+export const createTicket = async (
+  body: TicketCreate,
+): Promise<WithId<FullTicket>> => {
+  const { data: ticket } = await axiosClient.post(`/tickets/${body.orderId}`, {
     description: body.description,
   })
+  return ticket
 }
 
 export const updateTicket = async (body: WithId<Ticket>) => {
