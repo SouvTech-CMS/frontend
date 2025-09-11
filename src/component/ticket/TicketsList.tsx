@@ -1,36 +1,27 @@
 import { Flex, Text } from "@chakra-ui/react"
 import { TicketListItem } from "component/ticket/TicketListItem"
-import { TicketSearch } from "component/ticket/TicketSearch"
-import { FC, useState } from "react"
+import { FC } from "react"
 import { FullTicket } from "type/ticket/ticket"
 import { WithId } from "type/withId"
 
 interface TicketsListProps {
-  ticketsList: WithId<FullTicket>[]
+  ticketsList?: WithId<FullTicket>[]
 }
 
 export const TicketsList: FC<TicketsListProps> = (props) => {
   const { ticketsList } = props
 
-  const [ticketOrderId, setTicketOrderId] = useState<string>()
-
-  const isTicketOrderIdExists = !!ticketOrderId
-
-  const filteredTicketsList = isTicketOrderIdExists
-    ? ticketsList.filter((ticket) =>
-        ticket.order.order_id.includes(ticketOrderId),
-      )
-    : ticketsList
-
-  const isTicketsExist = !!filteredTicketsList.length
+  const isTicketsExist = !!ticketsList?.length
 
   return (
-    <Flex w="full" direction="column">
-      <TicketSearch
-        ticketOrderId={ticketOrderId}
-        setTicketOrderId={setTicketOrderId}
-      />
-
+    <Flex
+      minH={0}
+      w="full"
+      direction="column"
+      flexGrow={1}
+      flexShrink={1}
+      flexBasis={0}
+    >
       {!isTicketsExist && (
         <Flex
           w="full"
@@ -43,9 +34,11 @@ export const TicketsList: FC<TicketsListProps> = (props) => {
         </Flex>
       )}
 
-      {filteredTicketsList.map((ticket, index) => (
-        <TicketListItem key={index} fullTicket={ticket} />
-      ))}
+      <Flex w="full" direction="column" overflowY="auto">
+        {ticketsList?.map((ticket, index) => (
+          <TicketListItem key={index} fullTicket={ticket} />
+        ))}
+      </Flex>
     </Flex>
   )
 }
