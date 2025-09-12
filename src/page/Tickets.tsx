@@ -31,8 +31,7 @@ export const Tickets = (props: PageProps) => {
     <Page guideNotionPageId={guideNotionPageId}>
       <PageHeading title="Tickets" isSearchHidden />
 
-      <Flex h="full" w="full" direction="row" overflow="hidden" gap={2}>
-        {/* Tabs */}
+      <Flex h="full" w="full" direction="row" overflow="hidden" gap={5}>
         <Flex flex={1}>
           <TicketsPanel ticketsList={ticketsList} isLoading={isLoading} />
         </Flex>
