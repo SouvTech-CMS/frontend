@@ -37,6 +37,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
   const { prevSupplier, isOpen, onClose } = props
 
   const isNewSupplier = !prevSupplier
+  const supplierId = prevSupplier?.id
 
   const [supplier, setSupplier] = useState<Supplier>(
     prevSupplier || newSupplier,
@@ -51,7 +52,7 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
   const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
     useCommentInput({
       objectName: "supplier",
-      objectId: prevSupplier?.id,
+      objectId: supplierId,
     })
 
   const isSupplierNameInvalid = !supplier.name.trim()
@@ -65,21 +66,23 @@ export const SupplierModal: FC<SupplierModalProps> = (props) => {
 
   const onSupplierUpdate = async () => {
     if (isNewSupplier) {
-      const { id: newSupplierId } = await supplierCreateMutation.mutateAsync(
-        supplier,
-      )
+      const { id: newSupplierId } =
+        await supplierCreateMutation.mutateAsync(supplier)
+
       await onCommentSubmit(newSupplierId)
 
       notify(`Supplier ${supplier.name} created successfully`, "success")
     } else {
       await supplierUpdateMutation.mutateAsync({
         ...supplier,
-        id: prevSupplier.id,
+        id: supplierId!,
       })
-      await onCommentSubmit()
+
+      await onCommentSubmit(supplierId)
 
       notify(`Supplier ${supplier.name} updated successfully`, "success")
     }
+
     onClose()
   }
 

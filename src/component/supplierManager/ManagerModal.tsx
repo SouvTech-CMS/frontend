@@ -78,15 +78,17 @@ export const ManagerModal: FC<ManagerModalProps> = (props) => {
       }
       await managerUpdateMutation.mutateAsync(body)
 
-      await onCommentSubmit()
+      await onCommentSubmit(managerId)
 
       notify(`Manager ${manager.name} updated successfully`, "success")
     } else {
       const { id: managerId } = await managerCreateMutation.mutateAsync(manager)
+
       await onCommentSubmit(managerId)
 
       notify(`Manager ${manager.name} created successfully`, "success")
     }
+
     onClose()
   }
 
