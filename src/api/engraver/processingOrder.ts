@@ -1,4 +1,6 @@
 import { axiosClient } from "api/axiosClient"
+import { ApiRequest } from "type/api/apiRequest"
+import { ApiResponse } from "type/api/apiResponse"
 import {
   ProcessingOrder,
   ProcessingOrderCreate,
@@ -6,6 +8,7 @@ import {
 } from "type/engraver/processingOrder"
 import { Order } from "type/order/order"
 import { WithId } from "type/withId"
+import { beautifyBody } from "util/apiRequestBody"
 
 export const getReadyToProcessingOrderByMarketplaceId = async (
   marketplaceOrderId: string,
@@ -35,10 +38,11 @@ export const getProcessingOrderByOrderId = async (
 }
 
 export const getProcessingOrdersByEngraverId = async (
-  engraverId: number,
-): Promise<WithId<ProcessingOrder>[]> => {
-  const { data: processingOrders } = await axiosClient.get(
-    `/order/processing/engraver_id/${engraverId}`,
+  body: ApiRequest<WithId<ProcessingOrder>>,
+): Promise<ApiResponse<WithId<ProcessingOrder>[]>> => {
+  const { data: processingOrders } = await axiosClient.post(
+    "/order/processing/engraver_id/",
+    beautifyBody(body),
   )
   return processingOrders
 }

@@ -10,8 +10,7 @@ import { notifyApiError } from "util/toasts"
 export const useProcessingOrderCreateMutation = () => {
   return useMutation(createProcessingOrder, {
     onSuccess: (response) => {
-      const engraverId = response.engraver_id
-      queryClient.invalidateQueries(["processingOrdersList", engraverId])
+      queryClient.invalidateQueries("processingOrdersList")
 
       const processingOrderId = response.id
       queryClient.invalidateQueries(["processingOrder", processingOrderId])
@@ -24,9 +23,8 @@ export const useProcessingOrderCreateMutation = () => {
 
 export const useProcessingOrderStatusUpdateMutation = () => {
   return useMutation(updateProcessingOrderStatus, {
-    onSuccess: (response, body) => {
-      const engraverId = response.engraver_id
-      queryClient.invalidateQueries(["processingOrdersList", engraverId])
+    onSuccess: (_, body) => {
+      queryClient.invalidateQueries("processingOrdersList")
 
       const processingOrderId = body.processing_order_id
       queryClient.invalidateQueries(["processingOrder", processingOrderId])
