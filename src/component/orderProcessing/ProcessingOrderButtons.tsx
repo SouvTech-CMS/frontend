@@ -20,7 +20,7 @@ export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
   const location = useLocation()
   const navigate = useNavigate()
 
-  const { processingOrderId } = useEngravingContext()
+  const { currentProccesingOrderId } = useEngravingContext()
 
   const processingOrderStatusUpdateMutation =
     useProcessingOrderStatusUpdateMutation()
@@ -34,13 +34,13 @@ export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
   }
 
   const updateStatus = async (newStatus: ProcessingOrderStatus) => {
-    if (!processingOrderId) {
+    if (!currentProccesingOrderId) {
       notify("You have no active Order", "error")
       return
     }
 
     const body: ProcessingOrderStatusUpdate = {
-      processing_order_id: processingOrderId,
+      processing_order_id: currentProccesingOrderId,
       new_status: newStatus,
     }
 

@@ -11,6 +11,7 @@ export const useProcessingOrderCreateMutation = () => {
   return useMutation(createProcessingOrder, {
     onSuccess: (response) => {
       queryClient.invalidateQueries("processingOrdersList")
+      queryClient.invalidateQueries("currentProcessingOrder")
 
       const processingOrderId = response.id
       queryClient.invalidateQueries(["processingOrder", processingOrderId])
@@ -25,6 +26,7 @@ export const useProcessingOrderStatusUpdateMutation = () => {
   return useMutation(updateProcessingOrderStatus, {
     onSuccess: (_, body) => {
       queryClient.invalidateQueries("processingOrdersList")
+      queryClient.invalidateQueries("currentProcessingOrder")
 
       const processingOrderId = body.processing_order_id
       queryClient.invalidateQueries(["processingOrder", processingOrderId])

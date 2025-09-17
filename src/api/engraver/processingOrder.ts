@@ -47,6 +47,15 @@ export const getProcessingOrdersByEngraverId = async (
   return processingOrders
 }
 
+export const getCurrentProcessingOrder = async (
+  engraver_id: number,
+): Promise<WithId<ProcessingOrder>> => {
+  const { data: processingOrder } = await axiosClient.get(
+    `/order/processing/engraver_id/${engraver_id}/active`,
+  )
+  return processingOrder
+}
+
 export const createProcessingOrder = async (
   body: ProcessingOrderCreate,
 ): Promise<WithId<ProcessingOrder>> => {
