@@ -70,8 +70,12 @@ export const StorageGoodModal: FC<StorageGoodModalProps> = (props) => {
 
   const isNameInvalid = !good.name?.trim()
 
+  console.log(good.quantity)
+
   const isQuantityInvalid =
-    !good.quantity || (!!prevGoodQuantity && prevGoodQuantity < good.quantity)
+    Number.isNaN(good.quantity) ||
+    good.quantity < 0 ||
+    (!!prevGoodQuantity && prevGoodQuantity < good.quantity)
 
   const isSaveBtnDisabled =
     isLoading || isUniqueNameInvalid || isNameInvalid || isQuantityInvalid
