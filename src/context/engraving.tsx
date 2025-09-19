@@ -1,11 +1,10 @@
 import { useDisclosure } from "@chakra-ui/react"
-import { getProcessingOrdersByEngraverId } from "api/engraver/processingOrder"
+import { getCurrentProcessingOrder } from "api/engraver/processingOrder"
 import { getEngraverScheduledBreaks } from "api/engraver/scheduledBreaks"
 import { getEngraverActiveWorkShift } from "api/engraver/workShift"
 import { InactivityModal } from "component/engraver/InactivityModal"
 import { ActiveScheduledBreakModal } from "component/workBreak/ActiveScheduledBreakModal"
 import { WorkShiftStart } from "component/workShift/WorkShiftStart"
-import { ProcessingOrderStatus } from "constant/orderStatus"
 import { useUserContext } from "context/user"
 import { createContext, useContext, useEffect } from "react"
 import { useQuery } from "react-query"
@@ -21,12 +20,9 @@ interface EngravingContextProps {
   activeWorkShift?: WithId<WorkShiftWithBreaks>
   isActiveWorkShiftLoading: boolean
   currentProcessingOrder?: WithId<ProcessingOrder>
-  processingOrderId?: number
+  currentProccesingOrderId?: number
   isCurrentProcessingOrderExists: boolean
-  recentlyProcessingOrders?: WithId<ProcessingOrder>[]
-  isRecentlyProcessingOrderExists: boolean
-  processingOrdersList?: WithId<ProcessingOrder>[]
-  isProcessingOrdersListLoading: boolean
+  isCurrentProcessingOrderLoading: boolean
 }
 
 // 10 seconds
@@ -47,20 +43,6 @@ export const EngravingContextProvider: FCC = (props) => {
   const { currentEngraverId, isUserEngraver, isLoadingCurrentUser } =
     useUserContext()
 
-  // * Processing Orders List
-  const {
-    data: processingOrdersList,
-    isLoading: isProcessingOrdersListLoading,
-    isRefetching: isProcessingOrdersListRefetching,
-    refetch: refetchProcessingOrdersList,
-  } = useQuery<WithId<ProcessingOrder>[]>(
-    ["processingOrdersList", currentEngraverId],
-    () => getProcessingOrdersByEngraverId(currentEngraverId!),
-    {
-      enabled: !!currentEngraverId,
-    },
-  )
-
   // * Active Work Shift
   const {
     data: activeWorkShift,
@@ -75,6 +57,23 @@ export const EngravingContextProvider: FCC = (props) => {
     },
   )
   const isActiveWorkShiftExists = !!activeWorkShift
+  const workShiftId = activeWorkShift?.id
+
+  // * Current Processing Order
+  const {
+    data: currentProcessingOrder,
+    isLoading: isCurrentProcessingOrderLoading,
+    isRefetching: isCurrentProcessingOrderRefetching,
+    refetch: refetchCurrentProcessingOrder,
+  } = useQuery(
+    ["currentProcessingOrder", currentEngraverId],
+    () => getCurrentProcessingOrder(currentEngraverId!),
+    {
+      enabled: !!currentEngraverId,
+    },
+  )
+  const isCurrentProcessingOrderExists = !!currentProcessingOrder
+  const currentProccesingOrderId = currentProcessingOrder?.id
 
   // * Scheduled Breaks
   const {
@@ -95,33 +94,16 @@ export const EngravingContextProvider: FCC = (props) => {
   const isActiveScheduledBreakExists = !!activeScheduledBreak
 
   const isRefetching =
-    isProcessingOrdersListRefetching ||
     isActiveWorkShiftRefetching ||
-    isActiveScheduledBreakRefetching
+    isActiveScheduledBreakRefetching ||
+    isCurrentProcessingOrderLoading ||
+    isCurrentProcessingOrderRefetching
 
   const isLoading =
     isRefetching ||
-    isProcessingOrdersListLoading ||
     isLoadingCurrentUser ||
-    isProcessingOrdersListLoading ||
     isActiveWorkShiftLoading ||
     isActiveScheduledBreakLoading
-
-  const currentProcessingOrder = processingOrdersList?.find(
-    (processingOrder) =>
-      processingOrder.status === ProcessingOrderStatus.IN_PROGRESS,
-  )
-  const processingOrderId = currentProcessingOrder?.id
-  const isCurrentProcessingOrderExists = !!currentProcessingOrder
-
-  const recentlyProcessingOrders = processingOrdersList?.filter(
-    (processingOrder) =>
-      processingOrder.status === ProcessingOrderStatus.PAUSED,
-  )
-  const isRecentlyProcessingOrderExists =
-    !!recentlyProcessingOrders && recentlyProcessingOrders.length > 0
-
-  const workShiftId = activeWorkShift?.id
 
   // * Active Scheduled Work Break
   const {
@@ -133,17 +115,17 @@ export const EngravingContextProvider: FCC = (props) => {
   // * Refetches
   useEffect(() => {
     if (!!currentEngraverId) {
-      refetchProcessingOrdersList()
       refetchActiveWorkShift()
 
       if (isActiveWorkShiftExists) {
         refetchScheduledBreaks()
+        refetchCurrentProcessingOrder()
       }
     }
   }, [
-    refetchProcessingOrdersList,
     refetchActiveWorkShift,
     refetchScheduledBreaks,
+    refetchCurrentProcessingOrder,
     currentEngraverId,
     isActiveWorkShiftExists,
   ])
@@ -157,11 +139,11 @@ export const EngravingContextProvider: FCC = (props) => {
 
       // Redirect engraver to already processing order
       if (isCurrentProcessingOrderExists) {
-        if (!processingOrderId) {
+        if (!currentProccesingOrderId) {
           return
         }
 
-        navigate(`/engraving/${processingOrderId}`, {
+        navigate(`/engraving/${currentProccesingOrderId}`, {
           state: { from: location, isViewOnlyMode },
         })
       }
@@ -198,12 +180,9 @@ export const EngravingContextProvider: FCC = (props) => {
         activeWorkShift,
         isActiveWorkShiftLoading,
         currentProcessingOrder,
-        processingOrderId,
+        currentProccesingOrderId,
         isCurrentProcessingOrderExists,
-        recentlyProcessingOrders,
-        isRecentlyProcessingOrderExists,
-        processingOrdersList,
-        isProcessingOrdersListLoading,
+        isCurrentProcessingOrderLoading,
       }}
     >
       {!isActiveWorkShiftLoading &&
