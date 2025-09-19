@@ -122,6 +122,7 @@ export const NewPurchaseModal: FC<NewPurchaseModalProps> = (props) => {
     await onCommentSubmit(purchaseId)
 
     notify("Order created successfully", "success")
+
     onClose()
   }
 

@@ -57,6 +57,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
   const { currentUser } = useUserContext()
 
   const isNewUser = !prevUser
+  const userId = prevUser?.id
 
   const [user, setUser] = useState<User>(prevUser || newUser)
   const [newPassword, setNewPassword] = useState<string>("")
@@ -69,7 +70,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
   const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
     useCommentInput({
       objectName: "user",
-      objectId: prevUser?.id,
+      objectId: userId,
     })
 
   const userCreateMutation = useUserCreateMutation()
@@ -167,7 +168,7 @@ export const UserModal: FC<UserModalProps> = (props) => {
         const body: UserUpdate = {
           user: {
             ...user,
-            id: prevUser.id,
+            id: userId!,
           },
           roles_list: selectedRoles,
           shops_list: selectedShops,
@@ -179,10 +180,11 @@ export const UserModal: FC<UserModalProps> = (props) => {
 
         await userUpdateMutation.mutateAsync(body)
 
-        await onCommentSubmit()
+        await onCommentSubmit(userId)
 
         notify(`Employee ${user.fio} successfully updated`, "success")
       }
+
       onClose()
     } catch (e) {
       if (e instanceof AxiosError) {

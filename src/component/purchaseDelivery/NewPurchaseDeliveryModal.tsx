@@ -92,6 +92,7 @@ export const NewDeliveryModal: FC<NewDeliveryModalProps> = (props) => {
     await onCommentSubmit(newDeliveryId)
 
     notify("Delivery was created successfully", "success")
+
     onClose()
   }
 

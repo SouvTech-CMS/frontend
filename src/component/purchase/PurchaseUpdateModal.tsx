@@ -94,9 +94,10 @@ export const PurchaseUpdateModal: FC<PurchaseUpdateModalProps> = (props) => {
 
     await purchaseUpdateMutation.mutateAsync(body)
 
-    await onCommentSubmit()
+    await onCommentSubmit(purchaseId)
 
     notify(`Order #${purchaseId} updated successfully`, "success")
+
     onClose()
   }
 

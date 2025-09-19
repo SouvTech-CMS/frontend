@@ -155,9 +155,9 @@ export const EngraverModal: FC<EngraverModalProps> = (props) => {
         user_timezone: userTimezone,
       }
 
-      const { id: newUserId } = await engraverCreateMutation.mutateAsync(body)
+      const { id: engraverId } = await engraverCreateMutation.mutateAsync(body)
 
-      await onCommentSubmit(newUserId)
+      await onCommentSubmit(engraverId)
 
       notify(`Engraver ${userName} was created successfully`, "success")
     } else {
@@ -191,7 +191,7 @@ export const EngraverModal: FC<EngraverModalProps> = (props) => {
 
       await engraverUpdateMutation.mutateAsync(body)
 
-      await onCommentSubmit()
+      await onCommentSubmit(engraverId)
 
       notify(`Engraver ${userName} was updated successfully`, "success")
     }

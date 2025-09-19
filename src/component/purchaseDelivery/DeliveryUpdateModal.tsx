@@ -67,9 +67,10 @@ export const DeliveryUpdateModal: FC<DeliveryUpdateModalProps> = (props) => {
 
     await purchaseDeliveryUpdateMutation.mutateAsync(body)
 
-    await onCommentSubmit()
+    await onCommentSubmit(deliveryId)
 
     notify(`Delivery #${deliveryId} updated successfully`, "success")
+
     onClose()
   }
 
