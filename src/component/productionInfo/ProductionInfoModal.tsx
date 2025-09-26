@@ -28,7 +28,7 @@ import { notify } from "util/toasts"
 
 interface ProductionInfoModalProps extends ModalProps {
   good: WithId<StorageGood>
-  prevProductionInfo?: ProductionInfo
+  prevProductionInfo?: WithId<ProductionInfo>
   accessibleColumns: (TableColumn | null)[]
 }
 
