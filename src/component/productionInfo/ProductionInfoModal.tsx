@@ -14,6 +14,7 @@ import {
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { SKUBadge } from "component/badge/SKUBadge"
 import { ProductionInfoModalInput } from "component/productionInfo/ProductionInfoModalInput"
+import { useCommentInput } from "hook/useCommentInput"
 import { FC, useEffect, useState } from "react"
 import { useProductionInfoUpdateMutation } from "service/productionInfo/productionInfo"
 import { ModalProps } from "type/modalProps"
@@ -41,16 +42,26 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
   const accessibleParams = accessibleColumns.map((column) => column?.param)
 
   const [productionInfo, setProductionInfo] = useState<
-    ProductionInfo | undefined
+    WithId<ProductionInfo> | undefined
   >(prevProductionInfo)
+  const productionInfoId = productionInfo?.id
+
+  const { CommentInputComponent, onCommentSubmit, handleCommentClear } =
+    useCommentInput({
+      objectName: "production_info",
+      objectId: productionInfoId,
+    })
 
   const productionInfoUpdateMutation = useProductionInfoUpdateMutation()
 
   const isLoading = productionInfoUpdateMutation.isLoading
 
-  const handleChange = (param: string, value: number | string) => {
+  const handleChange = <K extends keyof ProductionInfo>(
+    param: K,
+    value: ProductionInfo[K],
+  ) => {
     setProductionInfo((prevProductionInfo) => ({
-      ...prevProductionInfo,
+      ...(prevProductionInfo || ({} as WithId<ProductionInfo>)),
       [param]: value,
     }))
   }
@@ -61,7 +72,10 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
       good_id: goodId!,
     }
 
-    await productionInfoUpdateMutation.mutateAsync(body)
+    const { id: updatedProductionInfoId } =
+      await productionInfoUpdateMutation.mutateAsync(body)
+
+    onCommentSubmit(updatedProductionInfoId)
 
     notify(`Storage Good #${goodId} Production updated successfully`, "success")
 
@@ -106,6 +120,7 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
             </Flex>
             <Divider />
 
+            {/* Engraving Params */}
             <Grid templateColumns="repeat(2, 1fr)" gap={5}>
               {/* Power */}
               {isFieldAvailable("power") && (
@@ -263,6 +278,9 @@ export const ProductionInfoModal: FC<ProductionInfoModalProps> = (props) => {
                 />
               )}
             </Grid>
+
+            {/* Comment */}
+            {CommentInputComponent}
           </Flex>
         </ModalBody>
 
