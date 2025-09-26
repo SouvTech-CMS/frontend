@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/react"
+import { BackBtn } from "component/orderProcessing/buttons/BackBtn"
 import { FinishBtn } from "component/orderProcessing/buttons/FinishBtn"
 import { PauseBtn } from "component/orderProcessing/buttons/PauseBtn"
 import { TakeBreakBtn } from "component/orderProcessing/buttons/TakeBreakBtn"
@@ -10,12 +11,14 @@ import { useProcessingOrderStatusUpdateMutation } from "service/engraver/process
 import { ProcessingOrderStatusUpdate } from "type/engraver/processingOrder"
 import { notify } from "util/toasts"
 
-interface ProcessingOrderButtonsProps {}
+interface ProcessingOrderButtonsProps {
+  isViewOnlyMode?: boolean
+}
 
 export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
   props,
 ) => {
-  const {} = props
+  const { isViewOnlyMode } = props
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -68,11 +71,20 @@ export const ProcessingOrderButtons: FC<ProcessingOrderButtonsProps> = (
         alignItems="center"
         gap={5}
       >
-        <FinishBtn onClick={handleFinishClick} isLoading={isLoading} />
+        {isViewOnlyMode ? (
+          <BackBtn
+            onClick={navigateToOrdersForEngravingPage}
+            isLoading={isLoading}
+          />
+        ) : (
+          <>
+            <FinishBtn onClick={handleFinishClick} isLoading={isLoading} />
 
-        <PauseBtn onClick={handlePauseClick} isLoading={isLoading} />
+            <PauseBtn onClick={handlePauseClick} isLoading={isLoading} />
 
-        <TakeBreakBtn w="full" size="lg" py={8} px={10} />
+            <TakeBreakBtn w="full" size="lg" py={8} px={10} />
+          </>
+        )}
       </Flex>
     </>
   )
