@@ -1,6 +1,10 @@
+import { Flex, Text } from "@chakra-ui/react"
 import { getCommentByObjNameAndId } from "api/comment/comment"
+import { CommentInput } from "component/comment/Comment"
+import { CommentTooltip } from "component/comment/CommentTooltip"
 import { useUserContext } from "context/user"
 import { ChangeEvent, useEffect, useState } from "react"
+import { FiMessageSquare } from "react-icons/fi"
 import { useQuery } from "react-query"
 import {
   useCommentCreateMutation,
@@ -13,10 +17,11 @@ import { WithId } from "type/withId"
 interface useCommentInputProps {
   objectId?: number
   objectName: string
+  isAsTooltip?: boolean
 }
 
 export const useCommentInput = (props: useCommentInputProps) => {
-  const { objectId, objectName } = props
+  const { objectId, objectName, isAsTooltip } = props
 
   const { currentUser } = useUserContext()
   const userId = currentUser?.id
@@ -41,6 +46,7 @@ export const useCommentInput = (props: useCommentInputProps) => {
     commentDeleteMutation.isLoading
 
   const isPrevCommentExists = !!prevComment
+  const isCommentExists = !!comment.trim()
   const isCommentEmpty = isPrevCommentExists && !comment.trim()
   const isCommentChanged = prevComment?.comment?.trim() !== comment.trim()
 
@@ -89,10 +95,40 @@ export const useCommentInput = (props: useCommentInputProps) => {
     setComment(prevComment?.comment || "")
   }, [prevComment])
 
+  const CommentComponent = isCommentExists ? (
+    <>
+      {isAsTooltip ? (
+        <CommentTooltip comment={comment} />
+      ) : (
+        <Flex alignItems="center" gap={1}>
+          <FiMessageSquare color="gray" />
+
+          <Text color="gray" fontSize="sm">
+            {comment}
+          </Text>
+        </Flex>
+      )}
+    </>
+  ) : (
+    <></>
+  )
+
+  const CommentInputComponent = (
+    <CommentInput
+      comment={comment}
+      handleCommentChange={handleCommentChange}
+      isDisabled={isCommentLoading}
+    />
+  )
+
   return {
+    CommentComponent,
+    CommentInputComponent,
     comment,
     handleCommentChange,
     onCommentSubmit,
+    handleCommentClear,
     isCommentLoading,
+    isCommentExists,
   }
 }
