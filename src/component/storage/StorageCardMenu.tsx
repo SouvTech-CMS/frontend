@@ -8,17 +8,19 @@ import {
 } from "@chakra-ui/react"
 import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
-import { FiEdit, FiMoreVertical, FiTrash2 } from "react-icons/fi"
+import { FiEdit, FiMoreVertical, FiRotateCcw, FiTrash2 } from "react-icons/fi"
 
 interface StorageCardMenuProps {
+  isFromDelivery?: boolean
+  onRevertDelivery: () => void
   onEdit: () => void
   onDelete: () => void
 }
 
 export const StorageCardMenu: FC<StorageCardMenuProps> = (props) => {
-  const { onEdit, onDelete } = props
+  const { isFromDelivery, onRevertDelivery, onEdit, onDelete } = props
 
-  const { canEditStorage } = useUserPermissions()
+  const { canEditStorage, canEditPurchases } = useUserPermissions()
 
   return (
     <Flex position="absolute" top={0} right={0}>
@@ -31,6 +33,16 @@ export const StorageCardMenu: FC<StorageCardMenuProps> = (props) => {
         />
 
         <MenuList>
+          {isFromDelivery && (
+            <MenuItem
+              icon={<FiRotateCcw />}
+              onClick={onRevertDelivery}
+              isDisabled={!canEditStorage || !canEditPurchases}
+            >
+              Revert full Delivery
+            </MenuItem>
+          )}
+
           <MenuItem
             icon={<FiEdit />}
             onClick={onEdit}
