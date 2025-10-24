@@ -3,6 +3,7 @@ import {
   createStorage,
   deleteStorage,
   moveGoodsToStorage,
+  revertGoodsToDelivery,
   updateStorage,
 } from "api/storage/storage"
 import { useMutation } from "react-query"
@@ -12,7 +13,16 @@ export const useMoveGoodsToStorageMutation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries("purchaseDeliveriesList")
       queryClient.invalidateQueries("storageGoodsList")
-      queryClient.invalidateQueries("storageGoodsCount")
+    },
+  })
+}
+
+export const useRevertDeliveryMutation = () => {
+  return useMutation(revertGoodsToDelivery, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("purchaseDeliveriesList")
+      queryClient.invalidateQueries("storageGoodsList")
+      queryClient.invalidateQueries("goodWithStorages")
     },
   })
 }
