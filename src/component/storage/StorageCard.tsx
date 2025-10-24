@@ -9,6 +9,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
+import { RevertDeliveryModal } from "component/storage/RevertDeliveryModal"
 import { StorageCardMenu } from "component/storage/StorageCardMenu"
 import { StorageDeleteModal } from "component/storage/StorageDeleteModal"
 import { StorageModal } from "component/storage/StorageModal"
@@ -41,12 +42,21 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
   const isPrimeCostExists = storage.prime_cost !== undefined
   const isItemPriceExists = storage.cost_per_item !== undefined
 
+  // * Revert To Delivery Modal
+  const {
+    isOpen: isRevertDeliveryModalOpen,
+    onOpen: onRevertDeliveryModalOpen,
+    onClose: onRevertDeliveryModalClose,
+  } = useDisclosure()
+
+  // * Update Modal
   const {
     isOpen: isStorageUpdateModalOpen,
     onOpen: onStorageUpdateModalOpen,
     onClose: onStorageUpdateModalClose,
   } = useDisclosure()
 
+  // * Delete Modal
   const {
     isOpen: isStorageDeleteModalOpen,
     onOpen: onStorageDeleteModalOpen,
@@ -70,6 +80,8 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
           </Flex>
 
           <StorageCardMenu
+            isFromDelivery={isFromDelivery}
+            onRevertDelivery={onRevertDeliveryModalOpen}
             onEdit={onStorageUpdateModalOpen}
             onDelete={onStorageDeleteModalOpen}
           />
@@ -150,6 +162,14 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
 
       {/* Modals */}
       <>
+        {isFromDelivery && (
+          <RevertDeliveryModal
+            deliveryId={deliveryId}
+            isOpen={isRevertDeliveryModalOpen}
+            onClose={onRevertDeliveryModalClose}
+          />
+        )}
+
         <StorageModal
           storageGoodId={storageGoodId}
           prevStorage={storage}

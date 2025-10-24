@@ -6,6 +6,7 @@ import { TableTdSkeleton } from "component/customTable/TableTdSkeleton"
 import { ProductionInfoModal } from "component/productionInfo/ProductionInfoModal"
 import { ProductionInfoTableRowMenu } from "component/productionInfo/ProductionInfoTableRowMenu"
 import { useUserContext } from "context/user"
+import { useCommentInput } from "hook/useCommentInput"
 import { useUserTableAccess } from "hook/useUserTableAccess"
 import { FC, useEffect } from "react"
 import { useQuery } from "react-query"
@@ -32,6 +33,7 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
 
   const good = goodWithProductionInfo
   const productionInfo = good.production_info
+  const productionInfoId = productionInfo?.id
 
   const goodTotalQuantity = good.quantity
   const goodsShelvesList = good?.shelf
@@ -67,6 +69,12 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
   const isLoadingActualInfo = isLoading || isRefetching
 
   const goodPrimeCost = storageActualInfo?.prime_cost
+
+  const { CommentComponent } = useCommentInput({
+    objectName: "production_info",
+    objectId: productionInfoId,
+    isAsTooltip: true,
+  })
 
   useEffect(() => {
     refetch()
@@ -127,11 +135,17 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
           )
         })}
 
-        {/* Menu Btns */}
+        {/* Comment & Menu Btns */}
         <Td>
-          <ProductionInfoTableRowMenu
-            onEdit={onProductionInfoUpdateModalOpen}
-          />
+          <Flex direction="row" alignItems="center" gap={2}>
+            {/* Comment */}
+            {CommentComponent}
+
+            {/* Menu Btns */}
+            <ProductionInfoTableRowMenu
+              onEdit={onProductionInfoUpdateModalOpen}
+            />
+          </Flex>
         </Td>
       </Tr>
 

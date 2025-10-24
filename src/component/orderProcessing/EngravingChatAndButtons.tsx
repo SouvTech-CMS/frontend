@@ -17,25 +17,29 @@ export const EngravingChatAndButtons: FC<EngravingChatAndButtonsProps> = (
 
   const { canReadTicketMessages } = useUserPermissions()
 
-  if (isViewOnlyMode && !isOrderHasTicket) {
-    return <></>
-  }
-
   return (
     <Flex h="full" flex={1} direction="column" gap={2}>
-      {!isViewOnlyMode && <Buttons isOrderHasTicket={isOrderHasTicket} />}
+      <Buttons
+        isOrderHasTicket={isOrderHasTicket}
+        isViewOnlyMode={isViewOnlyMode}
+      />
 
       {isOrderHasTicket && canReadTicketMessages && <Chat />}
     </Flex>
   )
 }
 
-export const Buttons: FC<{ isOrderHasTicket?: boolean }> = (props) => {
-  const { isOrderHasTicket } = props
+interface ButtonsProps {
+  isOrderHasTicket?: boolean
+  isViewOnlyMode?: boolean
+}
+
+export const Buttons: FC<ButtonsProps> = (props) => {
+  const { isOrderHasTicket, isViewOnlyMode } = props
 
   return (
-    <Container h={isOrderHasTicket ? undefined : "full"}>
-      <ProcessingOrderButtons />
+    <Container h={isOrderHasTicket ? "fit-content" : "full"}>
+      <ProcessingOrderButtons isViewOnlyMode={isViewOnlyMode} />
     </Container>
   )
 }

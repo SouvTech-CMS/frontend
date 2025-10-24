@@ -33,7 +33,7 @@ export const createProductionInfo = async (
 
 export const updateProductionInfo = async (
   body: GoodProductionInfo,
-): Promise<GoodProductionInfo> => {
+): Promise<WithId<GoodProductionInfo>> => {
   const { data: productionInfo } = await axiosClient.put(
     "/storage/good/production_info/",
     body,

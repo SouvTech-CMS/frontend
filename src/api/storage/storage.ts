@@ -12,6 +12,10 @@ export const moveGoodsToStorage = async (body: DeliveryToStorage[]) => {
   await axiosClient.post("/storage/move_goods_from_delivery/", body)
 }
 
+export const revertGoodsToDelivery = async (deliveryId: number) => {
+  await axiosClient.delete(`/storage/revert_goods_to_delivery/${deliveryId}`)
+}
+
 export const getStorageActualInfoByGoodId = async (
   storageGoodId: number,
 ): Promise<StorageActualInfo> => {

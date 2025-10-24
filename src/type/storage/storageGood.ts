@@ -42,7 +42,7 @@ export type StorageGoodUpdate = {
 export type StorageGoodSearchFilter = WithId<StorageGood>
 
 export type FullStorageGoodWithProductionInfo = FullStorageGood & {
-  production_info?: ProductionInfo
+  production_info?: WithId<ProductionInfo>
 }
 
 export type StorageGoodWithProductionInfo = StorageGood & {
