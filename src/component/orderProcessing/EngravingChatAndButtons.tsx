@@ -8,21 +8,24 @@ import { FC } from "react"
 interface EngravingChatAndButtonsProps {
   isOrderHasTicket?: boolean
   isViewOnlyMode?: boolean
+  isForTickets?: boolean
 }
 
 export const EngravingChatAndButtons: FC<EngravingChatAndButtonsProps> = (
   props,
 ) => {
-  const { isOrderHasTicket, isViewOnlyMode } = props
+  const { isOrderHasTicket, isViewOnlyMode, isForTickets } = props
 
   const { canReadTicketMessages } = useUserPermissions()
 
   return (
     <Flex h="full" flex={1} direction="column" gap={2}>
-      <Buttons
-        isOrderHasTicket={isOrderHasTicket}
-        isViewOnlyMode={isViewOnlyMode}
-      />
+      {!isForTickets && (
+        <Buttons
+          isOrderHasTicket={isOrderHasTicket}
+          isViewOnlyMode={isViewOnlyMode}
+        />
+      )}
 
       {isOrderHasTicket && canReadTicketMessages && <Chat />}
     </Flex>

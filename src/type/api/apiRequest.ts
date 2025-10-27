@@ -1,4 +1,5 @@
 import { SortDirection } from "type/sortDirection"
+import { WithId } from "type/withId"
 
 export type LimitOffset = {
   limit?: number
@@ -7,7 +8,7 @@ export type LimitOffset = {
 
 export type ApiRequest<SearchFilterType> = LimitOffset & {
   shopId?: number
-  sortField?: string
+  sortField?: keyof WithId<SearchFilterType>
   sortDirection?: SortDirection
   searchFilter?: SearchFilterType
 }

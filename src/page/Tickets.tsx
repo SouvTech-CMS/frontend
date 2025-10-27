@@ -24,7 +24,12 @@ export const Tickets = (props: PageProps) => {
 
   const { data: ticketsResponse, isLoading } = useQuery<
     ApiResponse<WithId<FullTicket>[]>
-  >("ticketsList", () => getAllTickets({}))
+  >("ticketsList", () =>
+    getAllTickets({
+      sortField: "id",
+      sortDirection: "desc",
+    }),
+  )
   const ticketsList = ticketsResponse?.result
 
   return (
@@ -54,6 +59,7 @@ export const Tickets = (props: PageProps) => {
                 processingOrder={openedTicketProcessingOrder!}
                 isOrderHasTicket={isOpenedTicketExists}
                 isViewOnlyMode
+                isForTickets
               />
             )}
         </Flex>
