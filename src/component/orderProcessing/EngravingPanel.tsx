@@ -9,10 +9,12 @@ interface EngravingPanelProps {
   processingOrder: WithId<ProcessingOrder>
   isOrderHasTicket?: boolean
   isViewOnlyMode?: boolean
+  isForTickets?: boolean
 }
 
 export const EngravingPanel: FC<EngravingPanelProps> = (props) => {
-  const { processingOrder, isOrderHasTicket, isViewOnlyMode } = props
+  const { processingOrder, isOrderHasTicket, isViewOnlyMode, isForTickets } =
+    props
 
   return (
     <Flex h="full" w="full" direction="row" overflow="hidden" gap={5}>
@@ -21,6 +23,7 @@ export const EngravingPanel: FC<EngravingPanelProps> = (props) => {
       <EngravingChatAndButtons
         isOrderHasTicket={isOrderHasTicket}
         isViewOnlyMode={isViewOnlyMode}
+        isForTickets={isForTickets}
       />
     </Flex>
   )

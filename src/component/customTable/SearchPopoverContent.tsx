@@ -9,13 +9,17 @@ import {
 import { useTableContext } from "context/table"
 import { ChangeEvent, MutableRefObject, useEffect, useState } from "react"
 
-interface SearchPopoverContentProps<SearchFilterType> {
+interface SearchPopoverContentProps<
+  SearchFilterType extends Record<string, any>,
+> {
   initialRef: MutableRefObject<HTMLInputElement | null>
   param: keyof SearchFilterType
   onClose: () => void
 }
 
-export const SearchPopoverContent = <SearchFilterType,>(
+export const SearchPopoverContent = <
+  SearchFilterType extends Record<string, any>,
+>(
   props: SearchPopoverContentProps<SearchFilterType>,
 ) => {
   const { initialRef, param, onClose } = props
@@ -35,7 +39,7 @@ export const SearchPopoverContent = <SearchFilterType,>(
   }
 
   const handleSearchFilterChange = () => {
-    setSortField(param as string)
+    setSortField(param)
 
     setSearchFilter(
       (prevSearchFilter) =>

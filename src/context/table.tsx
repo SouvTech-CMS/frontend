@@ -8,14 +8,14 @@ import {
 } from "react"
 import { SortDirection } from "type/sortDirection"
 
-interface TableContextProps<SearchFilterType> {
+interface TableContextProps<SearchFilterType extends Record<string, any>> {
   sortDirection?: SortDirection
   isAscSort?: boolean
   isDescSort?: boolean
   isNoSort?: boolean
   setSortDirection: Dispatch<SetStateAction<SortDirection | undefined>>
-  sortField?: string
-  setSortField: Dispatch<SetStateAction<string | undefined>>
+  sortField?: keyof SearchFilterType
+  setSortField: Dispatch<SetStateAction<keyof SearchFilterType | undefined>>
 
   searchFilter?: SearchFilterType
   setSearchFilter: Dispatch<SetStateAction<SearchFilterType | undefined>>
@@ -27,7 +27,9 @@ export const TableContext = createContext<TableContextProps<any> | undefined>(
 )
 
 //* <SearchFilterType,> - is a providable type
-export const TableContextProvider = <SearchFilterType,>(
+export const TableContextProvider = <
+  SearchFilterType extends Record<string, any>,
+>(
   props: PropsWithChildren<{}>,
 ) => {
   const { children } = props
@@ -35,7 +37,9 @@ export const TableContextProvider = <SearchFilterType,>(
   const [sortDirection, setSortDirection] = useState<
     SortDirection | undefined
   >()
-  const [sortField, setSortField] = useState<string | undefined>()
+  const [sortField, setSortField] = useState<
+    keyof SearchFilterType | undefined
+  >()
 
   const [searchFilter, setSearchFilter] = useState<SearchFilterType>()
 
@@ -43,13 +47,13 @@ export const TableContextProvider = <SearchFilterType,>(
   const isDescSort = sortDirection === "desc"
   const isNoSort = sortDirection === undefined
 
-  const getSearchFilterValue = (param: any) => {
+  const getSearchFilterValue = <K extends keyof SearchFilterType>(param: K) => {
     if (
       searchFilter &&
       Object.prototype.hasOwnProperty.call(searchFilter, param)
     ) {
-      const value = searchFilter[param as keyof SearchFilterType]
-      if (value) {
+      const value = searchFilter[param]
+      if (value !== undefined && value !== null) {
         return String(value)
       }
     }
@@ -57,29 +61,29 @@ export const TableContextProvider = <SearchFilterType,>(
     return ""
   }
 
-  return (
-    <TableContext.Provider
-      value={{
-        sortDirection,
-        isAscSort,
-        isDescSort,
-        isNoSort,
-        setSortDirection,
-        sortField,
-        setSortField,
+  const contextValue = {
+    sortDirection,
+    isAscSort,
+    isDescSort,
+    isNoSort,
+    setSortDirection,
+    sortField,
+    setSortField,
 
-        searchFilter,
-        setSearchFilter,
-        getSearchFilterValue,
-      }}
-    >
+    searchFilter,
+    setSearchFilter,
+    getSearchFilterValue,
+  } as TableContextProps<SearchFilterType>
+
+  return (
+    <TableContext.Provider value={contextValue as TableContextProps<any>}>
       {children}
     </TableContext.Provider>
   )
 }
 
 export const useTableContext = <
-  SearchFilterType,
+  SearchFilterType extends Record<string, unknown> = Record<string, unknown>,
 >(): TableContextProps<SearchFilterType> => {
   const context = useContext(TableContext)
 

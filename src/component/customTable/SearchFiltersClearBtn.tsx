@@ -5,7 +5,9 @@ interface SearchFiltersClearBtnProps {
   isLoading?: boolean
 }
 
-export const SearchFiltersClearBtn = <SearchFilterType,>(
+export const SearchFiltersClearBtn = <
+  SearchFilterType extends Record<string, unknown>,
+>(
   props: SearchFiltersClearBtnProps,
 ) => {
   const { isLoading } = props
