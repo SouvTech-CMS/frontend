@@ -22,7 +22,7 @@ export const MarketplaceGoodListingLink: FC<MarketplaceGoodListingLinkProps> = (
   )
 
   if (!goodListingParams || !url) {
-    return children
+    return <>{children}</>
   }
 
   const isChildrenExist = !!children
