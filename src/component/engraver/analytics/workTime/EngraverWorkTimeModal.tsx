@@ -65,6 +65,7 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
         timezone: userTimezone,
       }),
     {
+      // TODO: try to pass isOpen to prevent all engravers cards loading
       enabled: !!isRequestEnabled,
     },
   )

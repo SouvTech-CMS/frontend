@@ -7,9 +7,9 @@ import { WithId } from "type/withId"
 
 export type Engraver = {
   user: WithId<UserWithShops>
-  scheduled_breaks: WithId<ScheduledBreak>[]
-  work_shifts: WithId<WorkShiftWithBreaks>[]
   documents: WithId<EngraverDocument>[]
+  scheduled_breaks: WithId<ScheduledBreak>[]
+  work_shifts?: WithId<WorkShiftWithBreaks>[]
   processing_orders?: WithId<ProcessingOrder>[]
   user_id?: number
   is_blocked?: boolean
