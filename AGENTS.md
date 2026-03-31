@@ -67,29 +67,31 @@ Use this template when creating a PR description:
 
 Top-level layers inside `src/`:
 
-- `app/` - application entry, providers, routes
-- `components/` - reusable UI components (feature folders)
+- `api/` - API request functions
+- `asset/` - static assets used by UI
+- `component/` - reusable UI components
+- `constant/` - shared constants and enums
 - `context/` - global React Context providers + hooks
-- `core/` - non-React logic: `api/`, `config/`, `constants/`, `firebase/`, `utils/`
-- `hooks/` - reusable logic hooks (no JSX)
-- `pages/` - routed screens (feature folders)
-- `styles/` - Chakra theme setup
-- `types/` - shared TypeScript types
+- `hook/` - reusable hooks (no JSX)
+- `page/` - routed screens
+- `service/` - orchestration/mutation logic over API layer
+- `type/` - shared TypeScript types
+- `util/` - shared helper functions
+- `configuration.tsx`, `theme.ts`, `index.tsx` - app-level setup files
 
 ### Structure rules
 
 - Put new code into existing layers and existing feature folders
 - Do not create new top-level directories under `src/` without approval
 - Components live as `.tsx` files inside existing feature folders; do not add barrel `index.ts` files unless that folder already uses them
-- `core/` must not import from React/UI modules
-- Page components should compose reusable logic from `components/`, `hooks/`, and `context/`
+- Page components should compose reusable logic from `component/`, `hook/`, `context/`, and `service/`
 
 ---
 
 ## Import rules
 
-- Use TS path aliases for cross-layer imports:
-  - `app/*`, `pages/*`, `components/*`, `core/*`, `hooks/*`, `context/*`, `styles/*`, `types/*`
+- Use the existing absolute imports from `src` `baseUrl` for cross-layer imports:
+  - `api/*`, `asset/*`, `component/*`, `constant/*`, `context/*`, `hook/*`, `page/*`, `service/*`, `type/*`, `util/*`
 - Relative imports are OK within the same feature folder
 - Avoid deep relative imports that cross top-level boundaries
 - Do not mass-convert import styles; match the file's existing approach
@@ -114,7 +116,7 @@ Top-level layers inside `src/`:
   }
   ```
 
-- Use `FC` for components and `FCC` (from `types/fcc`) when a component accepts `children`
+- Use `FC` for components and `FCC` (from `type/fcc`) when a component accepts `children`
 - For new components, accept a `props` param and destructure on the first line; if the file already destructures in the signature, keep that style
 - Prefer Chakra props (`Flex`, `HStack`, `VStack` etc). Avoid custom CSS unless necessary for third-party integrations
 - One primary component per file; small helper components may live in the same file
@@ -155,7 +157,7 @@ The agent MUST stop and ask for approval before doing any of the following:
 
 - Modify `tsconfig*.json`
 - Modify `vite.config.*`
-- Modify Chakra theme system under `src/styles/**` beyond small task-required edits
+- Modify Chakra theme setup in `src/theme.ts` beyond small task-required edits
 - Modify TS path aliases or alias-related config
 
 Everything else (routes, contexts, pages, components, hooks) is autonomous
