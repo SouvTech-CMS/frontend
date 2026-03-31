@@ -14,7 +14,7 @@ This is an autonomous coding agent in this repo. Goals: clean, readable code and
 
 ## Tech & basics
 
-- Stack: React + TypeScript + Vite + Chakra UI (v2). Package manager: npm
+- Stack: React + TypeScript + Vite + Chakra UI (v2). Package manager: yarn
 - Branches:
   - `main` - production branch. Deployment runs from this branch via GitHub Actions
   - `dev` - main development branch
@@ -150,8 +150,8 @@ The agent MUST stop and ask for approval before doing any of the following:
 
 - Add/remove dependencies
 - Change versions in `package.json` (including `devDependencies`)
-- Run upgrades that modify the dependency graph (e.g. `npm update`, `npm audit fix`)
-- `package-lock.json` may change only as a result of `npm install` with unchanged versions
+- Run upgrades that modify the dependency graph (e.g. `yarn upgrade`)
+- `yarn.lock` may change only when dependency changes are approved
 
 ### 3. Build/toolchain/global styling config
 
@@ -169,9 +169,9 @@ Everything else (routes, contexts, pages, components, hooks) is autonomous
 After changes, the agent MUST run:
 
 ```bash
-npm install
-npm run lint
-npm run build
+yarn install --frozen-lockfile
+yarn run lint
+yarn run build
 ```
 
 ---
