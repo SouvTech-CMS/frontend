@@ -21,6 +21,18 @@ Package manager: yarn. Goals: clean, readable code and minimal diffs.
 - Do not rename or move files unless the task requires it
 - Never commit, push, deploy or merge unless explicitly asked
 
+## Keep the docs current
+
+- Before changing a page or mechanic, read its `agent-docs/` file; if the doc contradicts
+  the code, fix the doc in the same PR
+- When a change alters routes, permissions, query keys, WebSocket invalidations, contexts,
+  conventions or workflow described in `agent-docs/`, update the affected file(s) in the same
+  branch (separate `docs:` commit)
+- Domain rules agreed with the client live in `../backend/agent-docs/business-rules.md` -
+  add new ones there
+- Keep files short and topic-split: extend the matching file instead of creating new ones,
+  register new files in `agent-docs/README.md`
+
 ## Structure (`src/`)
 
 `api/` (requests) · `service/` (mutations over api) · `context/` · `hook/` (no JSX) ·
