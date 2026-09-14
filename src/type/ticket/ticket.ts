@@ -22,6 +22,10 @@ export type FullTicket = Ticket & {
   order: WithId<Order>
 }
 
+export type TicketSearchFilter = Partial<Ticket> & {
+  marketplace_order_id?: string
+}
+
 export type TicketCreate = {
   orderId: number
   description: string
