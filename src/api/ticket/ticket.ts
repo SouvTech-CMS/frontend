@@ -1,12 +1,17 @@
 import { axiosClient } from "api/axiosClient"
 import { ApiRequest } from "type/api/apiRequest"
 import { ApiResponse } from "type/api/apiResponse"
-import { FullTicket, Ticket, TicketCreate } from "type/ticket/ticket"
+import {
+  FullTicket,
+  Ticket,
+  TicketCreate,
+  TicketSearchFilter,
+} from "type/ticket/ticket"
 import { WithId } from "type/withId"
 import { beautifyBody } from "util/apiRequestBody"
 
 export const getAllTickets = async (
-  body: ApiRequest<Ticket>,
+  body: ApiRequest<TicketSearchFilter>,
 ): Promise<ApiResponse<WithId<FullTicket>[]>> => {
   const { data: ticketsList } = await axiosClient.post(
     "/tickets",
