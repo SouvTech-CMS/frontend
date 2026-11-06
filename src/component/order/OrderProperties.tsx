@@ -1,7 +1,8 @@
-import { Flex, Text } from "@chakra-ui/react"
+import { Box, Flex, Text } from "@chakra-ui/react"
 import { getShopById } from "api/shop"
 import { MarketplaceAvatar } from "component/marketplace/MarketplaceAvatar"
 import { MarketplaceOrderLink } from "component/order/MarketplaceOrderLink"
+import { OrderEngravers } from "component/orderProcessing/OrderEngravers"
 import { PropertiesList } from "component/property/PropertiesList"
 import { FC } from "react"
 import { useQuery } from "react-query"
@@ -76,6 +77,18 @@ export const OrderProperties: FC<OrderPropertiesProps> = (props) => {
     {
       name: "Profit",
       value: numberWithCurrency(roundNumber(order.profit)),
+    },
+    // Engravers
+    {
+      name: "Engraved By",
+      value: (
+        // NOTE: containment keeps the cards from widening both grid columns
+        <Box sx={{ contain: "inline-size" }}>
+          <Box w="max-content">
+            <OrderEngravers orderId={order.id} cardBgColor="white" />
+          </Box>
+        </Box>
+      ),
     },
   ]
 

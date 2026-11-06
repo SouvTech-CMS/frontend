@@ -50,6 +50,12 @@ export const ORDERS_TABLE_COLUMNS: (TableColumn | null)[] = [
   { name: "Status", param: "status", isSearchable: true, isSortable: false },
   { name: "Qty", param: "quantity", isSearchable: false, isSortable: true },
   {
+    name: "Engraved By",
+    param: "engravers",
+    isSearchable: false,
+    isSortable: false,
+  },
+  {
     name: "Buyer Paid",
     param: "buyer_paid",
     isSearchable: false,

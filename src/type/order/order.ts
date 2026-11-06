@@ -1,4 +1,4 @@
-import { ProcessingOrder } from "type/engraver/processingOrder"
+import { OrderEngraver, ProcessingOrder } from "type/engraver/processingOrder"
 import {
   GoodDetails,
   GoodInOrder,
@@ -24,6 +24,7 @@ export type Order = {
 
   shop?: WithId<Shop>
   processing_order?: WithId<ProcessingOrder>
+  engravers?: OrderEngraver[]
 }
 
 export type OrderWithGoods = {

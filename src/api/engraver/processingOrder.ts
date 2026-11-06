@@ -2,6 +2,7 @@ import { axiosClient } from "api/axiosClient"
 import { ApiRequest } from "type/api/apiRequest"
 import { ApiResponse } from "type/api/apiResponse"
 import {
+  OrderEngraver,
   ProcessingOrder,
   ProcessingOrderCreate,
   ProcessingOrderStatusUpdate,
@@ -35,6 +36,15 @@ export const getProcessingOrderByOrderId = async (
     `/order/processing/order_id/${orderId}`,
   )
   return processingOrder
+}
+
+export const getOrderEngravers = async (
+  orderId: number,
+): Promise<OrderEngraver[]> => {
+  const { data: orderEngravers } = await axiosClient.get(
+    `/order/processing/order_id/${orderId}/engravers`,
+  )
+  return orderEngravers
 }
 
 export const getProcessingOrdersByEngraverId = async (
