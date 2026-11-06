@@ -39,7 +39,10 @@
 (≥10 символов) → `OrderToEngravingCard` → мутация создания processing order. Смена:
 `WorkShiftStart`/`WorkShiftFinishBtn`; перерывы: `ActiveWorkBreakModal`,
 `ActiveScheduledBreakModal`; бездействие: `InactivityModal` (10 минут). Статусы —
-`constant/orderStatus.ts`.
+`constant/orderStatus.ts`. Кто выполнял заказ — `OrderEngravers` (query `orderEngravers`,
+сбрасывается мутациями processing order), в `OrderProperties` и `ProcessingOrderDetails`;
+в таблице Orders — колонка Engraved By (перед Buyer Paid) из `order.engravers`: имя, под ним
+статус и дата мелким серым; текст — `util/orderEngraver.ts`.
 
 ## Общие элементы
 `Page` (обёртка + кнопка гайда), `PageHeading` (`HeadingBtns`: поиск, уведомления,

@@ -17,6 +17,15 @@ export type ProcessingOrderWithOrder = Omit<ProcessingOrder, "order"> & {
   order: WithId<Order>
 }
 
+export type OrderEngraver = {
+  engraver_id: number
+  fio?: string
+  username?: string
+  status: ProcessingOrderStatus
+  started_at?: string
+  finished_at?: string
+}
+
 export type ProcessingOrderCreate = {
   order_id: number
   engraver_id?: number

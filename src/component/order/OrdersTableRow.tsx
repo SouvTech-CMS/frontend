@@ -8,6 +8,7 @@ import { Link } from "react-router-dom"
 import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 import { numberWithCurrency, roundNumber, stringToDate } from "util/formatting"
+import { formatOrderEngraver } from "util/orderEngraver"
 
 interface OrdersTableRowProps {
   order: WithId<Order>
@@ -51,6 +52,24 @@ export const OrdersTableRow: FC<OrdersTableRowProps> = (props) => {
       {/* Quantity */}
       <Td>
         <Text>{order.quantity}</Text>
+      </Td>
+
+      {/* Engraved By */}
+      <Td>
+        <Flex direction="column" gap={2}>
+          {order.engravers?.map((orderEngraver, index) => {
+            const { name, details } = formatOrderEngraver(orderEngraver)
+
+            return (
+              <Flex key={index} direction="column">
+                <Text fontWeight="semibold">{name}</Text>
+                <Text color="hint" fontSize="sm">
+                  {details}
+                </Text>
+              </Flex>
+            )
+          })}
+        </Flex>
       </Td>
 
       {/* Buyer Paid */}
