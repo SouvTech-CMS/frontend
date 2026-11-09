@@ -31,6 +31,9 @@ permissions, icon, name}`. `permissions` не задан — доступно в
 - Мутации — в `service/<domain>/*.ts`: хуки `use<Entity><Action>Mutation` на `useMutation`
   с `invalidateQueries(<ключи>)` в `onSuccess` и `notifyApiError`/`notify` в `onError`
   (не везде — при добавлении делай `onError`).
+- Файлы (документы закупок и гравёров) открываются только запросом с токеном:
+  `getPurchaseFile` / `getDocumentFile` (`responseType: "blob"`) → `openFile` (`util/files.ts`):
+  картинки и PDF — в новой вкладке, остальное скачивается. Прямых ссылок на `/static` нет.
 
 ## react-query
 `queryClient` с `refetchOnWindowFocus: false`, других дефолтов нет. Ключи: строки для списков

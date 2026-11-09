@@ -25,8 +25,9 @@
   `PERSONALIZATION_PARAM`; текст декодировать `he` (Etsy присылает HTML-сущности).
 - Права: `constant/permissions.ts` — строки должны совпадать с бэкендом; для UI —
   `useUserPermissions().canXxx`; удаление проверяет `canDeleteXxx` (`*_delete`), не `canEditXxx`:
-  бэк на удаление требует отдельное право. `constant/roles.ts` — `admin`, `manager`, `storager`,
-  `engraver`.
+  бэк на удаление требует отдельное право. Кнопку записи без права не прячь, если её видно
+  остальным: `isDisabled` + обёртка `NoPermissionTooltip` (подсказка «You don't have permission
+  to …»). `constant/roles.ts` — `admin`, `manager`, `storager`, `engraver`.
 
 ## Проверки перед сдачей
 ```bash
