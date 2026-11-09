@@ -23,7 +23,7 @@ interface DeviceCardProps {
 export const DeviceCard: FC<DeviceCardProps> = (props) => {
   const { device } = props
 
-  const { canEditDevices } = useUserPermissions()
+  const { canDeleteDevices } = useUserPermissions()
 
   const authorizedAt = dateAsStringToDate(device.authorized_at)
 
@@ -59,7 +59,7 @@ export const DeviceCard: FC<DeviceCardProps> = (props) => {
           </Flex>
 
           {/* Menu Btn */}
-          {canEditDevices && (
+          {canDeleteDevices && (
             <DeviceCardMenu onDelete={onDeviceDeleteModalOpen} />
           )}
         </CardHeader>

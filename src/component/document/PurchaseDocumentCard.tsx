@@ -10,15 +10,16 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
+import { getPurchaseFile } from "api/purchase/purchaseFile"
 import { PurchaseDocumentDeleteModal } from "component/document/PurchaseDocumentDeleteModal"
 import { useUserPermissions } from "hook/useUserPermissions"
-import { FC } from "react"
+import { FC, useState } from "react"
 import { FiCalendar, FiTrash2 } from "react-icons/fi"
-import { Link } from "react-router-dom"
 import { PurchaseFile } from "type/purchase/purchaseFile"
 import { WithId } from "type/withId"
+import { openFile } from "util/files"
 import { timestampToDateAsString } from "util/formatting"
-import { getFileUrl } from "util/urls"
+import { notify } from "util/toasts"
 
 interface PurchaseDocumentCardProps {
   document: WithId<PurchaseFile>
@@ -38,7 +39,19 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
     onClose: onPurchaseFileDeleteModalClose,
   } = useDisclosure()
 
-  const fileUrl = getFileUrl(document.name!)
+  const [isFileLoading, setIsFileLoading] = useState<boolean>(false)
+
+  const handleFileOpen = async () => {
+    setIsFileLoading(true)
+    try {
+      const file = await getPurchaseFile(document.id)
+      openFile(file, document.name!)
+    } catch {
+      notify("Failed to open the file", "error")
+    } finally {
+      setIsFileLoading(false)
+    }
+  }
 
   return (
     <>
@@ -89,9 +102,8 @@ export const PurchaseDocumentCard: FC<PurchaseDocumentCardProps> = (props) => {
             <Button
               variant="ghost"
               colorScheme="blue"
-              as={Link}
-              to={fileUrl}
-              target="_blank"
+              onClick={handleFileOpen}
+              isLoading={isFileLoading}
             >
               Open
             </Button>

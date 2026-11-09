@@ -9,8 +9,10 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
+import { NoPermissionTooltip } from "component/NoPermissionTooltip"
 import { PurchaseServiceDeleteModal } from "component/purchaseService/PurchaseServiceDeleteModal"
 import { PurchaseServiceModal } from "component/purchaseService/PurchaseServiceModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiTrash2 } from "react-icons/fi"
 import { PurchaseService } from "type/purchase/purchaseService"
@@ -25,6 +27,8 @@ export const DeliveryServicesModalCard: FC<DeliveryServicesModalCardProps> = (
   props,
 ) => {
   const { service } = props
+
+  const { canEditPurchases, canDeletePurchases } = useUserPermissions()
 
   const isPurchaseService = service.purchase_id !== undefined
   const serviceId = service.id
@@ -96,23 +100,32 @@ export const DeliveryServicesModalCard: FC<DeliveryServicesModalCardProps> = (
             {!isPurchaseService && (
               <Flex w="full" gap={2}>
                 {/* Edit Btn */}
-                <Button
-                  w="full"
-                  variant="ghost"
-                  colorScheme="blue"
-                  onClick={onServiceEditModalOpen}
-                >
-                  Edit
-                </Button>
+                <NoPermissionTooltip hasPermission={canEditPurchases} w="full">
+                  <Button
+                    w="full"
+                    variant="ghost"
+                    colorScheme="blue"
+                    onClick={onServiceEditModalOpen}
+                    isDisabled={!canEditPurchases}
+                  >
+                    Edit
+                  </Button>
+                </NoPermissionTooltip>
 
                 {/* Delete */}
-                <IconButton
-                  aria-label="delete-service"
-                  variant="ghost"
-                  colorScheme="red"
-                  icon={<FiTrash2 />}
-                  onClick={onServiceDeleteModalOpen}
-                />
+                <NoPermissionTooltip
+                  hasPermission={canDeletePurchases}
+                  action="delete"
+                >
+                  <IconButton
+                    aria-label="delete-service"
+                    variant="ghost"
+                    colorScheme="red"
+                    icon={<FiTrash2 />}
+                    onClick={onServiceDeleteModalOpen}
+                    isDisabled={!canDeletePurchases}
+                  />
+                </NoPermissionTooltip>
               </Flex>
             )}
           </Flex>

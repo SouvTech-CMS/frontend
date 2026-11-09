@@ -48,6 +48,7 @@ export const PurchaseDeliveryCardMenu: FC<PurchaseDeliveryCardMenuProps> = (
     canReadStorage,
     canEditStorage,
     canEditPurchases,
+    canDeletePurchases,
   } = useUserPermissions()
 
   const canMoveToStorage = canReadStorage && canEditStorage
@@ -117,7 +118,7 @@ export const PurchaseDeliveryCardMenu: FC<PurchaseDeliveryCardMenuProps> = (
           icon={<FiTrash2 />}
           color="red"
           onClick={onDelete}
-          isDisabled={!canEditPurchases}
+          isDisabled={!canDeletePurchases}
         >
           Delete
         </MenuItem>
