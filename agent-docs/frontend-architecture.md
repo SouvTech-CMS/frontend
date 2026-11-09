@@ -66,6 +66,6 @@ sortField, sortDirection, searchFilter])`. Тикеты — единственн
 
 ## Хуки (`src/hook`)
 `usePagination` (страница/offset локально), `useShopFilter` (`selectedShopId`, 0 = все),
-`useUserPermissions` (булевы `canReadOrders`, `canEditStorage`… из `constant/permissions.ts`,
-имена совпадают с бэкендом), `useUserTableAccess` (колонки по ролям, только Production Info),
+`useUserPermissions` (булевы `canReadOrders`, `canEditStorage`, `canDeleteStorage`… из
+`constant/permissions.ts`, имена совпадают с бэкендом; кнопки удаления — только `canDeleteXxx`), `useUserTableAccess` (колонки по ролям, только Production Info),
 `useAuthorizedDevice`, `useCommentInput` (комментарии к объекту), `withAuthAndPermission`.

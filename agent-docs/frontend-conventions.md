@@ -24,7 +24,9 @@
   ключи (`listing_id`, `product_id`, `transaction_type`, `OriginalSKU`), персонализация —
   `PERSONALIZATION_PARAM`; текст декодировать `he` (Etsy присылает HTML-сущности).
 - Права: `constant/permissions.ts` — строки должны совпадать с бэкендом; для UI —
-  `useUserPermissions().canXxx`. `constant/roles.ts` — `admin`, `manager`, `storager`, `engraver`.
+  `useUserPermissions().canXxx`; удаление проверяет `canDeleteXxx` (`*_delete`), не `canEditXxx`:
+  бэк на удаление требует отдельное право. `constant/roles.ts` — `admin`, `manager`, `storager`,
+  `engraver`.
 
 ## Проверки перед сдачей
 ```bash
