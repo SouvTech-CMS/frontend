@@ -6,6 +6,7 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiEdit, FiMoreVertical, FiTrash2 } from "react-icons/fi"
 
@@ -16,6 +17,8 @@ interface UserCardMenuProps {
 
 export const UserCardMenu: FC<UserCardMenuProps> = (props) => {
   const { onEdit, onDelete } = props
+
+  const { canDeleteUsers } = useUserPermissions()
 
   return (
     <Flex position="absolute" top={0} right={0}>
@@ -32,7 +35,12 @@ export const UserCardMenu: FC<UserCardMenuProps> = (props) => {
             Edit
           </MenuItem>
 
-          <MenuItem icon={<FiTrash2 />} color="red" onClick={onDelete}>
+          <MenuItem
+            icon={<FiTrash2 />}
+            color="red"
+            onClick={onDelete}
+            isDisabled={!canDeleteUsers}
+          >
             Delete
           </MenuItem>
         </MenuList>

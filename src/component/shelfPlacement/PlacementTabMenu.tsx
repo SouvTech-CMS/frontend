@@ -17,7 +17,7 @@ interface PlacementTabMenuProps {
 export const PlacementTabMenu: FC<PlacementTabMenuProps> = (props) => {
   const { onEdit, onDelete } = props
 
-  const { canEditStorage } = useUserPermissions()
+  const { canEditStorage, canDeleteShelvesPlacements } = useUserPermissions()
 
   return (
     <Menu>
@@ -42,7 +42,7 @@ export const PlacementTabMenu: FC<PlacementTabMenuProps> = (props) => {
           icon={<FiTrash2 />}
           color="red"
           onClick={onDelete}
-          isDisabled={!canEditStorage}
+          isDisabled={!canDeleteShelvesPlacements}
         >
           Delete
         </MenuItem>

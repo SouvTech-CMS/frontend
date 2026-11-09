@@ -10,6 +10,14 @@ export const uploadDocuments = async (body: EngraverDocumentUpload) => {
   await axiosClient.postForm(`/engraver/document/${body.engraverId}`, formData)
 }
 
+export const getDocumentFile = async (documentId: number): Promise<Blob> => {
+  const { data: file } = await axiosClient.get(
+    `/engraver/document/${documentId}`,
+    { responseType: "blob" },
+  )
+  return file
+}
+
 export const deleteDocuments = async (engraverId: number) => {
   await axiosClient.delete(`/engraver/document/${engraverId}`)
 }

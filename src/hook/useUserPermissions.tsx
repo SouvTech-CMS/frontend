@@ -13,6 +13,7 @@ const PERMISSIONS_MAP = {
   //* Goods
   canReadGoods: Permission.GOOD_READ,
   canEditGoods: Permission.GOOD_WRITE,
+  canDeleteGoods: Permission.GOOD_DELETE,
 
   //* Clients
   canReadClients: Permission.CLIENT_READ,
@@ -29,43 +30,52 @@ const PERMISSIONS_MAP = {
   //* Purchases
   canReadPurchases: Permission.PURCHASE_READ,
   canEditPurchases: Permission.PURCHASE_WRITE,
+  canDeletePurchases: Permission.PURCHASE_DELETE,
 
   //* Suppliers
   canReadSuppliers: Permission.SUPPLIER_READ,
   canEditSuppliers: Permission.SUPPLIER_WRITE,
+  canDeleteSuppliers: Permission.SUPPLIER_DELETE,
 
   //* Purchase Documents
-  canReadPurchasesDocuments: Permission.DOCUMENT_READ,
-  canEditPurchasesDocuments: Permission.DOCUMENT_WRITE,
-  canDeletePurchasesDocuments: Permission.DOCUMENT_DELETE,
+  canReadPurchasesDocuments: Permission.PURCHASE_DOCUMENT_READ,
+  canEditPurchasesDocuments: Permission.PURCHASE_DOCUMENT_WRITE,
+  canDeletePurchasesDocuments: Permission.PURCHASE_DOCUMENT_DELETE,
 
   //* Storage
   canReadStorage: Permission.STORAGE_READ,
   canEditStorage: Permission.STORAGE_WRITE,
+  canDeleteStorage: Permission.STORAGE_DELETE,
 
   //* Production Info
   canReadProductionInfo: Permission.PRODUCTION_INFO_READ,
   canEditProductionInfo: Permission.PRODUCTION_INFO_WRITE,
+  canDeleteProductionInfo: Permission.PRODUCTION_INFO_DELETE,
 
   //* Shelves
   canReadShelves: Permission.SHELF_READ,
   canEditShelves: Permission.SHELF_WRITE,
+  canDeleteShelves: Permission.SHELF_DELETE,
 
   //* Shelves Placements
   canReadShelvesPlacements: Permission.SHELF_PLACEMENT_READ,
   canEditShelvesPlacements: Permission.SHELF_PLACEMENT_WRITE,
+  canDeleteShelvesPlacements: Permission.SHELF_PLACEMENT_DELETE,
 
   //* Devices
   canReadDevices: Permission.DEVICE_READ,
   canEditDevices: Permission.DEVICE_WRITE,
+  canDeleteDevices: Permission.DEVICE_DELETE,
 
   //* Users
   canReadUsers: Permission.USER_READ,
   canEditUsers: Permission.USER_WRITE,
+  canDeleteUsers: Permission.USER_DELETE,
 
   //* Roles
   canReadRoles: Permission.ROLE_READ,
   canEditRoles: Permission.ROLE_WRITE,
+  canDeleteRoles: Permission.ROLE_DELETE,
 
   //* Engravers
   canReadEngravers: Permission.ENGRAVER_READ,
@@ -74,6 +84,7 @@ const PERMISSIONS_MAP = {
   //* Engravers Documents
   canReadEngraversDocuments: Permission.ENGRAVER_DOCUMENT_READ,
   canEditEngraversDocuments: Permission.ENGRAVER_DOCUMENT_WRITE,
+  canDeleteEngraversDocuments: Permission.ENGRAVER_DOCUMENT_DELETE,
 
   //* Engraving
   canProcessOrders: Permission.PROCESSING_ORDER,

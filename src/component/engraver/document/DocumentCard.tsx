@@ -9,15 +9,16 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
+import { getDocumentFile } from "api/engraver/engraverDocument"
 import { DocumentDeleteModal } from "component/engraver/document/DocumentDeleteModal"
 import { useUserPermissions } from "hook/useUserPermissions"
-import { FC } from "react"
+import { FC, useState } from "react"
 import { FiCalendar, FiTrash2 } from "react-icons/fi"
-import { Link } from "react-router-dom"
 import { EngraverDocument } from "type/engraver/engraverDocument"
 import { WithId } from "type/withId"
+import { openFile } from "util/files"
 import { dateAsStringToDate, formatDate } from "util/formatting"
-import { getFileUrl } from "util/urls"
+import { notify } from "util/toasts"
 
 interface DocumentCardProps {
   document: WithId<EngraverDocument>
@@ -26,10 +27,22 @@ interface DocumentCardProps {
 export const DocumentCard: FC<DocumentCardProps> = (props) => {
   const { document } = props
 
-  const { canDeletePurchasesDocuments } = useUserPermissions()
+  const { canDeleteEngraversDocuments } = useUserPermissions()
 
-  const fileUrl = getFileUrl(document.file_path)
+  const [isFileLoading, setIsFileLoading] = useState<boolean>(false)
   const uploadedAt = dateAsStringToDate(document.uploaded_at)
+
+  const handleFileOpen = async () => {
+    setIsFileLoading(true)
+    try {
+      const file = await getDocumentFile(document.id)
+      openFile(file, document.file_name)
+    } catch {
+      notify("Failed to open the file", "error")
+    } finally {
+      setIsFileLoading(false)
+    }
+  }
 
   const {
     isOpen: isDocumentDeleteModalOpen,
@@ -74,7 +87,7 @@ export const DocumentCard: FC<DocumentCardProps> = (props) => {
               colorScheme="red"
               icon={<FiTrash2 />}
               onClick={onDocumentDeleteModalOpen}
-              isDisabled={!canDeletePurchasesDocuments}
+              isDisabled={!canDeleteEngraversDocuments}
             />
           </Flex>
         </CardHeader>
@@ -84,9 +97,8 @@ export const DocumentCard: FC<DocumentCardProps> = (props) => {
             <Button
               variant="ghost"
               colorScheme="blue"
-              as={Link}
-              to={fileUrl}
-              target="_blank"
+              onClick={handleFileOpen}
+              isLoading={isFileLoading}
             >
               Open
             </Button>

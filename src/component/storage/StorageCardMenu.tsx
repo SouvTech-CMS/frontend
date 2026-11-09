@@ -20,7 +20,8 @@ interface StorageCardMenuProps {
 export const StorageCardMenu: FC<StorageCardMenuProps> = (props) => {
   const { isFromDelivery, onRevertDelivery, onEdit, onDelete } = props
 
-  const { canEditStorage, canEditPurchases } = useUserPermissions()
+  const { canEditStorage, canDeleteStorage, canEditPurchases } =
+    useUserPermissions()
 
   return (
     <Flex position="absolute" top={0} right={0}>
@@ -37,7 +38,7 @@ export const StorageCardMenu: FC<StorageCardMenuProps> = (props) => {
             <MenuItem
               icon={<FiRotateCcw />}
               onClick={onRevertDelivery}
-              isDisabled={!canEditStorage || !canEditPurchases}
+              isDisabled={!canDeleteStorage || !canEditPurchases}
             >
               Revert full Delivery
             </MenuItem>
@@ -55,7 +56,7 @@ export const StorageCardMenu: FC<StorageCardMenuProps> = (props) => {
             icon={<FiTrash2 />}
             color="red"
             onClick={onDelete}
-            isDisabled={!canEditStorage}
+            isDisabled={!canDeleteStorage}
           >
             Delete
           </MenuItem>

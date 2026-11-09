@@ -31,6 +31,9 @@ permissions, icon, name}`. `permissions` не задан — доступно в
 - Мутации — в `service/<domain>/*.ts`: хуки `use<Entity><Action>Mutation` на `useMutation`
   с `invalidateQueries(<ключи>)` в `onSuccess` и `notifyApiError`/`notify` в `onError`
   (не везде — при добавлении делай `onError`).
+- Файлы (документы закупок и гравёров) открываются только запросом с токеном:
+  `getPurchaseFile` / `getDocumentFile` (`responseType: "blob"`) → `openFile` (`util/files.ts`):
+  картинки и PDF — в новой вкладке, остальное скачивается. Прямых ссылок на `/static` нет.
 
 ## react-query
 `queryClient` с `refetchOnWindowFocus: false`, других дефолтов нет. Ключи: строки для списков
@@ -66,6 +69,6 @@ sortField, sortDirection, searchFilter])`. Тикеты — единственн
 
 ## Хуки (`src/hook`)
 `usePagination` (страница/offset локально), `useShopFilter` (`selectedShopId`, 0 = все),
-`useUserPermissions` (булевы `canReadOrders`, `canEditStorage`… из `constant/permissions.ts`,
-имена совпадают с бэкендом), `useUserTableAccess` (колонки по ролям, только Production Info),
+`useUserPermissions` (булевы `canReadOrders`, `canEditStorage`, `canDeleteStorage`… из
+`constant/permissions.ts`, имена совпадают с бэкендом; кнопки удаления — только `canDeleteXxx`), `useUserTableAccess` (колонки по ролям, только Production Info),
 `useAuthorizedDevice`, `useCommentInput` (комментарии к объекту), `withAuthAndPermission`.
