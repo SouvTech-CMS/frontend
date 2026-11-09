@@ -9,6 +9,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
+import { NoPermissionTooltip } from "component/NoPermissionTooltip"
 import { PurchaseServiceDeleteModal } from "component/purchaseService/PurchaseServiceDeleteModal"
 import { PurchaseServiceModal } from "component/purchaseService/PurchaseServiceModal"
 import { useUserPermissions } from "hook/useUserPermissions"
@@ -28,7 +29,7 @@ export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
 ) => {
   const { service, isReadOnly } = props
 
-  const { canDeletePurchases } = useUserPermissions()
+  const { canEditPurchases, canDeletePurchases } = useUserPermissions()
 
   const serviceId = service.id
 
@@ -93,25 +94,32 @@ export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
             {!isReadOnly && (
               <Flex w="full" gap={2}>
                 {/* Edit Btn */}
-                <Button
-                  w="full"
-                  variant="ghost"
-                  colorScheme="blue"
-                  onClick={onServiceEditModalOpen}
-                >
-                  Edit
-                </Button>
+                <NoPermissionTooltip hasPermission={canEditPurchases} w="full">
+                  <Button
+                    w="full"
+                    variant="ghost"
+                    colorScheme="blue"
+                    onClick={onServiceEditModalOpen}
+                    isDisabled={!canEditPurchases}
+                  >
+                    Edit
+                  </Button>
+                </NoPermissionTooltip>
 
                 {/* Delete */}
-                {canDeletePurchases && (
+                <NoPermissionTooltip
+                  hasPermission={canDeletePurchases}
+                  action="delete"
+                >
                   <IconButton
                     aria-label="delete-service"
                     variant="ghost"
                     colorScheme="red"
                     icon={<FiTrash2 />}
                     onClick={onServiceDeleteModalOpen}
+                    isDisabled={!canDeletePurchases}
                   />
-                )}
+                </NoPermissionTooltip>
               </Flex>
             )}
           </Flex>

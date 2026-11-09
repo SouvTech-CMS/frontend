@@ -9,6 +9,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
+import { NoPermissionTooltip } from "component/NoPermissionTooltip"
 import { SKUBadge } from "component/badge/SKUBadge"
 import { PurchaseGoodDeleteModal } from "component/purchaseGood/PurchaseGoodDeleteModal"
 import { PurchaseGoodModal } from "component/purchaseGood/PurchaseGoodModal"
@@ -30,7 +31,7 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
 ) => {
   const { good, isReadOnly } = props
 
-  const { canDeletePurchases } = useUserPermissions()
+  const { canEditPurchases, canDeletePurchases } = useUserPermissions()
 
   const discountAsNumber = parseFloat(good.discount || "") || undefined
   const isDiscountExists = discountAsNumber !== undefined
@@ -146,25 +147,32 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
             {!isReadOnly && (
               <Flex w="full" gap={2}>
                 {/* Edit Btn */}
-                <Button
-                  w="full"
-                  variant="ghost"
-                  colorScheme="blue"
-                  onClick={onGoodEditModalOpen}
-                >
-                  Edit
-                </Button>
+                <NoPermissionTooltip hasPermission={canEditPurchases} w="full">
+                  <Button
+                    w="full"
+                    variant="ghost"
+                    colorScheme="blue"
+                    onClick={onGoodEditModalOpen}
+                    isDisabled={!canEditPurchases}
+                  >
+                    Edit
+                  </Button>
+                </NoPermissionTooltip>
 
                 {/* Delete */}
-                {canDeletePurchases && (
+                <NoPermissionTooltip
+                  hasPermission={canDeletePurchases}
+                  action="delete"
+                >
                   <IconButton
                     aria-label="delete-good"
                     variant="ghost"
                     colorScheme="red"
                     icon={<FiTrash2 />}
                     onClick={onGoodDeleteModalOpen}
+                    isDisabled={!canDeletePurchases}
                   />
-                )}
+                </NoPermissionTooltip>
               </Flex>
             )}
           </Flex>
