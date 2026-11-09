@@ -1,6 +1,7 @@
-import { Flex, Heading } from "@chakra-ui/react"
+import { Flex, Heading, Text } from "@chakra-ui/react"
 import { ShopBadge } from "component/badge/ShopBadge"
 import { Container } from "component/Container"
+import { OrderEngravers } from "component/orderProcessing/OrderEngravers"
 import { ProcessingGood } from "component/orderProcessing/ProcessingGood"
 import { FC } from "react"
 import { ProcessingOrder } from "type/engraver/processingOrder"
@@ -30,6 +31,13 @@ export const ProcessingOrderDetails: FC<ProcessingOrderDetailsProps> = (
         <ShopBadge shop={shop} fontSize="md" />
 
         <Heading>Order #{marketplaceOrderId}</Heading>
+
+        <Flex direction="column" gap={1} fontSize="md">
+          <Text fontWeight="light" color="gray">
+            Engraved By
+          </Text>
+          <OrderEngravers orderId={order?.id} />
+        </Flex>
       </Flex>
 
       <Flex
