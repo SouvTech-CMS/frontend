@@ -20,6 +20,9 @@ jobs:
           username: ${{ secrets.DEPLOY_USER_NAME }}
           password: ${{ secrets.DEPLOY_USER_PASSWORD }}
           script: |
+            # Stop on the first failed command (ssh-action ignores script_stop)
+            set -e
+
             REPO_DIR=~/${{ github.event.repository.name }}
 
             echo "Open repository dir: $REPO_DIR"
@@ -27,7 +30,7 @@ jobs:
 
             echo "Pull changes"
             git checkout main
-            git pull
+            git pull --ff-only
 
             echo "Stop all containers"
             docker compose stop
