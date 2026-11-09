@@ -17,7 +17,7 @@ interface ShelfCardMenuProps {
 export const ShelfCardMenu: FC<ShelfCardMenuProps> = (props) => {
   const { onEdit, onDelete } = props
 
-  const { canEditStorage } = useUserPermissions()
+  const { canEditStorage, canDeleteShelves } = useUserPermissions()
 
   return (
     <Menu>
@@ -42,7 +42,7 @@ export const ShelfCardMenu: FC<ShelfCardMenuProps> = (props) => {
           icon={<FiTrash2 />}
           color="red"
           onClick={onDelete}
-          isDisabled={!canEditStorage}
+          isDisabled={!canDeleteShelves}
         >
           Delete
         </MenuItem>

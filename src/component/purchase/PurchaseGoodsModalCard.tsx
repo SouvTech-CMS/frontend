@@ -12,6 +12,7 @@ import {
 import { SKUBadge } from "component/badge/SKUBadge"
 import { PurchaseGoodDeleteModal } from "component/purchaseGood/PurchaseGoodDeleteModal"
 import { PurchaseGoodModal } from "component/purchaseGood/PurchaseGoodModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiTrash2 } from "react-icons/fi"
 import { PurchaseGood } from "type/purchase/purchaseGood"
@@ -28,6 +29,8 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
   props,
 ) => {
   const { good, isReadOnly } = props
+
+  const { canDeletePurchases } = useUserPermissions()
 
   const discountAsNumber = parseFloat(good.discount || "") || undefined
   const isDiscountExists = discountAsNumber !== undefined
@@ -153,13 +156,15 @@ export const PurchaseGoodsModalCard: FC<PurchaseGoodsModalCardProps> = (
                 </Button>
 
                 {/* Delete */}
-                <IconButton
-                  aria-label="delete-good"
-                  variant="ghost"
-                  colorScheme="red"
-                  icon={<FiTrash2 />}
-                  onClick={onGoodDeleteModalOpen}
-                />
+                {canDeletePurchases && (
+                  <IconButton
+                    aria-label="delete-good"
+                    variant="ghost"
+                    colorScheme="red"
+                    icon={<FiTrash2 />}
+                    onClick={onGoodDeleteModalOpen}
+                  />
+                )}
               </Flex>
             )}
           </Flex>

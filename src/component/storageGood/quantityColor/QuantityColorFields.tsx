@@ -10,6 +10,7 @@ import { ColorPickerPopover } from "component/ColorPickerPopover"
 import { CustomTooltip } from "component/CustomTooltip"
 import { QuantityColorDeleteModal } from "component/storageGood/quantityColor/QuantityColorDeleteModal"
 import { QuantityColorIcon } from "component/storageGood/quantityColor/QuantityColorIcon"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiTrash } from "react-icons/fi"
 import { QuantityColor } from "type/storage/quantityColor/quantityColor"
@@ -25,6 +26,9 @@ export const QuantityColorFields: FC<QuantityColorFieldsProps> = (props) => {
   const { prevQuantityColor, onChange, onDelete } = props
 
   const quantityColorId = prevQuantityColor.id
+  const isSavedQuantityColor = !!quantityColorId && !isNaN(quantityColorId)
+
+  const { canDeleteStorage } = useUserPermissions()
 
   const description = prevQuantityColor.description
   const color = prevQuantityColor.color
@@ -51,7 +55,7 @@ export const QuantityColorFields: FC<QuantityColorFieldsProps> = (props) => {
   } = useDisclosure()
 
   const handleDelete = async () => {
-    if (!!quantityColorId && !isNaN(quantityColorId)) {
+    if (isSavedQuantityColor) {
       onModalOpen()
     } else {
       onDelete(prevQuantityColor)
@@ -78,6 +82,7 @@ export const QuantityColorFields: FC<QuantityColorFieldsProps> = (props) => {
             colorScheme="red"
             ml="auto"
             onClick={handleDelete}
+            isDisabled={isSavedQuantityColor && !canDeleteStorage}
           />
         </Flex>
 

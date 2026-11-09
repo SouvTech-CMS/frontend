@@ -39,8 +39,12 @@ export const PurchaseCardMenu: FC<PurchaseCardMenuProps> = (props) => {
     onDelete,
   } = props
 
-  const { canReadPurchasesDocuments, canReadSuppliers, canEditPurchases } =
-    useUserPermissions()
+  const {
+    canReadPurchasesDocuments,
+    canReadSuppliers,
+    canEditPurchases,
+    canDeletePurchases,
+  } = useUserPermissions()
 
   return (
     <Menu>
@@ -105,7 +109,7 @@ export const PurchaseCardMenu: FC<PurchaseCardMenuProps> = (props) => {
           icon={<FiTrash2 />}
           color="red"
           onClick={onDelete}
-          isDisabled={!canEditPurchases}
+          isDisabled={!canDeletePurchases}
         >
           Delete
         </MenuItem>

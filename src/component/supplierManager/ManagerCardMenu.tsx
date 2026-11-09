@@ -18,7 +18,7 @@ interface ManagerCardMenuProps {
 export const ManagerCardMenu: FC<ManagerCardMenuProps> = (props) => {
   const { onEdit, onDelete } = props
 
-  const { canEditSuppliers } = useUserPermissions()
+  const { canEditSuppliers, canDeleteSuppliers } = useUserPermissions()
 
   return (
     <Flex position="absolute" top={0} right={0}>
@@ -43,7 +43,7 @@ export const ManagerCardMenu: FC<ManagerCardMenuProps> = (props) => {
             icon={<FiTrash2 />}
             color="red"
             onClick={onDelete}
-            isDisabled={!canEditSuppliers}
+            isDisabled={!canDeleteSuppliers}
           >
             Delete
           </MenuItem>

@@ -26,7 +26,7 @@ interface DocumentCardProps {
 export const DocumentCard: FC<DocumentCardProps> = (props) => {
   const { document } = props
 
-  const { canDeletePurchasesDocuments } = useUserPermissions()
+  const { canDeleteEngraversDocuments } = useUserPermissions()
 
   const fileUrl = getFileUrl(document.file_path)
   const uploadedAt = dateAsStringToDate(document.uploaded_at)
@@ -74,7 +74,7 @@ export const DocumentCard: FC<DocumentCardProps> = (props) => {
               colorScheme="red"
               icon={<FiTrash2 />}
               onClick={onDocumentDeleteModalOpen}
-              isDisabled={!canDeletePurchasesDocuments}
+              isDisabled={!canDeleteEngraversDocuments}
             />
           </Flex>
         </CardHeader>

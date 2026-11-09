@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react"
 import { PurchaseServiceDeleteModal } from "component/purchaseService/PurchaseServiceDeleteModal"
 import { PurchaseServiceModal } from "component/purchaseService/PurchaseServiceModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { FiTrash2 } from "react-icons/fi"
 import { PurchaseService } from "type/purchase/purchaseService"
@@ -26,6 +27,8 @@ export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
   props,
 ) => {
   const { service, isReadOnly } = props
+
+  const { canDeletePurchases } = useUserPermissions()
 
   const serviceId = service.id
 
@@ -100,13 +103,15 @@ export const PurchaseServicesModalCard: FC<PurchaseServicesModalCardProps> = (
                 </Button>
 
                 {/* Delete */}
-                <IconButton
-                  aria-label="delete-service"
-                  variant="ghost"
-                  colorScheme="red"
-                  icon={<FiTrash2 />}
-                  onClick={onServiceDeleteModalOpen}
-                />
+                {canDeletePurchases && (
+                  <IconButton
+                    aria-label="delete-service"
+                    variant="ghost"
+                    colorScheme="red"
+                    icon={<FiTrash2 />}
+                    onClick={onServiceDeleteModalOpen}
+                  />
+                )}
               </Flex>
             )}
           </Flex>
