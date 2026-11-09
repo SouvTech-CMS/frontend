@@ -34,9 +34,9 @@ export enum Permission {
   SUPPLIER_DELETE = "supplier_delete",
 
   //* Documents
-  DOCUMENT_READ = "document_read",
-  DOCUMENT_WRITE = "document_write",
-  DOCUMENT_DELETE = "document_delete",
+  PURCHASE_DOCUMENT_READ = "purchase_document_read",
+  PURCHASE_DOCUMENT_WRITE = "purchase_document_write",
+  PURCHASE_DOCUMENT_DELETE = "purchase_document_delete",
 
   //* Storage
   STORAGE_READ = "storage_read",

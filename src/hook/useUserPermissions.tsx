@@ -38,9 +38,9 @@ const PERMISSIONS_MAP = {
   canDeleteSuppliers: Permission.SUPPLIER_DELETE,
 
   //* Purchase Documents
-  canReadPurchasesDocuments: Permission.DOCUMENT_READ,
-  canEditPurchasesDocuments: Permission.DOCUMENT_WRITE,
-  canDeletePurchasesDocuments: Permission.DOCUMENT_DELETE,
+  canReadPurchasesDocuments: Permission.PURCHASE_DOCUMENT_READ,
+  canEditPurchasesDocuments: Permission.PURCHASE_DOCUMENT_WRITE,
+  canDeletePurchasesDocuments: Permission.PURCHASE_DOCUMENT_DELETE,
 
   //* Storage
   canReadStorage: Permission.STORAGE_READ,
