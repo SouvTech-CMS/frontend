@@ -3,6 +3,7 @@ import { ShopBadge } from "component/badge/ShopBadge"
 import { Container } from "component/Container"
 import { OrderEngravers } from "component/orderProcessing/OrderEngravers"
 import { ProcessingGood } from "component/orderProcessing/ProcessingGood"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { ProcessingOrder } from "type/engraver/processingOrder"
 import { WithId } from "type/withId"
@@ -15,6 +16,7 @@ export const ProcessingOrderDetails: FC<ProcessingOrderDetailsProps> = (
   props,
 ) => {
   const { processingOrder } = props
+  const { canReadOrders } = useUserPermissions()
 
   const order = processingOrder.order
   const shop = order?.shop
@@ -32,12 +34,14 @@ export const ProcessingOrderDetails: FC<ProcessingOrderDetailsProps> = (
 
         <Heading>Order #{marketplaceOrderId}</Heading>
 
-        <Flex direction="column" gap={1} fontSize="md">
-          <Text fontWeight="light" color="gray">
-            Engraved By
-          </Text>
-          <OrderEngravers orderId={order?.id} />
-        </Flex>
+        {canReadOrders && (
+          <Flex direction="column" gap={1} fontSize="md">
+            <Text fontWeight="light" color="gray">
+              Engraved By
+            </Text>
+            <OrderEngravers orderId={order?.id} />
+          </Flex>
+        )}
       </Flex>
 
       <Flex

@@ -41,8 +41,12 @@
 `ActiveScheduledBreakModal`; бездействие: `InactivityModal` (10 минут). Статусы —
 `constant/orderStatus.ts`. Кто выполнял заказ — `OrderEngravers` (query `orderEngravers`,
 сбрасывается мутациями processing order), в `OrderProperties` и `ProcessingOrderDetails`;
-в таблице Orders — колонка Engraved By (перед Buyer Paid) из `order.engravers`: имя, под ним
-статус и дата мелким серым; текст — `util/orderEngraver.ts`.
+в Engraving и Tickets блок показывается только пользователям с правом чтения Orders;
+в таблице Orders — колонка Engraved By (перед Buyer Paid) из `order.engravers`: имена,
+статусы, время работы и сумма, начало и конец отдельными строками в подсказке. Во всех местах
+`OrderEngraverCards` использует одну карточку на гравёра и выводит сумму под карточками.
+В Orders карточки белые на полосатой строке, на белой используется фон как в Engraving;
+форматирование — `util/orderEngraver.ts`.
 
 ## Общие элементы
 `Page` (обёртка + кнопка гайда), `PageHeading` (`HeadingBtns`: поиск, уведомления,
