@@ -63,10 +63,16 @@ export const formatOrderEngraver = (orderEngraver: OrderEngraver) => {
   const finishedDate = dateAsStringToDate(orderEngraver.finished_at, true)
   const calculatedDuration =
     startedDate && finishedDate
-      ? (finishedDate.getTime() - startedDate.getTime()) / 1000
+      ? Math.floor((finishedDate.getTime() - startedDate.getTime()) / 1000)
       : undefined
-  const durationSeconds =
+  const grossDuration =
     getDurationInSeconds(orderEngraver.processing_time) ?? calculatedDuration
+  const pausedSeconds = orderEngraver.paused_seconds
+  const elapsedSeconds = calculatedDuration ?? grossDuration
+  const durationSeconds =
+    pausedSeconds != null && elapsedSeconds !== undefined
+      ? Math.max(0, elapsedSeconds - pausedSeconds)
+      : grossDuration
 
   return {
     name: name || EMPTY_VALUE,
@@ -74,6 +80,7 @@ export const formatOrderEngraver = (orderEngraver: OrderEngraver) => {
     startedAt,
     finishedAt,
     duration: formatDuration(durationSeconds),
+    pauseDuration: formatDuration(pausedSeconds ?? undefined),
     durationSeconds,
   }
 }
