@@ -9,11 +9,12 @@ import { WithId } from "type/withId"
 
 interface PermissionsGridProps {
   checkedPermissionsIds: number[]
+  isInvalid: boolean
   handlePermissionsUpdate: (permissionId: number) => void
 }
 
 export const PermissionsGrid: FC<PermissionsGridProps> = (props) => {
-  const { checkedPermissionsIds, handlePermissionsUpdate } = props
+  const { checkedPermissionsIds, isInvalid, handlePermissionsUpdate } = props
 
   const { data: permissionsList, isLoading } = useQuery<WithId<Permission>[]>(
     "permissionsList",
@@ -31,6 +32,7 @@ export const PermissionsGrid: FC<PermissionsGridProps> = (props) => {
           key={index}
           permission={permission}
           checkedPermissionsIds={checkedPermissionsIds}
+          isInvalid={isInvalid}
           handlePermissionsUpdate={handlePermissionsUpdate}
         />
       ))}

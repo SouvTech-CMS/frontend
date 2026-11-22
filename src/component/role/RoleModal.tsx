@@ -57,7 +57,7 @@ export const RoleModal: FC<RoleModalProps> = (props) => {
   const isLoading = roleCreateMutation.isLoading || roleUpdateMutation.isLoading
 
   const isNameInvalid = !role.name.trim()
-  const isPermissionsInvalid = permissions.length === 0
+  const isPermissionsInvalid = isNewRole && permissions.length === 0
   const isSaveBtnDisabled = isNameInvalid || isPermissionsInvalid
 
   // const { comment, handleCommentChange, onCommentSubmit, isCommentLoading } =
@@ -180,6 +180,7 @@ export const RoleModal: FC<RoleModalProps> = (props) => {
             {/* Permissions */}
             <PermissionsGrid
               checkedPermissionsIds={permissions}
+              isInvalid={isPermissionsInvalid}
               handlePermissionsUpdate={handlePermissionsUpdate}
             />
 

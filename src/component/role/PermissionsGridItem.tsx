@@ -6,15 +6,20 @@ import { WithId } from "type/withId"
 interface PermissionsGridItemProps {
   permission: WithId<Permission>
   checkedPermissionsIds: number[]
+  isInvalid: boolean
   handlePermissionsUpdate: (permissionId: number) => void
 }
 
 export const PermissionsGridItem: FC<PermissionsGridItemProps> = (props) => {
-  const { permission, checkedPermissionsIds, handlePermissionsUpdate } = props
+  const {
+    permission,
+    checkedPermissionsIds,
+    isInvalid,
+    handlePermissionsUpdate,
+  } = props
 
   const permissionId = permission.id
   const isChecked = checkedPermissionsIds.includes(permissionId)
-  const isInvalid = checkedPermissionsIds.length === 0
 
   const handlePermissionChange = () => {
     handlePermissionsUpdate(permissionId)
