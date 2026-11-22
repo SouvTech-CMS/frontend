@@ -9,7 +9,7 @@ interface OrderEngraverDetailsProps {
 
 export const OrderEngraverDetails: FC<OrderEngraverDetailsProps> = (props) => {
   const { orderEngraver } = props
-  const { name, status, startedAt, finishedAt, duration } =
+  const { name, status, startedAt, finishedAt, duration, pauseDuration } =
     formatOrderEngraver(orderEngraver)
 
   return (
@@ -18,7 +18,7 @@ export const OrderEngraverDetails: FC<OrderEngraverDetailsProps> = (props) => {
       placement="top"
       openDelay={250}
       whiteSpace="pre-line"
-      label={`Start: ${startedAt}\nEnd: ${finishedAt}`}
+      label={`Start: ${startedAt}\nEnd: ${finishedAt}\nPauses: ${pauseDuration}`}
     >
       <Box tabIndex={0} role="group" w="full" cursor="help">
         <Flex alignItems="baseline" justifyContent="space-between" gap={4}>
