@@ -1,15 +1,98 @@
 import { OrderEngraver } from "type/engraver/processingOrder"
-import { dateAsStringToDate, formatDateTime } from "util/formatting"
+import { dateAsStringToDate } from "util/formatting"
+
+const CLIENT_TIME_ZONE = "America/Chicago"
+const EMPTY_VALUE = "—"
+
+const getDurationInSeconds = (duration?: string) => {
+  if (!duration) {
+    return
+  }
+
+  const [hours, minutes, seconds] = duration.split(":").map(Number)
+  return hours * 60 * 60 + minutes * 60 + seconds
+}
+
+const formatDuration = (seconds?: number) => {
+  if (seconds === undefined || Number.isNaN(seconds)) {
+    return EMPTY_VALUE
+  }
+
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const remainingSeconds = seconds % 60
+  const parts = []
+
+  if (hours) {
+    parts.push(`${hours}h`)
+  }
+
+  if (minutes || hours) {
+    parts.push(`${minutes}m`)
+  }
+
+  if (remainingSeconds || !parts.length) {
+    parts.push(`${remainingSeconds}s`)
+  }
+
+  return parts.join(" ")
+}
+
+const formatClientDateTime = (dateString?: string) => {
+  const date = dateAsStringToDate(dateString, true)
+
+  if (!date) {
+    return EMPTY_VALUE
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: CLIENT_TIME_ZONE,
+    month: "2-digit",
+    day: "2-digit",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date)
+}
 
 export const formatOrderEngraver = (orderEngraver: OrderEngraver) => {
   const name = orderEngraver.fio || orderEngraver.username
-  const date = dateAsStringToDate(
-    orderEngraver.finished_at || orderEngraver.started_at,
-    true,
-  )
-  const details = date
-    ? `${orderEngraver.status} · ${formatDateTime(date, true, "en-US")}`
-    : orderEngraver.status
+  const startedAt = formatClientDateTime(orderEngraver.started_at)
+  const finishedAt = formatClientDateTime(orderEngraver.finished_at)
+  const startedDate = dateAsStringToDate(orderEngraver.started_at, true)
+  const finishedDate = dateAsStringToDate(orderEngraver.finished_at, true)
+  const calculatedDuration =
+    startedDate && finishedDate
+      ? (finishedDate.getTime() - startedDate.getTime()) / 1000
+      : undefined
+  const durationSeconds =
+    getDurationInSeconds(orderEngraver.processing_time) ?? calculatedDuration
 
-  return { name, details }
+  return {
+    name: name || EMPTY_VALUE,
+    status: orderEngraver.status || EMPTY_VALUE,
+    startedAt,
+    finishedAt,
+    duration: formatDuration(durationSeconds),
+    durationSeconds,
+  }
+}
+
+export const formatOrderEngraversTotalDuration = (
+  orderEngravers: OrderEngraver[],
+) => {
+  const durations = orderEngravers
+    .map((orderEngraver) => formatOrderEngraver(orderEngraver).durationSeconds)
+    .filter((duration): duration is number => duration !== undefined)
+
+  if (!durations.length) {
+    return EMPTY_VALUE
+  }
+
+  const totalDuration = durations.reduce(
+    (total, duration) => total + duration,
+    0,
+  )
+
+  return formatDuration(totalDuration)
 }

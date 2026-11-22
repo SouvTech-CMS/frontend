@@ -2,13 +2,13 @@ import { Flex, IconButton, Td, Text, Tooltip, Tr } from "@chakra-ui/react"
 import { OrderStatusBadge } from "component/badge/OrderStatusBadge"
 import { MarketplaceAvatar } from "component/marketplace/MarketplaceAvatar"
 import { MarketplaceOrderLink } from "component/order/MarketplaceOrderLink"
+import { OrderEngraverCards } from "component/orderProcessing/OrderEngraverCards"
 import { FC } from "react"
 import { FiExternalLink } from "react-icons/fi"
 import { Link } from "react-router-dom"
 import { Order } from "type/order/order"
 import { WithId } from "type/withId"
 import { numberWithCurrency, roundNumber, stringToDate } from "util/formatting"
-import { formatOrderEngraver } from "util/orderEngraver"
 
 interface OrdersTableRowProps {
   order: WithId<Order>
@@ -55,21 +55,16 @@ export const OrdersTableRow: FC<OrdersTableRowProps> = (props) => {
       </Td>
 
       {/* Engraved By */}
-      <Td>
-        <Flex direction="column" gap={2}>
-          {order.engravers?.map((orderEngraver, index) => {
-            const { name, details } = formatOrderEngraver(orderEngraver)
-
-            return (
-              <Flex key={index} direction="column">
-                <Text fontWeight="semibold">{name}</Text>
-                <Text color="hint" fontSize="sm">
-                  {details}
-                </Text>
-              </Flex>
-            )
-          })}
-        </Flex>
+      <Td
+        sx={{
+          "tr:nth-of-type(odd) &": {
+            "--engraver-card-bg": "var(--chakra-colors-white)",
+          },
+        }}
+      >
+        {!!order.engravers?.length && (
+          <OrderEngraverCards engravers={order.engravers} stacked />
+        )}
       </Td>
 
       {/* Buyer Paid */}

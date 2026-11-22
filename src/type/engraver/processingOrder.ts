@@ -24,6 +24,7 @@ export type OrderEngraver = {
   status: ProcessingOrderStatus
   started_at?: string
   finished_at?: string
+  processing_time?: string
 }
 
 export type ProcessingOrderCreate = {

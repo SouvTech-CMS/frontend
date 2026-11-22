@@ -82,11 +82,8 @@ export const OrderProperties: FC<OrderPropertiesProps> = (props) => {
     {
       name: "Engraved By",
       value: (
-        // NOTE: containment keeps the cards from widening both grid columns
-        <Box sx={{ contain: "inline-size" }}>
-          <Box w="max-content">
-            <OrderEngravers orderId={order.id} cardBgColor="white" />
-          </Box>
+        <Box w="full" minW={0}>
+          <OrderEngravers orderId={order.id} stacked cardBgColor="white" />
         </Box>
       ),
     },
