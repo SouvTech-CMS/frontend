@@ -95,6 +95,13 @@ export const PermissionsGrid: FC<PermissionsGridProps> = (props) => {
               {section.title}
               <Badge
                 ml={3}
+                minW={6}
+                h={6}
+                px={1.5}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                fontSize="xs"
                 borderRadius="full"
                 colorScheme={isSelected ? "whiteAlpha" : "blue"}
                 visibility={checkedCount > 0 ? "visible" : "hidden"}
