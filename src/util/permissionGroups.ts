@@ -47,18 +47,3 @@ export const getPermissionSections = (
 
   return sections.filter(({ rows }) => rows.length > 0)
 }
-
-/**
- * Short labels of the role permissions in a row: "View", "Edit", "Create"…
- */
-export const getRowPermissionsLabels = (
-  row: PermissionGroupRow,
-  names: Set<string>,
-) => [
-  ...ACTIONS.filter(({ key }) => row[key] && names.has(row[key]!)).map(
-    ({ label }) => label,
-  ),
-  ...(row.extra
-    ?.filter(({ name }) => names.has(name))
-    .map(({ label }) => label) ?? []),
-]
