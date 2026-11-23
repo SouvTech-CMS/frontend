@@ -15,7 +15,7 @@ import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { LoadingPage } from "component/page/LoadingPage"
 import { ShopsSelect } from "component/select/ShopsSelect"
 import { useTableContext } from "context/table"
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { useQuery } from "react-query"
 import { EngraverProductivityAnalyticsResponse } from "type/analytics/engraver"
 import { ModalProps } from "type/modalProps"
@@ -30,24 +30,24 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
 ) => {
   const { engraverId, isOpen, onClose } = props
 
-  const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
+  const { searchFilter } = useTableContext<OrderSearchFilter>()
 
   const [shopsIds, setShopsIds] = useState<number[]>()
-  const prevEngraversList = [engraverId]
-  const [engraversIds, setEngraversIds] = useState<number[]>(prevEngraversList)
+  const [engraversIds, setEngraversIds] = useState<number[]>([engraverId])
 
   const startDate = searchFilter?.start_date
   const endDate = searchFilter?.end_date
 
-  const isRequestEnabled = !!startDate && !!endDate && !!engraversIds
+  const hasDateRange = !!startDate && !!endDate
+  const hasSelectedEngravers = engraversIds.length > 0
+  const isRequestEnabled = isOpen && hasDateRange && hasSelectedEngravers
 
   const {
     data: productivityAnalytics,
     isLoading: isProductivityAnalyticsLoading,
-    refetch,
     isRefetching: isProductivityAnalyticsRefetching,
   } = useQuery<EngraverProductivityAnalyticsResponse>(
-    ["productivityAnalytics", engraversIds],
+    ["productivityAnalytics", engraversIds, startDate, endDate, shopsIds],
     () =>
       getEngraversProductivityAnalytics({
         shops: shopsIds,
@@ -56,36 +56,12 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
         engravers_ids: engraversIds,
       }),
     {
-      enabled: !!isRequestEnabled,
+      enabled: isRequestEnabled,
     },
   )
-  const isAnalyticsExists = !!productivityAnalytics
 
   const isLoading =
     isProductivityAnalyticsLoading || isProductivityAnalyticsRefetching
-
-  // Analytics refetching
-  useEffect(() => {
-    if (isRequestEnabled) {
-      refetch()
-    }
-  }, [refetch, startDate, endDate, shopsIds, engraversIds])
-
-  // Clear states
-  useEffect(() => {
-    // Dates Clearing
-    setSearchFilter(
-      (prevSearchFilter) =>
-        ({
-          ...(prevSearchFilter || {}),
-          start_date: undefined,
-          end_date: undefined,
-        }) as OrderSearchFilter,
-    )
-
-    // Update Engravers IDs
-    setEngraversIds(prevEngraversList)
-  }, [isOpen])
 
   return (
     <Modal size="full" isOpen={isOpen} onClose={onClose}>
@@ -107,20 +83,22 @@ export const EngraversProductivityModal: FC<EngraversProductivityModalProps> = (
             {isLoading && <LoadingPage />}
 
             {/* Hint */}
-            {!isLoading && !isRequestEnabled && (
+            {!isLoading && !hasDateRange && (
               <Text color="hint" textAlign="center">
                 Select dates range to see Engravers productivity analytics
               </Text>
             )}
 
             {/* Analytics */}
-            {!isLoading && isAnalyticsExists && isRequestEnabled && (
-              <EngraversProductivityTable
-                productivityAnalytics={productivityAnalytics}
-                selectedEngraversIds={engraversIds}
-                setEngraversIds={setEngraversIds}
-              />
-            )}
+            {!isLoading &&
+              hasDateRange &&
+              (productivityAnalytics || !hasSelectedEngravers) && (
+                <EngraversProductivityTable
+                  productivityAnalytics={productivityAnalytics ?? []}
+                  selectedEngraversIds={engraversIds}
+                  setEngraversIds={setEngraversIds}
+                />
+              )}
           </Flex>
         </ModalBody>
 

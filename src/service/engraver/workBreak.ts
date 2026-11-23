@@ -8,7 +8,7 @@ export const useWorkBreakStartMutation = () => {
   return useMutation(startWorkBreak, {
     onSuccess: (_, body) => {
       const engraverId = body.engraver_id
-      queryClient.invalidateQueries(["activeWorkShift", engraverId])
+      return queryClient.invalidateQueries(["activeWorkShift", engraverId])
     },
     onError: (error: AxiosError) => {
       const responseData = error.response?.data as { detail?: string }
@@ -24,7 +24,7 @@ export const useWorkBreakFinishMutation = () => {
   return useMutation(finishWorkBreak, {
     onSuccess: (_, body) => {
       const engraverId = body.engraver_id
-      queryClient.invalidateQueries(["activeWorkShift", engraverId])
+      return queryClient.invalidateQueries(["activeWorkShift", engraverId])
     },
     onError: (error: AxiosError) => {
       const responseData = error.response?.data as { detail?: string }

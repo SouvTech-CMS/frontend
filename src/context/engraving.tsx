@@ -2,8 +2,9 @@ import { useDisclosure } from "@chakra-ui/react"
 import { getCurrentProcessingOrder } from "api/engraver/processingOrder"
 import { getEngraverScheduledBreaks } from "api/engraver/scheduledBreaks"
 import { getEngraverActiveWorkShift } from "api/engraver/workShift"
-import { InactivityModal } from "component/engraver/InactivityModal"
+import { InactivityBreakTimer } from "component/engraver/InactivityBreakTimer"
 import { ActiveScheduledBreakModal } from "component/workBreak/ActiveScheduledBreakModal"
+import { ActiveWorkBreakModal } from "component/workBreak/ActiveWorkBreakModal"
 import { WorkShiftStart } from "component/workShift/WorkShiftStart"
 import { useUserContext } from "context/user"
 import { createContext, useContext, useEffect } from "react"
@@ -58,6 +59,9 @@ export const EngravingContextProvider: FCC = (props) => {
   )
   const isActiveWorkShiftExists = !!activeWorkShift
   const workShiftId = activeWorkShift?.id
+  const activeWorkBreak = activeWorkShift?.work_breaks.find(
+    ({ started_at, finished_at }) => started_at && !finished_at,
+  )
 
   // * Current Processing Order
   const {
@@ -193,7 +197,7 @@ export const EngravingContextProvider: FCC = (props) => {
         (isActiveWorkShiftExists || isEngravingPage) &&
         children}
 
-      {isActiveScheduledBreakExists && (
+      {!activeWorkBreak && isActiveScheduledBreakExists && (
         <ActiveScheduledBreakModal
           scheduledBreak={activeScheduledBreak}
           isOpen={isActiveScheduledBreakModalOpen}
@@ -201,7 +205,21 @@ export const EngravingContextProvider: FCC = (props) => {
         />
       )}
 
-      {isUserEngraver && <InactivityModal />}
+      {isUserEngraver &&
+        currentEngraverId &&
+        workShiftId &&
+        (activeWorkBreak ? (
+          <ActiveWorkBreakModal
+            engraverId={currentEngraverId}
+            workShiftId={workShiftId}
+            isSystem={activeWorkBreak.is_system}
+          />
+        ) : (
+          <InactivityBreakTimer
+            engraverId={currentEngraverId}
+            workShiftId={workShiftId}
+          />
+        ))}
     </EngravingContext.Provider>
   )
 }

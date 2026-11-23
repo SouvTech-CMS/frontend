@@ -21,6 +21,7 @@ import { DocumentsModal } from "component/engraver/document/DocumentsModal"
 import { EngraverBlockModal } from "component/engraver/EngraverBlockModal"
 import { EngraverCardMenu } from "component/engraver/EngraverCardMenu"
 import { EngraverModal } from "component/engraver/EngraverModal"
+import { TableContextProvider } from "context/table"
 import { useCommentInput } from "hook/useCommentInput"
 import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
@@ -33,6 +34,7 @@ import {
   FiPhone,
 } from "react-icons/fi"
 import { Engraver } from "type/engraver/engraver"
+import { OrderSearchFilter } from "type/order/order"
 import { WithId } from "type/withId"
 import { dateAsStringToDate, formatDate, formatTime } from "util/formatting"
 
@@ -272,18 +274,26 @@ export const EngraverCard: FC<EngraverCardProps> = (props) => {
       {/* Modals */}
       <>
         {/* Work Time Modal */}
-        <EngraverWorkTimeModal
-          engraver={engraver}
-          isOpen={isWorkTimeModalOpen}
-          onClose={onWorkTimeModalClose}
-        />
+        {isWorkTimeModalOpen && (
+          <TableContextProvider<OrderSearchFilter>>
+            <EngraverWorkTimeModal
+              engraver={engraver}
+              isOpen
+              onClose={onWorkTimeModalClose}
+            />
+          </TableContextProvider>
+        )}
 
         {/* Productivity Modal */}
-        <EngraversProductivityModal
-          engraverId={engraverId}
-          isOpen={isProductivityModalOpen}
-          onClose={onProductivityModalClose}
-        />
+        {isProductivityModalOpen && (
+          <TableContextProvider<OrderSearchFilter>>
+            <EngraversProductivityModal
+              engraverId={engraverId}
+              isOpen
+              onClose={onProductivityModalClose}
+            />
+          </TableContextProvider>
+        )}
 
         {/* Documents Modal */}
         <DocumentsModal
