@@ -5,7 +5,8 @@
 `BrowserRouter` → `QueryClientProvider` → `WebSocketContextProvider` → `AuthContextProvider` →
 side-маршруты (`/auth`, `/noaccess`, `/maintenance`) → `UserContextProvider` → `SearchContextProvider`
 → `PurchaseTabsContextProvider` → `PaginationContextProvider` → `Routes` внутри `AppLayout`
-(сайдбар + `Outlet`; без токена редирект на `/auth`; на каждой смене маршрута дёргает
+(сайдбар + `Outlet` + `WorkShiftHeartbeat`: у гравёра с активной сменой раз в минуту
+`PUT /engraver/work_shift/heartbeat`, на 409 перечитывает `activeWorkShift`; без токена редирект на `/auth`; на каждой смене маршрута дёргает
 `GET /healthcheck`, при ошибке уводит на `/maintenance`).
 
 ## Маршруты и права (`src/configuration.tsx`)
