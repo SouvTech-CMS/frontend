@@ -31,12 +31,12 @@
 `notify(...)`. Канонический пример — `component/storage/StorageModal.tsx`. Карточные страницы
 (`Users`, `Roles`, `Suppliers`, `Engravers`, `Devices`) фильтруются на клиенте по `SearchContext`.
 Права роли сгруппированы по разделам из `constant/permissionGroups.ts` (`util/permissionGroups.ts`):
-страница Roles — список ролей слева (число сотрудников) и `RoleDetails` справа с вкладками
-Permissions (переключатели, Save changes / Reset), Table columns и Employees; в окне роли те же
-переключатели.
+страница Roles — список ролей слева (число сотрудников) и `RoleDetails` справа: имя и описание
+правятся кликом, вкладки Permissions (переключатели), Table columns (`TableColumnsSwitches`,
+колонки Production Info) и Employees; одна кнопка Save changes / Reset сохраняет всё. Окно роли
+(`RoleModal`) — только для новой роли.
 Новое право бэка без записи в группах попадает в раздел Other.
-Tables Access (`component/tableAccess/TablesAccessModal.tsx`): переключатели видимых колонок
-Production Info; все колонки = пустой список (без ограничений), ноль колонок сохранить нельзя.
+Колонки: все включены = пустой список (без ограничений), ноль колонок сохранить нельзя.
 
 ## Флоу гравёра (`component/orderProcessing`, `workShift`, `workBreak`, `engraver`)
 `EngravingPanel` = детали заказа (`ProcessingOrderDetails`, `ProcessingGood` с
