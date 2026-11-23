@@ -24,3 +24,10 @@ export const createWorkShift = async (
 export const updateWorkShift = async (workShift: WithId<WorkShift>) => {
   await axiosClient.put("/engraver/work_shift/", workShift)
 }
+
+export const sendWorkShiftHeartbeat = async (body: {
+  work_shift_id: number
+  engraver_id: number
+}) => {
+  await axiosClient.put("/engraver/work_shift/heartbeat", body)
+}

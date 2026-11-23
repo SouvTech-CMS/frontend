@@ -1,5 +1,4 @@
-import { Button, ButtonProps, useDisclosure } from "@chakra-ui/react"
-import { ActiveWorkBreakModal } from "component/workBreak/ActiveWorkBreakModal"
+import { Button, ButtonProps } from "@chakra-ui/react"
 import { useEngravingContext } from "context/engraving"
 import { useUserContext } from "context/user"
 import { FC } from "react"
@@ -17,7 +16,7 @@ export const TakeBreakBtn: FC<TakeBreakBtnProps> = (props) => {
 
   const isLoading = workBreakStartMutation.isLoading
 
-  const handleBreakStart = async () => {
+  const handleBreakStart = () => {
     if (!workShiftId || !currentEngraverId) {
       notify("Cannot start your break", "error")
       return
@@ -28,30 +27,12 @@ export const TakeBreakBtn: FC<TakeBreakBtnProps> = (props) => {
       engraver_id: currentEngraverId,
     }
 
-    await workBreakStartMutation.mutateAsync(body)
+    workBreakStartMutation.mutate(body)
   }
-
-  const handleClick = async () => {
-    onActiveWorkBreakModalOpen()
-    await handleBreakStart()
-  }
-
-  const {
-    isOpen: isActiveWorkBreakModalOpen,
-    onOpen: onActiveWorkBreakModalOpen,
-    onClose: onActiveWorkBreakModalClose,
-  } = useDisclosure()
 
   return (
-    <>
-      <Button onClick={handleClick} isLoading={isLoading} {...props}>
-        Take a Break
-      </Button>
-
-      <ActiveWorkBreakModal
-        isOpen={isActiveWorkBreakModalOpen}
-        onClose={onActiveWorkBreakModalClose}
-      />
-    </>
+    <Button onClick={handleBreakStart} isLoading={isLoading} {...props}>
+      Take a Break
+    </Button>
   )
 }

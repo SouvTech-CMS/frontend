@@ -2,6 +2,7 @@ import { Flex } from "@chakra-ui/react"
 import { axiosClient } from "api/axiosClient"
 import { AxiosError } from "axios"
 import { Sidebar } from "component/sidebar/Sidebar"
+import { WorkShiftHeartbeat } from "component/workShift/WorkShiftHeartbeat"
 import { useAuthContext } from "context/auth"
 import { FC, useEffect } from "react"
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom"
@@ -33,6 +34,8 @@ export const AppLayout: FC = () => {
         <Sidebar />
 
         <Outlet />
+
+        <WorkShiftHeartbeat />
       </Flex>
     )
   }

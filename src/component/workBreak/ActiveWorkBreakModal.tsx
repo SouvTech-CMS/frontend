@@ -9,58 +9,49 @@ import {
   Text,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
-import { useEngravingContext } from "context/engraving"
-import { useUserContext } from "context/user"
 import { FC } from "react"
 import { useWorkBreakFinishMutation } from "service/engraver/workBreak"
-import { WorkBreakUpdate } from "type/engraver/workBreak"
-import { ModalProps } from "type/modalProps"
-import { notify } from "util/toasts"
 
-interface ActiveWorkBreakModalProps extends ModalProps {}
+interface ActiveWorkBreakModalProps {
+  engraverId: number
+  workShiftId: number
+  isSystem?: boolean
+}
 
 export const ActiveWorkBreakModal: FC<ActiveWorkBreakModalProps> = (props) => {
-  const { isOpen, onClose } = props
-
-  const { currentEngraverId } = useUserContext()
-  const { workShiftId } = useEngravingContext()
+  const { engraverId, workShiftId, isSystem } = props
 
   const workBreakFinishMutation = useWorkBreakFinishMutation()
 
   const isLoading = workBreakFinishMutation.isLoading
 
-  const handleBreakFinish = async () => {
-    if (!workShiftId || !currentEngraverId) {
-      notify("Cannot finish your break", "error")
-      return
-    }
-
-    const body: WorkBreakUpdate = {
+  const handleBreakFinish = () => {
+    workBreakFinishMutation.mutate({
       work_shift_id: workShiftId,
-      engraver_id: currentEngraverId,
-    }
-
-    await workBreakFinishMutation.mutateAsync(body)
-
-    onClose()
+      engraver_id: engraverId,
+    })
   }
 
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
+      isOpen
+      onClose={() => undefined}
       isCentered
       closeOnOverlayClick={false}
+      closeOnEsc={false}
     >
       <ModalBackgroundBlur />
 
       <ModalContent>
-        <ModalHeader>You're on a break</ModalHeader>
+        <ModalHeader>
+          {isSystem ? "Hey, are you here?" : "You're on a break"}
+        </ModalHeader>
 
         <ModalBody>
           <Text>
-            Alright, you can take a break, but don't forget to come back and
-            finish your work shift.
+            {isSystem
+              ? "We started a break while you were away."
+              : "Alright, you can take a break, but don't forget to come back and finish your work shift."}
           </Text>
         </ModalBody>
 
@@ -79,7 +70,7 @@ export const ActiveWorkBreakModal: FC<ActiveWorkBreakModalProps> = (props) => {
               isLoading={isLoading}
               isDisabled={isLoading}
             >
-              I'm here and ready to continue
+              {isSystem ? "I'm here" : "I'm here and ready to continue"}
             </Button>
           </Flex>
         </ModalFooter>

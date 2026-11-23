@@ -14,7 +14,7 @@ import { DatesFilter } from "component/filter/DatesFilter"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
 import { LoadingPage } from "component/page/LoadingPage"
 import { useTableContext } from "context/table"
-import { FC, useEffect } from "react"
+import { FC } from "react"
 import { useQuery } from "react-query"
 import { EngraverWorkTimeAnalyticsResponse } from "type/analytics/engraver"
 import { Engraver } from "type/engraver/engraver"
@@ -37,7 +37,7 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
 ) => {
   const { engraver, isOpen, onClose } = props
 
-  const { searchFilter, setSearchFilter } = useTableContext<OrderSearchFilter>()
+  const { searchFilter } = useTableContext<OrderSearchFilter>()
 
   const engraverId = engraver.id
   const engraverUser = engraver.user
@@ -46,17 +46,17 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
   const startDate = searchFilter?.start_date
   const endDate = searchFilter?.end_date
 
-  const isRequestEnabled = !!startDate && !!endDate && !!engraverId
+  const isRequestEnabled = isOpen && !!startDate && !!endDate && !!engraverId
 
   const userTimezone = getUserTimezone()
 
   const {
     data: workTimeAnalytics,
     isLoading: isWorkTimeAnalyticsLoading,
-    refetch,
     isRefetching: isWorkTimeAnalyticsRefetching,
+    isError,
   } = useQuery<EngraverWorkTimeAnalyticsResponse>(
-    ["workTimeAnalytics", engraverId],
+    ["workTimeAnalytics", engraverId, startDate, endDate, userTimezone],
     () =>
       getEngraverWorkTimeAnalytics({
         engraver_id: engraverId,
@@ -65,8 +65,8 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
         timezone: userTimezone,
       }),
     {
-      // TODO: try to pass isOpen to prevent all engravers cards loading
-      enabled: !!isRequestEnabled,
+      enabled: isRequestEnabled,
+      retry: false,
     },
   )
   const isAnalyticsExists = !!workTimeAnalytics && workTimeAnalytics.length > 0
@@ -82,25 +82,6 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
 
   const totalWorkTimeInHours = totalWorkTimeDurationInSec / 60 / 60
   const totalSalary = salary * totalWorkTimeInHours
-
-  // Analytics refetching
-  useEffect(() => {
-    if (isRequestEnabled) {
-      refetch()
-    }
-  }, [refetch, startDate, endDate, engraverId])
-
-  // Dates Clearing
-  useEffect(() => {
-    setSearchFilter(
-      (prevSearchFilter) =>
-        ({
-          ...(prevSearchFilter || {}),
-          start_date: undefined,
-          end_date: undefined,
-        }) as OrderSearchFilter,
-    )
-  }, [isOpen])
 
   return (
     <Modal size="full" isOpen={isOpen} onClose={onClose}>
@@ -118,6 +99,22 @@ export const EngraverWorkTimeModal: FC<EngraverWorkTimeModalProps> = (
             </Flex>
 
             {isLoading && <LoadingPage />}
+
+            {!isLoading && isError && (
+              <Text role="alert" color="red.500">
+                Could not load work time analytics. Try selecting the dates
+                again.
+              </Text>
+            )}
+
+            {isRequestEnabled &&
+              !isLoading &&
+              !isError &&
+              !isAnalyticsExists && (
+                <Text color="hint">
+                  No completed shifts in this date range.
+                </Text>
+              )}
 
             {/* Hint */}
             {!isLoading && !isRequestEnabled && (
