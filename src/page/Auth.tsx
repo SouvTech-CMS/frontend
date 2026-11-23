@@ -70,7 +70,9 @@ export const Auth = () => {
       } catch (e) {
         if (e instanceof AxiosError) {
           if (e.response?.status === 401) {
-            notify("Wrong login or password", "error")
+            // NOTE: backend tells wrong credentials apart from a blocked account
+            const responseData = e.response.data as { detail?: string }
+            notify(responseData?.detail || "Wrong login or password", "error")
           }
         }
 

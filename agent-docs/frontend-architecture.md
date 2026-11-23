@@ -20,8 +20,9 @@ permissions, icon, name}`. `permissions` не задан — доступно в
 
 ## Слой API
 - `api/axiosClient.ts`: `baseURL` из `VITE_API_BASE_URL`; в каждый запрос `Authorization:
-  Bearer <localStorage.token>` и `device-token`; на 401 токен стирается (редирект сделает
-  `AppLayout`). Ошибка сервера в `error.response.data.detail`.
+  Bearer <localStorage.token>` и `device-token`; на 401 токен стирается и шлётся событие
+  `user-token-expired`: `AuthContext` ставит `isAuthenticated=false`, `AppLayout` сразу уводит на
+  `/auth` без перезагрузки. Ошибка сервера в `error.response.data.detail`.
 - `api/<domain>/<entity>.ts` — по функции на эндпоинт: `getAll*`, `get*ById`, `create*`,
   `update*`, `delete*`; возвращают `data`. Списки на бэке — **POST с телом**
   (`POST /order/all/`, `POST /tickets`, `POST /storage/good/all/`).
