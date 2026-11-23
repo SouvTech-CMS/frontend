@@ -52,7 +52,7 @@ export const RolesList: FC<RolesListProps> = (props) => {
 
       {canEditRoles && (
         <Box w="full" pt={2}>
-          <Button leftIcon={<FiPlus />} onClick={onNewRoleModalOpen}>
+          <Button w="full" leftIcon={<FiPlus />} onClick={onNewRoleModalOpen}>
             New role
           </Button>
         </Box>

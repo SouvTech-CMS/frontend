@@ -1,14 +1,15 @@
 import {
   Avatar,
   Button,
+  Editable,
+  EditableInput,
+  EditablePreview,
   Flex,
-  Heading,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Tag,
   Text,
   useDisclosure,
 } from "@chakra-ui/react"
@@ -16,65 +17,83 @@ import { getRoleTablesAccess } from "api/tableAccess/tableAccess"
 import { Container } from "component/Container"
 import { PermissionsGrid } from "component/role/PermissionsGrid"
 import { RoleDeleteModal } from "component/role/RoleDeleteModal"
-import { RoleModal } from "component/role/RoleModal"
-import { TablesAccessModal } from "component/tableAccess/TablesAccessModal"
-import { GOODS_PRODUCTION_INFO_TABLE } from "constant/tables"
+import {
+  PRODUCTION_INFO_OPTIONAL_PARAMS,
+  PRODUCTION_INFO_TABLE_NAME,
+  TableColumnsSwitches,
+} from "component/tableAccess/TableColumnsSwitches"
 import { useUserPermissions } from "hook/useUserPermissions"
-import { FC, useState } from "react"
-import { FiEdit2, FiTable, FiTrash2 } from "react-icons/fi"
+import { FC, useEffect, useState } from "react"
+import { FiTrash2 } from "react-icons/fi"
 import { useQuery } from "react-query"
 import { useRoleUpdateMutation } from "service/role/role"
+import { useRoleTableAccessUpdateMutation } from "service/tableAccess/tableAccess"
 import { RoleWithPermissions } from "type/role/role"
 import { RoleTableAccess } from "type/tableAccess/tableAccess"
-import { TableColumn } from "type/tableColumn"
 import { UserWithRolesAndShops } from "type/user"
 import { notify } from "util/toasts"
 
-const PRODUCTION_INFO_OPTIONAL_COLUMNS = GOODS_PRODUCTION_INFO_TABLE.filter(
-  (column): column is TableColumn => column !== null && !column.isMain,
-)
+const isSameList = (a: (number | string)[], b: (number | string)[]) =>
+  [...a].sort().join(",") === [...b].sort().join(",")
 
 interface RoleDetailsProps {
   role: RoleWithPermissions
   employees: UserWithRolesAndShops[]
+  tabIndex: number
+  onTabChange: (tabIndex: number) => void
 }
 
 export const RoleDetails: FC<RoleDetailsProps> = (props) => {
-  const { role, employees } = props
+  const { role, employees, tabIndex, onTabChange } = props
 
   const { canEditRoles, canDeleteRoles } = useUserPermissions()
+  const isReadOnly = !canEditRoles
 
+  // Role
   const initialPermissionsIds = role.permissions.map(({ id }) => id)
+  const [name, setName] = useState<string>(role.name)
+  const [description, setDescription] = useState<string>(role.description ?? "")
   const [permissionsIds, setPermissionsIds] = useState<number[]>(
     initialPermissionsIds,
   )
-  const isPermissionsChanged =
-    [...permissionsIds].sort().join(",") !==
-    [...initialPermissionsIds].sort().join(",")
+  const isRoleChanged =
+    name !== role.name ||
+    description !== (role.description ?? "") ||
+    !isSameList(permissionsIds, initialPermissionsIds)
 
-  const roleUpdateMutation = useRoleUpdateMutation()
-
+  // Table columns
   const { data: tableAccess } = useQuery<RoleTableAccess>(
     ["roleTableAccess", role.id],
     () => getRoleTablesAccess(role.id),
   )
   const savedColumns = tableAccess?.tables.find(
-    ({ table_name }) => table_name === "production_info",
+    ({ table_name }) => table_name === PRODUCTION_INFO_TABLE_NAME,
   )?.columns
-  const visibleColumns = PRODUCTION_INFO_OPTIONAL_COLUMNS.filter(
-    ({ param }) => !savedColumns?.length || savedColumns.includes(param),
-  )
+  // NOTE: no saved columns means the role sees all of them
+  const initialVisibleParams = savedColumns?.length
+    ? PRODUCTION_INFO_OPTIONAL_PARAMS.filter((param) =>
+        savedColumns.includes(param),
+      )
+    : PRODUCTION_INFO_OPTIONAL_PARAMS
+  const [visibleParams, setVisibleParams] =
+    useState<string[]>(initialVisibleParams)
+  const isColumnsChanged = !isSameList(visibleParams, initialVisibleParams)
 
-  const {
-    isOpen: isRoleModalOpen,
-    onOpen: onRoleModalOpen,
-    onClose: onRoleModalClose,
-  } = useDisclosure()
-  const {
-    isOpen: isTablesAccessModalOpen,
-    onOpen: onTablesAccessModalOpen,
-    onClose: onTablesAccessModalClose,
-  } = useDisclosure()
+  useEffect(() => {
+    if (tableAccess) {
+      setVisibleParams(initialVisibleParams)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tableAccess])
+
+  const roleUpdateMutation = useRoleUpdateMutation()
+  const tableAccessUpdateMutation = useRoleTableAccessUpdateMutation()
+  const isSaving =
+    roleUpdateMutation.isLoading || tableAccessUpdateMutation.isLoading
+
+  const isChanged = isRoleChanged || isColumnsChanged
+  const isInvalid = !name.trim() || visibleParams.length === 0
+
   const {
     isOpen: isRoleDeleteModalOpen,
     onOpen: onRoleDeleteModalOpen,
@@ -82,7 +101,7 @@ export const RoleDetails: FC<RoleDetailsProps> = (props) => {
   } = useDisclosure()
 
   const handlePermissionToggle = (permissionId: number) => {
-    if (!canEditRoles) {
+    if (isReadOnly) {
       return
     }
 
@@ -93,15 +112,39 @@ export const RoleDetails: FC<RoleDetailsProps> = (props) => {
     )
   }
 
-  const handlePermissionsSave = async () => {
-    const { permissions, ...roleData } = role
+  const handleReset = () => {
+    setName(role.name)
+    setDescription(role.description ?? "")
+    setPermissionsIds(initialPermissionsIds)
+    setVisibleParams(initialVisibleParams)
+  }
 
-    await roleUpdateMutation.mutateAsync({
-      role: roleData,
-      permissions_list: permissionsIds,
-    })
+  const handleSave = async () => {
+    if (isColumnsChanged) {
+      const isAllVisible =
+        visibleParams.length === PRODUCTION_INFO_OPTIONAL_PARAMS.length
 
-    notify(`Role ${role.name} updated successfully`, "success")
+      await tableAccessUpdateMutation.mutateAsync({
+        role_id: role.id,
+        tables: [
+          {
+            table_name: PRODUCTION_INFO_TABLE_NAME,
+            columns: isAllVisible ? [] : visibleParams,
+          },
+        ],
+      })
+    }
+
+    if (isRoleChanged) {
+      const { permissions, ...roleData } = role
+
+      await roleUpdateMutation.mutateAsync({
+        role: { ...roleData, name: name.trim(), description },
+        permissions_list: permissionsIds,
+      })
+    }
+
+    notify(`Role ${name.trim()} updated successfully`, "success")
   }
 
   return (
@@ -111,12 +154,42 @@ export const RoleDetails: FC<RoleDetailsProps> = (props) => {
         justifyContent="space-between"
         alignItems="flex-start"
         gap={4}
-        flexWrap="wrap"
       >
-        <Flex direction="column" gap={1}>
-          <Heading size="lg">{role.name}</Heading>
-          <Text color="gray">
-            {role.description ? `${role.description} · ` : ""}
+        <Flex direction="column" gap={1} flex={1} minW={0}>
+          <Editable
+            value={name}
+            onChange={setName}
+            isDisabled={isReadOnly}
+            fontSize="3xl"
+            fontWeight="bold"
+            placeholder="Role name"
+          >
+            <EditablePreview
+              py={0}
+              px={1}
+              mx={-1}
+              _hover={isReadOnly ? undefined : { bgColor: "appLayout" }}
+            />
+            <EditableInput py={0} px={1} mx={-1} />
+          </Editable>
+
+          <Editable
+            value={description}
+            onChange={setDescription}
+            isDisabled={isReadOnly}
+            color="gray"
+            placeholder="Add description"
+          >
+            <EditablePreview
+              py={0}
+              px={1}
+              mx={-1}
+              _hover={isReadOnly ? undefined : { bgColor: "appLayout" }}
+            />
+            <EditableInput py={0} px={1} mx={-1} />
+          </Editable>
+
+          <Text fontSize="sm" color="gray">
             {employees.length}{" "}
             {employees.length === 1 ? "employee" : "employees"} ·{" "}
             {permissionsIds.length} permissions
@@ -124,33 +197,26 @@ export const RoleDetails: FC<RoleDetailsProps> = (props) => {
         </Flex>
 
         {canEditRoles && (
-          <Flex gap={2} flexWrap="wrap">
-            <Button size="sm" leftIcon={<FiEdit2 />} onClick={onRoleModalOpen}>
-              Edit role
-            </Button>
-            <Button
-              size="sm"
-              variant="secondary"
-              leftIcon={<FiTable />}
-              onClick={onTablesAccessModalOpen}
-            >
-              Table columns
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              colorScheme="red"
-              leftIcon={<FiTrash2 />}
-              onClick={onRoleDeleteModalOpen}
-              isDisabled={!canDeleteRoles}
-            >
-              Delete
-            </Button>
-          </Flex>
+          <Button
+            size="sm"
+            variant="ghost"
+            colorScheme="red"
+            leftIcon={<FiTrash2 />}
+            onClick={onRoleDeleteModalOpen}
+            isDisabled={!canDeleteRoles}
+          >
+            Delete
+          </Button>
         )}
       </Flex>
 
-      <Tabs w="full" colorScheme="blue" isLazy>
+      <Tabs
+        w="full"
+        colorScheme="blue"
+        index={tabIndex}
+        onChange={onTabChange}
+        isLazy
+      >
         <TabList>
           <Tab>Permissions</Tab>
           <Tab>Table columns</Tab>
@@ -160,54 +226,20 @@ export const RoleDetails: FC<RoleDetailsProps> = (props) => {
         <TabPanels>
           {/* Permissions */}
           <TabPanel px={0}>
-            <Flex direction="column" gap={4}>
-              <PermissionsGrid
-                checkedPermissionsIds={permissionsIds}
-                isInvalid={permissionsIds.length === 0}
-                handlePermissionsUpdate={handlePermissionToggle}
-              />
-
-              {isPermissionsChanged && (
-                <Flex gap={3} alignItems="center">
-                  <Button
-                    onClick={handlePermissionsSave}
-                    isLoading={roleUpdateMutation.isLoading}
-                  >
-                    Save changes
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onClick={() => setPermissionsIds(initialPermissionsIds)}
-                    isDisabled={roleUpdateMutation.isLoading}
-                  >
-                    Reset
-                  </Button>
-                  <Text fontSize="sm" color="gray">
-                    Unsaved changes
-                  </Text>
-                </Flex>
-              )}
-            </Flex>
+            <PermissionsGrid
+              checkedPermissionsIds={permissionsIds}
+              isInvalid={false}
+              handlePermissionsUpdate={handlePermissionToggle}
+            />
           </TabPanel>
 
           {/* Table columns */}
           <TabPanel px={0}>
-            <Flex direction="column" gap={3}>
-              <Text fontWeight="medium">
-                Production Info ·{" "}
-                {savedColumns?.length
-                  ? `${visibleColumns.length} of ${PRODUCTION_INFO_OPTIONAL_COLUMNS.length} columns visible`
-                  : "all columns visible"}
-              </Text>
-
-              <Flex gap={2} flexWrap="wrap">
-                {visibleColumns.map(({ name, param }) => (
-                  <Tag key={param} colorScheme="blue">
-                    {name}
-                  </Tag>
-                ))}
-              </Flex>
-            </Flex>
+            <TableColumnsSwitches
+              visibleParams={visibleParams}
+              onChange={setVisibleParams}
+              isDisabled={isReadOnly}
+            />
           </TabPanel>
 
           {/* Employees */}
@@ -242,18 +274,28 @@ export const RoleDetails: FC<RoleDetailsProps> = (props) => {
         </TabPanels>
       </Tabs>
 
-      {/* Modals */}
-      <RoleModal
-        prevRole={role}
-        prevPermissions={role.permissions}
-        isOpen={isRoleModalOpen}
-        onClose={onRoleModalClose}
-      />
-      <TablesAccessModal
-        role={role}
-        isOpen={isTablesAccessModalOpen}
-        onClose={onTablesAccessModalClose}
-      />
+      {isChanged && (
+        <Flex gap={3} alignItems="center">
+          <Button
+            onClick={handleSave}
+            isLoading={isSaving}
+            isDisabled={isInvalid}
+          >
+            Save changes
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={handleReset}
+            isDisabled={isSaving}
+          >
+            Reset
+          </Button>
+          <Text fontSize="sm" color="gray">
+            Unsaved changes
+          </Text>
+        </Flex>
+      )}
+
       <RoleDeleteModal
         role={role}
         isOpen={isRoleDeleteModalOpen}

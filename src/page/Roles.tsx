@@ -22,6 +22,8 @@ export const Roles = (props: PageProps) => {
   const { canReadUsers } = useUserPermissions()
 
   const [selectedRoleId, setSelectedRoleId] = useState<number>()
+  // NOTE: kept here, so the tab survives remounts after saving
+  const [tabIndex, setTabIndex] = useState<number>(0)
 
   const { data: rolesWithPermissionsList, isLoading } = useQuery<
     RoleWithPermissions[]
@@ -66,11 +68,16 @@ export const Roles = (props: PageProps) => {
           {selectedRole && (
             <RoleDetails
               // NOTE: remount on role change to reset unsaved switches
-              key={`${selectedRole.id}-${selectedRole.permissions
-                .map(({ id }) => id)
-                .join(",")}`}
+              key={[
+                selectedRole.id,
+                selectedRole.name,
+                selectedRole.description,
+                ...selectedRole.permissions.map(({ id }) => id),
+              ].join("-")}
               role={selectedRole}
               employees={getRoleEmployees(selectedRole.id)}
+              tabIndex={tabIndex}
+              onTabChange={setTabIndex}
             />
           )}
         </Flex>
