@@ -43,6 +43,9 @@ export enum Permission {
   STORAGE_WRITE = "storage_write",
   STORAGE_DELETE = "storage_delete",
 
+  //* Prime Cost
+  PRIME_COST_READ = "prime_cost_read",
+
   //* Production Info
   PRODUCTION_INFO_READ = "production_info_read",
   PRODUCTION_INFO_WRITE = "production_info_write",

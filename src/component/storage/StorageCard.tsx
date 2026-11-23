@@ -13,6 +13,7 @@ import { RevertDeliveryModal } from "component/storage/RevertDeliveryModal"
 import { StorageCardMenu } from "component/storage/StorageCardMenu"
 import { StorageDeleteModal } from "component/storage/StorageDeleteModal"
 import { StorageModal } from "component/storage/StorageModal"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { Link } from "react-router-dom"
 import { Storage } from "type/storage/storage"
@@ -39,7 +40,9 @@ export const StorageCard: FC<StorageCardProps> = (props) => {
   const isCreatedAtExists = storage.created_at !== undefined
   const storageDate = timestampToDate(storage.created_at)
 
-  const isPrimeCostExists = storage.prime_cost !== undefined
+  const { canReadPrimeCost } = useUserPermissions()
+
+  const isPrimeCostExists = canReadPrimeCost && storage.prime_cost !== undefined
   const isItemPriceExists = storage.cost_per_item !== undefined
 
   // * Revert To Delivery Modal

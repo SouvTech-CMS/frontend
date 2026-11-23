@@ -8,6 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react"
 import { SKUBadge } from "component/badge/SKUBadge"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { GoodInOrder } from "type/order/good"
 import { WithId } from "type/withId"
@@ -19,6 +20,8 @@ interface GoodInOrderCardProps {
 
 export const GoodInOrderCard: FC<GoodInOrderCardProps> = (props) => {
   const { good } = props
+
+  const { canReadPrimeCost } = useUserPermissions()
 
   return (
     <Card borderRadius={20}>
@@ -52,13 +55,15 @@ export const GoodInOrderCard: FC<GoodInOrderCardProps> = (props) => {
           </Flex>
 
           {/* Prime Cost */}
-          <Flex alignItems="center" gap={2}>
-            <Text fontWeight="light" color="gray">
-              Prime Cost:
-            </Text>
+          {canReadPrimeCost && (
+            <Flex alignItems="center" gap={2}>
+              <Text fontWeight="light" color="gray">
+                Prime Cost:
+              </Text>
 
-            <Text>{numberWithCurrency(roundNumber(good.prime_cost))}</Text>
-          </Flex>
+              <Text>{numberWithCurrency(roundNumber(good.prime_cost))}</Text>
+            </Flex>
+          )}
 
           {/* Quantity */}
           <Flex alignItems="center" gap={2}>
