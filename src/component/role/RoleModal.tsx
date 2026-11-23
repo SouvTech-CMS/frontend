@@ -131,7 +131,13 @@ export const RoleModal: FC<RoleModalProps> = (props) => {
   }, [isOpen, isNewRole, prevRole, prevPermissionsIds])
 
   return (
-    <Modal size="3xl" isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal
+      size="3xl"
+      isOpen={isOpen}
+      onClose={onClose}
+      scrollBehavior="inside"
+      isCentered
+    >
       <ModalBackgroundBlur />
 
       <ModalContent>

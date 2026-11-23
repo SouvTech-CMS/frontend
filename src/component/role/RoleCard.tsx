@@ -5,9 +5,7 @@ import {
   CardHeader,
   Flex,
   Heading,
-  ListItem,
   Text,
-  UnorderedList,
   useDisclosure,
 } from "@chakra-ui/react"
 import { RoleCardMenu } from "component/role/RoleCardMenu"
@@ -18,6 +16,10 @@ import { ADMIN_ROLE } from "constant/roles"
 import { useUserPermissions } from "hook/useUserPermissions"
 import { FC } from "react"
 import { RoleWithPermissions } from "type/role/role"
+import {
+  getPermissionSections,
+  getRowPermissionsLabels,
+} from "util/permissionGroups"
 
 interface RoleCardProps {
   role: RoleWithPermissions
@@ -31,6 +33,10 @@ export const RoleCard: FC<RoleCardProps> = (props) => {
   const isAdminRole = role.name.toLowerCase().includes(ADMIN_ROLE)
 
   const permissions = role.permissions
+  const permissionsNames = new Set(permissions.map(({ name }) => name))
+  const permissionsRows = getPermissionSections(permissions).flatMap(
+    ({ rows }) => rows,
+  )
 
   // Edit
   const {
@@ -79,13 +85,19 @@ export const RoleCard: FC<RoleCardProps> = (props) => {
             )} */}
 
             {/* Permissions */}
-            <UnorderedList colorScheme="gray">
-              {permissions.map((permission, index) => (
-                <ListItem key={index}>
-                  <Text color="gray">{permission.description}</Text>
-                </ListItem>
+            <Flex direction="column" gap={1}>
+              {permissionsRows.map((row) => (
+                <Text key={row.title} fontSize="sm">
+                  <Text as="span" fontWeight="medium">
+                    {row.title}
+                  </Text>
+                  <Text as="span" color="gray">
+                    {": "}
+                    {getRowPermissionsLabels(row, permissionsNames).join(", ")}
+                  </Text>
+                </Text>
               ))}
-            </UnorderedList>
+            </Flex>
           </Flex>
 
           {/* Actions Menu Button */}
