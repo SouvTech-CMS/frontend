@@ -10,7 +10,10 @@ export const useWorkBreakStartMutation = () => {
       const engraverId = body.engraver_id
       return queryClient.invalidateQueries(["activeWorkShift", engraverId])
     },
-    onError: (error: AxiosError) => {
+    onError: (error: AxiosError, body) => {
+      // Shift may be closed on the server, so show its actual state
+      queryClient.invalidateQueries(["activeWorkShift", body.engraver_id])
+
       const responseData = error.response?.data as { detail?: string }
 
       if (responseData?.detail) {
@@ -26,7 +29,10 @@ export const useWorkBreakFinishMutation = () => {
       const engraverId = body.engraver_id
       return queryClient.invalidateQueries(["activeWorkShift", engraverId])
     },
-    onError: (error: AxiosError) => {
+    onError: (error: AxiosError, body) => {
+      // Shift may be closed on the server, so show its actual state
+      queryClient.invalidateQueries(["activeWorkShift", body.engraver_id])
+
       const responseData = error.response?.data as { detail?: string }
 
       if (responseData?.detail) {
