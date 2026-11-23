@@ -16,7 +16,7 @@
 | `/purchases`, `/purchases/history`, `/purchase/:id`, `/delivery/:id` | `Purchases`… | Kanban закупок и посылок, история, карточки |
 | `/suppliers` | `Suppliers` | карточки поставщиков и менеджеров |
 | `/reports` | `DetailedReports` | детальный отчёт за месяц + скачивание xlsx |
-| `/users`, `/roles`, `/authorized-devices` | `Users`, `Roles`, `AuthorizedDevices` | сотрудники, роли с правами и доступом к колонкам, устройства |
+| `/users`, `/roles`, `/authorized-devices` | `Users`, `Roles`, `AuthorizedDevices` | сотрудники, роли (список + вкладки прав, колонок и сотрудников), устройства |
 | `/auth`, `/noaccess`, `/maintenance`, `/guide/:id` | | вход, 403, техработы, гайд из Notion (`react-notion` через splitbee) |
 
 ## Таблицы с серверной пагинацией
@@ -30,6 +30,13 @@
 `New*Btn`/`*CardMenu`; фон `ModalBackgroundBlur`; сохранение через хук из `service/` и
 `notify(...)`. Канонический пример — `component/storage/StorageModal.tsx`. Карточные страницы
 (`Users`, `Roles`, `Suppliers`, `Engravers`, `Devices`) фильтруются на клиенте по `SearchContext`.
+Права роли сгруппированы по разделам из `constant/permissionGroups.ts` (`util/permissionGroups.ts`):
+страница Roles — список ролей слева (число сотрудников) и `RoleDetails` справа: имя и описание
+правятся кликом, вкладки Permissions (переключатели), Table columns (`TableColumnsSwitches`,
+колонки Production Info) и Employees; одна кнопка Save changes / Reset сохраняет всё. Окно роли
+(`RoleModal`) — только для новой роли.
+Новое право бэка без записи в группах попадает в раздел Other.
+Колонки: все включены = пустой список (без ограничений), ноль колонок сохранить нельзя.
 
 ## Флоу гравёра (`component/orderProcessing`, `workShift`, `workBreak`, `engraver`)
 `EngravingPanel` = детали заказа (`ProcessingOrderDetails`, `ProcessingGood` с

@@ -131,10 +131,17 @@ export const RoleModal: FC<RoleModalProps> = (props) => {
   }, [isOpen, isNewRole, prevRole, prevPermissionsIds])
 
   return (
-    <Modal size="3xl" isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal
+      size="3xl"
+      isOpen={isOpen}
+      onClose={onClose}
+      scrollBehavior="inside"
+      isCentered
+    >
       <ModalBackgroundBlur />
 
-      <ModalContent>
+      {/* NOTE: the modal takes the width of the permissions sections */}
+      <ModalContent w="auto" maxW="calc(100vw - 2rem)">
         <ModalHeader>{isNewRole ? "New role" : "Role"}</ModalHeader>
         <ModalCloseButton />
 
