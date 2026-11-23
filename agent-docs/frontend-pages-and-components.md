@@ -30,6 +30,9 @@
 `New*Btn`/`*CardMenu`; фон `ModalBackgroundBlur`; сохранение через хук из `service/` и
 `notify(...)`. Канонический пример — `component/storage/StorageModal.tsx`. Карточные страницы
 (`Users`, `Roles`, `Suppliers`, `Engravers`, `Devices`) фильтруются на клиенте по `SearchContext`.
+Права роли сгруппированы по разделам из `constant/permissionGroups.ts` (`util/permissionGroups.ts`):
+в окне роли таблица View / Edit / Delete / Other, на карточке сводка «Storage: View, Edit».
+Новое право бэка без записи в группах попадает в раздел Other.
 
 ## Флоу гравёра (`component/orderProcessing`, `workShift`, `workBreak`, `engraver`)
 `EngravingPanel` = детали заказа (`ProcessingOrderDetails`, `ProcessingGood` с
