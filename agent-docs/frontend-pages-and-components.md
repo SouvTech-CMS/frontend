@@ -16,7 +16,7 @@
 | `/purchases`, `/purchases/history`, `/purchase/:id`, `/delivery/:id` | `Purchases`… | Kanban закупок и посылок, история, карточки |
 | `/suppliers` | `Suppliers` | карточки поставщиков и менеджеров |
 | `/reports` | `DetailedReports` | детальный отчёт за месяц + скачивание xlsx |
-| `/users`, `/roles`, `/authorized-devices` | `Users`, `Roles`, `AuthorizedDevices` | сотрудники, роли с правами и доступом к колонкам, устройства |
+| `/users`, `/roles`, `/authorized-devices` | `Users`, `Roles`, `AuthorizedDevices` | сотрудники, роли (список + вкладки прав, колонок и сотрудников), устройства |
 | `/auth`, `/noaccess`, `/maintenance`, `/guide/:id` | | вход, 403, техработы, гайд из Notion (`react-notion` через splitbee) |
 
 ## Таблицы с серверной пагинацией
@@ -31,8 +31,9 @@
 `notify(...)`. Канонический пример — `component/storage/StorageModal.tsx`. Карточные страницы
 (`Users`, `Roles`, `Suppliers`, `Engravers`, `Devices`) фильтруются на клиенте по `SearchContext`.
 Права роли сгруппированы по разделам из `constant/permissionGroups.ts` (`util/permissionGroups.ts`):
-в окне роли разделы слева и переключатели View / Edit / Delete / особые права справа, на карточке
-сводка «Storage: View, Edit».
+страница Roles — список ролей слева (число сотрудников) и `RoleDetails` справа с вкладками
+Permissions (переключатели, Save changes / Reset), Table columns и Employees; в окне роли те же
+переключатели.
 Новое право бэка без записи в группах попадает в раздел Other.
 Tables Access (`component/tableAccess/TablesAccessModal.tsx`): переключатели видимых колонок
 Production Info; все колонки = пустой список (без ограничений), ноль колонок сохранить нельзя.
