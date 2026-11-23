@@ -10,7 +10,8 @@ const getDurationInSeconds = (duration?: string) => {
   }
 
   const [hours, minutes, seconds] = duration.split(":").map(Number)
-  return hours * 60 * 60 + minutes * 60 + seconds
+  // NOTE: backend sends fractional seconds, e.g. "01:02:57.806475"
+  return Math.floor(hours * 60 * 60 + minutes * 60 + seconds)
 }
 
 const formatDuration = (seconds?: number) => {
@@ -18,21 +19,22 @@ const formatDuration = (seconds?: number) => {
     return EMPTY_VALUE
   }
 
-  const hours = Math.floor(seconds / 3600)
-  const minutes = Math.floor((seconds % 3600) / 60)
-  const remainingSeconds = seconds % 60
+  // NOTE: shown in whole minutes, a short non-zero time is "<1m"
+  const totalMinutes = Math.round(seconds / 60)
+  if (totalMinutes === 0) {
+    return seconds > 0 ? "<1m" : "0m"
+  }
+
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = totalMinutes % 60
   const parts = []
 
   if (hours) {
     parts.push(`${hours}h`)
   }
 
-  if (minutes || hours) {
+  if (minutes || !hours) {
     parts.push(`${minutes}m`)
-  }
-
-  if (remainingSeconds || !parts.length) {
-    parts.push(`${remainingSeconds}s`)
   }
 
   return parts.join(" ")
