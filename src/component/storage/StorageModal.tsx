@@ -12,6 +12,7 @@ import {
   ModalHeader,
 } from "@chakra-ui/react"
 import { ModalBackgroundBlur } from "component/ModalBackgroundBlur"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC, useEffect, useMemo, useState } from "react"
 import { FiDollarSign, FiInbox, FiLayers, FiPackage } from "react-icons/fi"
 import {
@@ -30,6 +31,8 @@ interface StorageModalProps extends ModalProps {
 
 export const StorageModal: FC<StorageModalProps> = (props) => {
   const { storageGoodId, prevStorage, isOpen, onClose } = props
+
+  const { canReadPrimeCost } = useUserPermissions()
 
   const newStorage = useMemo(
     () => ({
@@ -132,22 +135,24 @@ export const StorageModal: FC<StorageModalProps> = (props) => {
             </InputGroup>
 
             {/* Prime Cost Input */}
-            <InputGroup>
-              <InputLeftElement color="gray">
-                <FiDollarSign />
-              </InputLeftElement>
+            {canReadPrimeCost && (
+              <InputGroup>
+                <InputLeftElement color="gray">
+                  <FiDollarSign />
+                </InputLeftElement>
 
-              <Input
-                placeholder="Prime Cost"
-                value={storage.prime_cost}
-                type="number"
-                onChange={(e) => {
-                  const value = e.target.valueAsNumber
-                  handleStorageChange("prime_cost", value)
-                }}
-                isDisabled={isLoading}
-              />
-            </InputGroup>
+                <Input
+                  placeholder="Prime Cost"
+                  value={storage.prime_cost}
+                  type="number"
+                  onChange={(e) => {
+                    const value = e.target.valueAsNumber
+                    handleStorageChange("prime_cost", value)
+                  }}
+                  isDisabled={isLoading}
+                />
+              </InputGroup>
+            )}
 
             {/* Item Price Input */}
             <InputGroup>

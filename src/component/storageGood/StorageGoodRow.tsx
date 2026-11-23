@@ -15,6 +15,7 @@ import { QuantityColorIcon } from "component/storageGood/quantityColor/QuantityC
 import { StorageGoodQuantityColorsModal } from "component/storageGood/quantityColor/StorageGoodQuantityColorsModal"
 import { StorageGoodModal } from "component/storageGood/StorageGoodModal"
 import { StorageGoodRowMenu } from "component/storageGood/StorageGoodRowMenu"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { FC, useEffect } from "react"
 import { FiExternalLink } from "react-icons/fi"
 import { useQuery } from "react-query"
@@ -33,6 +34,8 @@ interface StorageGoodRowProps {
 
 export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
   const { storageGood, selectedShopId } = props
+
+  const { canReadPrimeCost } = useUserPermissions()
 
   const goodId = storageGood.id
 
@@ -163,11 +166,13 @@ export const StorageGoodRow: FC<StorageGoodRowProps> = (props) => {
         </Td>
 
         {/* Prime Cost */}
-        <Td>
-          <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Text>{numberWithCurrency(roundNumber(primeCost))}</Text>
-          </TableTdSkeleton>
-        </Td>
+        {canReadPrimeCost && (
+          <Td>
+            <TableTdSkeleton isLoading={isLoadingActualInfo}>
+              <Text>{numberWithCurrency(roundNumber(primeCost))}</Text>
+            </TableTdSkeleton>
+          </Td>
+        )}
 
         {/* Boxes Quantity */}
         <Td>

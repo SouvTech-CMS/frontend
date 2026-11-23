@@ -7,6 +7,7 @@ import { ProductionInfoModal } from "component/productionInfo/ProductionInfoModa
 import { ProductionInfoTableRowMenu } from "component/productionInfo/ProductionInfoTableRowMenu"
 import { useUserContext } from "context/user"
 import { useCommentInput } from "hook/useCommentInput"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { useUserTableAccess } from "hook/useUserTableAccess"
 import { FC, useEffect } from "react"
 import { useQuery } from "react-query"
@@ -27,6 +28,8 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
   props,
 ) => {
   const { accessibleColumns, goodWithProductionInfo, selectedShopId } = props
+
+  const { canReadPrimeCost } = useUserPermissions()
 
   const { isUserManager } = useUserContext()
   const { filterAccessibleParams } = useUserTableAccess()
@@ -104,11 +107,13 @@ export const ProductionInfoTableRow: FC<ProductionInfoTableRowProps> = (
         </Td>
 
         {/* Prime Cost */}
-        <Td>
-          <TableTdSkeleton isLoading={isLoadingActualInfo}>
-            <Text>{numberWithCurrency(roundNumber(goodPrimeCost))}</Text>
-          </TableTdSkeleton>
-        </Td>
+        {canReadPrimeCost && (
+          <Td>
+            <TableTdSkeleton isLoading={isLoadingActualInfo}>
+              <Text>{numberWithCurrency(roundNumber(goodPrimeCost))}</Text>
+            </TableTdSkeleton>
+          </Td>
+        )}
 
         {/* Shelves Badges */}
         {isShowShelf && (

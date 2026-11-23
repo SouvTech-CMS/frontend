@@ -47,6 +47,9 @@ const PERMISSIONS_MAP = {
   canEditStorage: Permission.STORAGE_WRITE,
   canDeleteStorage: Permission.STORAGE_DELETE,
 
+  //* Prime Cost
+  canReadPrimeCost: Permission.PRIME_COST_READ,
+
   //* Production Info
   canReadProductionInfo: Permission.PRODUCTION_INFO_READ,
   canEditProductionInfo: Permission.PRODUCTION_INFO_WRITE,
