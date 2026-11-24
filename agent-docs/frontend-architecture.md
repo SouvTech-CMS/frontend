@@ -5,7 +5,8 @@
 `BrowserRouter` → `QueryClientProvider` → `WebSocketContextProvider` → `AuthContextProvider` →
 side-маршруты (`/auth`, `/noaccess`, `/maintenance`) → `UserContextProvider` → `SearchContextProvider`
 → `PurchaseTabsContextProvider` → `PaginationContextProvider` → `Routes` внутри `AppLayout`
-(сайдбар + `Outlet`; без токена редирект на `/auth`; на каждой смене маршрута дёргает
+(сайдбар + `Outlet` + `WorkShiftHeartbeat`: у гравёра с активной сменой раз в минуту
+`PUT /engraver/work_shift/heartbeat`, на 409 перечитывает `activeWorkShift`; без токена редирект на `/auth`; на каждой смене маршрута дёргает
 `GET /healthcheck`, при ошибке уводит на `/maintenance`).
 
 ## Маршруты и права (`src/configuration.tsx`)
@@ -19,8 +20,9 @@ permissions, icon, name}`. `permissions` не задан — доступно в
 
 ## Слой API
 - `api/axiosClient.ts`: `baseURL` из `VITE_API_BASE_URL`; в каждый запрос `Authorization:
-  Bearer <localStorage.token>` и `device-token`; на 401 токен стирается (редирект сделает
-  `AppLayout`). Ошибка сервера в `error.response.data.detail`.
+  Bearer <localStorage.token>` и `device-token`; на 401 токен стирается и шлётся событие
+  `user-token-expired`: `AuthContext` ставит `isAuthenticated=false`, `AppLayout` сразу уводит на
+  `/auth` без перезагрузки. Ошибка сервера в `error.response.data.detail`.
 - `api/<domain>/<entity>.ts` — по функции на эндпоинт: `getAll*`, `get*ById`, `create*`,
   `update*`, `delete*`; возвращают `data`. Списки на бэке — **POST с телом**
   (`POST /order/all/`, `POST /tickets`, `POST /storage/good/all/`).
@@ -70,5 +72,5 @@ sortField, sortDirection, searchFilter])`. Тикеты — единственн
 ## Хуки (`src/hook`)
 `usePagination` (страница/offset локально), `useShopFilter` (`selectedShopId`, 0 = все),
 `useUserPermissions` (булевы `canReadOrders`, `canEditStorage`, `canDeleteStorage`… из
-`constant/permissions.ts`, имена совпадают с бэкендом; кнопки удаления — только `canDeleteXxx`), `useUserTableAccess` (колонки по ролям, только Production Info),
+`constant/permissions.ts`, имена совпадают с бэкендом; кнопки удаления — только `canDeleteXxx`; себестоимость в Storage, Production Info, заказе и записях склада — только при `canReadPrimeCost`), `useUserTableAccess` (колонки по ролям, только Production Info),
 `useAuthorizedDevice`, `useCommentInput` (комментарии к объекту), `withAuthAndPermission`.

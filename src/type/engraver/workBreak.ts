@@ -8,4 +8,5 @@ export type WorkBreak = {
 export type WorkBreakUpdate = {
   work_shift_id: number
   engraver_id: number
+  is_system?: boolean
 }

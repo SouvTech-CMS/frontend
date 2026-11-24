@@ -18,7 +18,8 @@ export const TableRowWorkShiftBreak: FC<TableRowWorkShiftBreakProps> = (
 
   return (
     <Text fontSize="sm">
-      {formatDateTime(startedAt, true)} - {formatDateTime(finishedAt, true)}
+      {startedAt ? formatDateTime(startedAt, true) : "—"} -{" "}
+      {finishedAt ? formatDateTime(finishedAt, true) : "—"}
     </Text>
   )
 }

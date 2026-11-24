@@ -40,8 +40,8 @@ export const Engravers = (props: PageProps) => {
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={10}>
           {canEditEngravers && <NewEngraverCard />}
 
-          {filteredEngraversList?.map((engraver, index) => (
-            <EngraverCard key={index} engraver={engraver} />
+          {filteredEngraversList?.map((engraver) => (
+            <EngraverCard key={engraver.id} engraver={engraver} />
           ))}
         </SimpleGrid>
       ) : (

@@ -1,8 +1,13 @@
 import { signIn as signInReq } from "api/auth"
 import { queryClient } from "api/queryClient"
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { FCC } from "type/fcc"
-import { clearUserToken, getUserToken, setUserToken } from "util/userToken"
+import {
+  clearUserToken,
+  getUserToken,
+  setUserToken,
+  USER_TOKEN_EXPIRED_EVENT,
+} from "util/userToken"
 
 interface AuthContextProps {
   isAuthenticated: boolean
@@ -35,6 +40,15 @@ export const AuthContextProvider: FCC = (props) => {
     setIsAuthenticated(false)
     queryClient.invalidateQueries("currentUser")
   }
+
+  // NOTE: API returned 401 (expired token), the token is already cleared
+  useEffect(() => {
+    const handleTokenExpired = () => setIsAuthenticated(false)
+
+    window.addEventListener(USER_TOKEN_EXPIRED_EVENT, handleTokenExpired)
+    return () =>
+      window.removeEventListener(USER_TOKEN_EXPIRED_EVENT, handleTokenExpired)
+  }, [])
 
   return (
     <AuthContext.Provider

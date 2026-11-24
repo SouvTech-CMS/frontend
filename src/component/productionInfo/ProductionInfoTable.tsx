@@ -3,6 +3,7 @@ import { CustomTh } from "component/customTable/CustomTh"
 import { ProductionInfoTableRow } from "component/productionInfo/ProductionInfoTableRow"
 import { GOODS_PRODUCTION_INFO_TABLE } from "constant/tables"
 import { useUserContext } from "context/user"
+import { useUserPermissions } from "hook/useUserPermissions"
 import { useUserTableAccess } from "hook/useUserTableAccess"
 import { FC } from "react"
 import { FullStorageGoodWithProductionInfo } from "type/storage/storageGood"
@@ -20,6 +21,7 @@ export const ProductionInfoTable: FC<ProductionInfoTableProps> = (props) => {
 
   const { isUserManager } = useUserContext()
   const { getAccessibleTableColumns } = useUserTableAccess()
+  const { canReadPrimeCost } = useUserPermissions()
 
   const columnsWithoutShelves = GOODS_PRODUCTION_INFO_TABLE.filter(
     (column) => column?.param !== "shelf",
@@ -29,7 +31,7 @@ export const ProductionInfoTable: FC<ProductionInfoTableProps> = (props) => {
     TABLE_NAME,
     // GOODS_PRODUCTION_INFO_TABLE,
     isUserManager ? columnsWithoutShelves : GOODS_PRODUCTION_INFO_TABLE,
-  )
+  ).filter((column) => canReadPrimeCost || column?.param !== "prime_cost")
 
   return (
     <TableContainer w="full">

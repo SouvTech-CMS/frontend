@@ -1,7 +1,11 @@
 import axios, { AxiosError, AxiosInstance } from "axios"
 import { getDeviceToken } from "util/authorizedDevice"
 import { getApiBaseUrl } from "util/urls"
-import { clearUserToken, getUserToken } from "util/userToken"
+import {
+  clearUserToken,
+  getUserToken,
+  USER_TOKEN_EXPIRED_EVENT,
+} from "util/userToken"
 
 export const axiosClient: AxiosInstance = axios.create({
   baseURL: getApiBaseUrl(),
@@ -31,6 +35,8 @@ axiosClient.interceptors.response.use(
 
     if (error.response?.status === 401) {
       clearUserToken()
+      // NOTE: AuthContext signs out, so the app redirects to /auth
+      window.dispatchEvent(new Event(USER_TOKEN_EXPIRED_EVENT))
     }
 
     throw error
